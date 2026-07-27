@@ -5,14 +5,14 @@ A área de estudo é sempre lida a partir de um único arquivo de referência
 (config/area_estudo.geojson), gerado por scripts/download/vetor_ibge.py.
 Isso evita que cada script "reinvente" o polígono do município.
 
-CRS padrão do projeto: EPSG:31982 (SIRGAS 2000 / UTM 22S).
+CRS padrão do projeto: EPSG:31981 (SIRGAS 2000 / UTM 21S).
 """
 
 from pathlib import Path
 
 import geopandas as gpd
 
-CRS_PADRAO = "EPSG:31982"
+CRS_PADRAO = "EPSG:31981"
 CAMINHO_AREA_ESTUDO_PADRAO = Path(__file__).resolve().parents[2] / "config" / "area_estudo.geojson"
 
 

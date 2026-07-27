@@ -2,7 +2,7 @@
 Baixa o limite municipal (malha territorial) via API de Malhas do IBGE e
 gera o arquivo de referência único da área de estudo do projeto:
 
-    config/area_estudo.geojson  (EPSG:31982 — SIRGAS 2000 / UTM 22S)
+    config/area_estudo.geojson  (EPSG:31981 — SIRGAS 2000 / UTM 21S)
 
 Idempotente: se o arquivo já existir, não baixa de novo (a menos que
 --forcar seja usado). Loga fonte, data e tamanho do download.
@@ -28,7 +28,7 @@ import requests
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
-CRS_PADRAO = "EPSG:31982"
+CRS_PADRAO = "EPSG:31981"
 CODIGO_IBGE_DEFAULT = "4322400"  # Uruguaiana, RS
 CAMINHO_SAIDA_DEFAULT = Path(__file__).resolve().parents[2] / "config" / "area_estudo.geojson"
 
@@ -75,7 +75,7 @@ def salvar_area_estudo(geojson_bruto: dict, caminho_saida: Path, codigo_ibge: st
         "crs_original": "EPSG:4674",
         "crs_processado": CRS_PADRAO,
         "data_processamento": datetime.now(timezone.utc).isoformat(),
-        "transformacao_aplicada": "reprojeção para EPSG:31982 (SIRGAS 2000 / UTM 22S)",
+        "transformacao_aplicada": "reprojeção para EPSG:31981 (SIRGAS 2000 / UTM 21S)",
     }
     caminho_metadados = caminho_saida.with_suffix(".json")
     caminho_metadados.write_text(json.dumps(metadados, indent=2, ensure_ascii=False), encoding="utf-8")

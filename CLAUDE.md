@@ -26,7 +26,7 @@ tomada de decisão territorial.
 
 - **Linguagem:** Python. Bibliotecas preferidas: `geopandas`, `rasterio`,
   `xarray`, `rasterstats`, `pyproj`, `requests`/`httpx`.
-- **CRS padrão de trabalho:** SIRGAS 2000 / UTM 22S — `EPSG:31982`. Dados
+- **CRS padrão de trabalho:** SIRGAS 2000 / UTM 21S — `EPSG:31981`. Dados
   brutos podem vir em outro CRS; todo processamento intermediário
   reprojeta para o padrão.
 - **Área de estudo:** sempre referenciada a partir de

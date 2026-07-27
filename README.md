@@ -11,7 +11,7 @@ territorial.
 
 - **Linguagem:** Python. Bibliotecas: `geopandas`, `rasterio`, `xarray`,
   `rasterstats`, `pyproj`, `requests`/`httpx`.
-- **CRS padrão:** SIRGAS 2000 / UTM 22S — `EPSG:31982`. Dados brutos podem
+- **CRS padrão:** SIRGAS 2000 / UTM 21S — `EPSG:31981`. Dados brutos podem
   vir em outro CRS; todo processamento intermediário reprojeta para o
   padrão.
 - **Área de estudo:** referenciada sempre a partir de um único arquivo:
@@ -67,5 +67,5 @@ pip install -r requirements.txt
 python scripts/download/vetor_ibge.py --codigo-ibge 4322400
 ```
 
-Isso gera `config/area_estudo.geojson` (EPSG:31982), que passa a ser a
+Isso gera `config/area_estudo.geojson` (EPSG:31981), que passa a ser a
 referência única de recorte para todos os demais scripts.

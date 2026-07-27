@@ -3,7 +3,7 @@
   "url": "https://servicodados.ibge.gov.br/api/v3/malhas/municipios/4322400",
   "codigo_ibge": "4322400",
   "crs_original": "EPSG:4674",
-  "crs_processado": "EPSG:31982",
-  "data_processamento": "2026-07-27T16:07:04.400638+00:00",
-  "transformacao_aplicada": "reprojeção para EPSG:31982 (SIRGAS 2000 / UTM 22S)"
+  "crs_processado": "EPSG:31981",
+  "data_processamento": "2026-07-27T16:13:01.789785+00:00",
+  "transformacao_aplicada": "reprojeção para EPSG:31981 (SIRGAS 2000 / UTM 21S)"
 }
