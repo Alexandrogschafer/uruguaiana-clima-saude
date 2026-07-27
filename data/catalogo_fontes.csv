@@ -1,0 +1,7 @@
+tema,fonte,tipo,licenca,resolucao_espacial,resolucao_temporal,url_api,script_responsavel,data_acesso,observacao
+limite_municipal,IBGE (malhas territoriais),vetor,dados abertos,municipal,estático (ano de referência),https://servicodados.ibge.gov.br/api/docs/malhas,scripts/download/vetor_ibge.py,,referência única para recorte de todas as camadas
+uso_cobertura_solo,MapBiomas,raster,dados abertos (uso não comercial),30m,anual,https://mapbiomas.org,,,coleção anual; definir coleção/versão a usar
+clima_meteorologia,INMET,tabular/estação,dados abertos,pontual (estação),horário/diário,https://portal.inmet.gov.br,,,avaliar estações próximas a Uruguaiana
+precipitacao_sensoriamento,INPE / CHIRPS / Copernicus,raster,dados abertos,variável,diário/mensal,,,,avaliar resolução temporal e espacial mais adequada
+hidrografia,ANA / IBGE,vetor,dados abertos,variável,estático,,,,bacia do rio Uruguai
+dados_saude,DATASUS/SIM/SIH/SINAN/SISAB,tabular,dados abertos (com restrições),microárea/município,mensal/anual,,,,uso futuro; cruzamento com dados climáticos
