@@ -10,6 +10,7 @@ Entradas (todas já geradas por scripts de download existentes):
     data/raw/vulnerabilidade-censo_ibge_2022.csv
     data/raw/vetor/cotas-inundacao_sgb_atual_vetorial.gpkg
     data/raw/vetor/saude-cnes_datasus_atual_vetorial.gpkg
+    data/raw/raster/uso-solo_mapbiomas_2024_30m.tif
 
 Saídas:
     data/processed/populacao-exposta-inundacao_por-cota.csv
@@ -19,21 +20,70 @@ Saídas:
     data/processed/saude-estabelecimentos-exposicao-inundacao_por-cota.csv
         contagem de estabelecimentos de saúde por cota x tipo de unidade.
 
-Premissa metodológica central (leia com atenção)
---------------------------------------------------
+Dois métodos de estimativa de população exposta (leia com atenção)
+--------------------------------------------------------------------
 O Censo não informa onde, dentro do setor, a população está concentrada.
-Este script estima a população exposta a cada cota assumindo distribuição
-UNIFORME da população dentro do polígono do setor censitário:
+Este script calcula DOIS métodos de estimativa, lado a lado, para a mesma
+pergunta ("quantas pessoas do setor estão na área alagada?"):
 
-    populacao_estimada_exposta = populacao_total_do_setor * (área da
-    interseção com a cota / área total do setor)
+1. populacao_estimada_area-proporcional (método original)
+   Assume distribuição UNIFORME da população dentro do polígono do setor:
 
-Isso é uma SIMPLIFICAÇÃO, não uma contagem real de pessoas expostas. Na
-prática a população raramente é uniforme (ex.: parte do setor pode ser
-área rural vazia e parte pode ser um bairro denso), então a estimativa
-pode super ou subestimar a exposição real conforme a distribuição interna
-de cada setor. Ver PREMISSAS_METODOLOGICAS abaixo e o metadado .json de
-cada saída para o texto completo.
+       populacao_total_do_setor * (área da interseção com a cota / área
+       total do setor)
+
+   Simplificação: setores raramente são uniformes (podem ter área rural
+   vazia e um bairro denso), então tende a super/subestimar a exposição
+   conforme a distribuição interna real da população no setor.
+
+2. populacao_estimada_ponderada_uso-solo (método novo)
+   Em vez de usar a área geométrica total do setor como proxy de "onde
+   mora gente", usa a área classificada como "Área Urbanizada" (MapBiomas
+   Coleção 10, class_id 24, ano 2024) dentro do setor:
+
+       populacao_total_do_setor * (área urbanizada na interseção com a
+       cota / área urbanizada total do setor)
+
+   A hipótese inicial era que isso daria estimativas MAIORES nos setores
+   urbanos ribeirinhos (a inundação cobre pouca ÁREA TOTAL do setor mas
+   grande parte da área onde as pessoas realmente vivem). NA PRÁTICA, o
+   resultado observado é o OPOSTO: para as 4 cotas, a estimativa ponderada
+   por uso do solo é 58-82% MENOR que a área-proporcional (ver
+   comparacao_metodos_cota_833cm no metadado .json). Investigando setor a
+   setor, a maioria dos setores urbanos afetados tem 0% de área urbanizada
+   dentro da própria interseção com a cota, mesmo cobrindo boa parte da
+   área TOTAL do setor: a faixa de terreno mais próxima do rio — onde
+   incide a inundação — quase não tem pixel classificado como "Área
+   Urbanizada" pelo MapBiomas. Duas explicações prováveis, não
+   excludentes: (a) um padrão real de ocupação, com o tecido urbano em
+   cota mais alta, afastado da faixa mais sujeita a cheias frequentes; (b)
+   uma limitação de classificação — terreno baixo/periodicamente alagado
+   tende a virar "Campo Alagado"/"Rio, Lago e Oceano" em vez de "Área
+   Urbanizada" no MapBiomas, mesmo havendo alguma ocupação ali. Na
+   prática, os dois métodos funcionam melhor como limites de um intervalo
+   de incerteza (área-proporcional tende a SUPERESTIMAR, uso-solo tende a
+   SUBESTIMAR a exposição na faixa ribeirinha) do que como um substituindo
+   o outro.
+
+   Para setores predominantemente RURAIS (pouca ou nenhuma área
+   classificada como urbanizada — população dispersa que o pixel de 30m
+   de "Área Urbanizada" não capta), o método ponderado por uso do solo não
+   é aplicável (proporção calculada sobre uma área urbana quase nula), e o
+   script usa o método de área-proporcional como FALLBACK nesses casos. A
+   coluna `metodo_estimativa_uso_solo` na interseção indica qual dos dois
+   métodos foi efetivamente usado em cada setor.
+
+   IMPORTANTE: "Mosaico de Usos" (class_id 21, a classe mais extensa no
+   município — ver data/processed/uso-solo_mapbiomas_serie-temporal_area-
+   por-classe.csv) foi deliberadamente EXCLUÍDO do peso urbano. É uma
+   classe de mosaico agropecuário (lavoura/pastagem com estruturas rurais
+   esparsas), não tecido residencial — incluí-la inundaria o sinal urbano
+   com uma área enorme de terra agrícola e contradiria o objetivo do
+   método (achar onde a população realmente se concentra).
+
+Ver PREMISSAS_METODOLOGICAS abaixo e o metadado .json de cada saída para
+o texto completo, incluindo a comparação numérica entre os dois métodos
+para a cota mais frequente (833cm).
 
 As 4 cotas do SGB (833/952/1205/1252 cm, TR 1.3/1.9/9.0/13.4 anos) têm
 áreas crescentes mas NÃO são estritamente aninhadas (a cota menor não é um
@@ -58,6 +108,8 @@ from pathlib import Path
 import geopandas as gpd
 import numpy as np
 import pandas as pd
+import rasterio
+from rasterstats import zonal_stats
 
 sys.path.append(str(Path(__file__).resolve().parents[1] / "utils"))
 from recorte_municipio import CRS_PADRAO  # noqa: E402
@@ -70,6 +122,7 @@ CAMINHO_SETORES = RAIZ / "data" / "raw" / "vetor" / "setores-censitarios_ibge_20
 CAMINHO_INDICADORES = RAIZ / "data" / "raw" / "vulnerabilidade-censo_ibge_2022.csv"
 CAMINHO_COTAS = RAIZ / "data" / "raw" / "vetor" / "cotas-inundacao_sgb_atual_vetorial.gpkg"
 CAMINHO_CNES = RAIZ / "data" / "raw" / "vetor" / "saude-cnes_datasus_atual_vetorial.gpkg"
+CAMINHO_RASTER_USO_SOLO = RAIZ / "data" / "raw" / "raster" / "uso-solo_mapbiomas_2024_30m.tif"
 
 CAMINHO_TABELA_POPULACAO = RAIZ / "data" / "processed" / "populacao-exposta-inundacao_por-cota.csv"
 CAMINHO_INTERSECAO = RAIZ / "data" / "processed" / "setores-inundacao_intersecao.gpkg"
@@ -81,6 +134,21 @@ CAMINHO_TABELA_SAUDE = RAIZ / "data" / "processed" / "saude-estabelecimentos-exp
 # já que uma cobertura exatamente 100.000...% é rara na prática.
 LIMIAR_COBERTURA_TOTAL = 0.99
 
+# "Área Urbanizada" na legenda da Coleção 10 do MapBiomas (ver LEGENDA_CLASSES
+# em scripts/download/uso-solo_mapbiomas.py). Usada como proxy de "onde a
+# população se concentra" para o método de ponderação por uso do solo.
+# "Mosaico de Usos" (21) foi deliberadamente excluído — ver docstring do
+# módulo e a premissa 'exclusao_mosaico_de_usos_do_peso' abaixo.
+CLASSE_AREA_URBANIZADA_MAPBIOMAS = 24
+
+# Setor com menos que isso de % de área urbanizada (MapBiomas) é considerado
+# "predominantemente rural" e usa o método de área-proporcional como
+# fallback, em vez do método ponderado por uso do solo — abaixo desse
+# patamar a proporção calculada sobre a área urbana já é pouco confiável
+# (poucos pixels, alto ruído) e a premissa do método (gente concentrada em
+# tecido urbano) não se aplica bem a população rural dispersa.
+LIMIAR_PCT_AREA_URBANIZADA_SETOR = 0.05
+
 # Categoria de estabelecimento usada para o cruzamento com as cotas: já é uma
 # classificação agregada/normalizada do tipo_unidade (ver
 # scripts/download/saude_cnes.py), mais estável para agrupar do que o
@@ -89,16 +157,73 @@ COLUNA_TIPO_ESTABELECIMENTO = "tipo_unidade_categoria"
 
 PREMISSAS_METODOLOGICAS = {
     "populacao_proporcional_a_area": (
-        "A população exposta a cada cota é estimada como "
-        "populacao_total_do_setor * (área da interseção setor∩cota / área "
-        "total do setor), isto é, assume-se distribuição UNIFORME da "
-        "população dentro do polígono do setor censitário. É uma "
-        "aproximação, não uma contagem real: o Censo não informa a "
+        "Método 'area-proporcional': a população exposta a cada cota é "
+        "estimada como populacao_total_do_setor * (área da interseção "
+        "setor∩cota / área total do setor), isto é, assume-se distribuição "
+        "UNIFORME da população dentro do polígono do setor censitário. É "
+        "uma aproximação, não uma contagem real: o Censo não informa a "
         "distribuição interna da população num setor (ex.: um setor pode "
         "ter parte urbana densa e parte rural vazia), então a estimativa "
         "tende a superestimar a exposição em setores com grande área "
         "desabitada e subestimar onde a população real está concentrada "
         "perto do rio."
+    ),
+    "populacao_ponderada_uso_solo_urbanizado": (
+        "Método 'ponderada_uso-solo': em vez da área geométrica total do "
+        "setor, usa a área classificada como 'Área Urbanizada' (MapBiomas "
+        "Coleção 10, class_id 24, ano 2024) como proxy de onde a população "
+        "realmente mora: populacao_total_do_setor * (área urbanizada na "
+        "interseção com a cota / área urbanizada total do setor). Deve "
+        "aproximar melhor a exposição em setores com faixa urbana estreita "
+        "perto do rio (a cheia cobre pouca área TOTAL do setor, mas boa "
+        "parte da área efetivamente habitada). Calculado por zonal_stats "
+        "(contagem categórica de pixels de 30m — ver rasterstats) sobre o "
+        "raster já recortado/reprojetado por scripts/download/uso-solo_"
+        "mapbiomas.py."
+    ),
+    "exclusao_mosaico_de_usos_do_peso": (
+        "'Mosaico de Usos' (MapBiomas class_id 21) foi deliberadamente "
+        "excluído do cálculo de área urbanizada, apesar de ser a classe "
+        "mais extensa no município. É uma classe de mosaico agropecuário "
+        "(lavoura/pastagem com estruturas rurais esparsas), não tecido "
+        "residencial — incluí-la inundaria o sinal urbano com uma área "
+        "enorme de terra agrícola sem relação com densidade populacional "
+        "e contradiria o objetivo do método (achar onde a população "
+        "realmente se concentra)."
+    ),
+    "fallback_setores_rurais_dispersos": (
+        f"Setores com menos de {LIMIAR_PCT_AREA_URBANIZADA_SETOR * 100:.0f}% "
+        "de sua área classificada como 'Área Urbanizada' são tratados como "
+        "'predominantemente rurais': o método ponderado por uso do solo não "
+        "se aplica bem a população rural dispersa (que o MapBiomas não "
+        "classifica como pixel urbano), então esses setores usam o método "
+        "de área-proporcional como fallback. A coluna "
+        "metodo_estimativa_uso_solo (na interseção) e as colunas "
+        "n_setores_metodo_uso_solo_urbanizado / n_setores_metodo_fallback_"
+        "rural (na tabela por cota) indicam onde isso ocorreu; nesses "
+        "setores populacao_estimada_ponderada_uso-solo é IGUAL a "
+        "populacao_estimada_area-proporcional (não é uma segunda "
+        "estimativa independente)."
+    ),
+    "limitacao_resolucao_pixel_mapbiomas": (
+        "ACHADO EMPÍRICO, não só uma ressalva teórica: rodando o cruzamento, a "
+        "maioria dos setores urbanos afetados tem 0% de área urbanizada "
+        "dentro da própria interseção com a cota (ver "
+        "n_setores_metodo_uso_solo_com_zero_area_urbana_na_intersecao no "
+        "metadado), mesmo em setores com área urbanizada substancial no "
+        "total. O MapBiomas tem resolução nativa de 30m (~27m após "
+        "reprojeção para EPSG:31981, pixel de ~746 m² — ver scripts/"
+        "download/uso-solo_mapbiomas.py); a faixa de terreno mais próxima "
+        "do rio, onde incide a inundação, tende a ser classificada como "
+        "'Campo Alagado'/'Rio, Lago e Oceano'/vegetação em vez de 'Área "
+        "Urbanizada', mesmo havendo alguma ocupação real ali — por ser "
+        "terreno baixo/periodicamente alagado (o que é justamente a razão "
+        "de estar na cota de inundação) e por pixels de 30m raramente "
+        "formarem um pixel 'urbano' pleno em faixas estreitas de ocupação "
+        "ribeirinha. Isso faz o método ponderado por uso do solo tender a "
+        "SUBESTIMAR a exposição real bem na faixa mais crítica (a mais "
+        "próxima do rio), o oposto do que a hipótese inicial do método "
+        "previa — ver 'populacao_ponderada_uso_solo_urbanizado' acima."
     ),
     "cotas_nao_estritamente_aninhadas": (
         "As 4 cotas de inundação (833/952/1205/1252cm) têm áreas "
@@ -131,14 +256,14 @@ PREMISSAS_METODOLOGICAS = {
     "media_ponderada_por_populacao_exposta": (
         "As médias de pct_populacao_0_a_4_anos e "
         "pct_populacao_60_anos_ou_mais por cota são ponderadas pela "
-        "populacao_estimada_exposta de cada setor (não uma média simples "
-        "entre setores), para refletir o perfil etário da população "
-        "realmente exposta e não dar o mesmo peso a um setor pouco "
-        "povoado e a um setor densamente povoado. Setores com a faixa "
-        "etária suprimida por sigilo estatístico do IBGE (NaN — ver "
-        "scripts/download/vulnerabilidade_censo.py) são excluídos só "
-        "dessa média específica (não da população exposta total, que não "
-        "depende dessa coluna)."
+        "populacao_estimada_area-proporcional de cada setor (não uma "
+        "média simples entre setores, e não pelo método ponderado por uso "
+        "do solo), para refletir o perfil etário da população realmente "
+        "exposta e não dar o mesmo peso a um setor pouco povoado e a um "
+        "setor densamente povoado. Setores com a faixa etária suprimida "
+        "por sigilo estatístico do IBGE (NaN — ver scripts/download/"
+        "vulnerabilidade_censo.py) são excluídos só dessa média específica "
+        "(não da população exposta total, que não depende dessa coluna)."
     ),
     "estabelecimentos_saude_ponto_no_poligono": (
         "Estabelecimentos de saúde (CNES) são geocodificados como ponto; "
@@ -188,6 +313,47 @@ def carregar_setores_com_indicadores() -> gpd.GeoDataFrame:
     return gdf
 
 
+def obter_pixel_area_m2(caminho_raster: Path) -> float:
+    with rasterio.open(caminho_raster) as src:
+        return abs(src.transform.a * src.transform.e)
+
+
+def calcular_area_urbanizada_km2(geometrias: gpd.GeoSeries, caminho_raster: Path, pixel_area_m2: float) -> pd.Series:
+    """Área (km²) de pixels classificados como 'Área Urbanizada' (MapBiomas) dentro de cada geometria."""
+    stats = zonal_stats(geometrias, str(caminho_raster), categorical=True)
+    contagens = pd.Series(
+        [stats_poligono.get(CLASSE_AREA_URBANIZADA_MAPBIOMAS, 0) for stats_poligono in stats],
+        index=geometrias.index, dtype=float,
+    )
+    return contagens * pixel_area_m2 / 1e6
+
+
+def adicionar_area_urbanizada_setor(gdf_setores: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Calcula, por setor, a área urbanizada (MapBiomas 2024) e o % que ela representa da área total do setor."""
+    if not CAMINHO_RASTER_USO_SOLO.exists():
+        raise FileNotFoundError(
+            f"{CAMINHO_RASTER_USO_SOLO} não encontrado. Rode primeiro: python scripts/download/uso-solo_mapbiomas.py"
+        )
+
+    gdf_setores = gdf_setores.copy()
+    pixel_area_m2 = obter_pixel_area_m2(CAMINHO_RASTER_USO_SOLO)
+    gdf_setores["area_urbanizada_setor_km2"] = calcular_area_urbanizada_km2(
+        gdf_setores.geometry, CAMINHO_RASTER_USO_SOLO, pixel_area_m2
+    )
+    gdf_setores["pct_area_urbanizada_setor"] = (
+        gdf_setores["area_urbanizada_setor_km2"] / (gdf_setores["area_setor_m2"] / 1e6)
+    ).fillna(0)
+
+    n_rural = int((gdf_setores["pct_area_urbanizada_setor"] < LIMIAR_PCT_AREA_URBANIZADA_SETOR).sum())
+    logger.info(
+        "Área urbanizada (MapBiomas 2024) calculada por setor — %d de %d setores são "
+        "'predominantemente rurais' (< %.0f%% de área urbanizada) e usarão a área-proporcional "
+        "como fallback no método ponderado por uso do solo.",
+        n_rural, len(gdf_setores), LIMIAR_PCT_AREA_URBANIZADA_SETOR * 100,
+    )
+    return gdf_setores
+
+
 def carregar_cotas_dissolvidas() -> gpd.GeoDataFrame:
     """Carrega as cotas de inundação do SGB, corrige geometria inválida e dissolve em 1 polígono por cota."""
     if not CAMINHO_COTAS.exists():
@@ -234,10 +400,10 @@ def carregar_cnes() -> gpd.GeoDataFrame:
 
 
 def calcular_exposicao_por_setor(gdf_setores: gpd.GeoDataFrame, gdf_cotas: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
-    """Overlay (interseção) setor x cota e estimativa de população exposta proporcional à área coberta."""
+    """Overlay (interseção) setor x cota e as duas estimativas de população exposta (área-proporcional e ponderada por uso do solo)."""
     colunas_setor = [
-        "CD_SETOR", "SITUACAO", "area_setor_m2", "populacao_total",
-        "pct_populacao_0_a_4_anos", "pct_populacao_60_anos_ou_mais",
+        "CD_SETOR", "SITUACAO", "area_setor_m2", "area_urbanizada_setor_km2", "pct_area_urbanizada_setor",
+        "populacao_total", "pct_populacao_0_a_4_anos", "pct_populacao_60_anos_ou_mais",
         "rendimento_medio_domiciliar_per_capita_reais_municipio",
         "pct_domicilios_agua_inadequada_municipio", "pct_domicilios_esgoto_inadequado_municipio",
         "geometry",
@@ -247,17 +413,41 @@ def calcular_exposicao_por_setor(gdf_setores: gpd.GeoDataFrame, gdf_cotas: gpd.G
         how="intersection", keep_geom_type=True,
     )
 
+    # --- Método 1: área-proporcional (distribuição uniforme no setor) ---
     intersecao["area_intersecao_m2"] = intersecao.geometry.area
     intersecao["pct_area_coberta"] = (intersecao["area_intersecao_m2"] / intersecao["area_setor_m2"]).clip(upper=1.0)
-    intersecao["populacao_estimada_exposta"] = intersecao["populacao_total"] * intersecao["pct_area_coberta"]
+    intersecao["populacao_estimada_area-proporcional"] = intersecao["populacao_total"] * intersecao["pct_area_coberta"]
+
+    # --- Método 2: ponderado pela área urbanizada (MapBiomas 2024) ---
+    pixel_area_m2 = obter_pixel_area_m2(CAMINHO_RASTER_USO_SOLO)
+    intersecao["area_urbanizada_intersecao_km2"] = calcular_area_urbanizada_km2(
+        intersecao.geometry, CAMINHO_RASTER_USO_SOLO, pixel_area_m2
+    )
+    intersecao["pct_area_urbanizada_coberta"] = np.where(
+        intersecao["area_urbanizada_setor_km2"] > 0,
+        (intersecao["area_urbanizada_intersecao_km2"] / intersecao["area_urbanizada_setor_km2"]).clip(upper=1.0),
+        np.nan,
+    )
+    intersecao["metodo_estimativa_uso_solo"] = np.where(
+        intersecao["pct_area_urbanizada_setor"] >= LIMIAR_PCT_AREA_URBANIZADA_SETOR,
+        "uso_solo_urbanizado", "area_proporcional_fallback",
+    )
+    intersecao["populacao_estimada_ponderada_uso-solo"] = np.where(
+        intersecao["metodo_estimativa_uso_solo"] == "uso_solo_urbanizado",
+        intersecao["populacao_total"] * intersecao["pct_area_urbanizada_coberta"].fillna(0),
+        intersecao["populacao_estimada_area-proporcional"],
+    )
 
     intersecao["area_setor_km2"] = intersecao["area_setor_m2"] / 1e6
     intersecao["area_intersecao_km2"] = intersecao["area_intersecao_m2"] / 1e6
     intersecao = intersecao.drop(columns=["area_setor_m2", "area_intersecao_m2"])
 
+    n_uso_solo = (intersecao.drop_duplicates("CD_SETOR")["metodo_estimativa_uso_solo"] == "uso_solo_urbanizado").sum()
     logger.info(
-        "Interseção setor x cota: %d combinações (%d setores distintos afetados por alguma cota)",
-        len(intersecao), intersecao["CD_SETOR"].nunique(),
+        "Interseção setor x cota: %d combinações (%d setores distintos afetados; %d usam o método ponderado "
+        "por uso do solo, %d usam área-proporcional como fallback rural)",
+        len(intersecao), intersecao["CD_SETOR"].nunique(), n_uso_solo,
+        intersecao["CD_SETOR"].nunique() - n_uso_solo,
     )
     return intersecao
 
@@ -279,27 +469,39 @@ def media_ponderada(valores: pd.Series, pesos: pd.Series) -> float:
 
 
 def montar_tabela_populacao_por_cota(intersecao: gpd.GeoDataFrame, populacao_total_municipio: float) -> pd.DataFrame:
-    """Consolida a interseção numa linha por cota: população exposta, setores afetados e médias de vulnerabilidade."""
+    """Consolida a interseção numa linha por cota: as duas estimativas de população, setores afetados e médias de vulnerabilidade."""
     linhas = []
     for (cota_cm, tr_anos), grupo in intersecao.groupby(["cota_cm", "tr_anos"], sort=True):
-        populacao_exposta_total = grupo["populacao_estimada_exposta"].sum()
+        pop_area_proporcional = grupo["populacao_estimada_area-proporcional"].sum()
+        pop_uso_solo = grupo["populacao_estimada_ponderada_uso-solo"].sum()
         n_cobertura_total = int((grupo["pct_area_coberta"] >= LIMIAR_COBERTURA_TOTAL).sum())
+        setores_por_metodo = grupo.drop_duplicates("CD_SETOR")["metodo_estimativa_uso_solo"].value_counts()
+
         linhas.append({
             "cota_cm": cota_cm,
             "tr_anos": tr_anos,
             "n_setores_afetados": int(grupo["CD_SETOR"].nunique()),
             "n_setores_cobertura_total": n_cobertura_total,
             "n_setores_cobertura_parcial": int(grupo["CD_SETOR"].nunique()) - n_cobertura_total,
-            "populacao_estimada_exposta": round(populacao_exposta_total, 1),
-            "pct_populacao_municipio_exposta": (
-                round(100 * populacao_exposta_total / populacao_total_municipio, 2)
-                if populacao_total_municipio else None
+            "n_setores_metodo_uso_solo_urbanizado": int(setores_por_metodo.get("uso_solo_urbanizado", 0)),
+            "n_setores_metodo_fallback_rural": int(setores_por_metodo.get("area_proporcional_fallback", 0)),
+            "populacao_estimada_area-proporcional": round(pop_area_proporcional, 1),
+            "populacao_estimada_ponderada_uso-solo": round(pop_uso_solo, 1),
+            "dif_pct_uso-solo_vs_area-proporcional": (
+                round(100 * (pop_uso_solo - pop_area_proporcional) / pop_area_proporcional, 2)
+                if pop_area_proporcional else None
+            ),
+            "pct_populacao_municipio_exposta_area-proporcional": (
+                round(100 * pop_area_proporcional / populacao_total_municipio, 2) if populacao_total_municipio else None
+            ),
+            "pct_populacao_municipio_exposta_ponderada_uso-solo": (
+                round(100 * pop_uso_solo / populacao_total_municipio, 2) if populacao_total_municipio else None
             ),
             "pct_populacao_0_a_4_anos_media_pop_exposta": round(
-                media_ponderada(grupo["pct_populacao_0_a_4_anos"], grupo["populacao_estimada_exposta"]), 2
+                media_ponderada(grupo["pct_populacao_0_a_4_anos"], grupo["populacao_estimada_area-proporcional"]), 2
             ),
             "pct_populacao_60_anos_ou_mais_media_pop_exposta": round(
-                media_ponderada(grupo["pct_populacao_60_anos_ou_mais"], grupo["populacao_estimada_exposta"]), 2
+                media_ponderada(grupo["pct_populacao_60_anos_ou_mais"], grupo["populacao_estimada_area-proporcional"]), 2
             ),
             "rendimento_medio_domiciliar_per_capita_reais_municipio": grupo[
                 "rendimento_medio_domiciliar_per_capita_reais_municipio"
@@ -337,6 +539,7 @@ def montar_metadados(descricao: str, campos_especificos: dict) -> dict:
             "IBGE — Censo 2022: Agregados por Setores Censitários + API de Agregados/SIDRA (via scripts/download/vulnerabilidade_censo.py)",
             "SGB (Serviço Geológico do Brasil) — cotas de inundação do rio Uruguai (via scripts/download/hidrologia_sgb.py)",
             "CNES/DATASUS — estabelecimentos de saúde (via scripts/download/saude_cnes.py)",
+            "MapBiomas Brasil — Coleção 10, uso e cobertura do solo 2024 (via scripts/download/uso-solo_mapbiomas.py)",
         ],
         "descricao": descricao,
         "script_gerador": "scripts/processamento/vulnerabilidade_inundacao.py",
@@ -344,6 +547,49 @@ def montar_metadados(descricao: str, campos_especificos: dict) -> dict:
         "premissas_metodologicas": PREMISSAS_METODOLOGICAS,
         "data_processamento": datetime.now(timezone.utc).isoformat(),
         **campos_especificos,
+    }
+
+
+def montar_comparacao_cota_833(tabela_populacao: pd.DataFrame, intersecao: gpd.GeoDataFrame) -> dict | None:
+    """Compara os dois métodos de estimativa para a cota mais frequente (833cm, TR 1.3 anos), para os metadados."""
+    linhas_833 = tabela_populacao[tabela_populacao["cota_cm"] == 833]
+    if linhas_833.empty:
+        return None
+    linha = linhas_833.iloc[0]
+
+    grupo_833 = intersecao[intersecao["cota_cm"] == 833]
+    grupo_uso_solo = grupo_833[grupo_833["metodo_estimativa_uso_solo"] == "uso_solo_urbanizado"]
+    n_uso_solo = len(grupo_uso_solo)
+    n_zero_cobertura_urbana = int((grupo_uso_solo["pct_area_urbanizada_coberta"] == 0).sum())
+
+    return {
+        "cota_cm": 833,
+        "tr_anos": float(linha["tr_anos"]),
+        "populacao_estimada_area-proporcional": float(linha["populacao_estimada_area-proporcional"]),
+        "populacao_estimada_ponderada_uso-solo": float(linha["populacao_estimada_ponderada_uso-solo"]),
+        "diferenca_percentual_uso-solo_vs_area-proporcional": linha["dif_pct_uso-solo_vs_area-proporcional"],
+        "n_setores_metodo_uso_solo_urbanizado": int(linha["n_setores_metodo_uso_solo_urbanizado"]),
+        "n_setores_metodo_fallback_rural": int(linha["n_setores_metodo_fallback_rural"]),
+        "n_setores_metodo_uso_solo_com_zero_area_urbana_na_intersecao": n_zero_cobertura_urbana,
+        "achado_empirico_e_interpretacao": (
+            f"A hipótese inicial era que o método ponderado por uso do solo daria uma estimativa "
+            f"MAIOR que a área-proporcional nos setores urbanos ribeirinhos. O resultado observado "
+            f"foi o OPOSTO: {linha['populacao_estimada_ponderada_uso-solo']:.0f} pessoas estimadas "
+            f"pelo método ponderado vs. {linha['populacao_estimada_area-proporcional']:.0f} pelo "
+            f"método original ({linha['dif_pct_uso-solo_vs_area-proporcional']:.1f}%). Motivo: dos "
+            f"{n_uso_solo} setores que usaram o método ponderado por uso do solo (não caíram no "
+            f"fallback rural), {n_zero_cobertura_urbana} têm 0% de área urbanizada dentro da própria "
+            "interseção com a cota — a faixa de terreno mais próxima do rio, onde a inundação incide, "
+            "quase não tem pixel classificado como 'Área Urbanizada' pelo MapBiomas, mesmo em setores "
+            "com bastante área urbanizada no total. Duas explicações não excludentes: (a) padrão real "
+            "de ocupação, com o tecido urbano em cota mais alta, afastado da faixa mais sujeita a "
+            "cheias frequentes; (b) limitação de classificação — terreno baixo/periodicamente alagado "
+            "tende a virar 'Campo Alagado'/'Rio, Lago e Oceano' no MapBiomas em vez de 'Área "
+            "Urbanizada', mesmo havendo alguma ocupação real ali. Na prática, os dois métodos "
+            "funcionam melhor como limites de um intervalo de incerteza — área-proporcional tende a "
+            "SUPERESTIMAR e uso-solo tende a SUBESTIMAR a exposição real na faixa mais próxima do rio "
+            "— do que como um substituindo o outro."
+        ),
     }
 
 
@@ -360,6 +606,7 @@ def main() -> None:
         return
 
     gdf_setores = carregar_setores_com_indicadores()
+    gdf_setores = adicionar_area_urbanizada_setor(gdf_setores)
     gdf_cotas = carregar_cotas_dissolvidas()
     gdf_cnes = carregar_cnes()
 
@@ -379,7 +626,9 @@ def main() -> None:
 
     colunas_intersecao_saida = [
         "CD_SETOR", "SITUACAO", "cota_cm", "tr_anos", "area_setor_km2", "area_intersecao_km2",
-        "pct_area_coberta", "populacao_total", "populacao_estimada_exposta",
+        "pct_area_coberta", "area_urbanizada_setor_km2", "area_urbanizada_intersecao_km2",
+        "pct_area_urbanizada_coberta", "metodo_estimativa_uso_solo",
+        "populacao_total", "populacao_estimada_area-proporcional", "populacao_estimada_ponderada_uso-solo",
         "pct_populacao_0_a_4_anos", "pct_populacao_60_anos_ou_mais",
         "rendimento_medio_domiciliar_per_capita_reais_municipio",
         "pct_domicilios_agua_inadequada_municipio", "pct_domicilios_esgoto_inadequado_municipio",
@@ -392,15 +641,20 @@ def main() -> None:
     tabela_estabelecimentos.to_csv(CAMINHO_TABELA_SAUDE, index=False, encoding="utf-8")
     logger.info("Tabela de estabelecimentos de saúde por cota salva em %s", CAMINHO_TABELA_SAUDE)
 
+    comparacao_833 = montar_comparacao_cota_833(tabela_populacao, intersecao)
+
     metadados_populacao = montar_metadados(
-        "Tabela consolidada, uma linha por cota de inundação do SGB: população estimada exposta "
-        "(assumindo distribuição uniforme dentro do setor censitário), número de setores afetados "
-        "(total/parcialmente cobertos), médias de indicadores de vulnerabilidade nos setores "
-        "afetados e total de estabelecimentos de saúde dentro da cota.",
+        "Tabela consolidada, uma linha por cota de inundação do SGB: as duas estimativas de "
+        "população exposta (área-proporcional e ponderada por uso do solo urbanizado), número de "
+        "setores afetados (total/parcialmente cobertos, e por método de estimativa usado), médias "
+        "de indicadores de vulnerabilidade nos setores afetados e total de estabelecimentos de "
+        "saúde dentro da cota.",
         {
             "populacao_total_municipio_referencia": int(populacao_total_municipio),
             "n_cotas": len(tabela_populacao),
             "limiar_cobertura_total": LIMIAR_COBERTURA_TOTAL,
+            "limiar_pct_area_urbanizada_setor": LIMIAR_PCT_AREA_URBANIZADA_SETOR,
+            "comparacao_metodos_cota_833cm": comparacao_833,
         },
     )
     CAMINHO_TABELA_POPULACAO.with_suffix(".json").write_text(
@@ -409,8 +663,9 @@ def main() -> None:
 
     metadados_intersecao = montar_metadados(
         "Geometria de cada interseção entre um setor censitário e uma cota de inundação do SGB, "
-        "com a população estimada exposta e os indicadores de vulnerabilidade daquele setor — "
-        "uma feição por combinação setor x cota, útil para mapear a exposição no espaço.",
+        "com as duas estimativas de população exposta (área-proporcional e ponderada por uso do "
+        "solo), o método efetivamente usado por setor e os indicadores de vulnerabilidade daquele "
+        "setor — uma feição por combinação setor x cota, útil para mapear a exposição no espaço.",
         {"n_feicoes": len(intersecao), "n_setores_distintos_afetados": int(intersecao["CD_SETOR"].nunique())},
     )
     CAMINHO_INTERSECAO.with_suffix(".json").write_text(
