@@ -1,11 +1,38 @@
 # uruguaiana-clima-saude
 
-Aquisição, padronização e processamento de dados espaciais (vetoriais e
-matriciais) para apoiar o projeto **ClimaPampa** (PET-Saúde: Clima —
-UNIPAMPA + Secretaria Municipal de Saúde de Uruguaiana), subsidiando o
-Eixo III (Comunicação e Inovação), objetivo específico 1: plataforma
-digital geoespacial para vigilância em saúde e tomada de decisão
-territorial.
+🌐 **Acesse o geoportal:** [alexandrogschafer.github.io/uruguaiana-clima-saude](https://alexandrogschafer.github.io/uruguaiana-clima-saude/)
+
+Geoportal e pipeline de dados espaciais do projeto **ClimaPampa**
+(PET-Saúde: Clima — UNIPAMPA + Secretaria Municipal de Saúde de
+Uruguaiana), subsidiando o Eixo III (Comunicação e Inovação), objetivo
+específico 1: plataforma digital geoespacial para vigilância em saúde e
+tomada de decisão territorial.
+
+O repositório reúne dois blocos: os **scripts** que baixam, padronizam e
+cruzam dados espaciais (vetoriais e matriciais) sobre clima, território,
+vulnerabilidade socioambiental e saúde; e o **geoportal** (`index.html` +
+`css/` + `js/`), um mapa interativo que publica essas camadas para
+consulta por gestores, equipes de saúde e pesquisadores.
+
+## Camadas disponíveis
+
+No geoportal é possível visualizar e combinar:
+
+- **Saúde:** estabelecimentos de saúde do município (UBS/ESF, hospitais,
+  clínicas, farmácias, laboratórios, vigilância em saúde), com filtro por
+  tipo de unidade e fontes CNES/OpenStreetMap.
+- **Demografia:** densidade populacional, concentração de crianças
+  (0-4 anos) e de idosos (60+ anos) por setor censitário (Censo 2022).
+- **Inundação:** área e população estimada expostas em cada cota de
+  inundação registrada pelo Serviço Geológico do Brasil, incluindo
+  estabelecimentos de saúde afetados em cada cenário.
+- **Uso do solo:** série histórica MapBiomas, com linha do tempo por ano.
+- **Bacias hidrográficas:** divisão em níveis de detalhe (da bacia
+  regional às microbacias locais) e rede hidrográfica.
+- **Terreno:** hipsometria e relevo sombreado a partir do modelo digital
+  de terreno (MDT ANADEM).
+- **Mapa base:** alternância entre mapa (OpenStreetMap) e imagem de
+  satélite.
 
 ## Padrões técnicos
 
