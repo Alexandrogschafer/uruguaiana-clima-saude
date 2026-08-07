@@ -1,0 +1,22 @@
+{
+  "descricao": "Área de estudo estendida por buffer sobre o limite municipal, usada apenas como área de busca/recorte inicial de dados hidrográficos (BHO/ANA) e de terreno (ANADEM) — não é um novo limite oficial do projeto.",
+  "script_gerador": "scripts/processamento/area_estudo_bacias.py",
+  "entrada": "config/area_estudo.geojson",
+  "crs": "EPSG:31981",
+  "buffer_km": 18.0,
+  "justificativa_buffer": "15-20 km cobre bacias hidrográficas 'de borda' (cabeceira ou divisor de águas fora do município) nos níveis Otto Pfafstetter mais finos (5-7), sem puxar bacias de nível 1-3 inteiras, que são continentais/estaduais (bacia do rio Uruguai cobre 3 estados e 2 países) — desproporcional ao uso de vigilância em saúde municipal pretendido pelo projeto.",
+  "area_estudo_original_km2": 5697.67,
+  "area_estudo_bacias_km2": 12705.22,
+  "bbox_epsg31981": [
+    450169.65019826835,
+    6640448.659782483,
+    599890.6194148979,
+    6765622.376094595
+  ],
+  "data_processamento": "2026-08-07T13:54:57.847306+00:00",
+  "transformacao_aplicada": "buffer de 18.0 km sobre area_estudo.geojson, dissolvido para 1 polígono",
+  "uso_pretendido": [
+    "scripts/download/hidrologia_bho.py (recorte inicial de bacias e rede de drenagem)",
+    "scripts/download/terreno_anadem.py (recorte inicial do MDT)"
+  ]
+}
