@@ -1,0 +1,17 @@
+{
+  "descricao": "Ottobacias nível Otto Pfafstetter 4 (BHO 6.2.4, ANA), recortadas pela área de estudo municipal oficial (não a área estendida com buffer usada na busca) — nível 1 = bacia mais abrangente, nível 7 = mais detalhado. ATENÇÃO: o atributo area_m2_bho é a área da bacia completa a montante (escala nacional, conforme calculada pela própria ANA/BHO), não a área do fragmento recortado pelo município nem está em m² apesar do nome do campo — comparação com geometry.area indica que já está em km²; não usado no geoportal por ambiguidade.",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/bacias-hidrograficas_ana-bho_nivel4_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "recorte (gpd.clip) por config/area_estudo.geojson (área municipal, não a estendida); simplify(tolerância=10m, preserve_topology=True); reprojeção EPSG:31981 -> EPSG:4326",
+  "n_features": 15,
+  "colunas": [
+    "wts_pk",
+    "codigo_otto",
+    "nivel_otto_declarado",
+    "area_m2_bho",
+    "nivel_otto"
+  ],
+  "data_processamento": "2026-08-07T18:18:43.914193+00:00"
+}

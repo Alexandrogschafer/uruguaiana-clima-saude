@@ -31,18 +31,6 @@ def converter_limite_municipal() -> None:
     )
 
 
-def converter_setores_vulnerabilidade() -> None:
-    caminho = DIR_PROCESSED / "setores-censitarios_vulnerabilidade_unido.gpkg"
-    gdf = gpd.read_file(caminho)
-    salvar_geojson_wgs84(
-        gdf,
-        DIR_GEOPORTAL / "setores-vulnerabilidade.geojson",
-        descricao="Setores censitários (Censo 2022) com indicadores de vulnerabilidade socioeconômica.",
-        fonte={"caminho_origem": str(caminho.relative_to(RAIZ_PROJETO))},
-        transformacao=f"reprojeção {gdf.crs} -> EPSG:4326, sem alteração de geometria/atributos",
-    )
-
-
 def converter_setores_inundacao() -> None:
     caminho = DIR_PROCESSED / "setores-inundacao_intersecao.gpkg"
     gdf = gpd.read_file(caminho)
@@ -103,7 +91,6 @@ def converter_clima_inmet() -> None:
 
 def main() -> None:
     converter_limite_municipal()
-    converter_setores_vulnerabilidade()
     converter_setores_inundacao()
     converter_saude_cnes()
     converter_saude_osm()

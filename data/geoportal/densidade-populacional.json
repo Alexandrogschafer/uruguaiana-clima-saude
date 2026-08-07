@@ -1,0 +1,18 @@
+{
+  "descricao": "Densidade populacional por setor censitário (Censo 2022): população total / área do setor (AREA_KM2, oficial IBGE).",
+  "fonte": {
+    "caminho_origem": "data/processed/setores-censitarios_vulnerabilidade_unido.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "densidade_hab_km2 = populacao_total / AREA_KM2 (arredondado a 1 casa); reprojeção EPSG:31981 -> EPSG:4326",
+  "n_features": 179,
+  "colunas": [
+    "CD_SETOR",
+    "NM_BAIRRO",
+    "NM_DIST",
+    "AREA_KM2",
+    "populacao_total",
+    "densidade_hab_km2"
+  ],
+  "data_processamento": "2026-08-07T17:34:13.092953+00:00"
+}

@@ -142,6 +142,17 @@ input[type="range"] {
   width: 100%;
 }
 
+select {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-borda);
+  border-radius: 4px;
+  background: #fff;
+}
+
 .slider-legenda {
   display: flex;
   justify-content: space-between;
@@ -203,6 +214,36 @@ input[type="range"] {
   display: inline-block;
 }
 
+.legenda-demografia {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--cor-borda);
+}
+
+.legenda-bloco {
+  margin-bottom: 10px;
+  font-size: 0.75rem;
+}
+
+.legenda-bloco strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+}
+
+.legenda-linha {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+  color: var(--cor-texto-suave);
+}
+
+.swatch-sem-dado {
+  background: repeating-linear-gradient(45deg, #e4e2dc, #e4e2dc 2px, #9a9890 2px, #9a9890 4px);
+  border: 1px solid #9a9890;
+}
+
 .legenda-uso-solo {
   list-style: none;
   margin: 10px 0 0;
@@ -246,6 +287,12 @@ input[type="range"] {
   padding: 4px 0;
 }
 
+/* ---------- terreno: hillshade sobre hipsometria ---------- */
+
+.overlay-hillshade-multiply {
+  mix-blend-mode: multiply;
+}
+
 /* ---------- popups ---------- */
 
 .leaflet-popup-content {
@@ -276,6 +323,15 @@ input[type="range"] {
   color: var(--cor-texto-suave);
   white-space: nowrap;
   padding-right: 8px;
+}
+
+.popup-nota {
+  margin: 8px 0 0;
+  padding-top: 6px;
+  border-top: 1px dashed var(--cor-borda);
+  font-size: 0.75rem;
+  color: var(--cor-texto-suave);
+  font-style: italic;
 }
 
 /* ---------- mobile: painel vira gaveta ---------- */
