@@ -52,6 +52,16 @@ async function selecionarNivelBacia(nivel) {
 function iniciarSeletorBacias() {
   const select = document.getElementById("select-nivel-bacia");
   select.addEventListener("change", (evento) => selecionarNivelBacia(evento.target.value));
+
+  // "?" ao lado do dropdown: explicação completa (mesmo texto do title, pra
+  // toque em mobile, onde o title não abre com hover) alternando ao clicar
+  const botaoAjuda = document.getElementById("botao-ajuda-bacias");
+  const textoAjuda = document.getElementById("texto-ajuda-bacias");
+  botaoAjuda.addEventListener("click", () => {
+    const aberto = !textoAjuda.hidden;
+    textoAjuda.hidden = aberto;
+    botaoAjuda.setAttribute("aria-expanded", String(!aberto));
+  });
 }
 
 iniciarSeletorBacias();

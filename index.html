@@ -41,16 +41,30 @@
         <span>Bacias hidrográficas</span><span class="secao-seta">▾</span>
       </button>
       <div class="secao-conteudo">
-        <p class="secao-ajuda">Nível 1 = bacia mais abrangente; nível 7 = mais detalhado (Otto Pfafstetter, BHO/ANA). Só um nível fica visível por vez.</p>
+        <p class="secao-ajuda">
+          Só um nível fica visível por vez.
+          <button
+            type="button"
+            class="botao-ajuda"
+            id="botao-ajuda-bacias"
+            aria-expanded="false"
+            aria-controls="texto-ajuda-bacias"
+            aria-label="O que são níveis Otto Pfafstetter?"
+            title="As bacias hidrográficas são divididas em níveis de detalhe: no nível 1, todo o território de uma grande bacia (ex. bacia do Rio Uruguai) aparece como uma única área. Nos níveis seguintes, essa área vai sendo subdividida em bacias menores — no nível 7, aparecem as microbacias mais próximas do território local. Use níveis baixos (1-3) para ver o contexto regional, e níveis altos (5-7) para ver o detalhe local."
+          >?</button>
+        </p>
+        <p class="texto-ajuda-bacias" id="texto-ajuda-bacias" hidden>
+          As bacias hidrográficas são divididas em níveis de detalhe: no nível 1, todo o território de uma grande bacia (ex. bacia do Rio Uruguai) aparece como uma única área. Nos níveis seguintes, essa área vai sendo subdividida em bacias menores — no nível 7, aparecem as microbacias mais próximas do território local. Use níveis baixos (1-3) para ver o contexto regional, e níveis altos (5-7) para ver o detalhe local.
+        </p>
         <select id="select-nivel-bacia">
           <option value="">Desligado</option>
-          <option value="1">Nível 1</option>
-          <option value="2">Nível 2</option>
-          <option value="3">Nível 3</option>
-          <option value="4">Nível 4</option>
-          <option value="5">Nível 5</option>
-          <option value="6">Nível 6</option>
-          <option value="7">Nível 7</option>
+          <option value="1">Nível 1 (1 bacia)</option>
+          <option value="2">Nível 2 (1 bacia)</option>
+          <option value="3">Nível 3 (5 bacias)</option>
+          <option value="4">Nível 4 (18 bacias)</option>
+          <option value="5">Nível 5 (95 bacias)</option>
+          <option value="6">Nível 6 (482 bacias)</option>
+          <option value="7">Nível 7 (2.083 bacias)</option>
         </select>
       </div>
     </section>
@@ -128,11 +142,15 @@
         <span>Saúde</span><span class="secao-seta">▾</span>
       </button>
       <div class="secao-conteudo">
-        <p class="secao-ajuda">Estabelecimentos de saúde (CNES) por tipo:</p>
+        <p class="secao-ajuda">Estabelecimentos de saúde, por tipo e fonte:</p>
+        <label class="checkbox-linha checkbox-marcar-todos">
+          <input type="checkbox" id="checkbox-saude-todos" checked />
+          <strong>Marcar/desmarcar todos</strong>
+        </label>
         <div id="filtro-tipo-saude" class="lista-checkboxes"></div>
         <label class="checkbox-linha checkbox-osm">
           <input type="checkbox" id="checkbox-saude-osm" checked />
-          Mostrar estabelecimentos do OpenStreetMap
+          OpenStreetMap (fonte complementar)
         </label>
       </div>
     </section>
