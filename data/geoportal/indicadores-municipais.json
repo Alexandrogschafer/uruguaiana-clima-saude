@@ -1,0 +1,12 @@
+{
+  "descricao": "Indicadores socioeconômicos com granularidade municipal (não por setor censitário) — mesma fonte dos setores censitários, mas repetidos como valor único em todas as linhas do Censo 2022. Exibidos como cartão fixo no painel, não como camada de mapa, por não variarem espacialmente.",
+  "fonte": {
+    "caminho_origem": "data/processed/setores-censitarios_vulnerabilidade_unido.gpkg"
+  },
+  "nivel": "municipio",
+  "indicadores": {
+    "rendimento_medio_domiciliar_per_capita_reais_municipio": 1566.17,
+    "pct_domicilios_agua_inadequada_municipio": 7.94,
+    "pct_domicilios_esgoto_inadequado_municipio": 11.11
+  }
+}

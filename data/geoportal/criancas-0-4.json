@@ -1,0 +1,19 @@
+{
+  "descricao": "Crianças de 0-4 anos por setor censitário (Censo 2022): percentual direto do Censo (pct_populacao_0_a_4_anos) + estimativa de contagem absoluta (round(pct/100 * populacao_total) — aproximação, não contagem direta). sem_dado=true em setores com percentual omitido por sigilo censitário.",
+  "fonte": {
+    "caminho_origem": "data/processed/setores-censitarios_vulnerabilidade_unido.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "estimativa_criancas_0_a_4 = round(pct_populacao_0_a_4_anos/100 * populacao_total); reprojeção EPSG:31981 -> EPSG:4326",
+  "n_features": 179,
+  "colunas": [
+    "CD_SETOR",
+    "NM_BAIRRO",
+    "NM_DIST",
+    "populacao_total",
+    "pct_populacao_0_a_4_anos",
+    "sem_dado",
+    "estimativa_criancas_0_a_4"
+  ],
+  "data_processamento": "2026-08-07T17:34:13.119610+00:00"
+}

@@ -28,8 +28,44 @@
       <button class="secao-titulo" aria-expanded="true">
         <span>Camadas</span><span class="secao-seta">▾</span>
       </button>
-      <div class="secao-conteudo" id="container-controle-camadas">
-        <p class="secao-ajuda">Carregando camadas…</p>
+      <div class="secao-conteudo">
+        <div id="container-controle-camadas">
+          <p class="secao-ajuda">Carregando camadas…</p>
+        </div>
+        <div id="legenda-demografia" class="legenda-demografia"></div>
+      </div>
+    </section>
+
+    <section class="secao" data-secao="bacias">
+      <button class="secao-titulo" aria-expanded="true">
+        <span>Bacias hidrográficas</span><span class="secao-seta">▾</span>
+      </button>
+      <div class="secao-conteudo">
+        <p class="secao-ajuda">Nível 1 = bacia mais abrangente; nível 7 = mais detalhado (Otto Pfafstetter, BHO/ANA). Só um nível fica visível por vez.</p>
+        <select id="select-nivel-bacia">
+          <option value="">Desligado</option>
+          <option value="1">Nível 1</option>
+          <option value="2">Nível 2</option>
+          <option value="3">Nível 3</option>
+          <option value="4">Nível 4</option>
+          <option value="5">Nível 5</option>
+          <option value="6">Nível 6</option>
+          <option value="7">Nível 7</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="secao" data-secao="indicadores-municipais">
+      <button class="secao-titulo" aria-expanded="true">
+        <span>Indicadores municipais</span><span class="secao-seta">▾</span>
+      </button>
+      <div class="secao-conteudo">
+        <p class="secao-ajuda">Valores únicos para todo o município (Censo 2022) — não variam por setor censitário, por isso não aparecem como camada de mapa.</p>
+        <dl class="painel-estatisticas" id="painel-indicadores-municipais">
+          <dt>Renda média domiciliar per capita</dt><dd id="stat-renda-media">—</dd>
+          <dt>% domicílios com água inadequada</dt><dd id="stat-agua-inadequada">—</dd>
+          <dt>% domicílios com esgoto inadequado</dt><dd id="stat-esgoto-inadequado">—</dd>
+        </dl>
       </div>
     </section>
 
@@ -70,6 +106,23 @@
       </div>
     </section>
 
+    <section class="secao" data-secao="terreno">
+      <button class="secao-titulo" aria-expanded="true">
+        <span>Terreno</span><span class="secao-seta">▾</span>
+      </button>
+      <div class="secao-conteudo">
+        <p class="secao-ajuda">Hipsometria e relevo sombreado, derivados do MDT ANADEM (30m) — pensados pra funcionar bem sobrepostos.</p>
+        <label class="checkbox-linha">
+          <input type="checkbox" id="checkbox-hipsometria" />
+          Hipsometria
+        </label>
+        <label class="checkbox-linha">
+          <input type="checkbox" id="checkbox-hillshade" />
+          Relevo sombreado
+        </label>
+      </div>
+    </section>
+
     <section class="secao" data-secao="saude">
       <button class="secao-titulo" aria-expanded="true">
         <span>Saúde</span><span class="secao-seta">▾</span>
@@ -93,6 +146,9 @@
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="js/map-init.js" defer></script>
   <script src="js/layers.js" defer></script>
+  <script src="js/bacias-hidrograficas.js" defer></script>
+  <script src="js/terreno.js" defer></script>
+  <script src="js/indicadores-municipais.js" defer></script>
   <script src="js/inundacao-slider.js" defer></script>
   <script src="js/uso-solo-timeline.js" defer></script>
   <script src="js/filtro-saude.js" defer></script>

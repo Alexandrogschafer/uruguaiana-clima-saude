@@ -1,0 +1,11 @@
+{
+  "descricao": "Bounding box em WGS84 (EPSG:4326), compartilhado por hipsometria.png e hillshade.png (mesmo raster-base recortado), para uso com L.imageOverlay(url, L.latLngBounds([south,west],[north,east])).",
+  "fonte": {
+    "hipsometria": "data/processed/hipsometria_anadem_atual_30m.tif",
+    "hillshade": "data/processed/hillshade_anadem_atual_30m.tif"
+  },
+  "south": -30.205539096545436,
+  "west": -57.33098882149165,
+  "north": -29.397691608657254,
+  "east": -56.148852195999
+}

@@ -1,0 +1,23 @@
+{
+  "descricao": "Cursos d'água (camada curso_dagua da BHO 6.2.4, ANA), recortados pela área de estudo municipal oficial (não a área estendida com buffer usada na busca).",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/rede-hidrografica_ana-bho_atual_vetorial.gpkg (layer=curso_dagua)"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "recorte (gpd.clip) por config/area_estudo.geojson (área municipal, não a estendida); simplify(tolerância=7.5m, preserve_topology=True); reprojeção EPSG:31981 -> EPSG:4326",
+  "n_features": 1983,
+  "colunas": [
+    "wtc_pk",
+    "idcda",
+    "cocursodag",
+    "nudistbacc",
+    "nucompcda",
+    "nuareabacc",
+    "cocdadesag",
+    "nunivotcda",
+    "nuordemcda",
+    "dedominial",
+    "dsversao"
+  ],
+  "data_processamento": "2026-08-07T17:58:49.580262+00:00"
+}
