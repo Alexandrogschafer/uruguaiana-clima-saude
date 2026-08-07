@@ -1,0 +1,25 @@
+{
+  "descricao": "Estabelecimentos de saúde (CNES/DATASUS). Filtro de tipo no geoportal usa tipo_unidade_categoria (categorização normalizada, confirmada na etapa 0); tipo_unidade (bruto CNES) mantido para exibição em popup.",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/saude-cnes_datasus_atual_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326, sem alteração de geometria/atributos",
+  "n_features": 446,
+  "colunas": [
+    "cnes",
+    "nome_fantasia",
+    "nome_empresarial",
+    "tipo_unidade",
+    "tipo_unidade_categoria",
+    "tipo_estabelecimento",
+    "endereco",
+    "cep",
+    "municipio",
+    "uf",
+    "telefone",
+    "atende_sus",
+    "gestao"
+  ],
+  "data_processamento": "2026-08-07T15:36:56.391301+00:00"
+}

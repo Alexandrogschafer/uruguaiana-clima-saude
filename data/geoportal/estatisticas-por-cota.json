@@ -1,0 +1,128 @@
+{
+  "descricao": "Estatísticas de população e estabelecimentos de saúde expostos por cota de inundação (cota_cm), consolidadas de populacao-exposta-inundacao_por-cota.csv e saude-estabelecimentos-exposicao-inundacao_por-cota.csv.",
+  "fonte": {
+    "populacao": "data/processed/populacao-exposta-inundacao_por-cota.csv",
+    "saude": "data/processed/saude-estabelecimentos-exposicao-inundacao_por-cota.csv"
+  },
+  "cotas_disponiveis_cm": [
+    833,
+    952,
+    1205,
+    1252
+  ],
+  "por_cota": {
+    "833": {
+      "cota_cm": 833,
+      "tr_anos": 1.3,
+      "populacao": {
+        "n_setores_afetados": 21.0,
+        "n_setores_cobertura_total": 0.0,
+        "n_setores_cobertura_parcial": 21.0,
+        "n_setores_metodo_uso_solo_urbanizado": 17.0,
+        "n_setores_metodo_fallback_rural": 4.0,
+        "populacao_estimada_area-proporcional": 5779.1,
+        "populacao_estimada_ponderada_uso-solo": 1026.6,
+        "dif_pct_uso-solo_vs_area-proporcional": -82.24,
+        "pct_populacao_municipio_exposta_area-proporcional": 4.93,
+        "pct_populacao_municipio_exposta_ponderada_uso-solo": 0.88,
+        "pct_populacao_0_a_4_anos_media_pop_exposta": 6.94,
+        "pct_populacao_60_anos_ou_mais_media_pop_exposta": 7.68,
+        "rendimento_medio_domiciliar_per_capita_reais_municipio": 1566.17,
+        "pct_domicilios_agua_inadequada_municipio": 7.94,
+        "pct_domicilios_esgoto_inadequado_municipio": 11.11,
+        "n_estabelecimentos_saude_total": 1.0
+      },
+      "saude": {
+        "n_estabelecimentos_total": 1,
+        "por_tipo": {
+          "farmacia": 1
+        }
+      }
+    },
+    "952": {
+      "cota_cm": 952,
+      "tr_anos": 1.9,
+      "populacao": {
+        "n_setores_afetados": 28.0,
+        "n_setores_cobertura_total": 0.0,
+        "n_setores_cobertura_parcial": 28.0,
+        "n_setores_metodo_uso_solo_urbanizado": 23.0,
+        "n_setores_metodo_fallback_rural": 5.0,
+        "populacao_estimada_area-proporcional": 7425.9,
+        "populacao_estimada_ponderada_uso-solo": 1710.3,
+        "dif_pct_uso-solo_vs_area-proporcional": -76.97,
+        "pct_populacao_municipio_exposta_area-proporcional": 6.34,
+        "pct_populacao_municipio_exposta_ponderada_uso-solo": 1.46,
+        "pct_populacao_0_a_4_anos_media_pop_exposta": 7.27,
+        "pct_populacao_60_anos_ou_mais_media_pop_exposta": 7.19,
+        "rendimento_medio_domiciliar_per_capita_reais_municipio": 1566.17,
+        "pct_domicilios_agua_inadequada_municipio": 7.94,
+        "pct_domicilios_esgoto_inadequado_municipio": 11.11,
+        "n_estabelecimentos_saude_total": 1.0
+      },
+      "saude": {
+        "n_estabelecimentos_total": 1,
+        "por_tipo": {
+          "farmacia": 1
+        }
+      }
+    },
+    "1205": {
+      "cota_cm": 1205,
+      "tr_anos": 9.0,
+      "populacao": {
+        "n_setores_afetados": 43.0,
+        "n_setores_cobertura_total": 0.0,
+        "n_setores_cobertura_parcial": 43.0,
+        "n_setores_metodo_uso_solo_urbanizado": 36.0,
+        "n_setores_metodo_fallback_rural": 7.0,
+        "populacao_estimada_area-proporcional": 10270.7,
+        "populacao_estimada_ponderada_uso-solo": 3835.9,
+        "dif_pct_uso-solo_vs_area-proporcional": -62.65,
+        "pct_populacao_municipio_exposta_area-proporcional": 8.76,
+        "pct_populacao_municipio_exposta_ponderada_uso-solo": 3.27,
+        "pct_populacao_0_a_4_anos_media_pop_exposta": 7.53,
+        "pct_populacao_60_anos_ou_mais_media_pop_exposta": 6.89,
+        "rendimento_medio_domiciliar_per_capita_reais_municipio": 1566.17,
+        "pct_domicilios_agua_inadequada_municipio": 7.94,
+        "pct_domicilios_esgoto_inadequado_municipio": 11.11,
+        "n_estabelecimentos_saude_total": 1.0
+      },
+      "saude": {
+        "n_estabelecimentos_total": 1,
+        "por_tipo": {
+          "farmacia": 1
+        }
+      }
+    },
+    "1252": {
+      "cota_cm": 1252,
+      "tr_anos": 13.4,
+      "populacao": {
+        "n_setores_afetados": 42.0,
+        "n_setores_cobertura_total": 0.0,
+        "n_setores_cobertura_parcial": 42.0,
+        "n_setores_metodo_uso_solo_urbanizado": 36.0,
+        "n_setores_metodo_fallback_rural": 6.0,
+        "populacao_estimada_area-proporcional": 10825.0,
+        "populacao_estimada_ponderada_uso-solo": 4545.5,
+        "dif_pct_uso-solo_vs_area-proporcional": -58.01,
+        "pct_populacao_municipio_exposta_area-proporcional": 9.24,
+        "pct_populacao_municipio_exposta_ponderada_uso-solo": 3.88,
+        "pct_populacao_0_a_4_anos_media_pop_exposta": 7.5,
+        "pct_populacao_60_anos_ou_mais_media_pop_exposta": 6.88,
+        "rendimento_medio_domiciliar_per_capita_reais_municipio": 1566.17,
+        "pct_domicilios_agua_inadequada_municipio": 7.94,
+        "pct_domicilios_esgoto_inadequado_municipio": 11.11,
+        "n_estabelecimentos_saude_total": 2.0
+      },
+      "saude": {
+        "n_estabelecimentos_total": 2,
+        "por_tipo": {
+          "farmacia": 1,
+          "outro": 1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "estacoes-clima",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "codigo_estacao": "A809", "nome_estacao": "URUGUAIANA", "uf": "RS", "situacao": "Operante", "tipo_estacao": "Automatica", "altitude_m": 74.29, "data_inicio_operacao": "2006-09-27T21:00:00.000-03:00", "data_fim_operacao": null, "distancia_centroide_km": 34.07, "criterio_selecao": "estacao_no_proprio_municipio" }, "geometry": { "type": "Point", "coordinates": [ -57.08194443, -29.83999999 ] } }
+]
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClimaPampa — Geoportal Uruguaiana/RS</title>
+  <meta name="description" content="Geoportal de vigilância em saúde e território — clima, vulnerabilidade socioambiental e inundações em Uruguaiana/RS." />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <button id="botao-abrir-painel" class="botao-abrir-painel" aria-label="Abrir painel de controles" aria-expanded="false">
+    ☰ Camadas e filtros
+  </button>
+
+  <div id="mapa"></div>
+
+  <aside id="painel" class="painel">
+    <div class="painel-cabecalho">
+      <h1>ClimaPampa <span>Uruguaiana/RS</span></h1>
+      <button id="botao-fechar-painel" class="botao-fechar-painel" aria-label="Fechar painel">✕</button>
+    </div>
+
+    <section class="secao" data-secao="camadas">
+      <button class="secao-titulo" aria-expanded="true">
+        <span>Camadas</span><span class="secao-seta">▾</span>
+      </button>
+      <div class="secao-conteudo" id="container-controle-camadas">
+        <p class="secao-ajuda">Carregando camadas…</p>
+      </div>
+    </section>
+
+    <section class="secao" data-secao="inundacao">
+      <button class="secao-titulo" aria-expanded="true">
+        <span>Cota de inundação</span><span class="secao-seta">▾</span>
+      </button>
+      <div class="secao-conteudo">
+        <p class="secao-ajuda">Arraste para ver a área e a população estimada expostas em cada cota registrada pelo SGB.</p>
+        <input type="range" id="slider-cota" min="0" max="0" step="1" value="0" disabled />
+        <div class="slider-legenda">
+          <strong id="rotulo-cota">—</strong>
+          <span id="rotulo-tr">período de retorno: —</span>
+        </div>
+        <dl class="painel-estatisticas" id="painel-estatisticas-cota">
+          <dt>Setores afetados</dt><dd id="stat-setores-afetados">—</dd>
+          <dt>População estimada (ponderada por uso do solo)</dt><dd id="stat-populacao-ponderada">—</dd>
+          <dt>% da população do município exposta</dt><dd id="stat-pct-populacao">—</dd>
+          <dt>Estabelecimentos de saúde expostos</dt><dd id="stat-estabelecimentos">—</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="secao" data-secao="uso-solo">
+      <button class="secao-titulo" aria-expanded="true">
+        <span>Uso do solo (MapBiomas)</span><span class="secao-seta">▾</span>
+      </button>
+      <div class="secao-conteudo">
+        <label class="checkbox-linha">
+          <input type="checkbox" id="checkbox-uso-solo" />
+          Exibir camada de uso do solo
+        </label>
+        <input type="range" id="slider-ano" min="0" max="0" step="1" value="0" disabled />
+        <div class="slider-legenda">
+          <strong id="rotulo-ano">—</strong>
+        </div>
+        <ul class="legenda-uso-solo" id="legenda-uso-solo"></ul>
+      </div>
+    </section>
+
+    <section class="secao" data-secao="saude">
+      <button class="secao-titulo" aria-expanded="true">
+        <span>Saúde</span><span class="secao-seta">▾</span>
+      </button>
+      <div class="secao-conteudo">
+        <p class="secao-ajuda">Estabelecimentos de saúde (CNES) por tipo:</p>
+        <div id="filtro-tipo-saude" class="lista-checkboxes"></div>
+        <label class="checkbox-linha checkbox-osm">
+          <input type="checkbox" id="checkbox-saude-osm" checked />
+          Mostrar estabelecimentos do OpenStreetMap
+        </label>
+      </div>
+    </section>
+
+    <footer class="painel-rodape">
+      ClimaPampa — PET-Saúde: Clima · Sec. Municipal de Saúde de Uruguaiana + UNIPAMPA
+    </footer>
+  </aside>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/map-init.js" defer></script>
+  <script src="js/layers.js" defer></script>
+  <script src="js/inundacao-slider.js" defer></script>
+  <script src="js/uso-solo-timeline.js" defer></script>
+  <script src="js/filtro-saude.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "descricao": "Estações climatológicas INMET relevantes para a área de estudo.",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/estacoes-clima_inmet_atual_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326, sem alteração de geometria/atributos",
+  "n_features": 1,
+  "colunas": [
+    "codigo_estacao",
+    "nome_estacao",
+    "uf",
+    "situacao",
+    "tipo_estacao",
+    "altitude_m",
+    "data_inicio_operacao",
+    "data_fim_operacao",
+    "distancia_centroide_km",
+    "criterio_selecao"
+  ],
+  "data_processamento": "2026-08-07T15:36:56.414144+00:00"
+}
