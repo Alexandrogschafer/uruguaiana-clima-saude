@@ -1,0 +1,12 @@
+{
+  "name": "uruguaiana-clima-saude-geoportal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testes headless (Playwright) do geoportal ClimaPampa — Uruguaiana/RS",
+  "scripts": {
+    "test:geoportal": "node scripts/geoportal/test_headless.js"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

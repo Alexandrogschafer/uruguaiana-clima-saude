@@ -69,3 +69,38 @@ python scripts/download/vetor_ibge.py --codigo-ibge 4322400
 
 Isso gera `config/area_estudo.geojson` (EPSG:31981), que passa a ser a
 referência única de recorte para todos os demais scripts.
+
+## Geoportal (front-end estático)
+
+`index.html` + `css/` + `js/` compõem o geoportal ClimaPampa — mapa
+Leaflet que consome as camadas geradas em `data/geoportal/` (exportadas
+pelos scripts de `scripts/geoportal/`).
+
+### Testar localmente
+
+O geoportal usa `fetch()` para carregar as camadas GeoJSON, então precisa
+ser servido por HTTP (não abrir `index.html` direto via `file://`):
+
+```bash
+python -m http.server 8000
+# abrir http://localhost:8000
+```
+
+### Teste automatizado (Playwright headless)
+
+```bash
+npm install
+npx playwright install chromium   # baixa o browser headless, uma vez
+npm run test:geoportal
+```
+
+O script `scripts/geoportal/test_headless.js` sobe um servidor HTTP local,
+abre o geoportal em Chromium headless e valida:
+
+- inicialização do mapa Leaflet;
+- carregamento das camadas (painel de controle, sliders de cota e uso do
+  solo, filtro de saúde);
+- ausência de erros de JS/console.
+
+Gera um screenshot em `scripts/geoportal/geoportal-headless.png` (não
+versionado) para inspeção visual rápida.
