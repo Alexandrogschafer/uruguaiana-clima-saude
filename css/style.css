@@ -1,0 +1,301 @@
+:root {
+  --cor-primaria: #1c5d3b;
+  --cor-primaria-escura: #123c26;
+  --cor-fundo-painel: #ffffff;
+  --cor-texto: #1f2933;
+  --cor-texto-suave: #5a6472;
+  --cor-borda: #dde3e8;
+  --largura-painel: 340px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--cor-texto);
+}
+
+#mapa {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+/* ---------- painel lateral ---------- */
+
+.painel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: var(--largura-painel);
+  background: var(--cor-fundo-painel);
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.painel-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--cor-primaria);
+  color: #fff;
+  position: sticky;
+  top: 0;
+}
+
+.painel-cabecalho h1 {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.painel-cabecalho h1 span {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+.botao-fechar-painel {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.botao-abrir-painel {
+  display: none;
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 1100;
+  background: var(--cor-primaria);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+/* ---------- seções colapsáveis ---------- */
+
+.secao {
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.secao-titulo {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--cor-texto);
+}
+
+.secao-seta {
+  transition: transform 0.2s ease;
+  color: var(--cor-texto-suave);
+}
+
+.secao.fechada .secao-seta {
+  transform: rotate(-90deg);
+}
+
+.secao-conteudo {
+  padding: 0 16px 16px;
+  overflow: hidden;
+}
+
+.secao.fechada .secao-conteudo {
+  display: none;
+}
+
+.secao-ajuda {
+  font-size: 0.8rem;
+  color: var(--cor-texto-suave);
+  margin: 0 0 10px;
+}
+
+/* ---------- controles ---------- */
+
+input[type="range"] {
+  width: 100%;
+}
+
+.slider-legenda {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.8rem;
+  color: var(--cor-texto-suave);
+  margin-top: 4px;
+}
+
+.slider-legenda strong {
+  font-size: 0.95rem;
+  color: var(--cor-texto);
+}
+
+.checkbox-linha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.checkbox-osm {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--cor-borda);
+}
+
+.lista-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.painel-estatisticas {
+  margin: 14px 0 0;
+  font-size: 0.8rem;
+}
+
+.painel-estatisticas dt {
+  color: var(--cor-texto-suave);
+  margin-top: 8px;
+}
+
+.painel-estatisticas dd {
+  margin: 2px 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--cor-primaria-escura);
+}
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex: none;
+  display: inline-block;
+}
+
+.legenda-uso-solo {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  font-size: 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 8px;
+}
+
+.legenda-uso-solo li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.painel-rodape {
+  margin-top: auto;
+  padding: 14px 16px;
+  font-size: 0.7rem;
+  color: var(--cor-texto-suave);
+  border-top: 1px solid var(--cor-borda);
+}
+
+/* ---------- Leaflet: controle de camadas embutido ---------- */
+
+#container-controle-camadas .leaflet-control-layers {
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+}
+
+#container-controle-camadas .leaflet-control-layers-list label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  padding: 4px 0;
+}
+
+/* ---------- popups ---------- */
+
+.leaflet-popup-content {
+  font-size: 0.82rem;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.popup-titulo {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  color: var(--cor-primaria-escura);
+}
+
+.popup-tabela {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.popup-tabela td {
+  padding: 2px 4px;
+  vertical-align: top;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.popup-tabela td:first-child {
+  color: var(--cor-texto-suave);
+  white-space: nowrap;
+  padding-right: 8px;
+}
+
+/* ---------- mobile: painel vira gaveta ---------- */
+
+@media (max-width: 720px) {
+  .painel {
+    width: min(85vw, 360px);
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+  }
+
+  .painel.aberto {
+    transform: translateX(0);
+  }
+
+  .botao-fechar-painel {
+    display: inline-block;
+  }
+
+  .botao-abrir-painel {
+    display: inline-block;
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "descricao": "Extensão real da mancha de inundação por cota (SGB) — geometrias corrigidas (buffer(0), self-intersection).",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/cotas-inundacao_sgb_atual_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "correção de 4 geometrias inválidas via buffer(0) (self-intersection); reprojeção -> EPSG:4326",
+  "n_features": 21,
+  "colunas": [
+    "cota_cm",
+    "bacia",
+    "municipio",
+    "estado",
+    "tr_anos",
+    "layer_id"
+  ],
+  "data_processamento": "2026-08-07T15:38:52.650154+00:00"
+}

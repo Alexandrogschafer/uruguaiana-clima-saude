@@ -1,0 +1,29 @@
+{
+  "descricao": "Estabelecimentos de saúde mapeados no OpenStreetMap (complementar ao CNES).",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/saude-estabelecimentos_osm_atual_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326, sem alteração de geometria/atributos",
+  "n_features": 7,
+  "colunas": [
+    "element",
+    "id",
+    "addr:city",
+    "addr:postcode",
+    "addr:street",
+    "amenity",
+    "healthcare",
+    "name",
+    "addr:housenumber",
+    "dispensing",
+    "healthcare:speciality",
+    "addr:suburb",
+    "ref:CNES",
+    "brand",
+    "brand:wikidata",
+    "website",
+    "building"
+  ],
+  "data_processamento": "2026-08-07T15:36:56.403541+00:00"
+}

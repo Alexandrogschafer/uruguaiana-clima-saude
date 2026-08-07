@@ -1,0 +1,14 @@
+{
+  "descricao": "Malha viária (OSM) simplificada, camada de contexto visual (sem atributos de rota/hierarquia completos).",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/malha-viaria_osm_atual_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "simplify(tolerância=7.5m, preserve_topology=True) em EPSG:31981; colunas reduzidas a [name, highway]; reprojeção -> EPSG:4326",
+  "n_features": 7609,
+  "colunas": [
+    "name",
+    "highway"
+  ],
+  "data_processamento": "2026-08-07T15:38:04.469934+00:00"
+}

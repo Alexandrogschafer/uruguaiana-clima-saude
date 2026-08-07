@@ -1,0 +1,31 @@
+{
+  "descricao": "Interseção de setores censitários com cotas de inundação (SGB), com população/estabelecimentos de saúde estimados expostos por cota_cm.",
+  "fonte": {
+    "caminho_origem": "data/processed/setores-inundacao_intersecao.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326, sem alteração de geometria/atributos; campo cota_cm preservado para o slider",
+  "n_features": 134,
+  "colunas": [
+    "CD_SETOR",
+    "SITUACAO",
+    "cota_cm",
+    "tr_anos",
+    "area_setor_km2",
+    "area_intersecao_km2",
+    "pct_area_coberta",
+    "area_urbanizada_setor_km2",
+    "area_urbanizada_intersecao_km2",
+    "pct_area_urbanizada_coberta",
+    "metodo_estimativa_uso_solo",
+    "populacao_total",
+    "populacao_estimada_area-proporcional",
+    "populacao_estimada_ponderada_uso-solo",
+    "pct_populacao_0_a_4_anos",
+    "pct_populacao_60_anos_ou_mais",
+    "rendimento_medio_domiciliar_per_capita_reais_municipio",
+    "pct_domicilios_agua_inadequada_municipio",
+    "pct_domicilios_esgoto_inadequado_municipio"
+  ],
+  "data_processamento": "2026-08-07T15:36:56.368868+00:00"
+}

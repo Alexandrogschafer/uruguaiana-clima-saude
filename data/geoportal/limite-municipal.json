@@ -1,0 +1,13 @@
+{
+  "descricao": "Limite do município de referência do projeto (área de estudo).",
+  "fonte": {
+    "caminho_origem": "config/area_estudo.geojson"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326, sem alteração de geometria/atributos",
+  "n_features": 1,
+  "colunas": [
+    "codarea"
+  ],
+  "data_processamento": "2026-08-07T15:36:56.214275+00:00"
+}
