@@ -4,9 +4,10 @@
  * caixa flutuante padrão do Leaflet — o container do L.control.layers é
  * reaproveitado dentro do nosso próprio painel).
  *
- * saude-osm não entra no L.control.layers: sua visibilidade é controlada
- * só pelo checkbox da seção "Saúde" (filtro-saude.js), pra não duplicar o
- * mesmo controle em dois lugares do painel.
+ * saudeCnes e saudeOsm não entram no L.control.layers: as duas ficam
+ * sempre no mapa desde o carregamento, e a visibilidade (por tipo de
+ * estabelecimento ou por fonte) é controlada só pela seção "Saúde"
+ * (filtro-saude.js) — evita ter dois controles pra mesma camada.
  */
 
 const DIR_DADOS = "data/geoportal";
@@ -460,14 +461,13 @@ async function iniciarCamadas() {
     };
 
     const controleCamadas = L.control.layers(
-      null,
+      window.App.baseLayers,
       {
         "Densidade populacional": densidadePopulacional,
         "Crianças (0-4 anos)": criancas0a4,
         "Idosos (60+ anos)": idosos60Mais,
         "Setores expostos à inundação": setoresInundacao,
         "Mancha de inundação (contorno real)": cotasInundacao,
-        "Saúde — CNES": saudeCnes,
         "Estações climatológicas (INMET)": estacoesClima,
         "Malha viária (contexto)": malhaViaria,
         "Rede hidrográfica": redeHidrografica,

@@ -24,14 +24,25 @@ window.App = {
     zoomControl: true,
   });
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  const camadaMapa = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(mapa);
 
+  // camada de satélite alternativa (Esri World Imagery, gratuita, sem API key);
+  // registrada como baseLayer no L.control.layers montado em layers.js
+  const camadaSatelite = L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    {
+      attribution: "Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+      maxZoom: 19,
+    }
+  );
+
   L.control.scale({ imperial: false }).addTo(mapa);
 
   window.App.map = mapa;
+  window.App.baseLayers = { Mapa: camadaMapa, Satélite: camadaSatelite };
 
   // ---------- painel / gaveta mobile ----------
 

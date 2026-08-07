@@ -153,6 +153,40 @@ select {
   background: #fff;
 }
 
+.botao-ajuda {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  padding: 0;
+  border: 1px solid var(--cor-texto-suave);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--cor-texto-suave);
+  font-size: 0.7rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.botao-ajuda:hover,
+.botao-ajuda[aria-expanded="true"] {
+  background: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+  color: #fff;
+}
+
+.texto-ajuda-bacias {
+  font-size: 0.78rem;
+  color: var(--cor-texto-suave);
+  background: #f4f6f4;
+  border: 1px solid var(--cor-borda);
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin: 0 0 10px;
+}
+
 .slider-legenda {
   display: flex;
   justify-content: space-between;
@@ -180,6 +214,12 @@ select {
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px dashed var(--cor-borda);
+}
+
+.checkbox-marcar-todos {
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--cor-borda);
 }
 
 .lista-checkboxes {
