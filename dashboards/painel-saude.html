@@ -1,0 +1,685 @@
+<title>Painel de Saúde — ClimaPampa, Uruguaiana/RS</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page:            #eef1ec;
+    --surface-card:    #ffffff;
+    --ink:             #132524;
+    --ink-secondary:   #4b5f5c;
+    --ink-muted:       #7c8f8c;
+    --accent:          #0f5c56;
+    --accent-soft:     #dbe8e3;
+    --border:          rgba(19,37,36,0.12);
+    --border-strong:   rgba(19,37,36,0.22);
+    --grid:            #e3e7e1;
+    --baseline:        #c7cec9;
+    --series-context:  #a9b2ae;
+    --series-blue:     #2a78d6;
+    --series-orange:   #eb6834;
+    --series-aqua:     #1baf7a;
+    --tooltip-bg:      #132524;
+    --tooltip-ink:     #eef1ec;
+    --shadow:          0 1px 2px rgba(19,37,36,0.06), 0 6px 20px rgba(19,37,36,0.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page:            #0b1414;
+      --surface-card:    #101d1c;
+      --ink:             #eef1ec;
+      --ink-secondary:   #9db3af;
+      --ink-muted:       #6d8985;
+      --accent:          #57d6c9;
+      --accent-soft:     #163531;
+      --border:          rgba(238,241,236,0.12);
+      --border-strong:   rgba(238,241,236,0.22);
+      --grid:            #1d2c2a;
+      --baseline:        #2e433f;
+      --series-context:  #5b716d;
+      --series-blue:     #3987e5;
+      --series-orange:   #d95926;
+      --series-aqua:     #199e70;
+      --tooltip-bg:      #eef1ec;
+      --tooltip-ink:     #132524;
+      --shadow:          0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:            #0b1414;
+    --surface-card:    #101d1c;
+    --ink:             #eef1ec;
+    --ink-secondary:   #9db3af;
+    --ink-muted:       #6d8985;
+    --accent:          #57d6c9;
+    --accent-soft:     #163531;
+    --border:          rgba(238,241,236,0.12);
+    --border-strong:   rgba(238,241,236,0.22);
+    --grid:            #1d2c2a;
+    --baseline:        #2e433f;
+    --series-context:  #5b716d;
+    --series-blue:     #3987e5;
+    --series-orange:   #d95926;
+    --series-aqua:     #199e70;
+    --tooltip-bg:      #eef1ec;
+    --tooltip-ink:     #132524;
+    --shadow:          0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ---- masthead ---- */
+  .masthead {
+    position: relative;
+    padding: 36px 32px 30px;
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .masthead-contour {
+    position: absolute; inset: 0;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  h1 {
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio L", serif;
+    font-weight: 400;
+    font-size: clamp(26px, 4vw, 34px);
+    line-height: 1.15;
+    margin: 0 0 8px;
+    text-wrap: balance;
+    max-width: 30ch;
+    position: relative;
+  }
+  .masthead p {
+    margin: 0;
+    color: var(--ink-secondary);
+    font-size: 15px;
+    max-width: 62ch;
+    position: relative;
+  }
+  .masthead-meta {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+    font-size: 12px;
+    color: var(--ink-muted);
+    position: relative;
+  }
+  .masthead-meta b { color: var(--ink-secondary); font-weight: 600; }
+  .masthead-meta a, footer a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+  .masthead-meta a:hover, footer a:hover { border-bottom-color: var(--accent); }
+
+  /* ---- kpi strip ---- */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .kpi-tile {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 18px 14px;
+    box-shadow: var(--shadow);
+  }
+  .kpi-label {
+    font-size: 12.5px;
+    color: var(--ink-secondary);
+    margin-bottom: 8px;
+  }
+  .kpi-value {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 27px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .kpi-unit { font-size: 13px; color: var(--ink-muted); font-weight: 400; margin-left: 3px; }
+  .kpi-sub { font-size: 11.5px; color: var(--ink-muted); margin-top: 5px; }
+  .kpi-spark { margin-top: 8px; height: 28px; }
+  .kpi-spark svg { display: block; width: 100%; height: 100%; }
+
+  /* ---- section headers ---- */
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 40px 0 16px;
+  }
+  .section-head h2 {
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio L", serif;
+    font-weight: 400;
+    font-size: 21px;
+    margin: 0;
+    color: var(--ink);
+  }
+  .section-head .section-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border-strong);
+  }
+  .section-note {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin: -8px 0 18px;
+    max-width: 72ch;
+  }
+
+  /* ---- chart cards ---- */
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .chart-grid.single { grid-template-columns: 1fr; }
+  .chart-grid.triple { grid-template-columns: repeat(3, 1fr); }
+  .card {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px 14px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+  .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+  .card-title { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .card-meta { font-size: 11.5px; color: var(--ink-muted); font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .card-body { position: relative; }
+  .chart-legend-slot { display: flex; gap: 14px; margin: 2px 0 6px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-secondary); }
+  .legend-swatch { width: 12px; height: 3px; border-radius: 2px; display: inline-block; }
+  .legend-swatch.dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .chart-svg { display: block; width: 100%; overflow: visible; }
+  .gridline { stroke: var(--grid); stroke-width: 1; shape-rendering: crispEdges; }
+  .baseline { stroke: var(--baseline); stroke-width: 1; shape-rendering: crispEdges; }
+  .axis-label { fill: var(--ink-muted); font-size: 10.5px; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .end-label { font-size: 11.5px; font-weight: 600; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .bar-label { font-size: 10.5px; font-weight: 600; fill: var(--ink-secondary); font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .crosshair { stroke: var(--ink-muted); stroke-width: 1; stroke-dasharray: 2 3; pointer-events: none; }
+  .bar-mark { cursor: pointer; }
+  .bar-mark:hover, .bar-mark.hover { filter: brightness(1.08); }
+
+  .chart-tooltip {
+    position: absolute;
+    top: 6px;
+    transform: translateX(-50%);
+    background: var(--tooltip-bg);
+    color: var(--tooltip-ink);
+    border-radius: 5px;
+    padding: 7px 10px;
+    font-size: 11.5px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.08s ease;
+    white-space: nowrap;
+    z-index: 5;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  }
+  .tt-x { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; opacity: 0.7; margin-bottom: 3px; font-size: 10.5px; }
+  .tt-row { display: flex; align-items: center; gap: 6px; }
+  .tt-key { width: 9px; height: 0; border-top: 2px solid; display: inline-block; }
+  .tt-val { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-variant-numeric: tabular-nums; font-weight: 700; }
+  .tt-name { opacity: 0.85; }
+
+  /* ---- table ---- */
+  details.table-wrap {
+    margin-top: 8px;
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+  }
+  details.table-wrap summary {
+    cursor: pointer;
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  details.table-wrap summary::-webkit-details-marker { display: none; }
+  details.table-wrap summary::before {
+    content: "▸";
+    color: var(--accent);
+    transition: transform 0.15s ease;
+    font-size: 11px;
+  }
+  details.table-wrap[open] summary::before { transform: rotate(90deg); }
+  .table-scroll { overflow-x: auto; padding: 0 20px 18px; }
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+    min-width: 720px;
+  }
+  table.data-table th, table.data-table td {
+    text-align: right;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  table.data-table th:first-child, table.data-table td:first-child { text-align: left; }
+  table.data-table thead th {
+    color: var(--ink-muted);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  table.data-table tbody tr:hover { background: var(--accent-soft); }
+
+  footer {
+    margin-top: 44px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--ink-muted);
+    line-height: 1.7;
+  }
+  footer b { color: var(--ink-secondary); }
+
+  @media (max-width: 720px) {
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .chart-grid, .chart-grid.triple { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <svg class="masthead-contour" viewBox="0 0 800 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
+      <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
+    </svg>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 1 de 3</span>
+    <h1>Painel de vigilância em saúde</h1>
+    <p>Óbitos por causa, notificações de arboviroses e internações respiratórias — microdados do DATASUS (SIM, SINAN, SIH) filtrados para Uruguaiana.</p>
+    <div class="masthead-meta">
+      <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
+      <span><b>Janela</b> 2010–2025 (por fonte, ver cada gráfico)</span>
+      <span><b>Coleta</b> 2026-08-07</span>
+      <span><b>Ver também</b> <a href="painel-clima-ambiental.html">Clima e Ambiente</a> · <a href="painel-territorio.html">Território e Vulnerabilidade</a> · <a href="../index.html">Geoportal</a></span>
+    </div>
+  </div>
+
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="section-head"><h2>Saúde</h2><div class="section-rule"></div></div>
+  <p class="section-note">Microdados do DATASUS (SIM, SINAN, SIH) filtrados para Uruguaiana. Contagens pequenas são valores reais — nenhuma célula é suprimida por sigilo nestas fontes.</p>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Óbitos por ano — total e por causas respiratórias</span>
+      <span class="card-meta">SIM · 2010–2024</span>
+    </div>
+    <div class="chart-legend-slot" id="legend-obitos"></div>
+    <div class="card-body">
+      <div id="chart-obitos"></div>
+      <div class="chart-tooltip" id="tt-obitos"></div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Óbitos por afogamento / relacionados a enchente</span>
+        <span class="card-meta">SIM · W65–W74, X38</span>
+      </div>
+      <div class="card-body">
+        <div id="chart-afogamento"></div>
+        <div class="chart-tooltip" id="tt-afogamento"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Internações e internações respiratórias por ano</span>
+        <span class="card-meta">SIH · 2010–2025</span>
+      </div>
+      <div class="chart-legend-slot" id="legend-sih"></div>
+      <div class="card-body">
+        <div id="chart-sih"></div>
+        <div class="chart-tooltip" id="tt-sih"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Notificações de arboviroses por ano</span>
+      <span class="card-meta">SINAN · 2010–2025 · escalas independentes</span>
+    </div>
+    <p class="section-note" style="margin:2px 0 12px;">Chikungunya e zika só passaram a ter arquivo próprio no SINAN a partir de 2014 e 2015 — os anos anteriores não têm barra porque a série ainda não existia, não porque a contagem foi zero. 2026 é parcial (preliminar): dengue 15, chikungunya 0, zika 0 até a coleta.</p>
+    <div class="chart-grid triple">
+      <div class="card-body"><div style="font-size:12px;color:var(--ink-secondary);margin-bottom:6px;">Dengue</div><div id="chart-dengue"></div><div class="chart-tooltip" id="tt-dengue"></div></div>
+      <div class="card-body"><div style="font-size:12px;color:var(--ink-secondary);margin-bottom:6px;">Chikungunya</div><div id="chart-chik"></div><div class="chart-tooltip" id="tt-chik"></div></div>
+      <div class="card-body"><div style="font-size:12px;color:var(--ink-secondary);margin-bottom:6px;">Zika</div><div id="chart-zika"></div><div class="chart-tooltip" id="tt-zika"></div></div>
+    </div>
+  </div>
+
+  <details class="table-wrap">
+    <summary>Ver dados anuais em tabela</summary>
+    <div class="table-scroll">
+      <table class="data-table" id="tabelaAnual"></table>
+    </div>
+  </details>
+
+  <footer>
+    <p><b>Fontes:</b> SIM, SINAN e SIH — DATASUS/Ministério da Saúde (FTP público, microdados individuais). Ver <code>data/catalogo_fontes.csv</code> no repositório para licença, método e limitações de cada fonte.</p>
+    <p><b>Leitura recomendada:</b> os agrupamentos por causa (respiratórias, afogamento/enchente) são aproximações por CID-10 documentadas nos metadados de cada arquivo — ainda sujeitas a validação pela equipe de saúde.</p>
+    <p><b>Painéis complementares:</b> focos de queimada, nível do rio e clima estão no painel de <a href="painel-clima-ambiental.html">Clima e Monitoramento Ambiental</a>; uso do solo, risco geológico e perfil censitário estão no painel de <a href="painel-territorio.html">Território e Vulnerabilidade</a>. O <a href="../index.html">geoportal</a> traz a visão espacial de tudo isso no mapa.</p>
+  </footer>
+
+</div>
+
+<script>
+const DATA = {"sim": [{"ano": 2010, "obitos_total": 922, "obitos_respiratorios": 87, "obitos_afogamento_enchente": 6}, {"ano": 2011, "obitos_total": 857, "obitos_respiratorios": 75, "obitos_afogamento_enchente": 4}, {"ano": 2012, "obitos_total": 896, "obitos_respiratorios": 100, "obitos_afogamento_enchente": 7}, {"ano": 2013, "obitos_total": 977, "obitos_respiratorios": 126, "obitos_afogamento_enchente": 7}, {"ano": 2014, "obitos_total": 934, "obitos_respiratorios": 92, "obitos_afogamento_enchente": 4}, {"ano": 2015, "obitos_total": 921, "obitos_respiratorios": 109, "obitos_afogamento_enchente": 8}, {"ano": 2016, "obitos_total": 956, "obitos_respiratorios": 127, "obitos_afogamento_enchente": 3}, {"ano": 2017, "obitos_total": 972, "obitos_respiratorios": 131, "obitos_afogamento_enchente": 5}, {"ano": 2018, "obitos_total": 913, "obitos_respiratorios": 98, "obitos_afogamento_enchente": 3}, {"ano": 2019, "obitos_total": 1026, "obitos_respiratorios": 144, "obitos_afogamento_enchente": 1}, {"ano": 2020, "obitos_total": 1048, "obitos_respiratorios": 106, "obitos_afogamento_enchente": 2}, {"ano": 2021, "obitos_total": 1396, "obitos_respiratorios": 95, "obitos_afogamento_enchente": 2}, {"ano": 2022, "obitos_total": 1058, "obitos_respiratorios": 163, "obitos_afogamento_enchente": 0}, {"ano": 2023, "obitos_total": 957, "obitos_respiratorios": 129, "obitos_afogamento_enchente": 3}, {"ano": 2024, "obitos_total": 960, "obitos_respiratorios": 150, "obitos_afogamento_enchente": 3}], "sinan": [{"ano": 2010, "chikungunya": 0.0, "dengue": 0.0, "zika": 0.0}, {"ano": 2011, "chikungunya": 0.0, "dengue": 1.0, "zika": 0.0}, {"ano": 2012, "chikungunya": 0.0, "dengue": 0.0, "zika": 0.0}, {"ano": 2013, "chikungunya": 0.0, "dengue": 0.0, "zika": 0.0}, {"ano": 2014, "chikungunya": 0.0, "dengue": 1.0, "zika": 0.0}, {"ano": 2015, "chikungunya": 0.0, "dengue": 2.0, "zika": 0.0}, {"ano": 2016, "chikungunya": 0.0, "dengue": 2.0, "zika": 1.0}, {"ano": 2017, "chikungunya": 0.0, "dengue": 0.0, "zika": 0.0}, {"ano": 2018, "chikungunya": 0.0, "dengue": 0.0, "zika": 0.0}, {"ano": 2019, "chikungunya": 1.0, "dengue": 4.0, "zika": 1.0}, {"ano": 2020, "chikungunya": 0.0, "dengue": 0.0, "zika": 0.0}, {"ano": 2021, "chikungunya": 0.0, "dengue": 3.0, "zika": 0.0}, {"ano": 2022, "chikungunya": 0.0, "dengue": 11.0, "zika": 0.0}, {"ano": 2023, "chikungunya": 0.0, "dengue": 37.0, "zika": 0.0}, {"ano": 2024, "chikungunya": 4.0, "dengue": 421.0, "zika": 0.0}, {"ano": 2025, "chikungunya": 0.0, "dengue": 71.0, "zika": 1.0}], "sinan_2026_preliminar": {"chikungunya": 0, "dengue": 15, "zika": 0}, "sih": [{"ano": 2010, "internacoes_total": 6977, "internacoes_respiratorias": 983}, {"ano": 2011, "internacoes_total": 7179, "internacoes_respiratorias": 818}, {"ano": 2012, "internacoes_total": 7122, "internacoes_respiratorias": 823}, {"ano": 2013, "internacoes_total": 7410, "internacoes_respiratorias": 1020}, {"ano": 2014, "internacoes_total": 7372, "internacoes_respiratorias": 889}, {"ano": 2015, "internacoes_total": 6866, "internacoes_respiratorias": 877}, {"ano": 2016, "internacoes_total": 6439, "internacoes_respiratorias": 823}, {"ano": 2017, "internacoes_total": 6317, "internacoes_respiratorias": 738}, {"ano": 2018, "internacoes_total": 5817, "internacoes_respiratorias": 568}, {"ano": 2019, "internacoes_total": 5919, "internacoes_respiratorias": 577}, {"ano": 2020, "internacoes_total": 5803, "internacoes_respiratorias": 418}, {"ano": 2021, "internacoes_total": 5745, "internacoes_respiratorias": 398}, {"ano": 2022, "internacoes_total": 6321, "internacoes_respiratorias": 749}, {"ano": 2023, "internacoes_total": 5989, "internacoes_respiratorias": 751}, {"ano": 2024, "internacoes_total": 6021, "internacoes_respiratorias": 738}, {"ano": 2025, "internacoes_total": 6515, "internacoes_respiratorias": 838}]};
+
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(e);
+  return e;
+}
+function fmtInt(n){ return Math.round(n).toLocaleString('pt-BR'); }
+function fmt1(n){ return n.toLocaleString('pt-BR', {maximumFractionDigits:1}); }
+
+function niceTicks(maxVal, count){
+  count = count || 4;
+  if(maxVal <= 0) maxVal = 1;
+  const roughStep = maxVal / count;
+  const mag = Math.pow(10, Math.floor(Math.log10(roughStep)));
+  const norm = roughStep / mag;
+  let step;
+  if(norm < 1.5) step = 1 * mag;
+  else if(norm < 3) step = 2 * mag;
+  else if(norm < 7) step = 5 * mag;
+  else step = 10 * mag;
+  const niceMax = Math.ceil(maxVal / step) * step;
+  const ticks = [];
+  for(let v = 0; v <= niceMax + 1e-9; v += step) ticks.push(Math.round(v * 1000) / 1000);
+  return ticks;
+}
+
+function cssVar(name){
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+/* ---------- line chart (1+ series, shared x) ---------- */
+function renderLineChart(containerId, tooltipId, opts){
+  const container = document.getElementById(containerId);
+  const tooltip = document.getElementById(tooltipId);
+  const width = container.clientWidth || 560;
+  const height = opts.height || 200;
+  const padL = opts.padL || 46, padR = 14, padT = 14, padB = 24;
+  const innerW = width - padL - padR;
+  const innerH = height - padT - padB;
+  const n = opts.labels.length;
+
+  const allY = opts.series.flatMap(s => s.data);
+  const ticks = niceTicks(Math.max(...allY, 0), 4);
+  const maxY = ticks[ticks.length - 1];
+
+  container.innerHTML = '';
+  const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
+
+  const xAt = i => padL + (n === 1 ? innerW/2 : innerW * i/(n-1));
+  const yAt = v => padT + innerH - (innerH * v/maxY);
+
+  ticks.forEach(v => {
+    const y = yAt(v);
+    el('line', {x1:padL, x2:padL+innerW, y1:y, y2:y, class:'gridline'}, svg);
+    const t = el('text', {x:padL-8, y:y+3.5, class:'axis-label', 'text-anchor':'end'}, svg);
+    t.textContent = opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+  });
+  el('line', {x1:padL, x2:padL+innerW, y1:padT+innerH, y2:padT+innerH, class:'baseline'}, svg);
+
+  const xTickEvery = Math.max(1, Math.ceil(n/8));
+  opts.labels.forEach((lab, i) => {
+    if(i % xTickEvery === 0 || i === n-1){
+      const t = el('text', {x:xAt(i), y:height-6, class:'axis-label', 'text-anchor': i===n-1 ? 'end' : (i===0?'start':'middle')}, svg);
+      t.textContent = lab;
+    }
+  });
+
+  const hoverLine = el('line', {x1:padL, x2:padL, y1:padT, y2:padT+innerH, class:'crosshair'}, svg);
+  hoverLine.style.opacity = 0;
+
+  opts.series.forEach(s => {
+    const d = s.data.map((v,i) => (i===0?'M':'L') + xAt(i).toFixed(1) + ' ' + yAt(v).toFixed(1)).join(' ');
+    el('path', {d, fill:'none', stroke:s.color, 'stroke-width':2, 'stroke-linecap':'round', 'stroke-linejoin':'round', opacity: s.emphasis===false?0.7:1}, svg);
+    const lastI = s.data.length - 1;
+    el('circle', {cx:xAt(lastI), cy:yAt(s.data[lastI]), r:4, fill:s.color, stroke:cssVar('--surface-card'), 'stroke-width':2}, svg);
+    if(s.emphasis !== false){
+      const t = el('text', {x:xAt(lastI)-2, y:yAt(s.data[lastI]) - 9, class:'end-label', fill:s.color, 'text-anchor':'end'}, svg);
+      t.textContent = opts.yFormat ? opts.yFormat(s.data[lastI]) : fmtInt(s.data[lastI]);
+    }
+  });
+
+  const hit = el('rect', {x:padL, y:0, width:innerW, height, fill:'transparent'}, svg);
+  function showAt(clientX){
+    const rect = svg.getBoundingClientRect();
+    const scaleX = width / rect.width;
+    const mx = (clientX - rect.left) * scaleX;
+    let idx = Math.round((mx - padL) / innerW * (n-1));
+    idx = Math.max(0, Math.min(n-1, idx));
+    hoverLine.setAttribute('x1', xAt(idx)); hoverLine.setAttribute('x2', xAt(idx));
+    hoverLine.style.opacity = 1;
+    let html = `<div class="tt-x">${opts.labels[idx]}</div>`;
+    opts.series.forEach(s => {
+      html += `<div class="tt-row"><span class="tt-key" style="border-color:${s.color}"></span><span class="tt-val">${opts.yFormat ? opts.yFormat(s.data[idx]) : fmtInt(s.data[idx])}</span><span class="tt-name">${s.name}</span></div>`;
+    });
+    tooltip.innerHTML = html;
+    tooltip.style.opacity = 1;
+    const pct = (xAt(idx) / width) * 100;
+    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+  }
+  hit.addEventListener('pointermove', e => showAt(e.clientX));
+  hit.addEventListener('pointerleave', () => { hoverLine.style.opacity = 0; tooltip.style.opacity = 0; });
+
+  if(opts.legendSlot){
+    const slot = document.getElementById(opts.legendSlot);
+    slot.innerHTML = '';
+    opts.series.forEach(s => {
+      const item = document.createElement('span'); item.className = 'legend-item';
+      const sw = document.createElement('span'); sw.className = 'legend-swatch'; sw.style.background = s.color;
+      const lab = document.createElement('span'); lab.textContent = s.name;
+      item.appendChild(sw); item.appendChild(lab); slot.appendChild(item);
+    });
+  }
+}
+
+/* ---------- bar chart (single series) ---------- */
+function roundedTopBarPath(x, yTop, w, yBottom, r){
+  r = Math.max(0, Math.min(r, w/2, Math.max(0, yBottom - yTop)));
+  return `M ${x} ${yBottom} L ${x} ${yTop+r} Q ${x} ${yTop} ${x+r} ${yTop} L ${x+w-r} ${yTop} Q ${x+w} ${yTop} ${x+w} ${yTop+r} L ${x+w} ${yBottom} Z`;
+}
+function renderBarChart(containerId, tooltipId, opts){
+  const container = document.getElementById(containerId);
+  const tooltip = document.getElementById(tooltipId);
+  const width = container.clientWidth || 300;
+  const height = opts.height || 190;
+  const padL = opts.padL || 40, padR = 10, padT = 14, padB = 24;
+  const innerW = width - padL - padR;
+  const innerH = height - padT - padB;
+  const n = opts.labels.length;
+
+  const ticks = niceTicks(Math.max(...opts.data, 0), opts.tickCount || 4);
+  const maxY = ticks[ticks.length - 1] || 1;
+
+  container.innerHTML = '';
+  const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
+
+  const yAt = v => padT + innerH - (innerH * v / maxY);
+  ticks.forEach(v => {
+    const y = yAt(v);
+    el('line', {x1:padL, x2:padL+innerW, y1:y, y2:y, class:'gridline'}, svg);
+    const t = el('text', {x:padL-7, y:y+3.5, class:'axis-label', 'text-anchor':'end'}, svg);
+    t.textContent = opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+  });
+  el('line', {x1:padL, x2:padL+innerW, y1:padT+innerH, y2:padT+innerH, class:'baseline'}, svg);
+
+  const slot = innerW / n;
+  const barW = Math.max(3, Math.min(24, slot - Math.max(2, slot*0.25)));
+  const xTickEvery = Math.max(1, Math.ceil(n/9));
+  const maxIdx = opts.data.indexOf(Math.max(...opts.data));
+
+  opts.data.forEach((v, i) => {
+    const cx = padL + slot*i + slot/2;
+    const x = cx - barW/2;
+    const yTop = yAt(v);
+    const path = roundedTopBarPath(x, yTop, barW, padT+innerH, 3);
+    const bar = el('path', {d:path, fill:opts.color, class:'bar-mark'}, svg);
+    bar.addEventListener('pointermove', e => showTip(e, i));
+    bar.addEventListener('pointerleave', hideTip);
+
+    if(i === maxIdx || i === n-1){
+      const t = el('text', {x:cx, y:yTop-6, class:'bar-label', 'text-anchor':'middle'}, svg);
+      t.textContent = opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+    }
+    if(i % xTickEvery === 0 || i === n-1){
+      const t = el('text', {x:cx, y:height-6, class:'axis-label', 'text-anchor':'middle'}, svg);
+      t.textContent = opts.labels[i];
+    }
+  });
+
+  function showTip(e, i){
+    const rect = svg.getBoundingClientRect();
+    tooltip.innerHTML = `<div class="tt-x">${opts.labels[i]}</div><div class="tt-row"><span class="tt-key" style="border-color:${opts.color}"></span><span class="tt-val">${opts.yFormat ? opts.yFormat(opts.data[i]) : fmtInt(opts.data[i])}</span><span class="tt-name">${opts.seriesName || ''}</span></div>`;
+    tooltip.style.opacity = 1;
+    const pct = ((e.clientX - rect.left) / rect.width) * 100;
+    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+  }
+  function hideTip(){ tooltip.style.opacity = 0; }
+}
+
+function sparkline(svgHost, values, color){
+  svgHost.innerHTML = '';
+  const w = 100, h = 28;
+  const svg = el('svg', {viewBox:`0 0 ${w} ${h}`, preserveAspectRatio:'none'}, svgHost);
+  const max = Math.max(...values, 1), min = Math.min(...values, 0);
+  const range = (max - min) || 1;
+  const n = values.length;
+  const x = i => (w-4) * i/(n-1) + 2;
+  const y = v => h - 3 - ( (v-min)/range * (h-6) );
+  const d = values.map((v,i) => (i===0?'M':'L') + x(i).toFixed(1) + ' ' + y(v).toFixed(1)).join(' ');
+  el('path', {d, fill:'none', stroke:color, 'stroke-width':1.6, 'stroke-linecap':'round', 'stroke-linejoin':'round'}, svg);
+  el('circle', {cx:x(n-1), cy:y(values[n-1]), r:2.4, fill:color}, svg);
+}
+
+/* ================= build KPI row ================= */
+const simLast = DATA.sim[DATA.sim.length-1];
+const sinanByAno = {};
+DATA.sinan.forEach(r => sinanByAno[r.ano] = r);
+const sihLast = DATA.sih[DATA.sih.length-1];
+
+const kpis = [
+  {label:`Óbitos totais · ${simLast.ano}`, value: simLast.obitos_total, sub:`dos quais ${fmtInt(simLast.obitos_respiratorios)} respiratórios`, spark: DATA.sim.map(r=>r.obitos_total), color:'var(--series-blue)'},
+  {label:`Óbitos respiratórios · ${simLast.ano}`, value: simLast.obitos_respiratorios, sub:`de ${fmtInt(simLast.obitos_total)} óbitos totais`, spark: DATA.sim.map(r=>r.obitos_respiratorios), color:'var(--series-blue)'},
+  {label:`Notificações de dengue · 2025`, value: sinanByAno[2025].dengue, sub:`2024 (epidemia nacional): ${fmtInt(sinanByAno[2024].dengue)}`, spark: DATA.sinan.map(r=>r.dengue), color:'var(--series-blue)'},
+  {label:`Internações respiratórias · ${sihLast.ano}`, value: sihLast.internacoes_respiratorias, sub:`${fmt1(100*sihLast.internacoes_respiratorias/sihLast.internacoes_total)}% das internações`, spark: DATA.sih.map(r=>r.internacoes_respiratorias), color:'var(--series-blue)'},
+];
+const kpiRow = document.getElementById('kpiRow');
+kpis.forEach(k => {
+  const tile = document.createElement('div'); tile.className = 'kpi-tile';
+  tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${fmtInt(k.value)}</div><div class="kpi-sub">${k.sub}</div><div class="kpi-spark"></div>`;
+  kpiRow.appendChild(tile);
+  sparkline(tile.querySelector('.kpi-spark'), k.spark, k.color.startsWith('var') ? cssVar(k.color.slice(4,-1)) : k.color);
+});
+
+/* ================= charts ================= */
+function draw(){
+  const blue = cssVar('--series-blue'), orange = cssVar('--series-orange'), aqua = cssVar('--series-aqua'), ctx = cssVar('--series-context');
+
+  renderLineChart('chart-obitos', 'tt-obitos', {
+    labels: DATA.sim.map(r=>r.ano),
+    series: [
+      {name:'Óbitos totais', color: ctx, data: DATA.sim.map(r=>r.obitos_total), emphasis:false},
+      {name:'Óbitos por causas respiratórias', color: blue, data: DATA.sim.map(r=>r.obitos_respiratorios)},
+    ],
+    height: 220, legendSlot: 'legend-obitos',
+  });
+
+  renderBarChart('chart-afogamento', 'tt-afogamento', {
+    labels: DATA.sim.map(r=>r.ano), data: DATA.sim.map(r=>r.obitos_afogamento_enchente),
+    color: blue, seriesName: 'óbitos', height: 190,
+  });
+
+  renderLineChart('chart-sih', 'tt-sih', {
+    labels: DATA.sih.map(r=>r.ano),
+    series: [
+      {name:'Internações totais', color: ctx, data: DATA.sih.map(r=>r.internacoes_total), emphasis:false},
+      {name:'Internações respiratórias', color: blue, data: DATA.sih.map(r=>r.internacoes_respiratorias)},
+    ],
+    height: 190, legendSlot: 'legend-sih',
+  });
+
+  renderBarChart('chart-dengue', 'tt-dengue', {
+    labels: DATA.sinan.map(r=>r.ano), data: DATA.sinan.map(r=>r.dengue),
+    color: blue, seriesName: 'notificações', height: 170, tickCount: 3,
+  });
+  renderBarChart('chart-chik', 'tt-chik', {
+    labels: DATA.sinan.map(r=>r.ano), data: DATA.sinan.map(r=>r.chikungunya),
+    color: orange, seriesName: 'notificações', height: 170, tickCount: 3,
+  });
+  renderBarChart('chart-zika', 'tt-zika', {
+    labels: DATA.sinan.map(r=>r.ano), data: DATA.sinan.map(r=>r.zika),
+    color: aqua, seriesName: 'notificações', height: 170, tickCount: 3,
+  });
+}
+draw();
+window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+
+/* ================= tables ================= */
+const anos = DATA.sim.map(r=>r.ano).concat(DATA.sinan.map(r=>r.ano)).concat(DATA.sih.map(r=>r.ano));
+const anoSet = Array.from(new Set(anos)).sort((a,b)=>a-b);
+const simByAno = Object.fromEntries(DATA.sim.map(r=>[r.ano,r]));
+const sihByAno = Object.fromEntries(DATA.sih.map(r=>[r.ano,r]));
+
+const table = document.getElementById('tabelaAnual');
+const head = document.createElement('thead');
+head.innerHTML = '<tr><th>Ano</th><th>Óbitos totais</th><th>Óbitos resp.</th><th>Óbitos afogamento/enchente</th><th>Dengue</th><th>Chikungunya</th><th>Zika</th><th>Internações totais</th><th>Internações resp.</th></tr>';
+table.appendChild(head);
+const tbody = document.createElement('tbody');
+anoSet.forEach(ano => {
+  const s = simByAno[ano], sn = sinanByAno[ano], h = sihByAno[ano];
+  const cell = v => v === undefined || v === null || Number.isNaN(v) ? '—' : fmtInt(v);
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${ano}</td><td>${cell(s&&s.obitos_total)}</td><td>${cell(s&&s.obitos_respiratorios)}</td><td>${cell(s&&s.obitos_afogamento_enchente)}</td><td>${cell(sn&&sn.dengue)}</td><td>${cell(sn&&sn.chikungunya)}</td><td>${cell(sn&&sn.zika)}</td><td>${cell(h&&h.internacoes_total)}</td><td>${cell(h&&h.internacoes_respiratorias)}</td>`;
+  tbody.appendChild(tr);
+});
+table.appendChild(tbody);
+</script>
