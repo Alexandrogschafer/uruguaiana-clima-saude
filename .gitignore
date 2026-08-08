@@ -1,4 +1,5 @@
 .venv/
+.venv-pysus/
 __pycache__/
 *.pyc
 data/raw/
