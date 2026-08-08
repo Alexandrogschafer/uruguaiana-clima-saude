@@ -1,0 +1,483 @@
+<title>Painel de Território e Vulnerabilidade — ClimaPampa, Uruguaiana/RS</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page:            #eef1ec;
+    --surface-card:    #ffffff;
+    --ink:             #132524;
+    --ink-secondary:   #4b5f5c;
+    --ink-muted:       #7c8f8c;
+    --accent:          #0f5c56;
+    --accent-soft:     #dbe8e3;
+    --border:          rgba(19,37,36,0.12);
+    --border-strong:   rgba(19,37,36,0.22);
+    --grid:            #e3e7e1;
+    --baseline:        #c7cec9;
+    --series-context:  #a9b2ae;
+    --series-blue:     #2a78d6;
+    --series-orange:   #eb6834;
+    --series-aqua:     #1baf7a;
+    --status-good:     #0ca30c;
+    --status-warning:  #fab219;
+    --status-serious:  #ec835a;
+    --status-critical: #d03b3b;
+    --tooltip-bg:      #132524;
+    --tooltip-ink:     #eef1ec;
+    --shadow:          0 1px 2px rgba(19,37,36,0.06), 0 6px 20px rgba(19,37,36,0.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page:            #0b1414;
+      --surface-card:    #101d1c;
+      --ink:             #eef1ec;
+      --ink-secondary:   #9db3af;
+      --ink-muted:       #6d8985;
+      --accent:          #57d6c9;
+      --accent-soft:     #163531;
+      --border:          rgba(238,241,236,0.12);
+      --border-strong:   rgba(238,241,236,0.22);
+      --grid:            #1d2c2a;
+      --baseline:        #2e433f;
+      --series-context:  #5b716d;
+      --series-blue:     #3987e5;
+      --series-orange:   #d95926;
+      --series-aqua:     #199e70;
+      --tooltip-bg:      #eef1ec;
+      --tooltip-ink:     #132524;
+      --shadow:          0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:            #0b1414;
+    --surface-card:    #101d1c;
+    --ink:             #eef1ec;
+    --ink-secondary:   #9db3af;
+    --ink-muted:       #6d8985;
+    --accent:          #57d6c9;
+    --accent-soft:     #163531;
+    --border:          rgba(238,241,236,0.12);
+    --border-strong:   rgba(238,241,236,0.22);
+    --grid:            #1d2c2a;
+    --baseline:        #2e433f;
+    --series-context:  #5b716d;
+    --series-blue:     #3987e5;
+    --series-orange:   #d95926;
+    --series-aqua:     #199e70;
+    --tooltip-bg:      #eef1ec;
+    --tooltip-ink:     #132524;
+    --shadow:          0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--page); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .masthead { position: relative; padding: 36px 32px 30px; background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 28px; }
+  .masthead-contour { position: absolute; inset: 0; opacity: 0.5; pointer-events: none; }
+  .eyebrow { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 10px; position: relative; }
+  h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio L", serif; font-weight: 400; font-size: clamp(26px, 4vw, 34px); line-height: 1.15; margin: 0 0 8px; text-wrap: balance; max-width: 32ch; position: relative; }
+  .masthead p { margin: 0; color: var(--ink-secondary); font-size: 15px; max-width: 66ch; position: relative; }
+  .masthead-meta { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; gap: 24px; flex-wrap: wrap; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 12px; color: var(--ink-muted); position: relative; }
+  .masthead-meta b { color: var(--ink-secondary); font-weight: 600; }
+  .masthead-meta a, footer a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+  .masthead-meta a:hover, footer a:hover { border-bottom-color: var(--accent); }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 32px; }
+  .kpi-tile { background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px 14px; box-shadow: var(--shadow); }
+  .kpi-label { font-size: 12.5px; color: var(--ink-secondary); margin-bottom: 8px; }
+  .kpi-value { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-variant-numeric: tabular-nums; font-size: 27px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .kpi-unit { font-size: 13px; color: var(--ink-muted); font-weight: 400; margin-left: 3px; }
+  .kpi-sub { font-size: 11.5px; color: var(--ink-muted); margin-top: 5px; }
+
+  .section-head { display: flex; align-items: baseline; gap: 12px; margin: 40px 0 16px; }
+  .section-head h2 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio L", serif; font-weight: 400; font-size: 21px; margin: 0; color: var(--ink); }
+  .section-head .section-rule { flex: 1; height: 1px; background: var(--border-strong); }
+  .section-note { font-size: 13px; color: var(--ink-muted); margin: -8px 0 18px; max-width: 72ch; }
+
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .chart-grid.triple { grid-template-columns: repeat(3, 1fr); }
+  .card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; padding: 18px 20px 14px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+  .card-title { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .card-meta { font-size: 11.5px; color: var(--ink-muted); font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .card-body { position: relative; }
+
+  .chart-svg { display: block; width: 100%; overflow: visible; }
+  .gridline { stroke: var(--grid); stroke-width: 1; shape-rendering: crispEdges; }
+  .baseline { stroke: var(--baseline); stroke-width: 1; shape-rendering: crispEdges; }
+  .axis-label { fill: var(--ink-muted); font-size: 10.5px; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .end-label { font-size: 11.5px; font-weight: 600; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .bar-label { font-size: 11px; font-weight: 700; fill: var(--ink); font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .cat-label { font-size: 11.5px; font-weight: 600; fill: var(--ink-secondary); }
+  .crosshair { stroke: var(--ink-muted); stroke-width: 1; stroke-dasharray: 2 3; pointer-events: none; }
+  .bar-mark { cursor: pointer; }
+  .bar-mark:hover { filter: brightness(1.08); }
+
+  .chart-tooltip { position: absolute; top: 6px; transform: translateX(-50%); background: var(--tooltip-bg); color: var(--tooltip-ink); border-radius: 5px; padding: 7px 10px; font-size: 11.5px; pointer-events: none; opacity: 0; transition: opacity 0.08s ease; white-space: nowrap; z-index: 5; box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
+  .tt-x { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; opacity: 0.7; margin-bottom: 3px; font-size: 10.5px; }
+  .tt-row { display: flex; align-items: center; gap: 6px; }
+  .tt-key { width: 9px; height: 0; border-top: 2px solid; display: inline-block; }
+  .tt-val { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-variant-numeric: tabular-nums; font-weight: 700; }
+  .tt-name { opacity: 0.85; }
+
+  .status-legend { display: flex; gap: 16px; margin: 2px 0 10px; flex-wrap: wrap; font-size: 12px; color: var(--ink-secondary); }
+  .status-legend .item { display: flex; align-items: center; gap: 6px; }
+  .status-legend .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+
+  details.table-wrap { margin-top: 8px; background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; box-shadow: var(--shadow); }
+  details.table-wrap summary { cursor: pointer; padding: 14px 20px; font-size: 14px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details.table-wrap summary::-webkit-details-marker { display: none; }
+  details.table-wrap summary::before { content: "▸"; color: var(--accent); transition: transform 0.15s ease; font-size: 11px; }
+  details.table-wrap[open] summary::before { transform: rotate(90deg); }
+  .table-scroll { overflow-x: auto; padding: 0 20px 18px; }
+  table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; min-width: 560px; }
+  table.data-table th, table.data-table td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  table.data-table th:first-child, table.data-table td:first-child { text-align: left; }
+  table.data-table thead th { color: var(--ink-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; }
+  table.data-table tbody tr:hover { background: var(--accent-soft); }
+
+  footer { margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--ink-muted); line-height: 1.7; }
+  footer b { color: var(--ink-secondary); }
+
+  @media (max-width: 720px) {
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .chart-grid, .chart-grid.triple { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <svg class="masthead-contour" viewBox="0 0 800 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
+      <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
+    </svg>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 3 de 3</span>
+    <h1>Painel de território e vulnerabilidade</h1>
+    <p>Uso do solo (MapBiomas), risco geológico (CPRM/SGB) e indicadores do Censo — o retrato estrutural do município, que muda devagar.</p>
+    <div class="masthead-meta">
+      <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
+      <span><b>Uso do solo</b> 1985–2024</span>
+      <span><b>Censo</b> 2022 · <b>Risco geológico</b> 2021</span>
+      <span><b>Ver também</b> <a href="painel-saude.html">Saúde</a> · <a href="painel-clima-ambiental.html">Clima e Ambiente</a> · <a href="../index.html">Geoportal</a></span>
+    </div>
+  </div>
+
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="section-head"><h2>Uso do solo</h2><div class="section-rule"></div></div>
+  <p class="section-note">Série MapBiomas (Coleção 10), anos disponíveis 1985–2024. Escalas independentes por classe — a Formação Campestre nativa é ~100× maior que a área urbanizada, numa escala só a urbanização não apareceria.</p>
+
+  <div class="chart-grid triple">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Formação Campestre (Pampa nativo)</span></div>
+      <div class="card-body"><div id="chart-campestre"></div><div class="chart-tooltip" id="tt-campestre"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Arroz</span></div>
+      <div class="card-body"><div id="chart-arroz"></div><div class="chart-tooltip" id="tt-arroz"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Área urbanizada</span></div>
+      <div class="card-body"><div id="chart-urbano"></div><div class="chart-tooltip" id="tt-urbano"></div></div>
+    </div>
+  </div>
+
+  <div class="section-head"><h2>Risco geológico</h2><div class="section-rule"></div></div>
+  <p class="section-note">Carta de Suscetibilidade CPRM/SGB, validada em campo em 2021. Barras por <b>área</b>, não por número de polígonos — um único polígono grande pesa mais que muitos pequenos, e usar contagem aqui contaria a história errada (ver tabela para os dois números).</p>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Inundação — área por classe</span><span class="card-meta">1204 km² mapeados</span></div>
+      <div class="status-legend">
+        <span class="item"><span class="dot" style="background:var(--status-good)"></span>Baixa</span>
+        <span class="item"><span class="dot" style="background:var(--status-warning)"></span>Média</span>
+        <span class="item"><span class="dot" style="background:var(--status-critical)"></span>Alta</span>
+      </div>
+      <div class="card-body"><div id="chart-risco-inund"></div><div class="chart-tooltip" id="tt-risco-inund"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Movimento de massa — área por classe</span><span class="card-meta">5699 km² mapeados</span></div>
+      <div class="status-legend">
+        <span class="item"><span class="dot" style="background:var(--status-good)"></span>Baixa</span>
+        <span class="item"><span class="dot" style="background:var(--status-warning)"></span>Média</span>
+      </div>
+      <div class="card-body"><div id="chart-risco-mov"></div><div class="chart-tooltip" id="tt-risco-mov"></div></div>
+    </div>
+  </div>
+
+  <div class="section-head"><h2>Perfil censitário</h2><div class="section-rule"></div></div>
+  <p class="section-note">Censo 2022 (179 setores censitários). Renda, água e esgoto só existem no nível municipal para este censo — não variam por setor no produto do IBGE.</p>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">População por situação do setor</span></div>
+    <div class="card-body"><div id="chart-pop-situacao"></div><div class="chart-tooltip" id="tt-pop-situacao"></div></div>
+  </div>
+
+  <details class="table-wrap">
+    <summary>Ver uso do solo em tabela (km² por ano)</summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaUso"></table></div>
+  </details>
+
+  <details class="table-wrap" style="margin-top:10px;">
+    <summary>Ver risco geológico em tabela (área e nº de polígonos)</summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaRisco"></table></div>
+  </details>
+
+  <footer>
+    <p><b>Fontes:</b> Uso do solo — MapBiomas Coleção 10. Risco geológico — CPRM/SGB, Carta de Suscetibilidade a Movimentos Gravitacionais de Massa e Inundações (repositório RIGEO). Censo — IBGE 2022 (Agregados por Setores Censitários + SIDRA). Ver <code>data/catalogo_fontes.csv</code> no repositório para licença, método e limitações de cada fonte.</p>
+    <p><b>Leitura recomendada:</b> a classificação de suscetibilidade é um produto de modelagem validado por campo, não medição direta — use como triagem territorial, não como laudo pontual.</p>
+    <p><b>Painéis complementares:</b> óbitos, arboviroses e internações estão no painel de <a href="painel-saude.html">Saúde</a>; clima, queimadas e nível do rio estão no painel de <a href="painel-clima-ambiental.html">Clima e Monitoramento Ambiental</a>. O <a href="../index.html">geoportal</a> traz a visão espacial de tudo isso no mapa.</p>
+  </footer>
+
+</div>
+
+<script>
+const DATA = {"uso_solo": [{"ano": 1985, "Arroz": 240.0461, "Formação Campestre": 3357.5432, "Área Urbanizada": 12.8288}, {"ano": 1990, "Arroz": 292.9706, "Formação Campestre": 3335.6461, "Área Urbanizada": 14.5128}, {"ano": 1995, "Arroz": 299.5007, "Formação Campestre": 3007.9891, "Área Urbanizada": 17.0093}, {"ano": 2000, "Arroz": 428.2914, "Formação Campestre": 2804.5118, "Área Urbanizada": 18.8447}, {"ano": 2005, "Arroz": 366.632, "Formação Campestre": 2912.2179, "Área Urbanizada": 19.9244}, {"ano": 2010, "Arroz": 460.7312, "Formação Campestre": 2845.8968, "Área Urbanizada": 20.7168}, {"ano": 2015, "Arroz": 803.5911, "Formação Campestre": 2868.417, "Área Urbanizada": 21.6054}, {"ano": 2020, "Arroz": 886.9021, "Formação Campestre": 2905.1074, "Área Urbanizada": 22.8984}, {"ano": 2024, "Arroz": 702.1419, "Formação Campestre": 2573.0177, "Área Urbanizada": 23.6013}], "censo": {"populacao_total": 117210, "renda_media": 1566.17, "pct_agua_inadequada": 7.94, "pct_esgoto_inadequado": 11.11, "n_setores_urbanos": 152, "n_setores_rurais": 27, "pop_urbana": 111272, "pop_rural": 5938}, "risco_geologico": {"inundacao_area_km2": {"Alta": 861.54, "Baixa": 51.23, "Média": 291.55}, "inundacao_n_poligonos": {"Média": 2543, "Baixa": 1239, "Alta": 445}, "movimento_area_km2": {"Baixa": 5698.71, "Média": 0.5}, "movimento_n_poligonos": {"Média": 42, "Baixa": 1}}};
+
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(e);
+  return e;
+}
+function fmtInt(n){ return Math.round(n).toLocaleString('pt-BR'); }
+function fmt1(n){ return n.toLocaleString('pt-BR', {maximumFractionDigits:1}); }
+
+function niceTicks(maxVal, count){
+  count = count || 4;
+  if(maxVal <= 0) maxVal = 1;
+  const roughStep = maxVal / count;
+  const mag = Math.pow(10, Math.floor(Math.log10(roughStep)));
+  const norm = roughStep / mag;
+  let step;
+  if(norm < 1.5) step = 1 * mag;
+  else if(norm < 3) step = 2 * mag;
+  else if(norm < 7) step = 5 * mag;
+  else step = 10 * mag;
+  const niceMax = Math.ceil(maxVal / step) * step;
+  const ticks = [];
+  for(let v = 0; v <= niceMax + 1e-9; v += step) ticks.push(Math.round(v * 1000) / 1000);
+  return ticks;
+}
+function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+function renderLineChart(containerId, tooltipId, opts){
+  const container = document.getElementById(containerId);
+  const tooltip = document.getElementById(tooltipId);
+  const width = container.clientWidth || 300;
+  const height = opts.height || 170;
+  const padL = opts.padL || 40, padR = 10, padT = 12, padB = 22;
+  const innerW = width - padL - padR;
+  const innerH = height - padT - padB;
+  const n = opts.labels.length;
+
+  const allY = opts.series.flatMap(s => s.data);
+  const ticks = niceTicks(Math.max(...allY, 0), 4);
+  const maxY = ticks[ticks.length - 1];
+
+  container.innerHTML = '';
+  const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
+  const xAt = i => padL + (n === 1 ? innerW/2 : innerW * i/(n-1));
+  const yAt = v => padT + innerH - (innerH * v/maxY);
+
+  ticks.forEach(v => {
+    const y = yAt(v);
+    el('line', {x1:padL, x2:padL+innerW, y1:y, y2:y, class:'gridline'}, svg);
+    const t = el('text', {x:padL-7, y:y+3.5, class:'axis-label', 'text-anchor':'end'}, svg);
+    t.textContent = opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+  });
+  el('line', {x1:padL, x2:padL+innerW, y1:padT+innerH, y2:padT+innerH, class:'baseline'}, svg);
+
+  const xTickEvery = Math.max(1, Math.ceil(n/5));
+  opts.labels.forEach((lab, i) => {
+    if(i % xTickEvery === 0 || i === n-1){
+      const t = el('text', {x:xAt(i), y:height-5, class:'axis-label', 'text-anchor': i===n-1 ? 'end' : (i===0?'start':'middle')}, svg);
+      t.textContent = lab;
+    }
+  });
+
+  const hoverLine = el('line', {x1:padL, x2:padL, y1:padT, y2:padT+innerH, class:'crosshair'}, svg);
+  hoverLine.style.opacity = 0;
+
+  opts.series.forEach(s => {
+    const d = s.data.map((v,i) => (i===0?'M':'L') + xAt(i).toFixed(1) + ' ' + yAt(v).toFixed(1)).join(' ');
+    el('path', {d, fill:'none', stroke:s.color, 'stroke-width':2, 'stroke-linecap':'round', 'stroke-linejoin':'round'}, svg);
+    const lastI = s.data.length - 1;
+    el('circle', {cx:xAt(lastI), cy:yAt(s.data[lastI]), r:4, fill:s.color, stroke:cssVar('--surface-card'), 'stroke-width':2}, svg);
+    const t = el('text', {x:xAt(lastI)-2, y:yAt(s.data[lastI]) - 9, class:'end-label', fill:s.color, 'text-anchor':'end'}, svg);
+    t.textContent = opts.yFormat ? opts.yFormat(s.data[lastI]) : fmtInt(s.data[lastI]);
+  });
+
+  const hit = el('rect', {x:padL, y:0, width:innerW, height, fill:'transparent'}, svg);
+  function showAt(clientX){
+    const rect = svg.getBoundingClientRect();
+    const scaleX = width / rect.width;
+    const mx = (clientX - rect.left) * scaleX;
+    let idx = Math.round((mx - padL) / innerW * (n-1));
+    idx = Math.max(0, Math.min(n-1, idx));
+    hoverLine.setAttribute('x1', xAt(idx)); hoverLine.setAttribute('x2', xAt(idx));
+    hoverLine.style.opacity = 1;
+    let html = `<div class="tt-x">${opts.labels[idx]}</div>`;
+    opts.series.forEach(s => {
+      html += `<div class="tt-row"><span class="tt-key" style="border-color:${s.color}"></span><span class="tt-val">${opts.yFormat ? opts.yFormat(s.data[idx]) : fmtInt(s.data[idx])}</span><span class="tt-name">${s.name}</span></div>`;
+    });
+    tooltip.innerHTML = html;
+    tooltip.style.opacity = 1;
+    const pct = (xAt(idx) / width) * 100;
+    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+  }
+  hit.addEventListener('pointermove', e => showAt(e.clientX));
+  hit.addEventListener('pointerleave', () => { hoverLine.style.opacity = 0; tooltip.style.opacity = 0; });
+}
+
+function roundedTopBarPath(x, yTop, w, yBottom, r){
+  r = Math.max(0, Math.min(r, w/2, Math.max(0, yBottom - yTop)));
+  return `M ${x} ${yBottom} L ${x} ${yTop+r} Q ${x} ${yTop} ${x+r} ${yTop} L ${x+w-r} ${yTop} Q ${x+w} ${yTop} ${x+w} ${yTop+r} L ${x+w} ${yBottom} Z`;
+}
+function renderBarChart(containerId, tooltipId, opts){
+  const container = document.getElementById(containerId);
+  const tooltip = document.getElementById(tooltipId);
+  const width = container.clientWidth || 300;
+  const height = opts.height || 190;
+  const padL = opts.padL || 44, padR = 10, padT = 20, padB = 26;
+  const innerW = width - padL - padR;
+  const innerH = height - padT - padB;
+  const n = opts.labels.length;
+
+  const ticks = niceTicks(Math.max(...opts.data, 0), opts.tickCount || 4);
+  const maxY = ticks[ticks.length - 1] || 1;
+
+  container.innerHTML = '';
+  const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
+
+  const yAt = v => padT + innerH - (innerH * v / maxY);
+  ticks.forEach(v => {
+    const y = yAt(v);
+    el('line', {x1:padL, x2:padL+innerW, y1:y, y2:y, class:'gridline'}, svg);
+    const t = el('text', {x:padL-7, y:y+3.5, class:'axis-label', 'text-anchor':'end'}, svg);
+    t.textContent = opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+  });
+  el('line', {x1:padL, x2:padL+innerW, y1:padT+innerH, y2:padT+innerH, class:'baseline'}, svg);
+
+  const slot = innerW / n;
+  const barW = Math.max(3, Math.min(opts.barMax || 24, slot - Math.max(2, slot*0.25)));
+  const maxIdx = opts.data.indexOf(Math.max(...opts.data));
+
+  opts.data.forEach((v, i) => {
+    const cx = padL + slot*i + slot/2;
+    const x = cx - barW/2;
+    const yTop = yAt(v);
+    const path = roundedTopBarPath(x, yTop, barW, padT+innerH, 3);
+    const color = opts.colors ? opts.colors[i] : opts.color;
+    const bar = el('path', {d:path, fill:color, class:'bar-mark'}, svg);
+    bar.addEventListener('pointermove', e => showTip(e, i));
+    bar.addEventListener('pointerleave', hideTip);
+
+    const t = el('text', {x:cx, y:yTop-7, class:'bar-label', 'text-anchor':'middle'}, svg);
+    t.textContent = opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+
+    const lab = el('text', {x:cx, y:height-6, class:'cat-label', 'text-anchor':'middle'}, svg);
+    lab.textContent = opts.labels[i];
+  });
+
+  function showTip(e, i){
+    const rect = svg.getBoundingClientRect();
+    const color = opts.colors ? opts.colors[i] : opts.color;
+    tooltip.innerHTML = `<div class="tt-x">${opts.labels[i]}</div><div class="tt-row"><span class="tt-key" style="border-color:${color}"></span><span class="tt-val">${opts.yFormat ? opts.yFormat(opts.data[i]) : fmtInt(opts.data[i])}</span><span class="tt-name">${opts.seriesName || ''}</span></div>`;
+    tooltip.style.opacity = 1;
+    const pct = ((e.clientX - rect.left) / rect.width) * 100;
+    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+  }
+  function hideTip(){ tooltip.style.opacity = 0; }
+}
+
+/* ================= KPI row (Censo, sem série histórica) ================= */
+const c = DATA.censo;
+const kpiRow = document.getElementById('kpiRow');
+const kpis = [
+  {label:'População total', value: c.populacao_total, unit:'hab', sub:`${fmtInt(c.pop_urbana)} urbana · ${fmtInt(c.pop_rural)} rural`},
+  {label:'Renda média domiciliar per capita', value: c.renda_media, unit:'R$', sub:'nível municipal (Censo 2022)'},
+  {label:'Domicílios com água inadequada', value: c.pct_agua_inadequada, unit:'%', sub:'sem ligação à rede geral'},
+  {label:'Domicílios com esgoto inadequado', value: c.pct_esgoto_inadequado, unit:'%', sub:'fora de rede/fossa ligada'},
+];
+kpis.forEach(k => {
+  const tile = document.createElement('div'); tile.className = 'kpi-tile';
+  const valorFmt = k.unit === 'R$' ? fmt1(k.value) : (k.unit === '%' ? fmt1(k.value) : fmtInt(k.value));
+  tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${k.unit==='R$'?'R$ ':''}${valorFmt}<span class="kpi-unit">${k.unit!=='R$'?k.unit:''}</span></div><div class="kpi-sub">${k.sub}</div>`;
+  kpiRow.appendChild(tile);
+});
+
+/* ================= charts ================= */
+function draw(){
+  const blue = cssVar('--series-blue');
+  const good = cssVar('--status-good'), warning = cssVar('--status-warning'), critical = cssVar('--status-critical');
+
+  const anos = DATA.uso_solo.map(r=>r.ano);
+  renderLineChart('chart-campestre', 'tt-campestre', {
+    labels: anos, series: [{name:'Formação Campestre', color: blue, data: DATA.uso_solo.map(r=>r['Formação Campestre'])}],
+    height: 160, yFormat: v => fmtInt(v),
+  });
+  renderLineChart('chart-arroz', 'tt-arroz', {
+    labels: anos, series: [{name:'Arroz', color: blue, data: DATA.uso_solo.map(r=>r['Arroz'])}],
+    height: 160, yFormat: v => fmtInt(v),
+  });
+  renderLineChart('chart-urbano', 'tt-urbano', {
+    labels: anos, series: [{name:'Área urbanizada', color: blue, data: DATA.uso_solo.map(r=>r['Área Urbanizada'])}],
+    height: 160, yFormat: v => fmt1(v),
+  });
+
+  const r = DATA.risco_geologico;
+  renderBarChart('chart-risco-inund', 'tt-risco-inund', {
+    labels: ['Baixa','Média','Alta'],
+    data: [r.inundacao_area_km2.Baixa, r.inundacao_area_km2['Média'], r.inundacao_area_km2.Alta],
+    colors: [good, warning, critical], seriesName: 'km²', height: 190, yFormat: v => fmtInt(v)+' km²',
+  });
+  renderBarChart('chart-risco-mov', 'tt-risco-mov', {
+    labels: ['Baixa','Média'],
+    data: [r.movimento_area_km2.Baixa, r.movimento_area_km2['Média']],
+    colors: [good, warning], seriesName: 'km²', height: 190, yFormat: v => fmtInt(v)+' km²', tickCount: 3,
+  });
+
+  renderBarChart('chart-pop-situacao', 'tt-pop-situacao', {
+    labels: ['Urbana','Rural'], data: [c.pop_urbana, c.pop_rural],
+    color: blue, seriesName: 'habitantes', height: 170, barMax: 60,
+  });
+}
+draw();
+window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+
+/* ================= tables ================= */
+const tabelaUso = document.getElementById('tabelaUso');
+const h1 = document.createElement('thead');
+h1.innerHTML = '<tr><th>Ano</th><th>Formação Campestre (km²)</th><th>Arroz (km²)</th><th>Área Urbanizada (km²)</th></tr>';
+tabelaUso.appendChild(h1);
+const b1 = document.createElement('tbody');
+DATA.uso_solo.forEach(r => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${r.ano}</td><td>${fmt1(r['Formação Campestre'])}</td><td>${fmt1(r['Arroz'])}</td><td>${fmt1(r['Área Urbanizada'])}</td>`;
+  b1.appendChild(tr);
+});
+tabelaUso.appendChild(b1);
+
+const tabelaRisco = document.getElementById('tabelaRisco');
+const h2 = document.createElement('thead');
+h2.innerHTML = '<tr><th>Camada</th><th>Classe</th><th>Área (km²)</th><th>Nº de polígonos</th></tr>';
+tabelaRisco.appendChild(h2);
+const b2 = document.createElement('tbody');
+const rr = DATA.risco_geologico;
+[['Inundação','Baixa',rr.inundacao_area_km2.Baixa,rr.inundacao_n_poligonos.Baixa],
+ ['Inundação','Média',rr.inundacao_area_km2['Média'],rr.inundacao_n_poligonos['Média']],
+ ['Inundação','Alta',rr.inundacao_area_km2.Alta,rr.inundacao_n_poligonos.Alta],
+ ['Movimento de massa','Baixa',rr.movimento_area_km2.Baixa,rr.movimento_n_poligonos.Baixa],
+ ['Movimento de massa','Média',rr.movimento_area_km2['Média'],rr.movimento_n_poligonos['Média']]].forEach(row => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${fmt1(row[2])}</td><td>${fmtInt(row[3])}</td>`;
+  b2.appendChild(tr);
+});
+tabelaRisco.appendChild(b2);
+</script>

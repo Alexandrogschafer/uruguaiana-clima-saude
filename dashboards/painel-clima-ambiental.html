@@ -1,0 +1,526 @@
+<title>Painel de Clima e Ambiente — ClimaPampa, Uruguaiana/RS</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page:            #eef1ec;
+    --surface-card:    #ffffff;
+    --ink:             #132524;
+    --ink-secondary:   #4b5f5c;
+    --ink-muted:       #7c8f8c;
+    --accent:          #0f5c56;
+    --accent-soft:     #dbe8e3;
+    --border:          rgba(19,37,36,0.12);
+    --border-strong:   rgba(19,37,36,0.22);
+    --grid:            #e3e7e1;
+    --baseline:        #c7cec9;
+    --series-context:  #a9b2ae;
+    --series-blue:     #2a78d6;
+    --series-orange:   #eb6834;
+    --series-aqua:     #1baf7a;
+    --tooltip-bg:      #132524;
+    --tooltip-ink:     #eef1ec;
+    --shadow:          0 1px 2px rgba(19,37,36,0.06), 0 6px 20px rgba(19,37,36,0.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page:            #0b1414;
+      --surface-card:    #101d1c;
+      --ink:             #eef1ec;
+      --ink-secondary:   #9db3af;
+      --ink-muted:       #6d8985;
+      --accent:          #57d6c9;
+      --accent-soft:     #163531;
+      --border:          rgba(238,241,236,0.12);
+      --border-strong:   rgba(238,241,236,0.22);
+      --grid:            #1d2c2a;
+      --baseline:        #2e433f;
+      --series-context:  #5b716d;
+      --series-blue:     #3987e5;
+      --series-orange:   #d95926;
+      --series-aqua:     #199e70;
+      --tooltip-bg:      #eef1ec;
+      --tooltip-ink:     #132524;
+      --shadow:          0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:            #0b1414;
+    --surface-card:    #101d1c;
+    --ink:             #eef1ec;
+    --ink-secondary:   #9db3af;
+    --ink-muted:       #6d8985;
+    --accent:          #57d6c9;
+    --accent-soft:     #163531;
+    --border:          rgba(238,241,236,0.12);
+    --border-strong:   rgba(238,241,236,0.22);
+    --grid:            #1d2c2a;
+    --baseline:        #2e433f;
+    --series-context:  #5b716d;
+    --series-blue:     #3987e5;
+    --series-orange:   #d95926;
+    --series-aqua:     #199e70;
+    --tooltip-bg:      #eef1ec;
+    --tooltip-ink:     #132524;
+    --shadow:          0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .masthead { position: relative; padding: 36px 32px 30px; background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 28px; }
+  .masthead-contour { position: absolute; inset: 0; opacity: 0.5; pointer-events: none; }
+  .eyebrow { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 10px; position: relative; }
+  h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio L", serif; font-weight: 400; font-size: clamp(26px, 4vw, 34px); line-height: 1.15; margin: 0 0 8px; text-wrap: balance; max-width: 32ch; position: relative; }
+  .masthead p { margin: 0; color: var(--ink-secondary); font-size: 15px; max-width: 66ch; position: relative; }
+  .masthead-meta { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; gap: 24px; flex-wrap: wrap; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 12px; color: var(--ink-muted); position: relative; }
+  .masthead-meta b { color: var(--ink-secondary); font-weight: 600; }
+  .masthead-meta a, footer a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+  .masthead-meta a:hover, footer a:hover { border-bottom-color: var(--accent); }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 32px; }
+  .kpi-tile { background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px 14px; box-shadow: var(--shadow); }
+  .kpi-label { font-size: 12.5px; color: var(--ink-secondary); margin-bottom: 8px; }
+  .kpi-value { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-variant-numeric: tabular-nums; font-size: 27px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .kpi-unit { font-size: 13px; color: var(--ink-muted); font-weight: 400; margin-left: 3px; }
+  .kpi-sub { font-size: 11.5px; color: var(--ink-muted); margin-top: 5px; }
+  .kpi-spark { margin-top: 8px; height: 28px; }
+  .kpi-spark svg { display: block; width: 100%; height: 100%; }
+
+  .section-head { display: flex; align-items: baseline; gap: 12px; margin: 40px 0 16px; }
+  .section-head h2 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio L", serif; font-weight: 400; font-size: 21px; margin: 0; color: var(--ink); }
+  .section-head .section-rule { flex: 1; height: 1px; background: var(--border-strong); }
+  .section-note { font-size: 13px; color: var(--ink-muted); margin: -8px 0 18px; max-width: 72ch; }
+
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .chart-grid.single { grid-template-columns: 1fr; }
+  .chart-grid.triple { grid-template-columns: repeat(3, 1fr); }
+  .card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; padding: 18px 20px 14px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+  .card-title { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .card-meta { font-size: 11.5px; color: var(--ink-muted); font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .card-body { position: relative; }
+  .chart-legend-slot { display: flex; gap: 14px; margin: 2px 0 6px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-secondary); }
+  .legend-swatch { width: 12px; height: 3px; border-radius: 2px; display: inline-block; }
+
+  .chart-svg { display: block; width: 100%; overflow: visible; }
+  .gridline { stroke: var(--grid); stroke-width: 1; shape-rendering: crispEdges; }
+  .baseline { stroke: var(--baseline); stroke-width: 1; shape-rendering: crispEdges; }
+  .axis-label { fill: var(--ink-muted); font-size: 10.5px; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .end-label { font-size: 11.5px; font-weight: 600; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .bar-label { font-size: 10.5px; font-weight: 600; fill: var(--ink-secondary); font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .crosshair { stroke: var(--ink-muted); stroke-width: 1; stroke-dasharray: 2 3; pointer-events: none; }
+  .bar-mark { cursor: pointer; }
+  .bar-mark:hover { filter: brightness(1.08); }
+
+  .chart-tooltip { position: absolute; top: 6px; transform: translateX(-50%); background: var(--tooltip-bg); color: var(--tooltip-ink); border-radius: 5px; padding: 7px 10px; font-size: 11.5px; pointer-events: none; opacity: 0; transition: opacity 0.08s ease; white-space: nowrap; z-index: 5; box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
+  .tt-x { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; opacity: 0.7; margin-bottom: 3px; font-size: 10.5px; }
+  .tt-row { display: flex; align-items: center; gap: 6px; }
+  .tt-key { width: 9px; height: 0; border-top: 2px solid; display: inline-block; }
+  .tt-val { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-variant-numeric: tabular-nums; font-weight: 700; }
+  .tt-name { opacity: 0.85; }
+
+  .empty-state { border: 1px dashed var(--border-strong); border-radius: 6px; padding: 22px 24px; color: var(--ink-secondary); font-size: 13.5px; background: var(--accent-soft); }
+  .empty-state b { color: var(--ink); }
+
+  details.table-wrap { margin-top: 8px; background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; box-shadow: var(--shadow); }
+  details.table-wrap summary { cursor: pointer; padding: 14px 20px; font-size: 14px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details.table-wrap summary::-webkit-details-marker { display: none; }
+  details.table-wrap summary::before { content: "▸"; color: var(--accent); transition: transform 0.15s ease; font-size: 11px; }
+  details.table-wrap[open] summary::before { transform: rotate(90deg); }
+  .table-scroll { overflow-x: auto; padding: 0 20px 18px; }
+  table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; min-width: 720px; }
+  table.data-table th, table.data-table td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  table.data-table th:first-child, table.data-table td:first-child { text-align: left; }
+  table.data-table thead th { color: var(--ink-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; }
+  table.data-table tbody tr:hover { background: var(--accent-soft); }
+
+  footer { margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--ink-muted); line-height: 1.7; }
+  footer b { color: var(--ink-secondary); }
+
+  @media (max-width: 720px) {
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .chart-grid, .chart-grid.triple { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <svg class="masthead-contour" viewBox="0 0 800 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
+      <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
+    </svg>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 2 de 3</span>
+    <h1>Painel de clima e monitoramento ambiental</h1>
+    <p>Temperatura e precipitação (INMET), focos de queimada (INPE) e nível/vazão do Rio Uruguai (ANA) — as séries que respondem a evento, atualizadas continuamente.</p>
+    <div class="masthead-meta">
+      <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
+      <span><b>Janela</b> 2007–2025 (por fonte, ver cada gráfico)</span>
+      <span><b>Coleta</b> 2026-08-07/08</span>
+      <span><b>Ver também</b> <a href="painel-saude.html">Saúde</a> · <a href="painel-territorio.html">Território e Vulnerabilidade</a> · <a href="../index.html">Geoportal</a></span>
+    </div>
+  </div>
+
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="section-head"><h2>Clima</h2><div class="section-rule"></div></div>
+  <p class="section-note">Série horária da estação automática INMET A809 (Uruguaiana), agregada por dia e por ano. Radiação solar tem ~51% de falhas no sensor mais recente; as variáveis usadas aqui (temperatura, precipitação) têm entre 6% e 13% de falhas.</p>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Precipitação total por ano</span><span class="card-meta">INMET A809 · 2007–2025</span></div>
+      <div class="card-body"><div id="chart-precip-anual"></div><div class="chart-tooltip" id="tt-precip-anual"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Dias com calor extremo (≥ 35°C) por ano</span><span class="card-meta">INMET A809</span></div>
+      <div class="card-body"><div id="chart-calor"></div><div class="chart-tooltip" id="tt-calor"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Temperatura média anual</span><span class="card-meta">INMET A809 · °C</span></div>
+    <div class="card-body"><div id="chart-temp-anual"></div><div class="chart-tooltip" id="tt-temp-anual"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Precipitação mensal — últimos 5 anos</span><span class="card-meta">INMET A809 · mm/mês</span></div>
+    <div class="card-body"><div id="chart-precip-mensal"></div><div class="chart-tooltip" id="tt-precip-mensal"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Precipitação mensal (CHIRPS, satélite)</span></div>
+    <div class="empty-state"><b>Pendente.</b> A fonte (data.chc.ucsb.edu) bloqueou o IP de coleta durante os testes (HTTP 403 persistente). Script pronto em <code>scripts/download/precipitacao_chirps.py</code> — falta retomar mais devagar ou trocar de fonte. Enquanto isso, a série INMET acima cobre precipitação pontual da estação.</div>
+  </div>
+
+  <div class="section-head"><h2>Hidrologia</h2><div class="section-rule"></div></div>
+  <p class="section-note">Leituras telemétricas da estação 77150000 (Rio Uruguai, operada por SGB-CPRM) — amostra recente de exemplo, não um histórico longo.</p>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Nível do Rio Uruguai</span><span class="card-meta">ANA · 15 em 15 min</span></div>
+      <div class="card-body"><div id="chart-nivel"></div><div class="chart-tooltip" id="tt-nivel"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Vazão do Rio Uruguai</span><span class="card-meta">ANA · m³/s</span></div>
+      <div class="card-body"><div id="chart-vazao"></div><div class="chart-tooltip" id="tt-vazao"></div></div>
+    </div>
+  </div>
+
+  <div class="section-head"><h2>Queimadas</h2><div class="section-rule"></div></div>
+  <p class="section-note">Focos de calor por satélite (todos os satélites, não só o de referência), dentro do limite municipal.</p>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Focos de queimada por ano</span><span class="card-meta">INPE/BDQUEIMADAS · 2010–2025</span></div>
+    <div class="card-body"><div id="chart-queimadas"></div><div class="chart-tooltip" id="tt-queimadas"></div></div>
+  </div>
+
+  <details class="table-wrap">
+    <summary>Ver dados climáticos anuais em tabela</summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaAnual"></table></div>
+  </details>
+
+  <details class="table-wrap" style="margin-top:10px;">
+    <summary>Ver leituras do nível do rio (amostra, 15 em 15 min)</summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaNivel"></table></div>
+  </details>
+
+  <footer>
+    <p><b>Fontes:</b> INMET — estação automática A809 (portal de dados históricos). Focos de queimada — INPE/BDQUEIMADAS. Nível e vazão do rio — ANA, estação telemétrica 77150000 (operada por SGB-CPRM). Ver <code>data/catalogo_fontes.csv</code> no repositório para licença, método e limitações de cada fonte.</p>
+    <p><b>Painéis complementares:</b> óbitos, arboviroses e internações estão no painel de <a href="painel-saude.html">Saúde</a>; uso do solo, risco geológico e perfil censitário estão no painel de <a href="painel-territorio.html">Território e Vulnerabilidade</a>. O <a href="../index.html">geoportal</a> traz a visão espacial de tudo isso no mapa.</p>
+  </footer>
+
+</div>
+
+<script>
+const DATA = {"inmet_anual": [{"ano": 2007, "temp_media_anual": 19.36, "temp_max_anual": 37.7, "temp_min_anual": -1.8, "precipitacao_total": 1220.2, "dias_calor_extremo": 23, "dias_geada": 2}, {"ano": 2008, "temp_media_anual": 19.82, "temp_max_anual": 39.7, "temp_min_anual": 0.0, "precipitacao_total": 1100.4, "dias_calor_extremo": 36, "dias_geada": 1}, {"ano": 2009, "temp_media_anual": 19.55, "temp_max_anual": 39.3, "temp_min_anual": -1.9, "precipitacao_total": 1616.4, "dias_calor_extremo": 23, "dias_geada": 3}, {"ano": 2010, "temp_media_anual": 19.44, "temp_max_anual": 36.8, "temp_min_anual": -0.4, "precipitacao_total": 1292.2, "dias_calor_extremo": 9, "dias_geada": 1}, {"ano": 2011, "temp_media_anual": 19.57, "temp_max_anual": 40.9, "temp_min_anual": -1.5, "precipitacao_total": 1104.0, "dias_calor_extremo": 15, "dias_geada": 3}, {"ano": 2012, "temp_media_anual": 20.5, "temp_max_anual": 41.0, "temp_min_anual": -3.3, "precipitacao_total": 981.0, "dias_calor_extremo": 41, "dias_geada": 2}, {"ano": 2013, "temp_media_anual": 19.4, "temp_max_anual": 39.5, "temp_min_anual": -0.1, "precipitacao_total": 1310.2, "dias_calor_extremo": 24, "dias_geada": 1}, {"ano": 2014, "temp_media_anual": 20.07, "temp_max_anual": 38.7, "temp_min_anual": 0.8, "precipitacao_total": 1899.4, "dias_calor_extremo": 25, "dias_geada": 0}, {"ano": 2015, "temp_media_anual": 20.07, "temp_max_anual": 35.8, "temp_min_anual": 0.2, "precipitacao_total": 1864.4, "dias_calor_extremo": 3, "dias_geada": 0}, {"ano": 2016, "temp_media_anual": 21.54, "temp_max_anual": 38.6, "temp_min_anual": 2.8, "precipitacao_total": 963.6, "dias_calor_extremo": 20, "dias_geada": 0}, {"ano": 2017, "temp_media_anual": 20.4, "temp_max_anual": 39.6, "temp_min_anual": -0.5, "precipitacao_total": 1578.2, "dias_calor_extremo": 18, "dias_geada": 1}, {"ano": 2018, "temp_media_anual": 19.96, "temp_max_anual": 37.5, "temp_min_anual": -0.5, "precipitacao_total": 1138.8, "dias_calor_extremo": 19, "dias_geada": 1}, {"ano": 2019, "temp_media_anual": 19.98, "temp_max_anual": 38.0, "temp_min_anual": -1.7, "precipitacao_total": 1766.2, "dias_calor_extremo": 22, "dias_geada": 1}, {"ano": 2020, "temp_media_anual": 20.18, "temp_max_anual": 39.6, "temp_min_anual": -0.6, "precipitacao_total": 1027.6, "dias_calor_extremo": 27, "dias_geada": 2}, {"ano": 2021, "temp_media_anual": 19.71, "temp_max_anual": 38.6, "temp_min_anual": 0.0, "precipitacao_total": 1111.6, "dias_calor_extremo": 18, "dias_geada": 1}, {"ano": 2022, "temp_media_anual": 19.79, "temp_max_anual": 42.9, "temp_min_anual": -0.1, "precipitacao_total": 858.4, "dias_calor_extremo": 49, "dias_geada": 1}, {"ano": 2023, "temp_media_anual": 20.86, "temp_max_anual": 40.7, "temp_min_anual": 1.4, "precipitacao_total": 1234.0, "dias_calor_extremo": 51, "dias_geada": 0}, {"ano": 2024, "temp_media_anual": 20.32, "temp_max_anual": 40.1, "temp_min_anual": -1.8, "precipitacao_total": 1588.0, "dias_calor_extremo": 27, "dias_geada": 3}, {"ano": 2025, "temp_media_anual": 20.15, "temp_max_anual": 41.3, "temp_min_anual": 1.9, "precipitacao_total": 669.2, "dias_calor_extremo": 36, "dias_geada": 0}], "inmet_mensal": [{"periodo": "2021-01", "precipitacao": 168.2, "temp_media": 24.88}, {"periodo": "2021-02", "precipitacao": 62.0, "temp_media": 24.03}, {"periodo": "2021-03", "precipitacao": 165.0, "temp_media": 22.9}, {"periodo": "2021-04", "precipitacao": 42.4, "temp_media": 21.12}, {"periodo": "2021-05", "precipitacao": 176.0, "temp_media": 14.89}, {"periodo": "2021-06", "precipitacao": 120.6, "temp_media": 13.03}, {"periodo": "2021-07", "precipitacao": 23.8, "temp_media": 13.45}, {"periodo": "2021-08", "precipitacao": 26.6, "temp_media": 15.77}, {"periodo": "2021-09", "precipitacao": 133.8, "temp_media": 18.05}, {"periodo": "2021-10", "precipitacao": 82.8, "temp_media": 20.0}, {"periodo": "2021-11", "precipitacao": 78.8, "temp_media": 23.43}, {"periodo": "2021-12", "precipitacao": 31.6, "temp_media": 25.66}, {"periodo": "2022-01", "precipitacao": 22.8, "temp_media": 28.81}, {"periodo": "2022-02", "precipitacao": 83.8, "temp_media": 26.42}, {"periodo": "2022-03", "precipitacao": 137.0, "temp_media": 21.81}, {"periodo": "2022-04", "precipitacao": 141.0, "temp_media": 19.1}, {"periodo": "2022-05", "precipitacao": 46.4, "temp_media": 14.61}, {"periodo": "2022-06", "precipitacao": 35.4, "temp_media": 11.75}, {"periodo": "2022-07", "precipitacao": 103.6, "temp_media": 16.43}, {"periodo": "2022-08", "precipitacao": 100.4, "temp_media": 14.35}, {"periodo": "2022-09", "precipitacao": 25.2, "temp_media": 15.75}, {"periodo": "2022-10", "precipitacao": 91.6, "temp_media": 19.03}, {"periodo": "2022-11", "precipitacao": 31.8, "temp_media": 23.1}, {"periodo": "2022-12", "precipitacao": 39.4, "temp_media": 26.67}, {"periodo": "2023-01", "precipitacao": 16.8, "temp_media": 28.35}, {"periodo": "2023-02", "precipitacao": 30.4, "temp_media": 26.56}, {"periodo": "2023-03", "precipitacao": 192.4, "temp_media": 26.35}, {"periodo": "2023-04", "precipitacao": 16.8, "temp_media": 20.17}, {"periodo": "2023-05", "precipitacao": 127.0, "temp_media": 17.47}, {"periodo": "2023-06", "precipitacao": 43.2, "temp_media": 16.05}, {"periodo": "2023-07", "precipitacao": 22.6, "temp_media": 14.78}, {"periodo": "2023-08", "precipitacao": 14.2, "temp_media": 16.75}, {"periodo": "2023-09", "precipitacao": 259.2, "temp_media": 17.69}, {"periodo": "2023-10", "precipitacao": 173.4, "temp_media": 19.31}, {"periodo": "2023-11", "precipitacao": 71.6, "temp_media": 22.76}, {"periodo": "2023-12", "precipitacao": 266.4, "temp_media": 24.33}, {"periodo": "2024-01", "precipitacao": 128.4, "temp_media": 24.77}, {"periodo": "2024-02", "precipitacao": 73.4, "temp_media": 27.35}, {"periodo": "2024-03", "precipitacao": 411.2, "temp_media": 24.23}, {"periodo": "2024-04", "precipitacao": 266.2, "temp_media": 21.33}, {"periodo": "2024-05", "precipitacao": 57.0, "temp_media": 14.84}, {"periodo": "2024-06", "precipitacao": 15.8, "temp_media": 17.42}, {"periodo": "2024-07", "precipitacao": 2.6, "temp_media": 12.94}, {"periodo": "2024-08", "precipitacao": 145.0, "temp_media": 14.87}, {"periodo": "2024-09", "precipitacao": 92.6, "temp_media": 18.69}, {"periodo": "2024-10", "precipitacao": 100.0, "temp_media": 21.38}, {"periodo": "2024-11", "precipitacao": 205.6, "temp_media": 23.18}, {"periodo": "2024-12", "precipitacao": 90.2, "temp_media": 23.22}, {"periodo": "2025-01", "precipitacao": 87.4, "temp_media": 26.76}, {"periodo": "2025-02", "precipitacao": 40.6, "temp_media": 27.75}, {"periodo": "2025-03", "precipitacao": 32.4, "temp_media": 28.87}, {"periodo": "2025-04", "precipitacao": 61.0, "temp_media": 19.51}, {"periodo": "2025-05", "precipitacao": 215.0, "temp_media": 17.53}, {"periodo": "2025-06", "precipitacao": 171.6, "temp_media": 12.98}, {"periodo": "2025-07", "precipitacao": 58.0, "temp_media": 14.3}, {"periodo": "2025-08", "precipitacao": 3.2, "temp_media": 13.75}, {"periodo": "2025-09", "precipitacao": 0.0, "temp_media": NaN}, {"periodo": "2025-10", "precipitacao": 0.0, "temp_media": NaN}, {"periodo": "2025-11", "precipitacao": 0.0, "temp_media": NaN}, {"periodo": "2025-12", "precipitacao": 0.0, "temp_media": NaN}], "queimadas": [{"ano": 2010, "focos": 18}, {"ano": 2011, "focos": 18}, {"ano": 2012, "focos": 57}, {"ano": 2013, "focos": 60}, {"ano": 2014, "focos": 53}, {"ano": 2015, "focos": 66}, {"ano": 2016, "focos": 37}, {"ano": 2017, "focos": 66}, {"ano": 2018, "focos": 63}, {"ano": 2019, "focos": 147}, {"ano": 2020, "focos": 391}, {"ano": 2021, "focos": 315}, {"ano": 2022, "focos": 404}, {"ano": 2023, "focos": 138}, {"ano": 2024, "focos": 85}, {"ano": 2025, "focos": 311}], "nivel_rio": [{"data_hora_utc": "2026-08-06 00:00:00", "nivel_cm": 882.0, "vazao_m3s": 14491.61}, {"data_hora_utc": "2026-08-06 00:15:00", "nivel_cm": 882.0, "vazao_m3s": 14491.61}, {"data_hora_utc": "2026-08-06 00:30:00", "nivel_cm": 882.0, "vazao_m3s": 14491.61}, {"data_hora_utc": "2026-08-06 00:45:00", "nivel_cm": 881.0, "vazao_m3s": 14462.58}, {"data_hora_utc": "2026-08-06 01:00:00", "nivel_cm": 881.0, "vazao_m3s": 14462.58}, {"data_hora_utc": "2026-08-06 01:15:00", "nivel_cm": 881.0, "vazao_m3s": 14462.58}, {"data_hora_utc": "2026-08-06 01:30:00", "nivel_cm": 881.0, "vazao_m3s": 14462.58}, {"data_hora_utc": "2026-08-06 01:45:00", "nivel_cm": 880.0, "vazao_m3s": 14433.58}, {"data_hora_utc": "2026-08-06 02:00:00", "nivel_cm": 880.0, "vazao_m3s": 14433.58}, {"data_hora_utc": "2026-08-06 02:15:00", "nivel_cm": 879.0, "vazao_m3s": 14404.6}, {"data_hora_utc": "2026-08-06 02:30:00", "nivel_cm": 879.0, "vazao_m3s": 14404.6}, {"data_hora_utc": "2026-08-06 02:45:00", "nivel_cm": 879.0, "vazao_m3s": 14404.6}, {"data_hora_utc": "2026-08-06 03:00:00", "nivel_cm": 878.0, "vazao_m3s": 14375.65}, {"data_hora_utc": "2026-08-06 03:15:00", "nivel_cm": 878.0, "vazao_m3s": 14375.65}, {"data_hora_utc": "2026-08-06 03:30:00", "nivel_cm": 878.0, "vazao_m3s": 14375.65}, {"data_hora_utc": "2026-08-06 03:45:00", "nivel_cm": 877.0, "vazao_m3s": 14346.72}, {"data_hora_utc": "2026-08-06 04:00:00", "nivel_cm": 877.0, "vazao_m3s": 14346.72}, {"data_hora_utc": "2026-08-06 04:15:00", "nivel_cm": 876.0, "vazao_m3s": 14317.81}, {"data_hora_utc": "2026-08-06 04:30:00", "nivel_cm": 876.0, "vazao_m3s": 14317.81}, {"data_hora_utc": "2026-08-06 04:45:00", "nivel_cm": 876.0, "vazao_m3s": 14317.81}, {"data_hora_utc": "2026-08-06 05:00:00", "nivel_cm": 876.0, "vazao_m3s": 14317.81}, {"data_hora_utc": "2026-08-06 05:15:00", "nivel_cm": 875.0, "vazao_m3s": 14288.92}, {"data_hora_utc": "2026-08-06 05:30:00", "nivel_cm": 875.0, "vazao_m3s": 14288.92}, {"data_hora_utc": "2026-08-06 05:45:00", "nivel_cm": 874.0, "vazao_m3s": 14260.06}, {"data_hora_utc": "2026-08-06 06:00:00", "nivel_cm": 874.0, "vazao_m3s": 14260.06}, {"data_hora_utc": "2026-08-06 06:15:00", "nivel_cm": 874.0, "vazao_m3s": 14260.06}, {"data_hora_utc": "2026-08-06 06:30:00", "nivel_cm": 873.0, "vazao_m3s": 14231.22}, {"data_hora_utc": "2026-08-06 06:45:00", "nivel_cm": 873.0, "vazao_m3s": 14231.22}, {"data_hora_utc": "2026-08-06 07:00:00", "nivel_cm": 873.0, "vazao_m3s": 14231.22}, {"data_hora_utc": "2026-08-06 07:15:00", "nivel_cm": 872.0, "vazao_m3s": 14202.41}, {"data_hora_utc": "2026-08-06 07:30:00", "nivel_cm": 872.0, "vazao_m3s": 14202.41}, {"data_hora_utc": "2026-08-06 07:45:00", "nivel_cm": 872.0, "vazao_m3s": 14202.41}, {"data_hora_utc": "2026-08-06 08:00:00", "nivel_cm": 871.0, "vazao_m3s": 14173.61}, {"data_hora_utc": "2026-08-06 08:15:00", "nivel_cm": 871.0, "vazao_m3s": 14173.61}, {"data_hora_utc": "2026-08-06 08:30:00", "nivel_cm": 870.0, "vazao_m3s": 14144.84}, {"data_hora_utc": "2026-08-06 08:45:00", "nivel_cm": 870.0, "vazao_m3s": 14144.84}, {"data_hora_utc": "2026-08-06 09:00:00", "nivel_cm": 870.0, "vazao_m3s": 14144.84}, {"data_hora_utc": "2026-08-06 09:15:00", "nivel_cm": 869.0, "vazao_m3s": 14116.1}, {"data_hora_utc": "2026-08-06 09:30:00", "nivel_cm": 869.0, "vazao_m3s": 14116.1}, {"data_hora_utc": "2026-08-06 09:45:00", "nivel_cm": 869.0, "vazao_m3s": 14116.1}, {"data_hora_utc": "2026-08-06 10:00:00", "nivel_cm": 869.0, "vazao_m3s": 14116.1}, {"data_hora_utc": "2026-08-06 10:15:00", "nivel_cm": 868.0, "vazao_m3s": 14087.38}, {"data_hora_utc": "2026-08-06 10:30:00", "nivel_cm": 868.0, "vazao_m3s": 14087.38}, {"data_hora_utc": "2026-08-06 10:45:00", "nivel_cm": 867.0, "vazao_m3s": 14058.68}, {"data_hora_utc": "2026-08-06 11:00:00", "nivel_cm": 867.0, "vazao_m3s": 14058.68}, {"data_hora_utc": "2026-08-06 11:15:00", "nivel_cm": 867.0, "vazao_m3s": 14058.68}, {"data_hora_utc": "2026-08-06 11:30:00", "nivel_cm": 866.0, "vazao_m3s": 14030.0}, {"data_hora_utc": "2026-08-06 11:45:00", "nivel_cm": 866.0, "vazao_m3s": 14030.0}, {"data_hora_utc": "2026-08-06 12:00:00", "nivel_cm": 864.0, "vazao_m3s": 13972.72}, {"data_hora_utc": "2026-08-06 12:15:00", "nivel_cm": 865.0, "vazao_m3s": 14001.35}, {"data_hora_utc": "2026-08-06 12:30:00", "nivel_cm": 865.0, "vazao_m3s": 14001.35}, {"data_hora_utc": "2026-08-06 12:45:00", "nivel_cm": 865.0, "vazao_m3s": 14001.35}, {"data_hora_utc": "2026-08-06 13:00:00", "nivel_cm": 863.0, "vazao_m3s": 13944.11}, {"data_hora_utc": "2026-08-06 13:15:00", "nivel_cm": 862.0, "vazao_m3s": 13915.53}, {"data_hora_utc": "2026-08-06 13:30:00", "nivel_cm": 862.0, "vazao_m3s": 13915.53}, {"data_hora_utc": "2026-08-06 13:45:00", "nivel_cm": 861.0, "vazao_m3s": 13886.97}, {"data_hora_utc": "2026-08-06 14:00:00", "nivel_cm": 861.0, "vazao_m3s": 13886.97}, {"data_hora_utc": "2026-08-06 14:15:00", "nivel_cm": 861.0, "vazao_m3s": 13886.97}, {"data_hora_utc": "2026-08-06 14:30:00", "nivel_cm": 861.0, "vazao_m3s": 13886.97}, {"data_hora_utc": "2026-08-06 14:45:00", "nivel_cm": 860.0, "vazao_m3s": 13858.43}, {"data_hora_utc": "2026-08-06 15:00:00", "nivel_cm": 860.0, "vazao_m3s": 13858.43}, {"data_hora_utc": "2026-08-06 15:15:00", "nivel_cm": 859.0, "vazao_m3s": 13829.92}, {"data_hora_utc": "2026-08-06 15:30:00", "nivel_cm": 858.0, "vazao_m3s": 13801.43}, {"data_hora_utc": "2026-08-06 15:45:00", "nivel_cm": 858.0, "vazao_m3s": 13801.43}, {"data_hora_utc": "2026-08-06 16:00:00", "nivel_cm": 860.0, "vazao_m3s": 13858.43}, {"data_hora_utc": "2026-08-06 16:15:00", "nivel_cm": 859.0, "vazao_m3s": 13829.92}, {"data_hora_utc": "2026-08-06 16:30:00", "nivel_cm": 864.0, "vazao_m3s": 13972.72}, {"data_hora_utc": "2026-08-06 16:45:00", "nivel_cm": 861.0, "vazao_m3s": 13886.97}, {"data_hora_utc": "2026-08-06 17:00:00", "nivel_cm": 858.0, "vazao_m3s": 13801.43}, {"data_hora_utc": "2026-08-06 17:15:00", "nivel_cm": 857.0, "vazao_m3s": 13772.96}, {"data_hora_utc": "2026-08-06 17:30:00", "nivel_cm": 859.0, "vazao_m3s": 13829.92}, {"data_hora_utc": "2026-08-06 17:45:00", "nivel_cm": 858.0, "vazao_m3s": 13801.43}, {"data_hora_utc": "2026-08-06 18:00:00", "nivel_cm": 858.0, "vazao_m3s": 13801.43}, {"data_hora_utc": "2026-08-06 18:15:00", "nivel_cm": 858.0, "vazao_m3s": 13801.43}, {"data_hora_utc": "2026-08-06 18:30:00", "nivel_cm": 859.0, "vazao_m3s": 13829.92}, {"data_hora_utc": "2026-08-06 18:45:00", "nivel_cm": 853.0, "vazao_m3s": 13659.33}, {"data_hora_utc": "2026-08-06 19:00:00", "nivel_cm": 857.0, "vazao_m3s": 13772.96}, {"data_hora_utc": "2026-08-06 19:15:00", "nivel_cm": 857.0, "vazao_m3s": 13772.96}, {"data_hora_utc": "2026-08-06 19:30:00", "nivel_cm": 858.0, "vazao_m3s": 13801.43}, {"data_hora_utc": "2026-08-06 19:45:00", "nivel_cm": 855.0, "vazao_m3s": 13716.1}, {"data_hora_utc": "2026-08-06 20:00:00", "nivel_cm": 850.0, "vazao_m3s": 13574.35}, {"data_hora_utc": "2026-08-06 20:15:00", "nivel_cm": 853.0, "vazao_m3s": 13659.33}, {"data_hora_utc": "2026-08-06 20:30:00", "nivel_cm": 852.0, "vazao_m3s": 13630.98}, {"data_hora_utc": "2026-08-06 20:45:00", "nivel_cm": 854.0, "vazao_m3s": 13687.7}, {"data_hora_utc": "2026-08-06 21:00:00", "nivel_cm": 849.0, "vazao_m3s": 13546.07}, {"data_hora_utc": "2026-08-06 21:15:00", "nivel_cm": 850.0, "vazao_m3s": 13574.35}, {"data_hora_utc": "2026-08-06 21:30:00", "nivel_cm": 857.0, "vazao_m3s": 13772.96}, {"data_hora_utc": "2026-08-06 21:45:00", "nivel_cm": 850.0, "vazao_m3s": 13574.35}, {"data_hora_utc": "2026-08-06 22:00:00", "nivel_cm": 849.0, "vazao_m3s": 13546.07}, {"data_hora_utc": "2026-08-06 22:15:00", "nivel_cm": 844.0, "vazao_m3s": 13405.02}, {"data_hora_utc": "2026-08-06 22:30:00", "nivel_cm": 847.0, "vazao_m3s": 13489.58}, {"data_hora_utc": "2026-08-06 22:45:00", "nivel_cm": 845.0, "vazao_m3s": 13433.19}, {"data_hora_utc": "2026-08-06 23:00:00", "nivel_cm": 849.0, "vazao_m3s": 13546.07}, {"data_hora_utc": "2026-08-06 23:15:00", "nivel_cm": 848.0, "vazao_m3s": 13517.81}, {"data_hora_utc": "2026-08-06 23:30:00", "nivel_cm": 847.0, "vazao_m3s": 13489.58}, {"data_hora_utc": "2026-08-06 23:45:00", "nivel_cm": 845.0, "vazao_m3s": 13433.19}, {"data_hora_utc": "2026-08-07 00:00:00", "nivel_cm": 850.0, "vazao_m3s": 13574.35}, {"data_hora_utc": "2026-08-07 00:15:00", "nivel_cm": 843.0, "vazao_m3s": 13376.88}, {"data_hora_utc": "2026-08-07 00:30:00", "nivel_cm": 843.0, "vazao_m3s": 13376.88}, {"data_hora_utc": "2026-08-07 00:45:00", "nivel_cm": 844.0, "vazao_m3s": 13405.02}, {"data_hora_utc": "2026-08-07 01:00:00", "nivel_cm": 845.0, "vazao_m3s": 13433.19}, {"data_hora_utc": "2026-08-07 01:15:00", "nivel_cm": 854.0, "vazao_m3s": 13687.7}, {"data_hora_utc": "2026-08-07 01:30:00", "nivel_cm": 842.0, "vazao_m3s": 13348.77}, {"data_hora_utc": "2026-08-07 01:45:00", "nivel_cm": 840.0, "vazao_m3s": 13292.61}, {"data_hora_utc": "2026-08-07 02:00:00", "nivel_cm": 839.0, "vazao_m3s": 13264.56}, {"data_hora_utc": "2026-08-07 02:15:00", "nivel_cm": 845.0, "vazao_m3s": 13433.19}, {"data_hora_utc": "2026-08-07 02:30:00", "nivel_cm": 841.0, "vazao_m3s": 13320.68}, {"data_hora_utc": "2026-08-07 02:45:00", "nivel_cm": 844.0, "vazao_m3s": 13405.02}, {"data_hora_utc": "2026-08-07 03:00:00", "nivel_cm": 842.0, "vazao_m3s": 13348.77}, {"data_hora_utc": "2026-08-07 03:15:00", "nivel_cm": 840.0, "vazao_m3s": 13292.61}, {"data_hora_utc": "2026-08-07 03:30:00", "nivel_cm": 839.0, "vazao_m3s": 13264.56}, {"data_hora_utc": "2026-08-07 03:45:00", "nivel_cm": 839.0, "vazao_m3s": 13264.56}, {"data_hora_utc": "2026-08-07 04:00:00", "nivel_cm": 838.0, "vazao_m3s": 13236.54}, {"data_hora_utc": "2026-08-07 04:15:00", "nivel_cm": 839.0, "vazao_m3s": 13264.56}, {"data_hora_utc": "2026-08-07 04:30:00", "nivel_cm": 843.0, "vazao_m3s": 13376.88}, {"data_hora_utc": "2026-08-07 04:45:00", "nivel_cm": 837.0, "vazao_m3s": 13208.54}, {"data_hora_utc": "2026-08-07 05:00:00", "nivel_cm": 838.0, "vazao_m3s": 13236.54}, {"data_hora_utc": "2026-08-07 05:15:00", "nivel_cm": 838.0, "vazao_m3s": 13236.54}, {"data_hora_utc": "2026-08-07 05:30:00", "nivel_cm": 841.0, "vazao_m3s": 13320.68}, {"data_hora_utc": "2026-08-07 05:45:00", "nivel_cm": 841.0, "vazao_m3s": 13320.68}, {"data_hora_utc": "2026-08-07 06:00:00", "nivel_cm": 839.0, "vazao_m3s": 13264.56}, {"data_hora_utc": "2026-08-07 06:15:00", "nivel_cm": 837.0, "vazao_m3s": 13208.54}, {"data_hora_utc": "2026-08-07 06:30:00", "nivel_cm": 834.0, "vazao_m3s": 13124.69}, {"data_hora_utc": "2026-08-07 06:45:00", "nivel_cm": 834.0, "vazao_m3s": 13124.69}, {"data_hora_utc": "2026-08-07 07:00:00", "nivel_cm": 835.0, "vazao_m3s": 13152.62}, {"data_hora_utc": "2026-08-07 07:15:00", "nivel_cm": 838.0, "vazao_m3s": 13236.54}, {"data_hora_utc": "2026-08-07 07:30:00", "nivel_cm": 833.0, "vazao_m3s": 13096.79}, {"data_hora_utc": "2026-08-07 07:45:00", "nivel_cm": 831.0, "vazao_m3s": 13041.05}, {"data_hora_utc": "2026-08-07 08:00:00", "nivel_cm": 831.0, "vazao_m3s": 13041.05}, {"data_hora_utc": "2026-08-07 08:15:00", "nivel_cm": 831.0, "vazao_m3s": 13041.05}, {"data_hora_utc": "2026-08-07 08:30:00", "nivel_cm": 831.0, "vazao_m3s": 13041.05}, {"data_hora_utc": "2026-08-07 08:45:00", "nivel_cm": 832.0, "vazao_m3s": 13068.91}, {"data_hora_utc": "2026-08-07 09:00:00", "nivel_cm": 835.0, "vazao_m3s": 13152.62}, {"data_hora_utc": "2026-08-07 09:15:00", "nivel_cm": 830.0, "vazao_m3s": 13013.22}, {"data_hora_utc": "2026-08-07 09:30:00", "nivel_cm": 830.0, "vazao_m3s": 13013.22}, {"data_hora_utc": "2026-08-07 09:45:00", "nivel_cm": 830.0, "vazao_m3s": 13013.22}, {"data_hora_utc": "2026-08-07 10:00:00", "nivel_cm": 830.0, "vazao_m3s": 13013.22}, {"data_hora_utc": "2026-08-07 10:15:00", "nivel_cm": 829.0, "vazao_m3s": 12985.41}, {"data_hora_utc": "2026-08-07 10:30:00", "nivel_cm": 828.0, "vazao_m3s": 12957.63}, {"data_hora_utc": "2026-08-07 10:45:00", "nivel_cm": 828.0, "vazao_m3s": 12957.63}, {"data_hora_utc": "2026-08-07 11:00:00", "nivel_cm": 828.0, "vazao_m3s": 12957.63}, {"data_hora_utc": "2026-08-07 11:15:00", "nivel_cm": 828.0, "vazao_m3s": 12957.63}, {"data_hora_utc": "2026-08-07 11:30:00", "nivel_cm": 828.0, "vazao_m3s": 12957.63}, {"data_hora_utc": "2026-08-07 11:45:00", "nivel_cm": 828.0, "vazao_m3s": 12957.63}, {"data_hora_utc": "2026-08-07 12:00:00", "nivel_cm": 827.0, "vazao_m3s": 12929.87}, {"data_hora_utc": "2026-08-07 12:15:00", "nivel_cm": 827.0, "vazao_m3s": 12929.87}, {"data_hora_utc": "2026-08-07 12:30:00", "nivel_cm": 827.0, "vazao_m3s": 12929.87}, {"data_hora_utc": "2026-08-07 12:45:00", "nivel_cm": 827.0, "vazao_m3s": 12929.87}, {"data_hora_utc": "2026-08-07 13:00:00", "nivel_cm": 827.0, "vazao_m3s": 12929.87}, {"data_hora_utc": "2026-08-07 13:15:00", "nivel_cm": 827.0, "vazao_m3s": 12929.87}, {"data_hora_utc": "2026-08-07 13:30:00", "nivel_cm": 827.0, "vazao_m3s": 12929.87}, {"data_hora_utc": "2026-08-07 13:45:00", "nivel_cm": 827.0, "vazao_m3s": 12929.87}, {"data_hora_utc": "2026-08-07 14:00:00", "nivel_cm": 827.0, "vazao_m3s": 12929.87}, {"data_hora_utc": "2026-08-07 14:15:00", "nivel_cm": 826.0, "vazao_m3s": 12902.13}, {"data_hora_utc": "2026-08-07 14:30:00", "nivel_cm": 826.0, "vazao_m3s": 12902.13}, {"data_hora_utc": "2026-08-07 14:45:00", "nivel_cm": 825.0, "vazao_m3s": 12874.41}, {"data_hora_utc": "2026-08-07 15:00:00", "nivel_cm": 825.0, "vazao_m3s": 12874.41}, {"data_hora_utc": "2026-08-07 15:15:00", "nivel_cm": 824.0, "vazao_m3s": 12846.72}, {"data_hora_utc": "2026-08-07 15:30:00", "nivel_cm": 824.0, "vazao_m3s": 12846.72}, {"data_hora_utc": "2026-08-07 15:45:00", "nivel_cm": 824.0, "vazao_m3s": 12846.72}, {"data_hora_utc": "2026-08-07 16:00:00", "nivel_cm": 823.0, "vazao_m3s": 12819.05}, {"data_hora_utc": "2026-08-07 16:15:00", "nivel_cm": 823.0, "vazao_m3s": 12819.05}, {"data_hora_utc": "2026-08-07 16:30:00", "nivel_cm": 823.0, "vazao_m3s": 12819.05}, {"data_hora_utc": "2026-08-07 16:45:00", "nivel_cm": 822.0, "vazao_m3s": 12791.41}, {"data_hora_utc": "2026-08-07 17:00:00", "nivel_cm": 822.0, "vazao_m3s": 12791.41}, {"data_hora_utc": "2026-08-07 17:15:00", "nivel_cm": 822.0, "vazao_m3s": 12791.41}, {"data_hora_utc": "2026-08-07 17:30:00", "nivel_cm": 821.0, "vazao_m3s": 12763.79}, {"data_hora_utc": "2026-08-07 17:45:00", "nivel_cm": 820.0, "vazao_m3s": 12736.2}, {"data_hora_utc": "2026-08-07 18:00:00", "nivel_cm": 821.0, "vazao_m3s": 12763.79}, {"data_hora_utc": "2026-08-07 18:15:00", "nivel_cm": 820.0, "vazao_m3s": 12736.2}, {"data_hora_utc": "2026-08-07 18:30:00", "nivel_cm": 820.0, "vazao_m3s": 12736.2}, {"data_hora_utc": "2026-08-07 18:45:00", "nivel_cm": 819.0, "vazao_m3s": 12708.62}, {"data_hora_utc": "2026-08-07 19:00:00", "nivel_cm": 819.0, "vazao_m3s": 12708.62}, {"data_hora_utc": "2026-08-07 19:15:00", "nivel_cm": 819.0, "vazao_m3s": 12708.62}, {"data_hora_utc": "2026-08-07 19:30:00", "nivel_cm": 819.0, "vazao_m3s": 12708.62}, {"data_hora_utc": "2026-08-07 19:45:00", "nivel_cm": 819.0, "vazao_m3s": 12708.62}, {"data_hora_utc": "2026-08-07 20:00:00", "nivel_cm": 818.0, "vazao_m3s": 12681.08}, {"data_hora_utc": "2026-08-07 20:15:00", "nivel_cm": 818.0, "vazao_m3s": 12681.08}, {"data_hora_utc": "2026-08-07 20:30:00", "nivel_cm": 818.0, "vazao_m3s": 12681.08}, {"data_hora_utc": "2026-08-07 20:45:00", "nivel_cm": 817.0, "vazao_m3s": 12653.55}, {"data_hora_utc": "2026-08-07 21:00:00", "nivel_cm": 817.0, "vazao_m3s": 12653.55}, {"data_hora_utc": "2026-08-07 21:15:00", "nivel_cm": 816.0, "vazao_m3s": 12626.05}, {"data_hora_utc": "2026-08-07 21:30:00", "nivel_cm": 816.0, "vazao_m3s": 12626.05}]};
+
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(e);
+  return e;
+}
+function fmtInt(n){ return Math.round(n).toLocaleString('pt-BR'); }
+function fmt1(n){ return n.toLocaleString('pt-BR', {maximumFractionDigits:1}); }
+
+function niceTicks(maxVal, count){
+  count = count || 4;
+  if(maxVal <= 0) maxVal = 1;
+  const roughStep = maxVal / count;
+  const mag = Math.pow(10, Math.floor(Math.log10(roughStep)));
+  const norm = roughStep / mag;
+  let step;
+  if(norm < 1.5) step = 1 * mag;
+  else if(norm < 3) step = 2 * mag;
+  else if(norm < 7) step = 5 * mag;
+  else step = 10 * mag;
+  const niceMax = Math.ceil(maxVal / step) * step;
+  const ticks = [];
+  for(let v = 0; v <= niceMax + 1e-9; v += step) ticks.push(Math.round(v * 1000) / 1000);
+  return ticks;
+}
+function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+function renderLineChart(containerId, tooltipId, opts){
+  const container = document.getElementById(containerId);
+  const tooltip = document.getElementById(tooltipId);
+  const width = container.clientWidth || 560;
+  const height = opts.height || 200;
+  const padL = opts.padL || 46, padR = 14, padT = 14, padB = 24;
+  const innerW = width - padL - padR;
+  const innerH = height - padT - padB;
+  const n = opts.labels.length;
+
+  const allY = opts.series.flatMap(s => s.data);
+  const ticks = niceTicks(Math.max(...allY, 0), 4);
+  const maxY = ticks[ticks.length - 1];
+
+  container.innerHTML = '';
+  const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
+
+  const xAt = i => padL + (n === 1 ? innerW/2 : innerW * i/(n-1));
+  const yAt = v => padT + innerH - (innerH * v/maxY);
+
+  ticks.forEach(v => {
+    const y = yAt(v);
+    el('line', {x1:padL, x2:padL+innerW, y1:y, y2:y, class:'gridline'}, svg);
+    const t = el('text', {x:padL-8, y:y+3.5, class:'axis-label', 'text-anchor':'end'}, svg);
+    t.textContent = opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+  });
+  el('line', {x1:padL, x2:padL+innerW, y1:padT+innerH, y2:padT+innerH, class:'baseline'}, svg);
+
+  const xTickEvery = Math.max(1, Math.ceil(n/8));
+  opts.labels.forEach((lab, i) => {
+    if(i % xTickEvery === 0 || i === n-1){
+      const t = el('text', {x:xAt(i), y:height-6, class:'axis-label', 'text-anchor': i===n-1 ? 'end' : (i===0?'start':'middle')}, svg);
+      t.textContent = lab;
+    }
+  });
+
+  const hoverLine = el('line', {x1:padL, x2:padL, y1:padT, y2:padT+innerH, class:'crosshair'}, svg);
+  hoverLine.style.opacity = 0;
+
+  opts.series.forEach(s => {
+    const d = s.data.map((v,i) => (i===0?'M':'L') + xAt(i).toFixed(1) + ' ' + yAt(v).toFixed(1)).join(' ');
+    el('path', {d, fill:'none', stroke:s.color, 'stroke-width':2, 'stroke-linecap':'round', 'stroke-linejoin':'round', opacity: s.emphasis===false?0.7:1}, svg);
+    const lastI = s.data.length - 1;
+    el('circle', {cx:xAt(lastI), cy:yAt(s.data[lastI]), r:4, fill:s.color, stroke:cssVar('--surface-card'), 'stroke-width':2}, svg);
+    if(s.emphasis !== false){
+      const t = el('text', {x:xAt(lastI)-2, y:yAt(s.data[lastI]) - 9, class:'end-label', fill:s.color, 'text-anchor':'end'}, svg);
+      t.textContent = opts.yFormat ? opts.yFormat(s.data[lastI]) : fmtInt(s.data[lastI]);
+    }
+  });
+
+  const hit = el('rect', {x:padL, y:0, width:innerW, height, fill:'transparent'}, svg);
+  function showAt(clientX){
+    const rect = svg.getBoundingClientRect();
+    const scaleX = width / rect.width;
+    const mx = (clientX - rect.left) * scaleX;
+    let idx = Math.round((mx - padL) / innerW * (n-1));
+    idx = Math.max(0, Math.min(n-1, idx));
+    hoverLine.setAttribute('x1', xAt(idx)); hoverLine.setAttribute('x2', xAt(idx));
+    hoverLine.style.opacity = 1;
+    let html = `<div class="tt-x">${opts.labels[idx]}</div>`;
+    opts.series.forEach(s => {
+      html += `<div class="tt-row"><span class="tt-key" style="border-color:${s.color}"></span><span class="tt-val">${opts.yFormat ? opts.yFormat(s.data[idx]) : fmtInt(s.data[idx])}</span><span class="tt-name">${s.name}</span></div>`;
+    });
+    tooltip.innerHTML = html;
+    tooltip.style.opacity = 1;
+    const pct = (xAt(idx) / width) * 100;
+    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+  }
+  hit.addEventListener('pointermove', e => showAt(e.clientX));
+  hit.addEventListener('pointerleave', () => { hoverLine.style.opacity = 0; tooltip.style.opacity = 0; });
+
+  if(opts.legendSlot){
+    const slot = document.getElementById(opts.legendSlot);
+    slot.innerHTML = '';
+    opts.series.forEach(s => {
+      const item = document.createElement('span'); item.className = 'legend-item';
+      const sw = document.createElement('span'); sw.className = 'legend-swatch'; sw.style.background = s.color;
+      const lab = document.createElement('span'); lab.textContent = s.name;
+      item.appendChild(sw); item.appendChild(lab); slot.appendChild(item);
+    });
+  }
+}
+
+function roundedTopBarPath(x, yTop, w, yBottom, r){
+  r = Math.max(0, Math.min(r, w/2, Math.max(0, yBottom - yTop)));
+  return `M ${x} ${yBottom} L ${x} ${yTop+r} Q ${x} ${yTop} ${x+r} ${yTop} L ${x+w-r} ${yTop} Q ${x+w} ${yTop} ${x+w} ${yTop+r} L ${x+w} ${yBottom} Z`;
+}
+function renderBarChart(containerId, tooltipId, opts){
+  const container = document.getElementById(containerId);
+  const tooltip = document.getElementById(tooltipId);
+  const width = container.clientWidth || 300;
+  const height = opts.height || 190;
+  const padL = opts.padL || 40, padR = 10, padT = 14, padB = 24;
+  const innerW = width - padL - padR;
+  const innerH = height - padT - padB;
+  const n = opts.labels.length;
+
+  const ticks = niceTicks(Math.max(...opts.data, 0), opts.tickCount || 4);
+  const maxY = ticks[ticks.length - 1] || 1;
+
+  container.innerHTML = '';
+  const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
+
+  const yAt = v => padT + innerH - (innerH * v / maxY);
+  ticks.forEach(v => {
+    const y = yAt(v);
+    el('line', {x1:padL, x2:padL+innerW, y1:y, y2:y, class:'gridline'}, svg);
+    const t = el('text', {x:padL-7, y:y+3.5, class:'axis-label', 'text-anchor':'end'}, svg);
+    t.textContent = opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+  });
+  el('line', {x1:padL, x2:padL+innerW, y1:padT+innerH, y2:padT+innerH, class:'baseline'}, svg);
+
+  const slot = innerW / n;
+  const barW = Math.max(3, Math.min(24, slot - Math.max(2, slot*0.25)));
+  const xTickEvery = Math.max(1, Math.ceil(n/9));
+  const maxIdx = opts.data.indexOf(Math.max(...opts.data));
+
+  opts.data.forEach((v, i) => {
+    const cx = padL + slot*i + slot/2;
+    const x = cx - barW/2;
+    const yTop = yAt(v);
+    const path = roundedTopBarPath(x, yTop, barW, padT+innerH, 3);
+    const color = opts.colors ? opts.colors[i] : opts.color;
+    const bar = el('path', {d:path, fill:color, class:'bar-mark'}, svg);
+    bar.addEventListener('pointermove', e => showTip(e, i));
+    bar.addEventListener('pointerleave', hideTip);
+
+    if(i === maxIdx || i === n-1){
+      const t = el('text', {x:cx, y:yTop-6, class:'bar-label', 'text-anchor':'middle'}, svg);
+      t.textContent = opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+    }
+    if(i % xTickEvery === 0 || i === n-1){
+      const t = el('text', {x:cx, y:height-6, class:'axis-label', 'text-anchor':'middle'}, svg);
+      t.textContent = opts.labels[i];
+    }
+  });
+
+  function showTip(e, i){
+    const rect = svg.getBoundingClientRect();
+    const color = opts.colors ? opts.colors[i] : opts.color;
+    tooltip.innerHTML = `<div class="tt-x">${opts.labels[i]}</div><div class="tt-row"><span class="tt-key" style="border-color:${color}"></span><span class="tt-val">${opts.yFormat ? opts.yFormat(opts.data[i]) : fmtInt(opts.data[i])}</span><span class="tt-name">${opts.seriesName || ''}</span></div>`;
+    tooltip.style.opacity = 1;
+    const pct = ((e.clientX - rect.left) / rect.width) * 100;
+    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+  }
+  function hideTip(){ tooltip.style.opacity = 0; }
+}
+
+function sparkline(svgHost, values, color){
+  svgHost.innerHTML = '';
+  const w = 100, h = 28;
+  const svg = el('svg', {viewBox:`0 0 ${w} ${h}`, preserveAspectRatio:'none'}, svgHost);
+  const max = Math.max(...values, 1), min = Math.min(...values, 0);
+  const range = (max - min) || 1;
+  const n = values.length;
+  const x = i => (w-4) * i/(n-1) + 2;
+  const y = v => h - 3 - ( (v-min)/range * (h-6) );
+  const d = values.map((v,i) => (i===0?'M':'L') + x(i).toFixed(1) + ' ' + y(v).toFixed(1)).join(' ');
+  el('path', {d, fill:'none', stroke:color, 'stroke-width':1.6, 'stroke-linecap':'round', 'stroke-linejoin':'round'}, svg);
+  el('circle', {cx:x(n-1), cy:y(values[n-1]), r:2.4, fill:color}, svg);
+}
+
+/* ================= KPI row ================= */
+const anualLast = DATA.inmet_anual[DATA.inmet_anual.length-1];
+const queimLast = DATA.queimadas[DATA.queimadas.length-1];
+const nivelLast = DATA.nivel_rio[DATA.nivel_rio.length-1];
+
+const kpis = [
+  {label:`Precipitação total · ${anualLast.ano}`, value: Math.round(anualLast.precipitacao_total), unit:'mm', sub:`média 2007–2024: ${fmtInt(DATA.inmet_anual.slice(0,-1).reduce((a,r)=>a+r.precipitacao_total,0)/(DATA.inmet_anual.length-1))} mm`, spark: DATA.inmet_anual.map(r=>r.precipitacao_total)},
+  {label:`Dias de calor ≥35°C · ${anualLast.ano}`, value: anualLast.dias_calor_extremo, unit:'dias', sub:`recorde: ${Math.max(...DATA.inmet_anual.map(r=>r.dias_calor_extremo))} dias (2023)`, spark: DATA.inmet_anual.map(r=>r.dias_calor_extremo)},
+  {label:`Focos de queimada · ${queimLast.ano}`, value: queimLast.focos, unit:'focos', sub:`pico 2022: ${fmtInt(Math.max(...DATA.queimadas.map(r=>r.focos)))}`, spark: DATA.queimadas.map(r=>r.focos)},
+  {label:`Nível do rio agora`, value: Math.round(nivelLast.nivel_cm), unit:'cm', sub:`vazão ${fmtInt(nivelLast.vazao_m3s)} m³/s`, spark: DATA.nivel_rio.map(r=>r.nivel_cm)},
+];
+const kpiRow = document.getElementById('kpiRow');
+kpis.forEach(k => {
+  const tile = document.createElement('div'); tile.className = 'kpi-tile';
+  tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${fmtInt(k.value)}<span class="kpi-unit">${k.unit}</span></div><div class="kpi-sub">${k.sub}</div><div class="kpi-spark"></div>`;
+  kpiRow.appendChild(tile);
+  sparkline(tile.querySelector('.kpi-spark'), k.spark, cssVar('--series-blue'));
+});
+
+/* ================= charts ================= */
+function draw(){
+  const blue = cssVar('--series-blue');
+
+  renderBarChart('chart-precip-anual', 'tt-precip-anual', {
+    labels: DATA.inmet_anual.map(r=>r.ano), data: DATA.inmet_anual.map(r=>r.precipitacao_total),
+    color: blue, seriesName: 'mm', height: 190, yFormat: v => fmtInt(v),
+  });
+  renderBarChart('chart-calor', 'tt-calor', {
+    labels: DATA.inmet_anual.map(r=>r.ano), data: DATA.inmet_anual.map(r=>r.dias_calor_extremo),
+    color: blue, seriesName: 'dias', height: 190,
+  });
+  renderLineChart('chart-temp-anual', 'tt-temp-anual', {
+    labels: DATA.inmet_anual.map(r=>r.ano),
+    series: [{name:'Temperatura média', color: blue, data: DATA.inmet_anual.map(r=>r.temp_media_anual)}],
+    height: 190, yFormat: v => fmt1(v)+'°C',
+  });
+  renderLineChart('chart-precip-mensal', 'tt-precip-mensal', {
+    labels: DATA.inmet_mensal.map(r=>r.periodo.slice(2)),
+    series: [{name:'Precipitação mensal', color: blue, data: DATA.inmet_mensal.map(r=>r.precipitacao)}],
+    height: 190, padL: 40, yFormat: v => fmtInt(v)+'mm',
+  });
+
+  const nivelLabels = DATA.nivel_rio.map(r => r.data_hora_utc.slice(5,16));
+  renderLineChart('chart-nivel', 'tt-nivel', {
+    labels: nivelLabels,
+    series: [{name:'Nível', color: blue, data: DATA.nivel_rio.map(r=>r.nivel_cm)}],
+    height: 190, yFormat: v => fmtInt(v)+' cm',
+  });
+  renderLineChart('chart-vazao', 'tt-vazao', {
+    labels: nivelLabels,
+    series: [{name:'Vazão', color: blue, data: DATA.nivel_rio.map(r=>r.vazao_m3s)}],
+    height: 190, yFormat: v => fmtInt(v),
+  });
+
+  renderBarChart('chart-queimadas', 'tt-queimadas', {
+    labels: DATA.queimadas.map(r=>r.ano), data: DATA.queimadas.map(r=>r.focos),
+    color: blue, seriesName: 'focos', height: 190,
+  });
+}
+draw();
+window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+
+/* ================= tables ================= */
+const table = document.getElementById('tabelaAnual');
+const head = document.createElement('thead');
+head.innerHTML = '<tr><th>Ano</th><th>Precipitação (mm)</th><th>Temp. média (°C)</th><th>Temp. máx (°C)</th><th>Temp. mín (°C)</th><th>Dias ≥35°C</th><th>Dias de geada</th><th>Focos de queimada</th></tr>';
+table.appendChild(head);
+const tbody = document.createElement('tbody');
+const queimByAno = Object.fromEntries(DATA.queimadas.map(r=>[r.ano,r]));
+DATA.inmet_anual.forEach(r => {
+  const q = queimByAno[r.ano];
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${r.ano}</td><td>${fmtInt(r.precipitacao_total)}</td><td>${fmt1(r.temp_media_anual)}</td><td>${fmt1(r.temp_max_anual)}</td><td>${fmt1(r.temp_min_anual)}</td><td>${r.dias_calor_extremo}</td><td>${r.dias_geada}</td><td>${q ? fmtInt(q.focos) : '—'}</td>`;
+  tbody.appendChild(tr);
+});
+table.appendChild(tbody);
+
+const tabelaNivel = document.getElementById('tabelaNivel');
+const head2 = document.createElement('thead');
+head2.innerHTML = '<tr><th>Data/hora (UTC)</th><th>Nível (cm)</th><th>Vazão (m³/s)</th></tr>';
+tabelaNivel.appendChild(head2);
+const tbody2 = document.createElement('tbody');
+DATA.nivel_rio.slice().reverse().forEach(r => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${r.data_hora_utc}</td><td>${fmtInt(r.nivel_cm)}</td><td>${fmt1(r.vazao_m3s)}</td>`;
+  tbody2.appendChild(tr);
+});
+tabelaNivel.appendChild(tbody2);
+</script>

@@ -188,12 +188,20 @@ def main() -> None:
                 gdf = gdf.to_crs(CRS_PADRAO)
             gdf.columns = [c.strip().lower() for c in gdf.columns]
             gdf.to_file(caminho_saida, driver="GPKG", layer=nome_layer)
+            area_por_classe = (
+                (gdf.assign(_area_km2=gdf.geometry.area / 1e6).groupby("classe")["_area_km2"].sum().round(2).to_dict())
+                if "classe" in gdf.columns else None
+            )
             camadas_info[nome_layer] = {
                 "n_feicoes": len(gdf),
-                "classes": gdf["classe"].value_counts().to_dict() if "classe" in gdf.columns else None,
-                "area_km2": round(gdf.geometry.area.sum() / 1e6, 2),
+                "n_feicoes_por_classe": gdf["classe"].value_counts().to_dict() if "classe" in gdf.columns else None,
+                "area_km2_por_classe": area_por_classe,
+                "area_km2_total": round(gdf.geometry.area.sum() / 1e6, 2),
             }
-            logger.info("Camada '%s': %d feições, %s", nome_layer, len(gdf), camadas_info[nome_layer]["classes"])
+            logger.info(
+                "Camada '%s': %d feições — contagem %s — área (km²) %s",
+                nome_layer, len(gdf), camadas_info[nome_layer]["n_feicoes_por_classe"], area_por_classe,
+            )
 
     metadados = {
         "fonte": f"CPRM/SGB — {item['name']}",
@@ -220,10 +228,12 @@ def main() -> None:
         ),
         "aviso_interpretacao": (
             "classificação de suscetibilidade é um produto de modelagem (ver nota técnica do projeto), validado "
-            "por campo em 2021 — não é medição direta; para movimento de massa, quase toda a área do município "
-            "recebeu classe 'Média' de forma bastante uniforme, o que pode refletir a metodologia do modelo "
-            "aplicada a um relevo predominantemente plano (Pampa) mais do que um levantamento de campo "
-            "detalhado por polígono — sinalizar para validação da equipe de saúde/geociências antes de uso"
+            "por campo em 2021 — não é medição direta; contagem de polígonos e área ocupada contam histórias "
+            "diferentes aqui — usar área, não contagem, para 'quanto do município': em movimento de massa, "
+            "1 único polígono 'Baixa' cobre ~5699 km² (quase o município inteiro) e os 42 polígonos 'Média' "
+            "somam só ~0,5 km² (pontos localizados, prováveis margens/taludes) — ou seja, a classificação "
+            "dominante por ÁREA é Baixa, coerente com o relevo plano do Pampa, não Média como a contagem de "
+            "polígonos sozinha sugeriria"
         ),
         "data_processamento": datetime.now(timezone.utc).isoformat(),
     }
