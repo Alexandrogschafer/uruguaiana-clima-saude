@@ -54,6 +54,20 @@ Mês: extraído de DT_NOTIFIC (data de notificação, sempre preenchida) —
 não DT_SIN_PRI (data dos primeiros sintomas), que é o padrão para curva
 epidemiológica mas pode ficar em branco em notificações incompletas.
 
+Meses futuros no arquivo PRELIM do ano corrente (correção 2026-08-09)
+------------------------------------------------------------------------
+`contar_por_mes` sempre gera 12 linhas/ano; para o ano corrente (PRELIM),
+o arquivo do DATASUS só tem notificações até uma data de corte real
+(ex. até 02/08 quando extraído em 09/08) — sem tratamento especial, os
+meses depois dessa data apareciam como notificacoes=0, indistinguível de
+um mês decorrido sem casos. Corrigido: `contar_por_mes` recebe a data
+máxima de notificação do arquivo NACIONAL (antes do filtro por
+município, calculada em `baixar_e_filtrar`) e marca meses inteiramente
+posteriores a ela como notificacoes=NA / situacao="mes_ainda_nao_decorrido",
+e o mês em que a data de corte cai no meio como
+situacao="preliminar_mes_incompleto" (contagem real, mas mês ainda não
+fechado no arquivo). Ver `situacoes_possiveis` no metadado gerado.
+
 Ambiente: rodar com `.venv-pysus/bin/python` (ver
 scripts/utils/datasus_ftp.py).
 
@@ -107,7 +121,7 @@ def mapear_arquivos_por_ano(diretorio: str, prefixo_agravo: str) -> dict[int, st
     return mapa
 
 
-def baixar_e_filtrar(diretorio: str, nome_arquivo: str, prefixo_agravo: str, codigo_municipio_6: str) -> pd.DataFrame:
+def baixar_e_filtrar(diretorio: str, nome_arquivo: str, prefixo_agravo: str, codigo_municipio_6: str) -> tuple[pd.DataFrame, pd.Timestamp]:
     destino = CACHE_DIR / f"{Path(nome_arquivo).stem}.dbc"
     caminho_remoto = f"{diretorio}/{nome_arquivo}"
     baixado = baixar_dbc(caminho_remoto, destino)
@@ -115,29 +129,61 @@ def baixar_e_filtrar(diretorio: str, nome_arquivo: str, prefixo_agravo: str, cod
         raise RuntimeError(f"Arquivo listado no FTP mas falhou ao baixar: {caminho_remoto}")
 
     df = ler_dbc_como_dataframe(baixado, colunas=COLUNAS_NECESSARIAS)
+    # data máxima de notificação no arquivo NACIONAL (antes do filtro por município) — usada
+    # como "até quando este arquivo realmente foi consultado" para a série preliminar (ver
+    # contar_por_mes): o arquivo PRELIM do ano corrente é um retrato parcial do DATASUS, então
+    # meses depois dessa data não foram consultados de verdade, só ausentes do arquivo — não
+    # dá pra usar a data máxima já filtrada por município pra isso, porque um município sem
+    # notificação recente teria uma data máxima artificialmente mais cedo que o corte real do
+    # arquivo (achado durante a investigação do arquivo preliminar 2026, ver ETAPA A do pedido
+    # que motivou este ajuste)
+    data_maxima_arquivo = pd.to_datetime(df["DT_NOTIFIC"], format="%Y%m%d", errors="coerce").max()
+
     # ID_MN_RESI no .dbc bruto vem em 6 dígitos, sem o dígito verificador do
     # código IBGE de 7 dígitos (diferente do parquet do catálogo do pysus,
     # que aplica add_dv=True por padrão e reintroduz o 7º dígito)
     df["ID_MN_RESI"] = df["ID_MN_RESI"].astype(str).str.strip()
     filtrado = df[df["ID_MN_RESI"] == codigo_municipio_6].copy()
     logger.info("%s / %s: %d notificações no Brasil, %d no município", prefixo_agravo, nome_arquivo, len(df), len(filtrado))
-    return filtrado
+    return filtrado, data_maxima_arquivo
 
 
-def contar_por_mes(df_municipio: pd.DataFrame, agravo: str, ano: int, codigo_ibge: str, nome_municipio: str, preliminar: bool) -> list[dict]:
+def contar_por_mes(
+    df_municipio: pd.DataFrame, agravo: str, ano: int, codigo_ibge: str, nome_municipio: str,
+    preliminar: bool, data_maxima_arquivo: pd.Timestamp | None = None,
+) -> list[dict]:
+    """Gera as 12 linhas mensais do ano. Para a série preliminar (`data_maxima_arquivo`
+    informado), meses inteiramente posteriores à data máxima de notificação do arquivo NÃO
+    foram consultados de verdade (arquivo do DATASUS ainda não chegou lá) — ficam com
+    notificacoes=NA e situacao='mes_ainda_nao_decorrido', em vez de 0 (achado real: sem essa
+    checagem, meses futuros do ano corrente apareciam como '0 notificações', indistinguível de
+    um mês decorrido com zero casos). O mês que contém a própria data máxima (arquivo cortado
+    no meio dele) é marcado 'preliminar_mes_incompleto' — a contagem é real, mas parcial."""
     dt = pd.to_datetime(df_municipio["DT_NOTIFIC"], format="%Y%m%d", errors="coerce")
     meses = dt.dt.month
     contagem = meses.value_counts().to_dict()
     linhas = []
     for mes in range(1, 13):
+        situacao = "preliminar" if preliminar else "final"
+        notificacoes: object = int(contagem.get(mes, 0))
+
+        if preliminar and data_maxima_arquivo is not None and pd.notna(data_maxima_arquivo):
+            inicio_mes = pd.Timestamp(year=ano, month=mes, day=1)
+            fim_mes = inicio_mes + pd.offsets.MonthEnd(0)
+            if inicio_mes > data_maxima_arquivo:
+                notificacoes = pd.NA
+                situacao = "mes_ainda_nao_decorrido"
+            elif fim_mes > data_maxima_arquivo:
+                situacao = "preliminar_mes_incompleto"
+
         linhas.append({
             "ano": ano,
             "mes": mes,
             "codigo_ibge": codigo_ibge,
             "nome_municipio": nome_municipio,
             "agravo": AGRAVOS[agravo],
-            "notificacoes": int(contagem.get(mes, 0)),
-            "situacao": "preliminar" if preliminar else "final",
+            "notificacoes": notificacoes,
+            "situacao": situacao,
         })
     return linhas
 
@@ -154,10 +200,16 @@ def linhas_serie_indisponivel(agravo: str, ano: int, codigo_ibge: str, nome_muni
     } for mes in range(1, 13)]
 
 
-def processar_serie(mapas: dict[str, dict[int, str]], ano_inicio: int, ano_fim: int, diretorio: str, codigo_ibge: str, codigo_municipio_6: str, nome_municipio: str, preliminar: bool) -> tuple[pd.DataFrame, dict]:
-    """Baixa e agrega um intervalo de anos de um único diretório (FINAIS ou PRELIM)."""
+def processar_serie(mapas: dict[str, dict[int, str]], ano_inicio: int, ano_fim: int, diretorio: str, codigo_ibge: str, codigo_municipio_6: str, nome_municipio: str, preliminar: bool) -> tuple[pd.DataFrame, dict, dict]:
+    """Baixa e agrega um intervalo de anos de um único diretório (FINAIS ou PRELIM).
+
+    Retorna (tabela, limitacoes, datas_maximas_arquivo) — o terceiro item só é preenchido
+    quando `preliminar=True` (data máxima de notificação encontrada no arquivo nacional bruto
+    de cada agravo/ano, usada em contar_por_mes para não confundir "mês futuro, não consultado"
+    com "mês decorrido, zero notificações")."""
     todas_linhas = []
     limitacoes = {agravo: {} for agravo in AGRAVOS}
+    datas_maximas_arquivo: dict[str, dict[int, str | None]] = {agravo: {} for agravo in AGRAVOS}
     for agravo, mapa in mapas.items():
         primeiro_ano_disponivel = min(mapa) if mapa else None
         for ano in range(ano_inicio, ano_fim + 1):
@@ -170,11 +222,18 @@ def processar_serie(mapas: dict[str, dict[int, str]], ano_inicio: int, ano_fim: 
                 limitacoes[agravo][ano] = motivo
                 continue
 
-            df_municipio = baixar_e_filtrar(diretorio, mapa[ano], agravo, codigo_municipio_6)
-            todas_linhas.extend(contar_por_mes(df_municipio, agravo, ano, codigo_ibge, nome_municipio, preliminar))
+            df_municipio, data_maxima_arquivo = baixar_e_filtrar(diretorio, mapa[ano], agravo, codigo_municipio_6)
+            todas_linhas.extend(contar_por_mes(
+                df_municipio, agravo, ano, codigo_ibge, nome_municipio, preliminar,
+                data_maxima_arquivo if preliminar else None,
+            ))
+            if preliminar:
+                datas_maximas_arquivo[agravo][ano] = (
+                    data_maxima_arquivo.date().isoformat() if pd.notna(data_maxima_arquivo) else None
+                )
 
     tabela = pd.DataFrame(todas_linhas).sort_values(["agravo", "ano", "mes"]).reset_index(drop=True)
-    return tabela, limitacoes
+    return tabela, limitacoes, datas_maximas_arquivo
 
 
 def main() -> None:
@@ -199,7 +258,7 @@ def main() -> None:
     ano_fim = args.ano_fim or max(mapas_finais["DENG"])
     logger.info("Série principal (FINAIS): %d-%d", args.ano_inicio, ano_fim)
 
-    tabela, limitacoes = processar_serie(
+    tabela, limitacoes, _ = processar_serie(
         mapas_finais, args.ano_inicio, ano_fim, DIRETORIO_FINAIS,
         args.codigo_ibge, codigo_municipio_6, nome_municipio, preliminar=False,
     )
@@ -256,7 +315,7 @@ def main() -> None:
         return
 
     for ano_prelim in anos_preliminares:
-        tabela_prelim, limitacoes_prelim = processar_serie(
+        tabela_prelim, limitacoes_prelim, datas_maximas_prelim = processar_serie(
             mapas_prelim, ano_prelim, ano_prelim, DIRETORIO_PRELIM,
             args.codigo_ibge, codigo_municipio_6, nome_municipio, preliminar=True,
         )
@@ -271,7 +330,9 @@ def main() -> None:
                 "(normalmente cobre só os primeiros meses do ano em curso e está sujeito a revisão, "
                 "inclusão de notificações atrasadas e reclassificação de casos); NÃO faz parte da série "
                 "principal (arboviroses_sinan-datasus_*_municipal.csv) para não misturar ano fechado com "
-                "ano em andamento"
+                "ano em andamento. Contagens de meses passados são reais (checadas contra o microdado "
+                "bruto), mas ainda sujeitas a revisão por atraso de notificação — comum em vigilância "
+                "epidemiológica — não tratar como contagem final."
             ),
             "codigo_ibge": args.codigo_ibge,
             "nome_municipio": nome_municipio,
@@ -279,7 +340,24 @@ def main() -> None:
             "ano": ano_prelim,
             "nivel_agregacao": "municipal (contagem por mês) — NÃO espacializado por bairro/setor/microárea",
             "definicao_contagem": "mesma da série principal (ver arboviroses_sinan-datasus_*_municipal.json): todas as notificações, mês por DT_NOTIFIC",
+            "situacoes_possiveis": {
+                "preliminar": "mês inteiramente coberto pelo arquivo PRELIM na data de extração — contagem real, mas sujeita a revisão/atraso de notificação",
+                "preliminar_mes_incompleto": (
+                    "mês em que a data máxima de notificação do arquivo cai no meio dele — contagem real "
+                    "do que já foi notificado até ali, mas o mês ainda não fechou dentro do arquivo (mais "
+                    "notificações desse mês provavelmente ainda vão aparecer numa atualização futura do "
+                    "PRELIM)"
+                ),
+                "mes_ainda_nao_decorrido": (
+                    "mês inteiramente posterior à data máxima de notificação do arquivo — NÃO foi "
+                    "consultado (não existe no arquivo PRELIM ainda), notificacoes=null; ANTES desta "
+                    "correção esses meses apareciam incorretamente como notificacoes=0, indistinguível de "
+                    "um mês decorrido sem casos (achado durante auditoria de qualidade de dados, "
+                    "2026-08-09) — não interpretar null como zero"
+                ),
+            },
             "limitacoes_por_agravo": limitacoes_prelim,
+            "data_maxima_notificacao_no_arquivo_por_agravo": datas_maximas_prelim,
             "data_processamento": datetime.now(timezone.utc).isoformat(),
         }
         caminho_metadados_prelim = caminho_prelim.with_suffix(".json")
