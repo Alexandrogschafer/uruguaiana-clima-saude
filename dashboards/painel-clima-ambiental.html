@@ -199,8 +199,8 @@
   </div>
 
   <div class="card">
-    <div class="card-head"><span class="card-title">Precipitação mensal (CHIRPS, satélite)</span></div>
-    <div class="empty-state"><b>Pendente.</b> A fonte (data.chc.ucsb.edu) bloqueou o IP de coleta durante os testes (HTTP 403 persistente). Script pronto em <code>scripts/download/precipitacao_chirps.py</code> — falta retomar mais devagar ou trocar de fonte. Enquanto isso, a série INMET acima cobre precipitação pontual da estação.</div>
+    <div class="card-head"><span class="card-title">Precipitação mensal (satélite, grade regional)</span></div>
+    <div class="empty-state"><b>Coletado (2026-08-09), gráfico ainda não integrado neste painel.</b> A fonte primária (CHIRPS, data.chc.ucsb.edu) permaneceu bloqueada (HTTP 403) mesmo com delay entre requisições; o script trocou automaticamente para a fonte alternativa (MERGE/INPE-CPTEC) e cobriu os 192 meses de 2010-2025 sem lacunas. Dado em <code>data/raw/precipitacao_merge-inpe_2010-2025_mensal.csv</code> (script: <code>scripts/download/precipitacao_chirps.py</code>) — falta só plotar aqui. Enquanto isso, a série INMET acima cobre precipitação pontual da estação.</div>
   </div>
 
   <div class="section-head"><h2>Hidrologia</h2><div class="section-rule"></div></div>
