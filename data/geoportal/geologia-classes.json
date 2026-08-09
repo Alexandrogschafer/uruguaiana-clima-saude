@@ -1,0 +1,30 @@
+{
+  "descricao": "Área (km²) e nº de feições por classe do tema Geologia (BDiA/IBGE), já recortadas pela área de estudo municipal — calculadas a partir da geometria (EPSG:31981) no momento do download, não do atributo ar_poli_km da fonte (que é a área do polígono inteiro antes do recorte municipal).",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/geologia_ibge-bdia_atual_vetorial.json"
+  },
+  "classes_ordenadas": [
+    "Serra Geral",
+    "Depósitos Aluvionares Holocênicos",
+    "Corpo d'água continental",
+    "Botucatu",
+    "Arenitos Interderrames",
+    "Depósitos Aluvionares Antigos"
+  ],
+  "area_km2_por_classe": {
+    "Serra Geral": 4649.75,
+    "Depósitos Aluvionares Holocênicos": 487.49,
+    "Corpo d'água continental": 260.46,
+    "Botucatu": 235.56,
+    "Arenitos Interderrames": 54.39,
+    "Depósitos Aluvionares Antigos": 3.85
+  },
+  "n_feicoes_por_classe": {
+    "Serra Geral": 1,
+    "Depósitos Aluvionares Holocênicos": 11,
+    "Corpo d'água continental": 409,
+    "Botucatu": 3,
+    "Arenitos Interderrames": 6,
+    "Depósitos Aluvionares Antigos": 1
+  }
+}

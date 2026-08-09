@@ -1,0 +1,51 @@
+{
+  "descricao": "Área (km²) e nº de feições por classe do tema Pedologia (BDiA/IBGE), já recortadas pela área de estudo municipal — calculadas a partir da geometria (EPSG:31981) no momento do download, não do atributo ar_poli_km da fonte (que é a área do polígono inteiro antes do recorte municipal).",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/pedologia_ibge-bdia_atual_vetorial.json"
+  },
+  "classes_ordenadas": [
+    "RLm - Neossolo Litólico Chernossólico",
+    "MEk - Chernossolo Ebânico Carbonático",
+    "Corpo d'água continental",
+    "SXe - Planossolo Háplico Eutrófico",
+    "FTd - Plintossolo Argilúvico Distrófico",
+    "VEk - Vertissolo Ebânico Carbonático",
+    "RLk - Neossolo Litólico Carbonático",
+    "PVva - Argissolo Vermelho Ta Alumínico",
+    "AR - Afloramentos De Rochas",
+    "Área Urbana",
+    "RLd - Neossolo Litólico Distrófico",
+    "RYve - Neossolo Flúvico Ta Eutrófico",
+    "RQo - Neossolo Quartzarênico Órtico"
+  ],
+  "area_km2_por_classe": {
+    "RLm - Neossolo Litólico Chernossólico": 2945.87,
+    "MEk - Chernossolo Ebânico Carbonático": 1561.0,
+    "Corpo d'água continental": 260.46,
+    "SXe - Planossolo Háplico Eutrófico": 246.44,
+    "FTd - Plintossolo Argilúvico Distrófico": 230.72,
+    "VEk - Vertissolo Ebânico Carbonático": 159.24,
+    "RLk - Neossolo Litólico Carbonático": 101.03,
+    "PVva - Argissolo Vermelho Ta Alumínico": 93.84,
+    "AR - Afloramentos De Rochas": 34.71,
+    "Área Urbana": 32.1,
+    "RLd - Neossolo Litólico Distrófico": 19.68,
+    "RYve - Neossolo Flúvico Ta Eutrófico": 6.19,
+    "RQo - Neossolo Quartzarênico Órtico": 0.21
+  },
+  "n_feicoes_por_classe": {
+    "RLm - Neossolo Litólico Chernossólico": 11,
+    "MEk - Chernossolo Ebânico Carbonático": 25,
+    "Corpo d'água continental": 410,
+    "SXe - Planossolo Háplico Eutrófico": 4,
+    "FTd - Plintossolo Argilúvico Distrófico": 2,
+    "VEk - Vertissolo Ebânico Carbonático": 7,
+    "RLk - Neossolo Litólico Carbonático": 1,
+    "PVva - Argissolo Vermelho Ta Alumínico": 7,
+    "AR - Afloramentos De Rochas": 5,
+    "Área Urbana": 8,
+    "RLd - Neossolo Litólico Distrófico": 1,
+    "RYve - Neossolo Flúvico Ta Eutrófico": 4,
+    "RQo - Neossolo Quartzarênico Órtico": 3
+  }
+}

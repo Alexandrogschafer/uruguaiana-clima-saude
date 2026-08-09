@@ -1,0 +1,37 @@
+{
+  "descricao": "Tema Vegetacao do Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000 — leitura regional/contextual, NÃO para decisão em nível de microárea. Campo de classe usado no geoportal: legenda.",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/vegetacao_ibge-bdia_atual_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326, sem simplificação de geometria nem alteração de atributos",
+  "n_features": 439,
+  "colunas": [
+    "id1",
+    "cd_fcim",
+    "leg_carga",
+    "cd_fito",
+    "cd_leg_2",
+    "clas_domi",
+    "leg_uveg",
+    "nm_uveg",
+    "leg_uantr",
+    "nm_uantr",
+    "leg_contat",
+    "nm_contat",
+    "veg_pretet",
+    "nm_pretet",
+    "leg_sec1",
+    "nm_sec1",
+    "leg_sec2",
+    "nm_sec2",
+    "leg_sup",
+    "legenda_1",
+    "legenda_2",
+    "legenda",
+    "ar_poli_km",
+    "leg1_id",
+    "leg2_id"
+  ],
+  "data_processamento": "2026-08-09T16:51:24.622284+00:00"
+}

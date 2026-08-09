@@ -1,0 +1,16 @@
+{
+  "descricao": "APP hídrica calculada (aproximação metodológica, não delimitação técnica — ver metadado de origem) — 2 feições dissolvidas por curso d'água: rede_local (faixa de 30m) e rio_uruguai (faixa de 200m, largura estimada por seção transversal).",
+  "fonte": {
+    "caminho_origem": "data/processed/app-hidrica_calculado_atual_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "simplify(tolerância=30m, preserve_topology=True) — necessário porque o polígono dissolvido bruto tem 445242 vértices (buffer de milhares de trechos da BHO), inviável para fetch() direto; reprojeção EPSG:31981 -> EPSG:4326",
+  "n_features": 2,
+  "colunas": [
+    "curso_dagua",
+    "faixa_app_m",
+    "classe_largura_codigo_florestal",
+    "area_km2"
+  ],
+  "data_processamento": "2026-08-09T16:51:25.246773+00:00"
+}

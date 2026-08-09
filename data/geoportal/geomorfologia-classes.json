@@ -1,0 +1,21 @@
+{
+  "descricao": "Área (km²) e nº de feições por classe do tema Geomorfologia (BDiA/IBGE), já recortadas pela área de estudo municipal — calculadas a partir da geometria (EPSG:31981) no momento do download, não do atributo ar_poli_km da fonte (que é a área do polígono inteiro antes do recorte municipal).",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/geomorfologia_ibge-bdia_atual_vetorial.json"
+  },
+  "classes_ordenadas": [
+    "Planalto da Campanha",
+    "Planícies Alúvio-coluvionares",
+    "Corpo d´água continental"
+  ],
+  "area_km2_por_classe": {
+    "Planalto da Campanha": 4945.58,
+    "Planícies Alúvio-coluvionares": 485.47,
+    "Corpo d´água continental": 260.46
+  },
+  "n_feicoes_por_classe": {
+    "Planalto da Campanha": 30,
+    "Planícies Alúvio-coluvionares": 23,
+    "Corpo d´água continental": 409
+  }
+}

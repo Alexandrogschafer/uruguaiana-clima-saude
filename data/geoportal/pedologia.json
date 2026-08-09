@@ -1,0 +1,40 @@
+{
+  "descricao": "Tema Pedologia do Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000 — leitura regional/contextual, NÃO para decisão em nível de microárea. Campo de classe usado no geoportal: legenda.",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/pedologia_ibge-bdia_atual_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326, sem simplificação de geometria nem alteração de atributos",
+  "n_features": 488,
+  "colunas": [
+    "id1",
+    "cd_fcim",
+    "nom_unidad",
+    "cod_simbol",
+    "val_ncompo",
+    "legenda",
+    "ordem",
+    "subordem",
+    "grande_gru",
+    "subgrupos",
+    "textura",
+    "horizonte",
+    "erosao",
+    "pedregosid",
+    "rochosidad",
+    "relevo",
+    "componente",
+    "component1",
+    "component2",
+    "component3",
+    "inclu_p1",
+    "inclu_p2",
+    "inclu_p3",
+    "ar_poli_km",
+    "leg_ordem",
+    "legenda_2",
+    "cd_ord_id",
+    "cd_leg2_id"
+  ],
+  "data_processamento": "2026-08-09T16:51:24.546847+00:00"
+}

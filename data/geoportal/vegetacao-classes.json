@@ -1,0 +1,24 @@
+{
+  "descricao": "Área (km²) e nº de feições por classe do tema Vegetacao (BDiA/IBGE), já recortadas pela área de estudo municipal — calculadas a partir da geometria (EPSG:31981) no momento do download, não do atributo ar_poli_km da fonte (que é a área do polígono inteiro antes do recorte municipal).",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/vegetacao_ibge-bdia_atual_vetorial.json"
+  },
+  "classes_ordenadas": [
+    "Ag - Agropecuária",
+    "Vss - Vegetação Secundária sem palmeiras",
+    "Corpo d'água continental",
+    "Iu - Influência urbana"
+  ],
+  "area_km2_por_classe": {
+    "Ag - Agropecuária": 5136.75,
+    "Vss - Vegetação Secundária sem palmeiras": 262.19,
+    "Corpo d'água continental": 260.46,
+    "Iu - Influência urbana": 32.1
+  },
+  "n_feicoes_por_classe": {
+    "Ag - Agropecuária": 8,
+    "Vss - Vegetação Secundária sem palmeiras": 14,
+    "Corpo d'água continental": 409,
+    "Iu - Influência urbana": 8
+  }
+}

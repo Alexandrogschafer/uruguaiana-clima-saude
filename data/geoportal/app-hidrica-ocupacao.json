@@ -1,0 +1,13 @@
+{
+  "descricao": "Resumo não-espacial da ocupação da APP hídrica calculada por classes MapBiomas 2024 (% de área antrópica) — dado agregado para todo o polígono da APP, sem variação por feição, por isso exibido como legenda/cartão fixo no painel, não como atributo de popup.",
+  "fonte": {
+    "caminho_origem": "data/processed/app-ocupacao_calculado_2024.json"
+  },
+  "area_total_app_km2": 321.32,
+  "area_natural_km2": 196.9,
+  "area_antropica_km2": 60.59,
+  "area_agua_km2": 63.83,
+  "pct_area_app_ocupada_por_classes_antropicas": 18.86,
+  "pct_area_app_antropica_sobre_area_terrestre_excl_agua": 23.53,
+  "aviso_metodologico": "indicador exploratório de degradação/ocupação irregular — depende da APROXIMAÇÃO metodológica da APP em si (ver app-hidrica_calculado_atual_vetorial.json) e da resolução de 30m do MapBiomas; não substitui vistoria de campo para fins de fiscalização"
+}

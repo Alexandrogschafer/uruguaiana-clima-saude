@@ -44,6 +44,20 @@ window.App = {
   window.App.map = mapa;
   window.App.baseLayers = { Mapa: camadaMapa, Satélite: camadaSatelite };
 
+  // ---------- grupo "Mapa base" (rádios Mapa / Satélite) ----------
+
+  document.getElementById("radio-base-mapa").addEventListener("change", (evento) => {
+    if (!evento.target.checked) return;
+    mapa.removeLayer(camadaSatelite);
+    mapa.addLayer(camadaMapa);
+  });
+
+  document.getElementById("radio-base-satelite").addEventListener("change", (evento) => {
+    if (!evento.target.checked) return;
+    mapa.removeLayer(camadaMapa);
+    mapa.addLayer(camadaSatelite);
+  });
+
   // ---------- painel / gaveta mobile ----------
 
   const painel = document.getElementById("painel");
@@ -60,13 +74,13 @@ window.App = {
     botaoAbrir.setAttribute("aria-expanded", "false");
   });
 
-  // ---------- seções colapsáveis ----------
+  // ---------- grupos colapsáveis ----------
 
-  document.querySelectorAll(".secao-titulo").forEach((botao) => {
+  document.querySelectorAll(".grupo-titulo").forEach((botao) => {
     botao.addEventListener("click", () => {
-      const secao = botao.closest(".secao");
-      const fechada = secao.classList.toggle("fechada");
-      botao.setAttribute("aria-expanded", String(!fechada));
+      const grupo = botao.closest(".grupo");
+      const fechado = grupo.classList.toggle("fechada");
+      botao.setAttribute("aria-expanded", String(!fechado));
     });
   });
 })();

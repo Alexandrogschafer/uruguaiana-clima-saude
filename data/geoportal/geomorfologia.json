@@ -1,0 +1,35 @@
+{
+  "descricao": "Tema Geomorfologia do Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000 — leitura regional/contextual, NÃO para decisão em nível de microárea. Campo de classe usado no geoportal: legenda.",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/geomorfologia_ibge-bdia_atual_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326, sem simplificação de geometria nem alteração de atributos",
+  "n_features": 462,
+  "colunas": [
+    "id1",
+    "cd_fcim",
+    "leg_carga",
+    "nm_dominio",
+    "nm_regiao",
+    "id_unidade",
+    "nm_unidade",
+    "letra_simb",
+    "categoria",
+    "natureza",
+    "caract",
+    "forma",
+    "dens_dren",
+    "aprof_inci",
+    "niv_alt",
+    "leg_sup",
+    "cd_leg_sup",
+    "legenda",
+    "ar_poli_km",
+    "compartimento",
+    "cd_comp_id",
+    "cd_dominio_id",
+    "cd_unid_id"
+  ],
+  "data_processamento": "2026-08-09T16:51:24.451991+00:00"
+}

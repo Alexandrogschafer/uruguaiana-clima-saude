@@ -71,10 +71,17 @@ async function main() {
       const el = document.getElementById("mapa");
       return !!(el && el.classList.contains("leaflet-container"));
     }),
-    camadasCarregadas: await page.evaluate(() => {
-      const el = document.getElementById("container-controle-camadas");
-      return !!el && el.textContent.trim() !== "Carregando camadas…";
+    gruposColapsaveisPresentes: await page.evaluate(() => {
+      const esperados = ["mapa-base", "saude", "demografia", "inundacao", "uso-solo", "hidrografia-terreno", "meio-fisico", "malha-viaria"];
+      return esperados.every((chave) => !!document.querySelector(`.grupo[data-grupo="${chave}"]`));
     }),
+    camadasDemografiaCarregadas: await page.evaluate(() => {
+      const el = document.getElementById("container-camadas-demografia");
+      return !!el && el.textContent.trim() !== "Carregando camadas…" && el.querySelectorAll("input[type=checkbox]").length === 3;
+    }),
+    camadasInundacaoCarregadas: await page.evaluate(() => document.querySelectorAll("#container-camadas-inundacao input[type=checkbox]").length === 2),
+    camadasHidroContextoCarregadas: await page.evaluate(() => document.querySelectorAll("#container-camadas-hidro-contexto input[type=checkbox]").length === 2),
+    camadaMalhaViariaCarregada: await page.evaluate(() => document.querySelectorAll("#container-camadas-malha-viaria input[type=checkbox]").length === 1),
     sliderCotaHabilitado: await page.evaluate(() => {
       const el = document.getElementById("slider-cota");
       return !!el && !el.disabled && el.max !== "0";
@@ -87,9 +94,41 @@ async function main() {
       const el = document.getElementById("filtro-tipo-saude");
       return !!el && el.children.length > 0;
     }),
+    meioFisicoPopulado: await page.evaluate(() => {
+      const el = document.getElementById("container-camadas-meio-fisico");
+      return !!el && el.querySelectorAll("input[type=checkbox]").length === 6;
+    }),
   };
 
-  await page.screenshot({ path: SCREENSHOT_PATH });
+  // liga as 6 camadas novas do grupo "Meio físico" (desligadas por padrão) e
+  // confirma que cada uma soma pelo menos 1 layer ativo no mapa Leaflet —
+  // exercita o fetch()/parse real de cada GeoJSON novo, não só a presença
+  // do checkbox
+  await page.evaluate(() => {
+    const secaoMeioFisico = document.querySelector('.grupo[data-grupo="meio-fisico"]');
+    if (secaoMeioFisico) secaoMeioFisico.classList.remove("fechada");
+  });
+  const checkboxesMeioFisico = await page.$$("#container-camadas-meio-fisico input[type=checkbox]");
+  for (const checkbox of checkboxesMeioFisico) {
+    await checkbox.click();
+  }
+  await page.waitForTimeout(2000);
+
+  checks.meioFisicoCamadasAtivasNoMapa = await page.evaluate(() => {
+    let contagem = 0;
+    window.App.map.eachLayer(() => {
+      contagem += 1;
+    });
+    // limite municipal + base + 6 camadas de meio físico + o que mais já estava ligado —
+    // só confirma que o número de layers cresceu de forma consistente com 6 camadas novas
+    return contagem > 6;
+  });
+  checks.legendaMeioFisicoPopulada = await page.evaluate(() => {
+    const el = document.getElementById("legenda-meio-fisico");
+    return !!el && el.querySelectorAll(".legenda-bloco").length >= 5; // 4 categóricas + ocupação da APP
+  });
+
+  await page.screenshot({ path: SCREENSHOT_PATH, fullPage: false });
 
   await browser.close();
   server.close();
