@@ -16,23 +16,77 @@ consulta por gestores, equipes de saúde e pesquisadores.
 
 ## Camadas disponíveis
 
-No geoportal é possível visualizar e combinar:
+O painel lateral do geoportal organiza as camadas nos mesmos grupos
+colapsáveis abaixo — todas já publicadas (versão preliminar, ainda em
+revisão visual):
 
+- **Mapa base:** alternância entre mapa (OpenStreetMap) e imagem de
+  satélite.
 - **Saúde:** estabelecimentos de saúde do município (UBS/ESF, hospitais,
   clínicas, farmácias, laboratórios, vigilância em saúde), com filtro por
   tipo de unidade e fontes CNES/OpenStreetMap.
 - **Demografia:** densidade populacional, concentração de crianças
   (0-4 anos) e de idosos (60+ anos) por setor censitário (Censo 2022).
-- **Inundação:** área e população estimada expostas em cada cota de
-  inundação registrada pelo Serviço Geológico do Brasil, incluindo
-  estabelecimentos de saúde afetados em cada cenário.
-- **Uso do solo:** série histórica MapBiomas, com linha do tempo por ano.
-- **Bacias hidrográficas:** divisão em níveis de detalhe (da bacia
-  regional às microbacias locais) e rede hidrográfica.
-- **Terreno:** hipsometria e relevo sombreado a partir do modelo digital
-  de terreno (MDT ANADEM).
-- **Mapa base:** alternância entre mapa (OpenStreetMap) e imagem de
-  satélite.
+- **Inundação:** cotas históricas de inundação registradas pelo Serviço
+  Geológico do Brasil, com área e população/estabelecimentos de saúde
+  estimados expostos em cada cenário.
+- **Uso do solo:** série histórica MapBiomas (1985-2024), com linha do
+  tempo por ano.
+- **Hidrografia e terreno:** bacias hidrográficas por nível Otto
+  Pfafstetter (da bacia regional às microbacias locais), rede
+  hidrográfica, hipsometria e relevo sombreado (MDT ANADEM).
+- **Meio físico** *(novo, versão preliminar):* geologia, geomorfologia,
+  pedologia e vegetação nativa (BDiA/IBGE — escala 1:250.000, leitura
+  regional/contextual, não decisão em nível de microárea), poços de água
+  subterrânea (SIAGAS/CPRM) e APP hídrica calculada (aproximação
+  metodológica a partir da rede hidrográfica, com indicador de % de
+  ocupação antrópica por MapBiomas).
+- **Malha viária:** camada de contexto (OpenStreetMap).
+
+## Dados disponíveis para análise (ainda fora do geoportal)
+
+Além das camadas espaciais acima, o pipeline já processou séries
+tabulares de saúde e clima que ainda não estão publicadas como camada de
+mapa (não são espacializáveis por bairro/setor na fonte, ou ainda faltam
+integrar):
+
+- **Mortalidade (SIM/DATASUS):** óbitos por causa (CID-10), agrupados em
+  respiratórias/calor extremo/afogamento — 2010 até o último ano fechado.
+- **Arboviroses (SINAN/DATASUS):** notificações mensais de dengue,
+  chikungunya e zika — 2010 até o último ano fechado, com o ano corrente
+  à parte (`*_preliminar.csv`) e explicitamente marcado como **dado
+  sujeito a revisão** (atraso de notificação, típico de vigilância
+  epidemiológica — meses ainda não decorridos aparecem como sem dado, não
+  como zero).
+- **Internações respiratórias (SIH/DATASUS):** internações mensais com
+  diagnóstico respiratório — 2010 até o último ano fechado.
+- **Precipitação mensal:** série 2010 até o mês mais recente disponível,
+  via MERGE/INPE-CPTEC (fonte primária tentada é o CHIRPS/UCSB, com troca
+  automática para MERGE quando o CHIRPS bloqueia por IP — documentado por
+  mês/período no metadado `.json` irmão).
+- **Focos de queimada (INPE/BDQueimadas):** registro pontual (lat/lon) de
+  cada foco de calor por satélite — 2010 até o ano mais recente.
+- **Nível do Rio Uruguai (ANA HidroWeb):** viabilidade confirmada (estação
+  telemétrica no próprio município) — hoje só uma consulta de exemplo,
+  **ingestão contínua ainda não implementada**.
+- **Risco geológico (CPRM):** Carta de Suscetibilidade a Movimentos
+  Gravitacionais de Massa e Inundações — já processada, ainda não
+  publicada como camada do geoportal.
+
+Todos os arquivos estão em `data/raw/` (ou `data/processed/`, no caso de
+produtos derivados), cada um com metadado `.json` irmão descrevendo fonte,
+método e período coberto.
+
+### Investigado e indisponível (não por falta de tentativa)
+
+- **Saneamento (SNIS):** nenhuma rota de download programático encontrada
+  sem exigir login gov.br — três alternativas testadas e documentadas em
+  `data/raw/saneamento_snis_indisponivel.json`.
+
+**Para o inventário técnico completo** (toda fonte, com licença, resolução
+espacial/temporal, URL/API, script responsável e observações detalhadas
+de cada coleta) — inclusive as camadas já publicadas no geoportal — ver
+`data/catalogo_fontes.csv`, mantido vivo a cada nova fonte processada.
 
 ## Padrões técnicos
 
