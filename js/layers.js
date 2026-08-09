@@ -130,7 +130,97 @@ const CAMPOS_LEGIVEIS = {
     codigo_otto: "Código Otto Pfafstetter",
     nivel_otto: "Nível Otto Pfafstetter",
   },
+  geologia: {
+    nm_unidade: "Unidade geológica",
+    letra_simb: "Símbolo",
+    nm_lito1: "Litologia principal",
+    nm_lito2: "Litologia secundária",
+    nm_tempo_g: "Idade geológica",
+    nm_provincia: "Província estrutural",
+    ar_poli_km: "Área do polígono na fonte original (km², antes do recorte municipal)",
+  },
+  geomorfologia: {
+    legenda: "Unidade geomorfológica",
+    categoria: "Categoria",
+    natureza: "Natureza",
+    forma: "Forma do relevo",
+    dens_dren: "Densidade de drenagem",
+    niv_alt: "Nível altimétrico",
+    compartimento: "Compartimento",
+    ar_poli_km: "Área do polígono na fonte original (km², antes do recorte municipal)",
+  },
+  pedologia: {
+    legenda: "Classe de solo",
+    nom_unidad: "Unidade pedológica",
+    cod_simbol: "Símbolo",
+    textura: "Textura",
+    relevo: "Relevo associado",
+    erosao: "Suscetibilidade à erosão",
+    ar_poli_km: "Área do polígono na fonte original (km², antes do recorte municipal)",
+  },
+  vegetacao: {
+    legenda: "Fitofisionomia / uso",
+    clas_domi: "Classe dominante",
+    leg_sup: "Legenda de superfície",
+    ar_poli_km: "Área do polígono na fonte original (km², antes do recorte municipal)",
+  },
+  pocosSiagas: {
+    codigo_poco: "Código do poço (SIAGAS)",
+    nome_poco: "Nome/identificação",
+    local_poco: "Local",
+    profundidade_m: "Profundidade (m)",
+    nivel_estatico_m: "Nível estático (m)",
+    nivel_dinamico_m: "Nível dinâmico (m)",
+    vazao_especifica_m3h_m: "Vazão específica (m³/h por m)",
+    aquifero: "Aquífero captado",
+    situacao: "Situação",
+    uso_agua: "Uso da água",
+  },
+  appHidrica: {
+    curso_dagua: "Curso d'água",
+    classe_largura_codigo_florestal: "Classe de largura (Código Florestal)",
+    faixa_app_m: "Faixa de APP (m)",
+    area_km2: "Área (km²)",
+  },
 };
+
+// camadas em que campo vazio deve aparecer no popup como "sem dado" em vez
+// de ser ocultado — usado nos poços SIAGAS pra deixar claro que a ausência
+// de um atributo (ex. vazão específica, ~58% de dado faltante na fonte) é
+// informação relevante, não um poço com popup "incompleto" por acidente
+const CAMPOS_MOSTRAR_SEM_DADO = new Set(["pocosSiagas"]);
+
+// ---------- utilitários de texto compartilhados (também usados por meio-fisico.js) ----------
+
+function normalizarTexto(texto) {
+  return String(texto ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function ehClasseAgua(rotulo) {
+  return normalizarTexto(rotulo).includes("agua");
+}
+
+// alguns campos "legenda" da fonte BDiA vêm com um dígito de ordenação
+// grudado no início (ex. "5Corpo d'água continental", "2Planalto da
+// Campanha") — removido só para exibição, o valor original é preservado
+// no popup (campo bruto, sem essa limpeza)
+function limparRotuloClasse(rotulo) {
+  return String(rotulo ?? "").replace(/^\d+/, "").trim() || "Sem classificação";
+}
+
+// paleta categórica (ColorBrewer Set3, 12 cores de bom contraste entre si)
+// usada nas 4 camadas do BDiA (geologia/geomorfologia/pedologia/vegetação);
+// classes de água (qualquer rótulo contendo "água") sempre recebem a mesma
+// cor fixa em vez de uma cor da paleta, pra ficar visualmente consistente
+// entre as 4 camadas (todas têm uma classe "Corpo d'água continental")
+const PALETA_CATEGORICA_SET3 = [
+  "#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462",
+  "#b3de69", "#fccde5", "#d9d9d9", "#bc80bd", "#ccebc5", "#ffed6f",
+];
+const COR_AGUA_CATEGORICA = "#3987e5";
 
 const CAMPO_TITULO = {
   densidadePopulacional: (p) => `Setor ${p.CD_SETOR ?? ""}`.trim(),
@@ -144,6 +234,12 @@ const CAMPO_TITULO = {
   malhaViaria: (p) => p.name || "Via sem nome",
   redeHidrografica: (p) => `Curso d'água ${p.cocursodag ?? ""}`.trim(),
   bacia: (p) => `Bacia ${p.codigo_otto ?? ""}`.trim(),
+  geologia: (p) => limparRotuloClasse(p.nm_unidade),
+  geomorfologia: (p) => limparRotuloClasse(p.legenda),
+  pedologia: (p) => limparRotuloClasse(p.legenda),
+  vegetacao: (p) => limparRotuloClasse(p.legenda),
+  pocosSiagas: (p) => p.nome_poco || `Poço ${p.codigo_poco ?? ""}`.trim() || "Poço SIAGAS",
+  appHidrica: (p) => (p.curso_dagua === "rio_uruguai" ? "APP — Rio Uruguai" : "APP — rede de drenagem local"),
 };
 
 // notas fixas exibidas no fim do popup de algumas camadas — usadas aqui pra
@@ -163,6 +259,9 @@ const NOTAS_POPUP = {
 };
 
 function formatarValor(chave, valor) {
+  if (chave === "curso_dagua") {
+    return valor === "rio_uruguai" ? "Rio Uruguai (faixa de 200m)" : "Rede de drenagem local (faixa de 30m)";
+  }
   if (valor === null || valor === undefined || valor === "") return null;
   if (typeof valor === "number") {
     if (Number.isNaN(valor)) return null;
@@ -175,10 +274,17 @@ function formatarValor(chave, valor) {
 function construirPopup(chaveCamada, propriedades) {
   const campos = CAMPOS_LEGIVEIS[chaveCamada] || {};
   const titulo = (CAMPO_TITULO[chaveCamada] || (() => "Feição"))(propriedades);
+  const mostrarSemDado = CAMPOS_MOSTRAR_SEM_DADO.has(chaveCamada);
 
   const linhas = Object.entries(campos)
-    .map(([chave, rotulo]) => [rotulo, formatarValor(chave, propriedades[chave])])
-    .filter(([, valor]) => valor !== null)
+    .map(([chave, rotulo]) => {
+      const valorFormatado = formatarValor(chave, propriedades[chave]);
+      if (valorFormatado === null) {
+        return mostrarSemDado ? [rotulo, "sem dado"] : null;
+      }
+      return [rotulo, valorFormatado];
+    })
+    .filter((linha) => linha !== null)
     .map(([rotulo, valor]) => `<tr><td>${rotulo}</td><td>${valor}</td></tr>`)
     .join("");
 
@@ -352,6 +458,42 @@ async function buscarGeoJSON(nomeArquivo) {
   return resposta.json();
 }
 
+/**
+ * Monta uma lista de checkboxes simples (não usa L.control.layers — cada
+ * grupo de nível superior do painel tem seu próprio container de toggles,
+ * então um checkbox HTML normal dá controle total sobre onde ele aparece,
+ * ao contrário do widget único do Leaflet que só suporta uma lista plana).
+ *
+ * `definicoes`: array de { layer, rotulo, ligado, aoAlternar? } — aplica o
+ * estado inicial (`ligado`) no mapa imediatamente, e chama `aoAlternar()`
+ * (se houver) a cada mudança, além de add/removeLayer.
+ */
+function montarTogglesCamadas(idContainer, definicoes) {
+  const mapa = window.App.map;
+  const container = document.getElementById(idContainer);
+  if (!container) return;
+
+  container.innerHTML = definicoes
+    .map((def, indice) => `
+      <label class="checkbox-linha">
+        <input type="checkbox" data-indice="${indice}" ${def.ligado ? "checked" : ""} />
+        ${def.rotulo}
+      </label>`)
+    .join("");
+
+  container.querySelectorAll("input[type=checkbox]").forEach((checkbox) => {
+    const def = definicoes[Number(checkbox.dataset.indice)];
+    if (def.ligado) mapa.addLayer(def.layer);
+    else mapa.removeLayer(def.layer);
+
+    checkbox.addEventListener("change", (evento) => {
+      if (evento.target.checked) mapa.addLayer(def.layer);
+      else mapa.removeLayer(def.layer);
+      if (def.aoAlternar) def.aoAlternar();
+    });
+  });
+}
+
 async function iniciarCamadas() {
   const mapa = window.App.map;
 
@@ -393,19 +535,21 @@ async function iniciarCamadas() {
     // só "Densidade populacional" começa visível — as 3 camadas cobrem a
     // mesma geometria dos setores censitários, então manter as 3 ligadas
     // por padrão só sobreporia choropleths sem ganho de leitura
-    const densidadePopulacional = construirCamadaChoropleth("densidadePopulacional", densidadePopulacionalGeoJSON).addTo(mapa);
+    // (visibilidade inicial real é aplicada por montarTogglesCamadas mais
+    // abaixo — aqui as camadas só são construídas, sem addTo(mapa))
+    const densidadePopulacional = construirCamadaChoropleth("densidadePopulacional", densidadePopulacionalGeoJSON);
     const criancas0a4 = construirCamadaChoropleth("criancas0a4", criancas0a4GeoJSON);
     const idosos60Mais = construirCamadaChoropleth("idosos60Mais", idosos60MaisGeoJSON);
 
     const setoresInundacao = L.geoJSON(setoresInundacaoGeoJSON, {
       style: { color: "#c2410c", weight: 1, fillColor: "#fb8500", fillOpacity: 0.45 },
       onEachFeature: onEachFeatureComPopup("setoresInundacao"),
-    }).addTo(mapa);
+    });
 
     const cotasInundacao = L.geoJSON(cotasInundacaoGeoJSON, {
       style: { color: "#1d4ed8", weight: 1, fillColor: "#2563eb", fillOpacity: 0.3 },
       onEachFeature: onEachFeatureComPopup("cotasInundacao"),
-    }).addTo(mapa);
+    });
 
     const saudeCnes = L.geoJSON(saudeCnesGeoJSON, {
       pointToLayer: (feature, latlng) => {
@@ -432,7 +576,7 @@ async function iniciarCamadas() {
       pointToLayer: (feature, latlng) =>
         L.circleMarker(latlng, { radius: 7, weight: 1, color: "#92400e", fillColor: "#f59e0b", fillOpacity: 0.95 }),
       onEachFeature: onEachFeatureComPopup("estacoesClima"),
-    }).addTo(mapa);
+    });
 
     // malha viária: camada de contexto, desligada por padrão (não é addTo(mapa) aqui)
     const malhaViaria = L.geoJSON(malhaViariaGeoJSON, {
@@ -460,33 +604,36 @@ async function iniciarCamadas() {
       redeHidrografica,
     };
 
-    const controleCamadas = L.control.layers(
-      window.App.baseLayers,
-      {
-        "Densidade populacional": densidadePopulacional,
-        "Crianças (0-4 anos)": criancas0a4,
-        "Idosos (60+ anos)": idosos60Mais,
-        "Setores expostos à inundação": setoresInundacao,
-        "Mancha de inundação (contorno real)": cotasInundacao,
-        "Estações climatológicas (INMET)": estacoesClima,
-        "Malha viária (contexto)": malhaViaria,
-        "Rede hidrográfica": redeHidrografica,
-      },
-      { collapsed: false }
-    ).addTo(mapa);
-
-    // reaproveita o DOM do controle padrão do Leaflet dentro do nosso painel
-    const container = document.getElementById("container-controle-camadas");
-    container.innerHTML = "";
-    container.appendChild(controleCamadas.getContainer());
-
-    mapa.on("overlayadd overlayremove", atualizarLegendaDemografia);
+    // grupo "Demografia" — as 3 camadas cobrem a mesma geometria dos
+    // setores censitários, só "Densidade populacional" começa ligada
+    montarTogglesCamadas("container-camadas-demografia", [
+      { layer: densidadePopulacional, rotulo: "Densidade populacional", ligado: true, aoAlternar: atualizarLegendaDemografia },
+      { layer: criancas0a4, rotulo: "Crianças (0-4 anos)", ligado: false, aoAlternar: atualizarLegendaDemografia },
+      { layer: idosos60Mais, rotulo: "Idosos (60+ anos)", ligado: false, aoAlternar: atualizarLegendaDemografia },
+    ]);
     atualizarLegendaDemografia();
+
+    // grupo "Inundação" — mesmo estado inicial de antes (ambas ligadas)
+    montarTogglesCamadas("container-camadas-inundacao", [
+      { layer: setoresInundacao, rotulo: "Setores expostos à inundação", ligado: true },
+      { layer: cotasInundacao, rotulo: "Mancha de inundação (contorno real)", ligado: true },
+    ]);
+
+    // grupo "Hidrografia e terreno" — subseção "Contexto"
+    montarTogglesCamadas("container-camadas-hidro-contexto", [
+      { layer: redeHidrografica, rotulo: "Rede hidrográfica", ligado: false },
+      { layer: estacoesClima, rotulo: "Estações climatológicas (INMET)", ligado: true },
+    ]);
+
+    // grupo "Malha viária"
+    montarTogglesCamadas("container-camadas-malha-viaria", [
+      { layer: malhaViaria, rotulo: "Malha viária (contexto)", ligado: false },
+    ]);
 
     window.dispatchEvent(new CustomEvent("climapampa:camadas-prontas"));
   } catch (erro) {
     console.error("Erro ao carregar camadas do geoportal:", erro);
-    document.getElementById("container-controle-camadas").innerHTML =
+    document.getElementById("container-camadas-demografia").innerHTML =
       '<p class="secao-ajuda">Não foi possível carregar as camadas. Veja o console para detalhes.</p>';
   }
 }

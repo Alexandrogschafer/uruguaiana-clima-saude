@@ -92,13 +92,13 @@ html, body {
   cursor: pointer;
 }
 
-/* ---------- seções colapsáveis ---------- */
+/* ---------- grupos de nível superior (colapsáveis) ---------- */
 
-.secao {
+.grupo {
   border-bottom: 1px solid var(--cor-borda);
 }
 
-.secao-titulo {
+.grupo-titulo {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -112,28 +112,52 @@ html, body {
   color: var(--cor-texto);
 }
 
-.secao-seta {
+.grupo-seta {
   transition: transform 0.2s ease;
   color: var(--cor-texto-suave);
 }
 
-.secao.fechada .secao-seta {
+.grupo.fechada .grupo-seta {
   transform: rotate(-90deg);
 }
 
-.secao-conteudo {
+.grupo-conteudo {
   padding: 0 16px 16px;
   overflow: hidden;
 }
 
-.secao.fechada .secao-conteudo {
+.grupo.fechada .grupo-conteudo {
   display: none;
+}
+
+.grupo-subtitulo {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--cor-texto);
+  margin: 16px 0 8px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--cor-borda);
+}
+
+.grupo-subtitulo:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 .secao-ajuda {
   font-size: 0.8rem;
   color: var(--cor-texto-suave);
   margin: 0 0 10px;
+}
+
+.aviso-escala {
+  background: #fdf4e3;
+  border: 1px solid #eecb8a;
+  border-radius: 4px;
+  padding: 8px 10px;
+  color: #7a5a10;
+  cursor: help;
 }
 
 /* ---------- controles ---------- */
@@ -308,23 +332,11 @@ select {
   border-top: 1px solid var(--cor-borda);
 }
 
-/* ---------- Leaflet: controle de camadas embutido ---------- */
+/* ---------- indicador de escala grosseira (meio físico) ---------- */
 
-#container-controle-camadas .leaflet-control-layers {
-  border: none;
-  box-shadow: none;
-  border-radius: 0;
-  background: transparent;
-  padding: 0;
-  font: inherit;
-}
-
-#container-controle-camadas .leaflet-control-layers-list label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  padding: 4px 0;
+.indicador-escala {
+  color: var(--cor-texto-suave);
+  cursor: help;
 }
 
 /* ---------- terreno: hillshade sobre hipsometria ---------- */

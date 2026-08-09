@@ -1,0 +1,30 @@
+{
+  "descricao": "Poços cadastrados no SIAGAS (SGB/CPRM) em Uruguaiana. Campos com alta taxa de dado faltante na fonte (vazão específica, nível dinâmico/estático, uso da água) são exibidos no popup como 'sem dado' — o poço não é ocultado por falta de algum atributo.",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/pocos-agua-subterranea_siagas-cprm_atual_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326, sem alteração de geometria/atributos",
+  "n_features": 340,
+  "colunas": [
+    "codigo_poco",
+    "nome_poco",
+    "local_poco",
+    "codigo_ibge_municipio",
+    "municipio",
+    "uf",
+    "latitude_original",
+    "longitude_original",
+    "profundidade_m",
+    "nivel_estatico_m",
+    "nivel_dinamico_m",
+    "vazao_especifica_m3h_m",
+    "aquifero",
+    "natureza_ponto",
+    "situacao",
+    "uso_agua",
+    "data_perfuracao",
+    "data_cadastro"
+  ],
+  "data_processamento": "2026-08-09T16:51:24.637158+00:00"
+}

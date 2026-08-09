@@ -24,23 +24,103 @@
       <button id="botao-fechar-painel" class="botao-fechar-painel" aria-label="Fechar painel">✕</button>
     </div>
 
-    <section class="secao" data-secao="camadas">
-      <button class="secao-titulo" aria-expanded="true">
-        <span>Camadas</span><span class="secao-seta">▾</span>
+    <div class="grupo" data-grupo="mapa-base">
+      <button class="grupo-titulo" aria-expanded="true">
+        <span>Mapa base</span><span class="grupo-seta">▾</span>
       </button>
-      <div class="secao-conteudo">
-        <div id="container-controle-camadas">
+      <div class="grupo-conteudo">
+        <label class="checkbox-linha">
+          <input type="radio" name="mapa-base" id="radio-base-mapa" checked />
+          Mapa
+        </label>
+        <label class="checkbox-linha">
+          <input type="radio" name="mapa-base" id="radio-base-satelite" />
+          Satélite
+        </label>
+      </div>
+    </div>
+
+    <div class="grupo" data-grupo="saude">
+      <button class="grupo-titulo" aria-expanded="true">
+        <span>Saúde</span><span class="grupo-seta">▾</span>
+      </button>
+      <div class="grupo-conteudo">
+        <p class="secao-ajuda">Estabelecimentos de saúde, por tipo e fonte:</p>
+        <label class="checkbox-linha checkbox-marcar-todos">
+          <input type="checkbox" id="checkbox-saude-todos" checked />
+          <strong>Marcar/desmarcar todos</strong>
+        </label>
+        <div id="filtro-tipo-saude" class="lista-checkboxes"></div>
+        <label class="checkbox-linha checkbox-osm">
+          <input type="checkbox" id="checkbox-saude-osm" checked />
+          OpenStreetMap (fonte complementar)
+        </label>
+      </div>
+    </div>
+
+    <div class="grupo" data-grupo="demografia">
+      <button class="grupo-titulo" aria-expanded="true">
+        <span>Demografia</span><span class="grupo-seta">▾</span>
+      </button>
+      <div class="grupo-conteudo">
+        <div id="container-camadas-demografia">
           <p class="secao-ajuda">Carregando camadas…</p>
         </div>
         <div id="legenda-demografia" class="legenda-demografia"></div>
-      </div>
-    </section>
 
-    <section class="secao" data-secao="bacias">
-      <button class="secao-titulo" aria-expanded="true">
-        <span>Bacias hidrográficas</span><span class="secao-seta">▾</span>
+        <p class="secao-ajuda" style="margin-top:14px">Valores únicos para todo o município (Censo 2022) — não variam por setor censitário, por isso não aparecem como camada de mapa.</p>
+        <dl class="painel-estatisticas" id="painel-indicadores-municipais">
+          <dt>Renda média domiciliar per capita</dt><dd id="stat-renda-media">—</dd>
+          <dt>% domicílios com água inadequada</dt><dd id="stat-agua-inadequada">—</dd>
+          <dt>% domicílios com esgoto inadequado</dt><dd id="stat-esgoto-inadequado">—</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="grupo" data-grupo="inundacao">
+      <button class="grupo-titulo" aria-expanded="true">
+        <span>Inundação</span><span class="grupo-seta">▾</span>
       </button>
-      <div class="secao-conteudo">
+      <div class="grupo-conteudo">
+        <p class="secao-ajuda">Arraste para ver a área e a população estimada expostas em cada cota registrada pelo SGB.</p>
+        <input type="range" id="slider-cota" min="0" max="0" step="1" value="0" disabled />
+        <div class="slider-legenda">
+          <strong id="rotulo-cota">—</strong>
+          <span id="rotulo-tr">período de retorno: —</span>
+        </div>
+        <dl class="painel-estatisticas" id="painel-estatisticas-cota">
+          <dt>Setores afetados</dt><dd id="stat-setores-afetados">—</dd>
+          <dt>População estimada (ponderada por uso do solo)</dt><dd id="stat-populacao-ponderada">—</dd>
+          <dt>% da população do município exposta</dt><dd id="stat-pct-populacao">—</dd>
+          <dt>Estabelecimentos de saúde expostos</dt><dd id="stat-estabelecimentos">—</dd>
+        </dl>
+        <div id="container-camadas-inundacao" class="lista-checkboxes" style="margin-top:12px"></div>
+      </div>
+    </div>
+
+    <div class="grupo" data-grupo="uso-solo">
+      <button class="grupo-titulo" aria-expanded="true">
+        <span>Uso do solo (MapBiomas)</span><span class="grupo-seta">▾</span>
+      </button>
+      <div class="grupo-conteudo">
+        <label class="checkbox-linha">
+          <input type="checkbox" id="checkbox-uso-solo" />
+          Exibir camada de uso do solo
+        </label>
+        <input type="range" id="slider-ano" min="0" max="0" step="1" value="0" disabled />
+        <div class="slider-legenda">
+          <strong id="rotulo-ano">—</strong>
+        </div>
+        <ul class="legenda-uso-solo" id="legenda-uso-solo"></ul>
+      </div>
+    </div>
+
+    <div class="grupo" data-grupo="hidrografia-terreno">
+      <button class="grupo-titulo" aria-expanded="true">
+        <span>Hidrografia e terreno</span><span class="grupo-seta">▾</span>
+      </button>
+      <div class="grupo-conteudo">
+        <p class="grupo-subtitulo">Bacias hidrográficas</p>
         <p class="secao-ajuda">
           Só um nível fica visível por vez.
           <button
@@ -66,65 +146,8 @@
           <option value="6">Nível 6 (482 bacias)</option>
           <option value="7">Nível 7 (2.083 bacias)</option>
         </select>
-      </div>
-    </section>
 
-    <section class="secao" data-secao="indicadores-municipais">
-      <button class="secao-titulo" aria-expanded="true">
-        <span>Indicadores municipais</span><span class="secao-seta">▾</span>
-      </button>
-      <div class="secao-conteudo">
-        <p class="secao-ajuda">Valores únicos para todo o município (Censo 2022) — não variam por setor censitário, por isso não aparecem como camada de mapa.</p>
-        <dl class="painel-estatisticas" id="painel-indicadores-municipais">
-          <dt>Renda média domiciliar per capita</dt><dd id="stat-renda-media">—</dd>
-          <dt>% domicílios com água inadequada</dt><dd id="stat-agua-inadequada">—</dd>
-          <dt>% domicílios com esgoto inadequado</dt><dd id="stat-esgoto-inadequado">—</dd>
-        </dl>
-      </div>
-    </section>
-
-    <section class="secao" data-secao="inundacao">
-      <button class="secao-titulo" aria-expanded="true">
-        <span>Cota de inundação</span><span class="secao-seta">▾</span>
-      </button>
-      <div class="secao-conteudo">
-        <p class="secao-ajuda">Arraste para ver a área e a população estimada expostas em cada cota registrada pelo SGB.</p>
-        <input type="range" id="slider-cota" min="0" max="0" step="1" value="0" disabled />
-        <div class="slider-legenda">
-          <strong id="rotulo-cota">—</strong>
-          <span id="rotulo-tr">período de retorno: —</span>
-        </div>
-        <dl class="painel-estatisticas" id="painel-estatisticas-cota">
-          <dt>Setores afetados</dt><dd id="stat-setores-afetados">—</dd>
-          <dt>População estimada (ponderada por uso do solo)</dt><dd id="stat-populacao-ponderada">—</dd>
-          <dt>% da população do município exposta</dt><dd id="stat-pct-populacao">—</dd>
-          <dt>Estabelecimentos de saúde expostos</dt><dd id="stat-estabelecimentos">—</dd>
-        </dl>
-      </div>
-    </section>
-
-    <section class="secao" data-secao="uso-solo">
-      <button class="secao-titulo" aria-expanded="true">
-        <span>Uso do solo (MapBiomas)</span><span class="secao-seta">▾</span>
-      </button>
-      <div class="secao-conteudo">
-        <label class="checkbox-linha">
-          <input type="checkbox" id="checkbox-uso-solo" />
-          Exibir camada de uso do solo
-        </label>
-        <input type="range" id="slider-ano" min="0" max="0" step="1" value="0" disabled />
-        <div class="slider-legenda">
-          <strong id="rotulo-ano">—</strong>
-        </div>
-        <ul class="legenda-uso-solo" id="legenda-uso-solo"></ul>
-      </div>
-    </section>
-
-    <section class="secao" data-secao="terreno">
-      <button class="secao-titulo" aria-expanded="true">
-        <span>Terreno</span><span class="secao-seta">▾</span>
-      </button>
-      <div class="secao-conteudo">
+        <p class="grupo-subtitulo">Terreno</p>
         <p class="secao-ajuda">Hipsometria e relevo sombreado, derivados do MDT ANADEM (30m) — pensados pra funcionar bem sobrepostos.</p>
         <label class="checkbox-linha">
           <input type="checkbox" id="checkbox-hipsometria" />
@@ -134,26 +157,36 @@
           <input type="checkbox" id="checkbox-hillshade" />
           Relevo sombreado
         </label>
-      </div>
-    </section>
 
-    <section class="secao" data-secao="saude">
-      <button class="secao-titulo" aria-expanded="true">
-        <span>Saúde</span><span class="secao-seta">▾</span>
-      </button>
-      <div class="secao-conteudo">
-        <p class="secao-ajuda">Estabelecimentos de saúde, por tipo e fonte:</p>
-        <label class="checkbox-linha checkbox-marcar-todos">
-          <input type="checkbox" id="checkbox-saude-todos" checked />
-          <strong>Marcar/desmarcar todos</strong>
-        </label>
-        <div id="filtro-tipo-saude" class="lista-checkboxes"></div>
-        <label class="checkbox-linha checkbox-osm">
-          <input type="checkbox" id="checkbox-saude-osm" checked />
-          OpenStreetMap (fonte complementar)
-        </label>
+        <p class="grupo-subtitulo">Contexto</p>
+        <div id="container-camadas-hidro-contexto" class="lista-checkboxes"></div>
       </div>
-    </section>
+    </div>
+
+    <div class="grupo fechada" data-grupo="meio-fisico">
+      <button class="grupo-titulo" aria-expanded="false">
+        <span>Meio físico</span><span class="grupo-seta">▾</span>
+      </button>
+      <div class="grupo-conteudo">
+        <p class="secao-ajuda aviso-escala" title="Geologia, Geomorfologia, Pedologia e Vegetação vêm do BDiA/IBGE na escala 1:250.000 — leitura regional/contextual, não decisão em nível de microárea.">
+          ⚠ Versão preliminar, para revisão. Geologia, Geomorfologia, Pedologia e Vegetação: escala 1:250.000 (leitura regional, não microárea).
+        </p>
+        <div id="container-camadas-meio-fisico" class="lista-checkboxes">
+          <p class="secao-ajuda">Carregando camadas…</p>
+        </div>
+        <div id="legenda-meio-fisico" class="legenda-demografia"></div>
+      </div>
+    </div>
+
+    <div class="grupo" data-grupo="malha-viaria">
+      <button class="grupo-titulo" aria-expanded="true">
+        <span>Malha viária</span><span class="grupo-seta">▾</span>
+      </button>
+      <div class="grupo-conteudo">
+        <p class="secao-ajuda">Camada de contexto (OpenStreetMap), desligada por padrão.</p>
+        <div id="container-camadas-malha-viaria" class="lista-checkboxes"></div>
+      </div>
+    </div>
 
     <footer class="painel-rodape">
       ClimaPampa — PET-Saúde: Clima · Sec. Municipal de Saúde de Uruguaiana + UNIPAMPA
@@ -164,6 +197,7 @@
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="js/map-init.js" defer></script>
   <script src="js/layers.js" defer></script>
+  <script src="js/meio-fisico.js" defer></script>
   <script src="js/bacias-hidrograficas.js" defer></script>
   <script src="js/terreno.js" defer></script>
   <script src="js/indicadores-municipais.js" defer></script>

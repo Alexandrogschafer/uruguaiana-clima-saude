@@ -1,0 +1,29 @@
+{
+  "descricao": "Tema Geologia do Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000 — leitura regional/contextual, NÃO para decisão em nível de microárea. Campo de classe usado no geoportal: nm_unidade.",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/geologia_ibge-bdia_atual_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326, sem simplificação de geometria nem alteração de atributos",
+  "n_features": 431,
+  "colunas": [
+    "id1",
+    "ordem",
+    "cd_fcim",
+    "leg_carga",
+    "id_unidade",
+    "nm_unidade",
+    "letra_simb",
+    "nm_lito1",
+    "nm_lito2",
+    "nm_lito3",
+    "nm_lito4",
+    "ar_poli_km",
+    "nm_tempo_g",
+    "nm_provincia",
+    "nm_sub_provincia",
+    "cd_prov_id",
+    "cd_sub_prov_id"
+  ],
+  "data_processamento": "2026-08-09T16:51:24.357797+00:00"
+}
