@@ -1,0 +1,596 @@
+<meta charset="UTF-8">
+<title>Painel de Demografia — ClimaPampa, Uruguaiana/RS</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page:            #eef1ec;
+    --surface-card:    #ffffff;
+    --ink:             #132524;
+    --ink-secondary:   #4b5f5c;
+    --ink-muted:       #7c8f8c;
+    --accent:          #0f5c56;
+    --accent-soft:     #dbe8e3;
+    --border:          rgba(19,37,36,0.12);
+    --border-strong:   rgba(19,37,36,0.22);
+    --grid:            #e3e7e1;
+    --baseline:        #c7cec9;
+    --series-context:  #a9b2ae;
+    --series-blue:     #2a78d6;
+    --series-orange:   #eb6834;
+    --series-aqua:     #1baf7a;
+    --status-good:     #0ca30c;
+    --status-warning:  #fab219;
+    --status-serious:  #ec835a;
+    --status-critical: #d03b3b;
+    --tooltip-bg:      #132524;
+    --tooltip-ink:     #eef1ec;
+    --shadow:          0 1px 2px rgba(19,37,36,0.06), 0 6px 20px rgba(19,37,36,0.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page:            #0b1414;
+      --surface-card:    #101d1c;
+      --ink:             #eef1ec;
+      --ink-secondary:   #9db3af;
+      --ink-muted:       #6d8985;
+      --accent:          #57d6c9;
+      --accent-soft:     #163531;
+      --border:          rgba(238,241,236,0.12);
+      --border-strong:   rgba(238,241,236,0.22);
+      --grid:            #1d2c2a;
+      --baseline:        #2e433f;
+      --series-context:  #5b716d;
+      --series-blue:     #3987e5;
+      --series-orange:   #d95926;
+      --series-aqua:     #199e70;
+      --tooltip-bg:      #eef1ec;
+      --tooltip-ink:     #132524;
+      --shadow:          0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:            #0b1414;
+    --surface-card:    #101d1c;
+    --ink:             #eef1ec;
+    --ink-secondary:   #9db3af;
+    --ink-muted:       #6d8985;
+    --accent:          #57d6c9;
+    --accent-soft:     #163531;
+    --border:          rgba(238,241,236,0.12);
+    --border-strong:   rgba(238,241,236,0.22);
+    --grid:            #1d2c2a;
+    --baseline:        #2e433f;
+    --series-context:  #5b716d;
+    --series-blue:     #3987e5;
+    --series-orange:   #d95926;
+    --series-aqua:     #199e70;
+    --tooltip-bg:      #eef1ec;
+    --tooltip-ink:     #132524;
+    --shadow:          0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--page); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .masthead { position: relative; padding: 36px 32px 30px; background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 28px; }
+  .masthead-contour { position: absolute; inset: 0; opacity: 0.5; pointer-events: none; }
+  .eyebrow { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 10px; position: relative; }
+  h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio L", serif; font-weight: 400; font-size: clamp(26px, 4vw, 34px); line-height: 1.15; margin: 0 0 8px; text-wrap: balance; max-width: 32ch; position: relative; }
+  .masthead p { margin: 0; color: var(--ink-secondary); font-size: 15px; max-width: 66ch; position: relative; }
+  .masthead-meta { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; gap: 24px; flex-wrap: wrap; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 12px; color: var(--ink-muted); position: relative; }
+  .masthead-meta b { color: var(--ink-secondary); font-weight: 600; }
+  .masthead-meta a, footer a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+  .masthead-meta a:hover, footer a:hover { border-bottom-color: var(--accent); }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 32px; }
+  .kpi-tile { background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px 14px; box-shadow: var(--shadow); }
+  .kpi-label { font-size: 12.5px; color: var(--ink-secondary); margin-bottom: 8px; }
+  .kpi-value { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-variant-numeric: tabular-nums; font-size: 27px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .kpi-unit { font-size: 13px; color: var(--ink-muted); font-weight: 400; margin-left: 3px; }
+  .kpi-sub { font-size: 11.5px; color: var(--ink-muted); margin-top: 5px; }
+
+  .section-head { display: flex; align-items: baseline; gap: 12px; margin: 40px 0 16px; }
+  .section-head h2 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio L", serif; font-weight: 400; font-size: 21px; margin: 0; color: var(--ink); }
+  .section-head .section-rule { flex: 1; height: 1px; background: var(--border-strong); }
+  .section-note { font-size: 13px; color: var(--ink-muted); margin: -8px 0 18px; max-width: 72ch; }
+
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .chart-grid.triple { grid-template-columns: repeat(3, 1fr); }
+  .card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; padding: 18px 20px 14px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+  .card-title { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .card-meta { font-size: 11.5px; color: var(--ink-muted); font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .card-body { position: relative; }
+
+  .chart-svg { display: block; width: 100%; overflow: visible; }
+  .gridline { stroke: var(--grid); stroke-width: 1; shape-rendering: crispEdges; }
+  .baseline { stroke: var(--baseline); stroke-width: 1; shape-rendering: crispEdges; }
+  .axis-label { fill: var(--ink-muted); font-size: 10.5px; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .end-label { font-size: 11.5px; font-weight: 600; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .bar-label { font-size: 11px; font-weight: 700; fill: var(--ink); font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+  .cat-label { font-size: 11.5px; font-weight: 600; fill: var(--ink-secondary); }
+  .crosshair { stroke: var(--ink-muted); stroke-width: 1; stroke-dasharray: 2 3; pointer-events: none; }
+  .bar-mark { cursor: pointer; }
+  .bar-mark:hover { filter: brightness(1.08); }
+  .marker-censo { cursor: pointer; }
+  .marker-censo:hover { filter: brightness(1.15); }
+
+  .chart-tooltip { position: absolute; top: 6px; transform: translateX(-50%); background: var(--tooltip-bg); color: var(--tooltip-ink); border-radius: 5px; padding: 7px 10px; font-size: 11.5px; pointer-events: none; opacity: 0; transition: opacity 0.08s ease; white-space: nowrap; z-index: 5; box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
+  .tt-x { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; opacity: 0.7; margin-bottom: 3px; font-size: 10.5px; }
+  .tt-row { display: flex; align-items: center; gap: 6px; }
+  .tt-key { width: 9px; height: 0; border-top: 2px solid; display: inline-block; }
+  .tt-val { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-variant-numeric: tabular-nums; font-weight: 700; }
+  .tt-name { opacity: 0.85; }
+
+  .status-legend { display: flex; gap: 16px; margin: 2px 0 10px; flex-wrap: wrap; font-size: 12px; color: var(--ink-secondary); }
+  .status-legend .item { display: flex; align-items: center; gap: 6px; }
+  .status-legend .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .status-legend .dash { width: 14px; height: 0; border-top: 2px solid; display: inline-block; }
+  .status-legend .dash.dotted { border-top-style: dashed; }
+
+  details.table-wrap { margin-top: 8px; background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; box-shadow: var(--shadow); }
+  details.table-wrap summary { cursor: pointer; padding: 14px 20px; font-size: 14px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 8px; }
+  details.table-wrap summary::-webkit-details-marker { display: none; }
+  details.table-wrap summary::before { content: "▸"; color: var(--accent); transition: transform 0.15s ease; font-size: 11px; }
+  details.table-wrap[open] summary::before { transform: rotate(90deg); }
+  .table-scroll { overflow-x: auto; padding: 0 20px 18px; }
+  table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; min-width: 560px; }
+  table.data-table th, table.data-table td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  table.data-table th:first-child, table.data-table td:first-child { text-align: left; }
+  table.data-table thead th { color: var(--ink-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; }
+  table.data-table tbody tr:hover { background: var(--accent-soft); }
+
+  footer { margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--ink-muted); line-height: 1.7; }
+  footer b { color: var(--ink-secondary); }
+
+  @media (max-width: 720px) {
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .chart-grid, .chart-grid.triple { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <svg class="masthead-contour" viewBox="0 0 800 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
+      <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
+    </svg>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 4 de 4</span>
+    <h1>Painel de demografia</h1>
+    <p>População, estrutura etária, urbanização e indicadores de envelhecimento e dependência — série municipal dos 6 Censos Demográficos (1970 a 2022) via API SIDRA/IBGE, com estimativas anuais preenchendo o intervalo entre 2001 e 2025.</p>
+    <div class="masthead-meta">
+      <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
+      <span><b>Censos</b> 1970 · 1980 · 1991 · 2000 · 2010 · 2022</span>
+      <span><b>Estimativas anuais</b> 2001–2025 (exceto 2007/2010/2022/2023)</span>
+      <span><b>Ver também</b> <a href="painel-saude.html">Saúde</a> · <a href="painel-clima-ambiental.html">Clima e Ambiente</a> · <a href="painel-territorio.html">Território</a> · <a href="../index.html">Geoportal</a></span>
+    </div>
+  </div>
+
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="section-head"><h2>População ao longo do tempo</h2><div class="section-rule"></div></div>
+  <p class="section-note">Marcadores maiores = ano de Censo (contagem exata); linha fina entre 2001 e 2025 = estimativas anuais do IBGE. Entre 1970 e 2000 só existem os 3 pontos de Censo — não há estimativa anual publicada nesse trecho, então a linha reta entre eles é uma referência visual, não uma interpolação real.</p>
+  <div class="card">
+    <div class="card-head"><span class="card-title">População total</span><span class="card-meta">1970–2025</span></div>
+    <div class="status-legend">
+      <span class="item"><span class="dot" style="background:var(--series-blue)"></span>Censo (contagem exata)</span>
+      <span class="item"><span class="dash" style="border-color:var(--series-blue)"></span>Estimativa anual</span>
+    </div>
+    <div class="card-body"><div id="chart-populacao" style="height:220px"></div><div class="chart-tooltip" id="tt-populacao"></div></div>
+  </div>
+
+  <div class="section-head"><h2>Pirâmide etária comparada</h2><div class="section-rule"></div></div>
+  <p class="section-note">2000, 2010 e 2022 — os únicos 3 censos com abertura fina da faixa 80+ (necessária para uma pirâmide com o mesmo nível de detalhe nos 3 pontos). Mesma escala horizontal nos 3 gráficos, para comparação direta do formato: da pirâmide de base larga em 2000 ao formato já quase retangular (envelhecido) em 2022.</p>
+  <div class="status-legend">
+    <span class="item"><span class="dot" style="background:var(--series-blue)"></span>Homens</span>
+    <span class="item"><span class="dot" style="background:var(--series-orange)"></span>Mulheres</span>
+  </div>
+  <div class="chart-grid triple" id="piramideGrid"></div>
+
+  <div class="section-head"><h2>Envelhecimento e dependência</h2><div class="section-rule"></div></div>
+  <p class="section-note">Índice de envelhecimento = (60 anos ou mais / 0-14 anos) × 100. Razão de dependência = ((0-14 anos + 65 anos ou mais) / 15-64 anos) × 100 — quanto da população em idade não-produtiva (crianças + idosos) cada 100 pessoas em idade produtiva sustentam. Os 6 pontos são todos de ano de Censo; eixo horizontal em escala real de tempo (os intervalos entre censos não são iguais).</p>
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Índice de envelhecimento</span><span class="card-meta">60+ / 0-14 × 100</span></div>
+      <div class="card-body"><div id="chart-envelhecimento" style="height:190px"></div><div class="chart-tooltip" id="tt-envelhecimento"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Razão de dependência</span><span class="card-meta">(0-14 + 65+) / 15-64 × 100</span></div>
+      <div class="card-body"><div id="chart-dependencia" style="height:190px"></div><div class="chart-tooltip" id="tt-dependencia"></div></div>
+    </div>
+  </div>
+
+  <div class="section-head"><h2>Urbano vs. rural</h2><div class="section-rule"></div></div>
+  <p class="section-note">% da população total em cada situação de domicílio, nos 6 censos. 1970–2010: SIDRA tabela 202. 2022: tabela 9923 (202 não tem versão 2022).</p>
+  <div class="card">
+    <div class="card-head"><span class="card-title">Situação do domicílio</span><span class="card-meta">% da população total</span></div>
+    <div class="status-legend">
+      <span class="item"><span class="dot" style="background:var(--series-aqua)"></span>Urbana</span>
+      <span class="item"><span class="dot" style="background:var(--series-orange)"></span>Rural</span>
+    </div>
+    <div class="card-body"><div id="chart-urbano-rural" style="height:200px"></div><div class="chart-tooltip" id="tt-urbano-rural"></div></div>
+  </div>
+
+  <div class="section-head"><h2>População vulnerável</h2><div class="section-rule"></div></div>
+  <p class="section-note">Crianças de 0-4 anos e idosos de 60 anos ou mais — grupos etários de maior atenção em eventos climáticos extremos (calor, enchente, estiagem). Absoluto e % da população total, nos 6 censos.</p>
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Crianças 0-4 anos (absoluto)</span></div>
+      <div class="card-body"><div id="chart-criancas-abs" style="height:160px"></div><div class="chart-tooltip" id="tt-criancas-abs"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Crianças 0-4 anos (% da população)</span></div>
+      <div class="card-body"><div id="chart-criancas-pct" style="height:160px"></div><div class="chart-tooltip" id="tt-criancas-pct"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Idosos 60+ anos (absoluto)</span></div>
+      <div class="card-body"><div id="chart-idosos-abs" style="height:160px"></div><div class="chart-tooltip" id="tt-idosos-abs"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Idosos 60+ anos (% da população)</span></div>
+      <div class="card-body"><div id="chart-idosos-pct" style="height:160px"></div><div class="chart-tooltip" id="tt-idosos-pct"></div></div>
+    </div>
+  </div>
+
+  <details class="table-wrap">
+    <summary>Ver todos os indicadores em tabela (6 censos)</summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaIndicadores"></table></div>
+  </details>
+
+  <footer>
+    <p><b>Nível de agregação — por que municipal, não por setor:</b> a malha de setores censitários do IBGE muda de configuração a cada Censo (os limites de setor de 2000, 2010 e 2022 não são o mesmo desenho geográfico) — comparar um setor específico ao longo do tempo compara, na prática, áreas diferentes. Por isso toda a série temporal deste painel é agregada no nível <b>municipal</b>, o único nível estável para comparação entre os 6 censos. O detalhe espacial por setor censitário — só para o Censo 2022, na malha atual — está no <a href="painel-territorio.html">Painel de Território</a> (seção "Perfil censitário") e no arquivo <code>data/raw/vulnerabilidade-censo_ibge_2022.csv</code> / <code>setores-censitarios_vulnerabilidade_unido.gpkg</code>.</p>
+    <p><b>Fontes:</b> IBGE — API SIDRA/Agregados, tabelas 200 (Censos 1970-2010, sexo × situação do domicílio × grupo de idade), 9514 (Censo 2022, sexo × idade), 202 (situação do domicílio 1970-2010), 9923 (situação do domicílio 2022) e 6579 (estimativas populacionais anuais). A tabela 6706 ("pirâmide etária" nominal do SIDRA) é da PNAD Contínua, uma pesquisa amostral sem representatividade em nível de município pequeno — testada e confirmada sem dado para Uruguaiana em nenhum período; por isso a pirâmide etária aqui vem das tabelas de Censo (200 e 9514), que têm os mesmos 21 grupos etários de 5 anos nos 3 pontos comparados. Ver <code>data/catalogo_fontes.csv</code> e os metadados <code>.json</code> ao lado de cada CSV em <code>data/raw/</code> e <code>data/processed/</code> para o detalhe completo de cada fonte, fórmula e limitação.</p>
+    <p><b>Leitura recomendada:</b> 1970-1991 e 2000/2010/2022 usam o mesmo cálculo de indicadores, mas 1970/1980/1991 só têm a faixa 80+ agregada na fonte (não abrem 80-84/85-89/.../100+ como os censos mais recentes) — isso não muda os totais de "60 anos ou mais" usados aqui, só o nível de detalhe interno da faixa mais idosa. A queda populacional de 2010 para 2022 é uma contagem censitária real, não um artefato de metodologia.</p>
+    <p><b>Painéis complementares:</b> perfil de território, uso do solo e risco geológico estão no <a href="painel-territorio.html">Painel de Território</a>; óbitos, arboviroses e internações no <a href="painel-saude.html">Painel de Saúde</a>; clima, queimadas e nível do rio no <a href="painel-clima-ambiental.html">Painel de Clima e Monitoramento Ambiental</a>. O <a href="../index.html">geoportal</a> traz a visão espacial de tudo isso no mapa.</p>
+  </footer>
+
+</div>
+
+<script>
+const DATA = {"serie_populacao": [{"ano": 1970, "populacao": 74613.0, "fonte": "censo"}, {"ano": 1980, "populacao": 91498.0, "fonte": "censo"}, {"ano": 1991, "populacao": 117456.0, "fonte": "censo"}, {"ano": 2000, "populacao": 126936.0, "fonte": "censo"}, {"ano": 2001, "populacao": 128186.0, "fonte": "estimativa"}, {"ano": 2002, "populacao": 129620.0, "fonte": "estimativa"}, {"ano": 2003, "populacao": 130866.0, "fonte": "estimativa"}, {"ano": 2004, "populacao": 133481.0, "fonte": "estimativa"}, {"ano": 2005, "populacao": 134928.0, "fonte": "estimativa"}, {"ano": 2006, "populacao": 136364.0, "fonte": "estimativa"}, {"ano": 2008, "populacao": 127138.0, "fonte": "estimativa"}, {"ano": 2009, "populacao": 127045.0, "fonte": "estimativa"}, {"ano": 2010, "populacao": 125435.0, "fonte": "censo"}, {"ano": 2011, "populacao": 125320.0, "fonte": "estimativa"}, {"ano": 2012, "populacao": 125209.0, "fonte": "estimativa"}, {"ano": 2013, "populacao": 129504.0, "fonte": "estimativa"}, {"ano": 2014, "populacao": 129580.0, "fonte": "estimativa"}, {"ano": 2015, "populacao": 129652.0, "fonte": "estimativa"}, {"ano": 2016, "populacao": 129720.0, "fonte": "estimativa"}, {"ano": 2017, "populacao": 129784.0, "fonte": "estimativa"}, {"ano": 2018, "populacao": 127079.0, "fonte": "estimativa"}, {"ano": 2019, "populacao": 126970.0, "fonte": "estimativa"}, {"ano": 2020, "populacao": 126866.0, "fonte": "estimativa"}, {"ano": 2021, "populacao": 126766.0, "fonte": "estimativa"}, {"ano": 2022, "populacao": 117210.0, "fonte": "censo"}, {"ano": 2024, "populacao": 120885.0, "fonte": "estimativa"}, {"ano": 2025, "populacao": 120819.0, "fonte": "estimativa"}], "indicadores": [{"periodo": 1970, "populacao_total": 74613.0, "taxa_crescimento": null, "indice_envelhecimento": 15.63, "razao_dependencia": 74.98, "pct_urbano": 84.9, "pct_rural": 15.1, "pop_0_4": 9656.0, "pct_pop_0_4": 12.94, "pop_60_mais": 4555.0, "pct_pop_60_mais": 6.1}, {"periodo": 1980, "populacao_total": 91498.0, "taxa_crescimento": 2.061, "indice_envelhecimento": 20.94, "razao_dependencia": 65.77, "pct_urbano": 88.82, "pct_rural": 11.18, "pop_0_4": 11435.0, "pct_pop_0_4": 12.5, "pop_60_mais": 6686.0, "pct_pop_60_mais": 7.31}, {"periodo": 1991, "populacao_total": 117456.0, "taxa_crescimento": 2.296, "indice_envelhecimento": 22.54, "razao_dependencia": 62.49, "pct_urbano": 90.1, "pct_rural": 9.9, "pop_0_4": 13092.0, "pct_pop_0_4": 11.15, "pop_60_mais": 8855.0, "pct_pop_60_mais": 7.54}, {"periodo": 2000, "populacao_total": 126936.0, "taxa_crescimento": 0.866, "indice_envelhecimento": 27.56, "razao_dependencia": 55.26, "pct_urbano": 93.38, "pct_rural": 6.62, "pop_0_4": 13201.0, "pct_pop_0_4": 10.4, "pop_60_mais": 10549.0, "pct_pop_60_mais": 8.31}, {"periodo": 2010, "populacao_total": 125435.0, "taxa_crescimento": -0.119, "indice_envelhecimento": 41.93, "razao_dependencia": 50.04, "pct_urbano": 93.61, "pct_rural": 6.39, "pop_0_4": 9583.0, "pct_pop_0_4": 7.64, "pop_60_mais": 13693.0, "pct_pop_60_mais": 10.92}, {"periodo": 2022, "populacao_total": 117210.0, "taxa_crescimento": -0.564, "indice_envelhecimento": 83.86, "razao_dependencia": 47.59, "pct_urbano": 94.93, "pct_rural": 5.07, "pop_0_4": 7725.0, "pct_pop_0_4": 6.59, "pop_60_mais": 20221.0, "pct_pop_60_mais": 17.25}], "piramides": {"2000": [{"grupo_idade": "0 a 4 anos", "homens": 6653.0, "mulheres": 6548.0}, {"grupo_idade": "5 a 9 anos", "homens": 6366.0, "mulheres": 6280.0}, {"grupo_idade": "10 a 14 anos", "homens": 6341.0, "mulheres": 6084.0}, {"grupo_idade": "15 a 19 anos", "homens": 6200.0, "mulheres": 6301.0}, {"grupo_idade": "20 a 24 anos", "homens": 5572.0, "mulheres": 5621.0}, {"grupo_idade": "25 a 29 anos", "homens": 4983.0, "mulheres": 4952.0}, {"grupo_idade": "30 a 34 anos", "homens": 4831.0, "mulheres": 5023.0}, {"grupo_idade": "35 a 39 anos", "homens": 4855.0, "mulheres": 4976.0}, {"grupo_idade": "40 a 44 anos", "homens": 4147.0, "mulheres": 4216.0}, {"grupo_idade": "45 a 49 anos", "homens": 3323.0, "mulheres": 3356.0}, {"grupo_idade": "50 a 54 anos", "homens": 2652.0, "mulheres": 2613.0}, {"grupo_idade": "55 a 59 anos", "homens": 2191.0, "mulheres": 2303.0}, {"grupo_idade": "60 a 64 anos", "homens": 1753.0, "mulheres": 1891.0}, {"grupo_idade": "65 a 69 anos", "homens": 1049.0, "mulheres": 1376.0}, {"grupo_idade": "70 a 74 anos", "homens": 881.0, "mulheres": 1023.0}, {"grupo_idade": "75 a 79 anos", "homens": 518.0, "mulheres": 759.0}, {"grupo_idade": "80 a 84 anos", "homens": 297.0, "mulheres": 537.0}, {"grupo_idade": "85 a 89 anos", "homens": 105.0, "mulheres": 199.0}, {"grupo_idade": "90 a 94 anos", "homens": 39.0, "mulheres": 60.0}, {"grupo_idade": "95 a 99 anos", "homens": 0, "mulheres": 19.0}, {"grupo_idade": "100 anos ou mais", "homens": 0, "mulheres": 42.0}], "2010": [{"grupo_idade": "0 a 4 anos", "homens": 4778.0, "mulheres": 4805.0}, {"grupo_idade": "5 a 9 anos", "homens": 5513.0, "mulheres": 5459.0}, {"grupo_idade": "10 a 14 anos", "homens": 6077.0, "mulheres": 6028.0}, {"grupo_idade": "15 a 19 anos", "homens": 5582.0, "mulheres": 5599.0}, {"grupo_idade": "20 a 24 anos", "homens": 4955.0, "mulheres": 5085.0}, {"grupo_idade": "25 a 29 anos", "homens": 4866.0, "mulheres": 5139.0}, {"grupo_idade": "30 a 34 anos", "homens": 4501.0, "mulheres": 4768.0}, {"grupo_idade": "35 a 39 anos", "homens": 4261.0, "mulheres": 4366.0}, {"grupo_idade": "40 a 44 anos", "homens": 4179.0, "mulheres": 4472.0}, {"grupo_idade": "45 a 49 anos", "homens": 4077.0, "mulheres": 4319.0}, {"grupo_idade": "50 a 54 anos", "homens": 3513.0, "mulheres": 3833.0}, {"grupo_idade": "55 a 59 anos", "homens": 2705.0, "mulheres": 2861.0}, {"grupo_idade": "60 a 64 anos", "homens": 2289.0, "mulheres": 2229.0}, {"grupo_idade": "65 a 69 anos", "homens": 1587.0, "mulheres": 1719.0}, {"grupo_idade": "70 a 74 anos", "homens": 930.0, "mulheres": 1495.0}, {"grupo_idade": "75 a 79 anos", "homens": 680.0, "mulheres": 948.0}, {"grupo_idade": "80 a 84 anos", "homens": 316.0, "mulheres": 720.0}, {"grupo_idade": "85 a 89 anos", "homens": 168.0, "mulheres": 412.0}, {"grupo_idade": "90 a 94 anos", "homens": 21.0, "mulheres": 131.0}, {"grupo_idade": "95 a 99 anos", "homens": 11.0, "mulheres": 26.0}, {"grupo_idade": "100 anos ou mais", "homens": 0, "mulheres": 11.0}], "2022": [{"grupo_idade": "0 a 4 anos", "homens": 3934.0, "mulheres": 3791.0}, {"grupo_idade": "5 a 9 anos", "homens": 4230.0, "mulheres": 4030.0}, {"grupo_idade": "10 a 14 anos", "homens": 4032.0, "mulheres": 4096.0}, {"grupo_idade": "15 a 19 anos", "homens": 4472.0, "mulheres": 4258.0}, {"grupo_idade": "20 a 24 anos", "homens": 4352.0, "mulheres": 4628.0}, {"grupo_idade": "25 a 29 anos", "homens": 4000.0, "mulheres": 4287.0}, {"grupo_idade": "30 a 34 anos", "homens": 3770.0, "mulheres": 4030.0}, {"grupo_idade": "35 a 39 anos", "homens": 3944.0, "mulheres": 4338.0}, {"grupo_idade": "40 a 44 anos", "homens": 3974.0, "mulheres": 4403.0}, {"grupo_idade": "45 a 49 anos", "homens": 3701.0, "mulheres": 3839.0}, {"grupo_idade": "50 a 54 anos", "homens": 3626.0, "mulheres": 3856.0}, {"grupo_idade": "55 a 59 anos", "homens": 3473.0, "mulheres": 3925.0}, {"grupo_idade": "60 a 64 anos", "homens": 3121.0, "mulheres": 3419.0}, {"grupo_idade": "65 a 69 anos", "homens": 2330.0, "mulheres": 2762.0}, {"grupo_idade": "70 a 74 anos", "homens": 1617.0, "mulheres": 2004.0}, {"grupo_idade": "75 a 79 anos", "homens": 995.0, "mulheres": 1407.0}, {"grupo_idade": "80 a 84 anos", "homens": 526.0, "mulheres": 889.0}, {"grupo_idade": "85 a 89 anos", "homens": 255.0, "mulheres": 503.0}, {"grupo_idade": "90 a 94 anos", "homens": 79.0, "mulheres": 225.0}, {"grupo_idade": "95 a 99 anos", "homens": 13.0, "mulheres": 64.0}, {"grupo_idade": "100 anos ou mais", "homens": 5.0, "mulheres": 7.0}]}};
+
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(e);
+  return e;
+}
+function fmtInt(n){ return Math.round(n).toLocaleString('pt-BR'); }
+function fmt1(n){ return n.toLocaleString('pt-BR', {maximumFractionDigits:1}); }
+function fmtSigned1(n){ return (n>0?'+':'') + fmt1(n); }
+
+function niceTicks(maxVal, count){
+  count = count || 4;
+  if(maxVal <= 0) maxVal = 1;
+  const roughStep = maxVal / count;
+  const mag = Math.pow(10, Math.floor(Math.log10(roughStep)));
+  const norm = roughStep / mag;
+  let step;
+  if(norm < 1.5) step = 1 * mag;
+  else if(norm < 3) step = 2 * mag;
+  else if(norm < 7) step = 5 * mag;
+  else step = 10 * mag;
+  const niceMax = Math.ceil(maxVal / step) * step;
+  const ticks = [];
+  for(let v = 0; v <= niceMax + 1e-9; v += step) ticks.push(Math.round(v * 1000) / 1000);
+  return ticks;
+}
+function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+/* ================= linha com eixo X em escala real de ano (não por índice) ================= */
+function renderTimeLineChart(containerId, tooltipId, opts){
+  const container = document.getElementById(containerId);
+  const tooltip = document.getElementById(tooltipId);
+  const width = container.clientWidth || 300;
+  const height = opts.height || 190;
+  const padL = opts.padL || 44, padR = 14, padT = 14, padB = 24;
+  const innerW = width - padL - padR;
+  const innerH = height - padT - padB;
+
+  const allYears = opts.series.flatMap(s => s.points.map(p => p.x));
+  const minX = Math.min(...allYears), maxX = Math.max(...allYears);
+  const allY = opts.series.flatMap(s => s.points.map(p => p.y));
+  const ticks = niceTicks(Math.max(...allY, 0), opts.tickCount || 4);
+  const maxY = ticks[ticks.length - 1];
+  const minY = opts.zeroBase === false ? Math.min(...allY) * 0.95 : 0;
+
+  container.innerHTML = '';
+  const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
+  const xAt = year => padL + innerW * (year - minX) / (maxX - minX);
+  const yAt = v => padT + innerH - (innerH * (v - minY) / (maxY - minY));
+
+  ticks.forEach(v => {
+    const y = yAt(v);
+    el('line', {x1:padL, x2:padL+innerW, y1:y, y2:y, class:'gridline'}, svg);
+    const t = el('text', {x:padL-7, y:y+3.5, class:'axis-label', 'text-anchor':'end'}, svg);
+    t.textContent = opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+  });
+  el('line', {x1:padL, x2:padL+innerW, y1:padT+innerH, y2:padT+innerH, class:'baseline'}, svg);
+
+  const xTicks = opts.xTicks || allYears.filter((v,i,a) => a.indexOf(v)===i).sort((a,b)=>a-b);
+  xTicks.forEach(year => {
+    const t = el('text', {x:xAt(year), y:height-6, class:'axis-label', 'text-anchor':'middle'}, svg);
+    t.textContent = year;
+  });
+
+  const hoverLine = el('line', {x1:padL, x2:padL, y1:padT, y2:padT+innerH, class:'crosshair'}, svg);
+  hoverLine.style.opacity = 0;
+
+  opts.series.forEach(s => {
+    const pts = s.points;
+    const d = pts.map((p,i) => (i===0?'M':'L') + xAt(p.x).toFixed(1) + ' ' + yAt(p.y).toFixed(1)).join(' ');
+    el('path', {d, fill:'none', stroke:s.color, 'stroke-width':2, 'stroke-linecap':'round', 'stroke-linejoin':'round', 'stroke-dasharray': s.dashed ? '4 3' : 'none'}, svg);
+
+    pts.forEach(p => {
+      if(p.marker){
+        const c = el('circle', {cx:xAt(p.x), cy:yAt(p.y), r:5, fill:s.color, stroke:cssVar('--surface-card'), 'stroke-width':2, class:'marker-censo'}, svg);
+        c.addEventListener('pointermove', e => showAt(e.clientX, p.x));
+        c.addEventListener('pointerleave', hideTip);
+      }
+    });
+
+    const last = pts[pts.length-1];
+    const t = el('text', {x:xAt(last.x)-2, y:yAt(last.y) - 11, class:'end-label', fill:s.color, 'text-anchor':'end'}, svg);
+    t.textContent = opts.yFormat ? opts.yFormat(last.y) : fmtInt(last.y);
+  });
+
+  const hit = el('rect', {x:padL, y:0, width:innerW, height, fill:'transparent'}, svg);
+  function showAt(clientX, forceYear){
+    const rect = svg.getBoundingClientRect();
+    let year = forceYear;
+    if(year === undefined){
+      const scaleX = width / rect.width;
+      const mx = (clientX - rect.left) * scaleX;
+      year = Math.round(minX + (mx - padL) / innerW * (maxX - minX));
+    }
+    hoverLine.setAttribute('x1', xAt(year)); hoverLine.setAttribute('x2', xAt(year));
+    hoverLine.style.opacity = 1;
+    let html = `<div class="tt-x">${year}</div>`;
+    opts.series.forEach(s => {
+      const p = s.points.find(pp => pp.x === year) || s.points.reduce((a,b) => Math.abs(b.x-year)<Math.abs(a.x-year)?b:a);
+      html += `<div class="tt-row"><span class="tt-key" style="border-color:${s.color}"></span><span class="tt-val">${opts.yFormat ? opts.yFormat(p.y) : fmtInt(p.y)}</span><span class="tt-name">${s.name}</span></div>`;
+    });
+    tooltip.innerHTML = html;
+    tooltip.style.opacity = 1;
+    const pct = (xAt(year) / width) * 100;
+    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+  }
+  function hideTip(){ tooltip.style.opacity = 0; }
+  hit.addEventListener('pointermove', e => showAt(e.clientX));
+  hit.addEventListener('pointerleave', () => { hoverLine.style.opacity = 0; tooltip.style.opacity = 0; });
+}
+
+/* ================= área empilhada (urbano/rural), eixo X em escala real de ano ================= */
+function renderStackedAreaChart(containerId, tooltipId, opts){
+  const container = document.getElementById(containerId);
+  const tooltip = document.getElementById(tooltipId);
+  const width = container.clientWidth || 300;
+  const height = opts.height || 200;
+  const padL = 44, padR = 14, padT = 14, padB = 24;
+  const innerW = width - padL - padR;
+  const innerH = height - padT - padB;
+
+  const years = opts.years;
+  const minX = Math.min(...years), maxX = Math.max(...years);
+  const maxY = 100;
+
+  container.innerHTML = '';
+  const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
+  const xAt = year => padL + innerW * (year - minX) / (maxX - minX);
+  const yAt = v => padT + innerH - (innerH * v / maxY);
+
+  [0,25,50,75,100].forEach(v => {
+    const y = yAt(v);
+    el('line', {x1:padL, x2:padL+innerW, y1:y, y2:y, class:'gridline'}, svg);
+    const t = el('text', {x:padL-7, y:y+3.5, class:'axis-label', 'text-anchor':'end'}, svg);
+    t.textContent = v + '%';
+  });
+  el('line', {x1:padL, x2:padL+innerW, y1:padT+innerH, y2:padT+innerH, class:'baseline'}, svg);
+  years.forEach(year => {
+    const t = el('text', {x:xAt(year), y:height-6, class:'axis-label', 'text-anchor':'middle'}, svg);
+    t.textContent = year;
+  });
+
+  const urbanTop = years.map((y,i) => opts.urbano[i]);
+  const dUrban = 'M ' + xAt(years[0]) + ' ' + yAt(0) + ' ' + years.map((y,i)=>'L '+xAt(y)+' '+yAt(urbanTop[i])).join(' ') + ' L ' + xAt(years[years.length-1]) + ' ' + yAt(0) + ' Z';
+  el('path', {d: dUrban, fill: opts.colorUrbano, 'fill-opacity': 0.85}, svg);
+
+  const dRural = 'M ' + xAt(years[0]) + ' ' + yAt(100) + ' ' + years.map((y,i)=>'L '+xAt(y)+' '+yAt(urbanTop[i])).join(' ') + ' L ' + xAt(years[years.length-1]) + ' ' + yAt(100) + ' Z';
+  el('path', {d: dRural, fill: opts.colorRural, 'fill-opacity': 0.85}, svg);
+
+  years.forEach((year,i) => {
+    const c1 = el('circle', {cx:xAt(year), cy:yAt(urbanTop[i]), r:3.5, fill:opts.colorUrbano, stroke:cssVar('--surface-card'), 'stroke-width':1.5, class:'marker-censo'}, svg);
+    c1.addEventListener('pointermove', e => showAt(e.clientX, i));
+    c1.addEventListener('pointerleave', hideTip);
+  });
+
+  const hit = el('rect', {x:padL, y:0, width:innerW, height, fill:'transparent'}, svg);
+  function showAt(clientX, forceIdx){
+    const rect = svg.getBoundingClientRect();
+    let idx = forceIdx;
+    if(idx === undefined){
+      const scaleX = width / rect.width;
+      const mx = (clientX - rect.left) * scaleX;
+      const year = minX + (mx - padL) / innerW * (maxX - minX);
+      idx = years.reduce((best,y,i) => Math.abs(y-year) < Math.abs(years[best]-year) ? i : best, 0);
+    }
+    tooltip.innerHTML = `<div class="tt-x">${years[idx]}</div>` +
+      `<div class="tt-row"><span class="tt-key" style="border-color:${opts.colorUrbano}"></span><span class="tt-val">${fmt1(opts.urbano[idx])}%</span><span class="tt-name">Urbana</span></div>` +
+      `<div class="tt-row"><span class="tt-key" style="border-color:${opts.colorRural}"></span><span class="tt-val">${fmt1(opts.rural[idx])}%</span><span class="tt-name">Rural</span></div>`;
+    tooltip.style.opacity = 1;
+    const pct = (xAt(years[idx]) / width) * 100;
+    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+  }
+  function hideTip(){ tooltip.style.opacity = 0; }
+  hit.addEventListener('pointermove', e => showAt(e.clientX));
+  hit.addEventListener('pointerleave', hideTip);
+}
+
+/* ================= pirâmide etária (barras horizontais espelhadas) ================= */
+function renderPyramidChart(containerId, tooltipId, opts){
+  const container = document.getElementById(containerId);
+  const tooltip = document.getElementById(tooltipId);
+  const width = container.clientWidth || 300;
+  const n = opts.labels.length;
+  const barH = 8, gap = 2.2;
+  const padT = 6, padB = 20, padMid = 2;
+  const innerH = n * (barH + gap) - gap;
+  const height = padT + innerH + padB;
+  const halfW = (width - padMid) / 2;
+
+  container.innerHTML = '';
+  const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
+  const cx = width / 2;
+  const maxV = opts.maxValue;
+  const xLeft = v => cx - padMid/2 - (halfW * v / maxV);
+  const xRight = v => cx + padMid/2 + (halfW * v / maxV);
+
+  el('line', {x1:cx, x2:cx, y1:padT, y2:padT+innerH, class:'baseline'}, svg);
+
+  opts.labels.forEach((lab, i) => {
+    const y = padT + i*(barH+gap);
+    const h = opts.homens[i], m = opts.mulheres[i];
+
+    const barH_ = el('rect', {x:xLeft(h), y, width:(cx-padMid/2-xLeft(h)), height:barH, fill:opts.colorHomens, rx:1.5, class:'bar-mark'}, svg);
+    const barM_ = el('rect', {x:cx+padMid/2, y, width:(xRight(m)-cx-padMid/2), height:barH, fill:opts.colorMulheres, rx:1.5, class:'bar-mark'}, svg);
+    [barH_, barM_].forEach(b => {
+      b.addEventListener('pointermove', e => showTip(e, i));
+      b.addEventListener('pointerleave', hideTip);
+    });
+
+    if(i % 4 === 0 || i === n-1){
+      const t = el('text', {x:cx, y:y+barH-1.5, class:'axis-label', 'text-anchor':'middle', style:'font-size:9px'}, svg);
+      t.textContent = lab.replace(' anos','').replace(' a ','-').replace('ou mais','+');
+    }
+  });
+
+  function showTip(e, i){
+    const rect = svg.getBoundingClientRect();
+    tooltip.innerHTML = `<div class="tt-x">${opts.labels[i]}</div>` +
+      `<div class="tt-row"><span class="tt-key" style="border-color:${opts.colorHomens}"></span><span class="tt-val">${fmtInt(opts.homens[i])}</span><span class="tt-name">Homens</span></div>` +
+      `<div class="tt-row"><span class="tt-key" style="border-color:${opts.colorMulheres}"></span><span class="tt-val">${fmtInt(opts.mulheres[i])}</span><span class="tt-name">Mulheres</span></div>`;
+    tooltip.style.opacity = 1;
+    const pct = ((e.clientX - rect.left) / rect.width) * 100;
+    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+  }
+  function hideTip(){ tooltip.style.opacity = 0; }
+}
+
+/* ================= KPI row ================= */
+const IND = DATA.indicadores;
+const ind2022 = IND.find(d => d.periodo === 2022);
+const kpiRow = document.getElementById('kpiRow');
+const kpis = [
+  {label:'População (Censo 2022)', value: ind2022.populacao_total, unit:'hab', sub:`${fmt1(ind2022.pct_urbano)}% urbana`},
+  {label:'Taxa de crescimento 2010–2022', value: ind2022.taxa_crescimento, unit:'%/ano', sub:'geométrica anual — população vem caindo'},
+  {label:'Índice de envelhecimento', value: ind2022.indice_envelhecimento, unit:'', sub:'60+ por 100 crianças de 0-14 anos'},
+  {label:'% população urbana', value: ind2022.pct_urbano, unit:'%', sub:`${fmt1(ind2022.pct_rural)}% rural`},
+];
+kpis.forEach(k => {
+  const tile = document.createElement('div'); tile.className = 'kpi-tile';
+  const valorFmt = k.label.includes('crescimento') ? fmtSigned1(k.value) : fmt1(k.value);
+  tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${valorFmt}<span class="kpi-unit">${k.unit}</span></div><div class="kpi-sub">${k.sub}</div>`;
+  kpiRow.appendChild(tile);
+});
+
+/* ================= pirâmides (montagem dos cards) ================= */
+const piramideGrid = document.getElementById('piramideGrid');
+['2000','2010','2022'].forEach(ano => {
+  const card = document.createElement('div'); card.className = 'card';
+  card.innerHTML = `<div class="card-head"><span class="card-title">${ano}</span></div><div class="card-body"><div id="chart-piramide-${ano}"></div><div class="chart-tooltip" id="tt-piramide-${ano}"></div></div>`;
+  piramideGrid.appendChild(card);
+});
+
+/* ================= charts ================= */
+function draw(){
+  const blue = cssVar('--series-blue'), orange = cssVar('--series-orange'), aqua = cssVar('--series-aqua');
+
+  renderTimeLineChart('chart-populacao', 'tt-populacao', {
+    height: 220,
+    series: [{
+      name: 'População total', color: blue,
+      points: DATA.serie_populacao.map(d => ({x:d.ano, y:d.populacao, marker: d.fonte === 'censo'})),
+    }],
+    xTicks: [1970,1980,1991,2000,2010,2022],
+    yFormat: v => fmtInt(v),
+    zeroBase: false,
+  });
+
+  const maxPiramide = Math.max(...['2000','2010','2022'].flatMap(a => DATA.piramides[a].flatMap(g => [g.homens, g.mulheres])));
+  ['2000','2010','2022'].forEach(ano => {
+    // ordem invertida (100+ primeiro) para desenhar de cima pra baixo: convenção de pirâmide etária é
+    // idade crescente para CIMA (base larga = crianças, topo estreito = idosos), não o contrário.
+    const p = [...DATA.piramides[ano]].reverse();
+    renderPyramidChart(`chart-piramide-${ano}`, `tt-piramide-${ano}`, {
+      labels: p.map(g => g.grupo_idade),
+      homens: p.map(g => g.homens),
+      mulheres: p.map(g => g.mulheres),
+      maxValue: maxPiramide,
+      colorHomens: blue, colorMulheres: orange,
+    });
+  });
+
+  renderTimeLineChart('chart-envelhecimento', 'tt-envelhecimento', {
+    height: 190,
+    series: [{name:'Índice de envelhecimento', color: orange, points: IND.map(d => ({x:d.periodo, y:d.indice_envelhecimento, marker:true}))}],
+    xTicks: [1970,1980,1991,2000,2010,2022],
+    yFormat: v => fmt1(v),
+  });
+  renderTimeLineChart('chart-dependencia', 'tt-dependencia', {
+    height: 190,
+    series: [{name:'Razão de dependência', color: blue, points: IND.map(d => ({x:d.periodo, y:d.razao_dependencia, marker:true}))}],
+    xTicks: [1970,1980,1991,2000,2010,2022],
+    yFormat: v => fmt1(v),
+  });
+
+  renderStackedAreaChart('chart-urbano-rural', 'tt-urbano-rural', {
+    height: 200,
+    years: IND.map(d => d.periodo),
+    urbano: IND.map(d => d.pct_urbano),
+    rural: IND.map(d => d.pct_rural),
+    colorUrbano: aqua, colorRural: orange,
+  });
+
+  renderTimeLineChart('chart-criancas-abs', 'tt-criancas-abs', {
+    height: 160,
+    series: [{name:'Crianças 0-4', color: blue, points: IND.map(d => ({x:d.periodo, y:d.pop_0_4, marker:true}))}],
+    xTicks: [1970,1980,1991,2000,2010,2022], yFormat: v => fmtInt(v),
+  });
+  renderTimeLineChart('chart-criancas-pct', 'tt-criancas-pct', {
+    height: 160,
+    series: [{name:'Crianças 0-4 (%)', color: blue, points: IND.map(d => ({x:d.periodo, y:d.pct_pop_0_4, marker:true}))}],
+    xTicks: [1970,1980,1991,2000,2010,2022], yFormat: v => fmt1(v)+'%',
+  });
+  renderTimeLineChart('chart-idosos-abs', 'tt-idosos-abs', {
+    height: 160,
+    series: [{name:'Idosos 60+', color: orange, points: IND.map(d => ({x:d.periodo, y:d.pop_60_mais, marker:true}))}],
+    xTicks: [1970,1980,1991,2000,2010,2022], yFormat: v => fmtInt(v),
+  });
+  renderTimeLineChart('chart-idosos-pct', 'tt-idosos-pct', {
+    height: 160,
+    series: [{name:'Idosos 60+ (%)', color: orange, points: IND.map(d => ({x:d.periodo, y:d.pct_pop_60_mais, marker:true}))}],
+    xTicks: [1970,1980,1991,2000,2010,2022], yFormat: v => fmt1(v)+'%',
+  });
+}
+draw();
+window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+
+/* ================= tabela ================= */
+const tabela = document.getElementById('tabelaIndicadores');
+const thead = document.createElement('thead');
+thead.innerHTML = '<tr><th>Censo</th><th>População</th><th>Cresc. anual</th><th>Índice envelh.</th><th>Razão dep.</th><th>% urbano</th><th>% rural</th><th>0-4 anos</th><th>60+ anos</th></tr>';
+tabela.appendChild(thead);
+const tbody = document.createElement('tbody');
+IND.forEach(d => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${d.periodo}</td><td>${fmtInt(d.populacao_total)}</td><td>${d.taxa_crescimento===null?'—':fmtSigned1(d.taxa_crescimento)+'%'}</td><td>${fmt1(d.indice_envelhecimento)}</td><td>${fmt1(d.razao_dependencia)}</td><td>${fmt1(d.pct_urbano)}%</td><td>${fmt1(d.pct_rural)}%</td><td>${fmtInt(d.pop_0_4)} (${fmt1(d.pct_pop_0_4)}%)</td><td>${fmtInt(d.pop_60_mais)} (${fmt1(d.pct_pop_60_mais)}%)</td>`;
+  tbody.appendChild(tr);
+});
+tabela.appendChild(tbody);
+</script>
