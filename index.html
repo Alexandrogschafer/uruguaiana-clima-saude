@@ -63,6 +63,28 @@
         <span>Demografia</span><span class="grupo-seta">▾</span>
       </button>
       <div class="grupo-conteudo">
+        <label class="checkbox-linha">
+          <input type="checkbox" id="checkbox-densidade-populacional" checked />
+          Densidade populacional
+        </label>
+        <div class="seletor-ano-densidade" id="seletor-ano-densidade">
+          <label class="checkbox-linha">
+            <input type="radio" name="ano-densidade" value="2022" checked />
+            2022
+          </label>
+          <label class="checkbox-linha">
+            <input type="radio" name="ano-densidade" value="2010" />
+            2010
+          </label>
+          <label class="checkbox-linha">
+            <input type="radio" name="ano-densidade" value="2000" />
+            2000
+          </label>
+        </div>
+        <p class="secao-ajuda aviso-escala" title="A malha de setores censitários muda de configuração a cada Censo — os limites de um mesmo setor podem mudar, setores podem se fundir ou dividir, e o IBGE reconhece desalinhamento de fronteira entre malhas de anos diferentes.">
+          ⚠ 2000/2010/2022 usam malhas de setores diferentes — cada ano é uma foto isolada, não compare os limites entre anos.
+        </p>
+
         <div id="container-camadas-demografia">
           <p class="secao-ajuda">Carregando camadas…</p>
         </div>
