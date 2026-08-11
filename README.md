@@ -25,8 +25,12 @@ revisão visual):
 - **Saúde:** estabelecimentos de saúde do município (UBS/ESF, hospitais,
   clínicas, farmácias, laboratórios, vigilância em saúde), com filtro por
   tipo de unidade e fontes CNES/OpenStreetMap.
-- **Demografia:** densidade populacional, concentração de crianças
-  (0-4 anos) e de idosos (60+ anos) por setor censitário (Censo 2022).
+- **Demografia:** densidade populacional por setor censitário, com
+  seletor de ano (2022/2010/2000 — 1 ano visível por vez, malhas de
+  setores diferentes entre si e não comparáveis geometricamente);
+  concentração de crianças (0-4 anos) e de idosos (60+ anos) por setor,
+  só para 2022 (a fonte de 2000/2010 não traz distribuição etária por
+  setor).
 - **Inundação:** cotas históricas de inundação registradas pelo Serviço
   Geológico do Brasil, com área e população/estabelecimentos de saúde
   estimados expostos em cada cenário.

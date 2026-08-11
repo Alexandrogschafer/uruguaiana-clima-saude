@@ -1,0 +1,19 @@
+{
+  "descricao": "Densidade populacional por setor censitário, Censo 2000: populacao_total / area_km2. NÃO comparável geometricamente com a malha de outro ano censitário (a malha de setores muda de configuração a cada Censo, com desalinhamento de fronteira reconhecido pelo IBGE) — tratar como uma foto independente da divisão territorial vigente naquele Censo.",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/setores-censitarios_ibge_2000_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326; sem_dado=true nos setores sem linha de atributos na fonte original (não preenchido com zero — ver metadado do gpkg de origem)",
+  "n_features": 145,
+  "colunas": [
+    "cd_setor",
+    "situacao",
+    "populacao_total",
+    "domicilios_total",
+    "area_km2",
+    "densidade_demografica_hab_km2",
+    "sem_dado"
+  ],
+  "data_processamento": "2026-08-11T02:37:39.425414+00:00"
+}

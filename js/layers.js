@@ -47,6 +47,22 @@ const CAMPOS_LEGIVEIS = {
     AREA_KM2: "Área (km²)",
     densidade_hab_km2: "Densidade populacional (hab/km²)",
   },
+  densidadePopulacional2010: {
+    cd_setor: "Código do setor",
+    situacao: "Situação (urbana/rural)",
+    populacao_total: "População total",
+    domicilios_total: "Domicílios totais",
+    area_km2: "Área (km²)",
+    densidade_demografica_hab_km2: "Densidade populacional (hab/km²)",
+  },
+  densidadePopulacional2000: {
+    cd_setor: "Código do setor",
+    situacao: "Situação (urbana/rural)",
+    populacao_total: "População total",
+    domicilios_total: "Domicílios totais",
+    area_km2: "Área (km²)",
+    densidade_demografica_hab_km2: "Densidade populacional (hab/km²)",
+  },
   criancas0a4: {
     CD_SETOR: "Código do setor",
     NM_BAIRRO: "Bairro",
@@ -224,6 +240,8 @@ const COR_AGUA_CATEGORICA = "#3987e5";
 
 const CAMPO_TITULO = {
   densidadePopulacional: (p) => `Setor ${p.CD_SETOR ?? ""}`.trim(),
+  densidadePopulacional2010: (p) => `Setor ${p.cd_setor ?? ""}`.trim(),
+  densidadePopulacional2000: (p) => `Setor ${p.cd_setor ?? ""}`.trim(),
   criancas0a4: (p) => `Setor ${p.CD_SETOR ?? ""}`.trim(),
   idosos60Mais: (p) => `Setor ${p.CD_SETOR ?? ""}`.trim(),
   setoresInundacao: (p) => `Setor ${p.CD_SETOR ?? ""} — cota ${p.cota_cm ?? "?"} cm`,
@@ -247,7 +265,15 @@ const CAMPO_TITULO = {
 // derivada do percentual do Censo (não contagem direta), e pra avisar
 // quando o setor não tem dado por sigilo censitário (ver
 // scripts/geoportal/converter_setores_demografia.py)
+const AVISO_MALHA_HISTORICA =
+  "Malha do Censo histórico — NÃO comparar/sobrepor geometricamente com a de outro ano " +
+  "(setores mudam de configuração a cada Censo; ver metodologia em data/raw/vetor/).";
+
 const NOTAS_POPUP = {
+  densidadePopulacional2010: (p) =>
+    p.sem_dado ? "Sem dado atributivo na fonte para este setor. " + AVISO_MALHA_HISTORICA : AVISO_MALHA_HISTORICA,
+  densidadePopulacional2000: (p) =>
+    p.sem_dado ? "Sem dado atributivo na fonte para este setor. " + AVISO_MALHA_HISTORICA : AVISO_MALHA_HISTORICA,
   criancas0a4: (p) =>
     p.sem_dado
       ? "Sem dado disponível para este setor (sigilo censitário)."
@@ -318,7 +344,19 @@ const RAMPA_IDOSOS = ["#d3f3e6", "#8fdcbd", "#1baf7a", "#12805a", "#0a4d36"];
 const CAMPO_CLASSIFICACAO = {
   densidadePopulacional: {
     campo: "densidade_hab_km2",
-    rotulo: "Densidade populacional",
+    rotulo: "Densidade populacional (2022)",
+    rampa: RAMPA_DENSIDADE,
+    formatar: (v) => `${Math.round(v).toLocaleString("pt-BR")} hab/km²`,
+  },
+  densidadePopulacional2010: {
+    campo: "densidade_demografica_hab_km2",
+    rotulo: "Densidade populacional (2010)",
+    rampa: RAMPA_DENSIDADE,
+    formatar: (v) => `${Math.round(v).toLocaleString("pt-BR")} hab/km²`,
+  },
+  densidadePopulacional2000: {
+    campo: "densidade_demografica_hab_km2",
+    rotulo: "Densidade populacional (2000)",
     rampa: RAMPA_DENSIDADE,
     formatar: (v) => `${Math.round(v).toLocaleString("pt-BR")} hab/km²`,
   },
@@ -459,6 +497,41 @@ async function buscarGeoJSON(nomeArquivo) {
 }
 
 /**
+ * Controle "Densidade populacional" do grupo Demografia: 1 checkbox (liga/
+ * desliga a camada) + 1 seletor de ano (radio 2022/2010/2000). Nunca mostra
+ * mais de um ano ao mesmo tempo — são malhas de setores diferentes entre si
+ * (ver AVISO_MALHA_HISTORICA), sobrepor os 3 coropletos não faria sentido
+ * de leitura nem seria uma comparação válida.
+ *
+ * `camadasPorAno`: { 2022: layer, 2010: layer, 2000: layer }.
+ */
+function montarControleDensidadeHistorica(camadasPorAno) {
+  const mapa = window.App.map;
+  const checkbox = document.getElementById("checkbox-densidade-populacional");
+  const radios = document.querySelectorAll('input[name="ano-densidade"]');
+  if (!checkbox || !radios.length) return;
+
+  let camadaAtiva = null;
+
+  function aplicar() {
+    if (camadaAtiva) mapa.removeLayer(camadaAtiva);
+    camadaAtiva = null;
+
+    if (checkbox.checked) {
+      const anoSelecionado = document.querySelector('input[name="ano-densidade"]:checked')?.value || "2022";
+      camadaAtiva = camadasPorAno[anoSelecionado];
+      mapa.addLayer(camadaAtiva);
+    }
+    atualizarLegendaDemografia();
+  }
+
+  checkbox.addEventListener("change", aplicar);
+  radios.forEach((radio) => radio.addEventListener("change", aplicar));
+
+  aplicar(); // estado inicial: checkbox ligado (HTML), ano 2022 (HTML)
+}
+
+/**
  * Monta uma lista de checkboxes simples (não usa L.control.layers — cada
  * grupo de nível superior do painel tem seu próprio container de toggles,
  * então um checkbox HTML normal dá controle total sobre onde ele aparece,
@@ -501,6 +574,8 @@ async function iniciarCamadas() {
     const [
       limiteMunicipalGeoJSON,
       densidadePopulacionalGeoJSON,
+      densidadePopulacional2010GeoJSON,
+      densidadePopulacional2000GeoJSON,
       criancas0a4GeoJSON,
       idosos60MaisGeoJSON,
       setoresInundacaoGeoJSON,
@@ -513,6 +588,8 @@ async function iniciarCamadas() {
     ] = await Promise.all([
       buscarGeoJSON("limite-municipal.geojson"),
       buscarGeoJSON("densidade-populacional.geojson"),
+      buscarGeoJSON("densidade-populacional-2010.geojson"),
+      buscarGeoJSON("densidade-populacional-2000.geojson"),
       buscarGeoJSON("criancas-0-4.geojson"),
       buscarGeoJSON("idosos-60-mais.geojson"),
       buscarGeoJSON("setores-inundacao.geojson"),
@@ -538,6 +615,10 @@ async function iniciarCamadas() {
     // (visibilidade inicial real é aplicada por montarTogglesCamadas mais
     // abaixo — aqui as camadas só são construídas, sem addTo(mapa))
     const densidadePopulacional = construirCamadaChoropleth("densidadePopulacional", densidadePopulacionalGeoJSON);
+    // malhas históricas (2000/2010) — ver AVISO_MALHA_HISTORICA: nunca mostradas junto com a de
+    // outro ano, alternadas pelo seletor de ano em montarControleDensidadeHistorica()
+    const densidadePopulacional2010 = construirCamadaChoropleth("densidadePopulacional2010", densidadePopulacional2010GeoJSON);
+    const densidadePopulacional2000 = construirCamadaChoropleth("densidadePopulacional2000", densidadePopulacional2000GeoJSON);
     const criancas0a4 = construirCamadaChoropleth("criancas0a4", criancas0a4GeoJSON);
     const idosos60Mais = construirCamadaChoropleth("idosos60Mais", idosos60MaisGeoJSON);
 
@@ -593,6 +674,8 @@ async function iniciarCamadas() {
     window.App.layers = {
       limiteMunicipal,
       densidadePopulacional,
+      densidadePopulacional2010,
+      densidadePopulacional2000,
       criancas0a4,
       idosos60Mais,
       setoresInundacao,
@@ -604,13 +687,20 @@ async function iniciarCamadas() {
       redeHidrografica,
     };
 
-    // grupo "Demografia" — as 3 camadas cobrem a mesma geometria dos
-    // setores censitários, só "Densidade populacional" começa ligada
+    // grupo "Demografia" — densidade populacional tem seletor de ano próprio
+    // (montarControleDensidadeHistorica, abaixo: nunca mostra mais de um ano
+    // ao mesmo tempo, ver AVISO_MALHA_HISTORICA); crianças/idosos só existem
+    // para 2022 (a fonte de 2000/2010 não traz distribuição etária por
+    // setor — ver scripts/download/setores_censitarios_historico.py)
     montarTogglesCamadas("container-camadas-demografia", [
-      { layer: densidadePopulacional, rotulo: "Densidade populacional", ligado: true, aoAlternar: atualizarLegendaDemografia },
-      { layer: criancas0a4, rotulo: "Crianças (0-4 anos)", ligado: false, aoAlternar: atualizarLegendaDemografia },
-      { layer: idosos60Mais, rotulo: "Idosos (60+ anos)", ligado: false, aoAlternar: atualizarLegendaDemografia },
+      { layer: criancas0a4, rotulo: "Crianças (0-4 anos) — 2022", ligado: false, aoAlternar: atualizarLegendaDemografia },
+      { layer: idosos60Mais, rotulo: "Idosos (60+ anos) — 2022", ligado: false, aoAlternar: atualizarLegendaDemografia },
     ]);
+    montarControleDensidadeHistorica({
+      2022: densidadePopulacional,
+      2010: densidadePopulacional2010,
+      2000: densidadePopulacional2000,
+    });
     atualizarLegendaDemografia();
 
     // grupo "Inundação" — mesmo estado inicial de antes (ambas ligadas)

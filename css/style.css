@@ -160,6 +160,15 @@ html, body {
   cursor: help;
 }
 
+.seletor-ano-densidade {
+  display: flex;
+  gap: 12px;
+  margin: 2px 0 10px 24px;
+}
+.seletor-ano-densidade .checkbox-linha {
+  font-size: 0.82rem;
+}
+
 /* ---------- controles ---------- */
 
 input[type="range"] {
