@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <title>Painel de Território e Vulnerabilidade — ClimaPampa, Uruguaiana/RS</title>
 <style>
   :root {
@@ -155,14 +156,15 @@
       <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
       <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
     </svg>
-    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 3 de 3</span>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 3 de 4</span>
     <h1>Painel de território e vulnerabilidade</h1>
-    <p>Uso do solo (MapBiomas), risco geológico (CPRM/SGB) e indicadores do Censo — o retrato estrutural do município, que muda devagar.</p>
+    <p>Uso do solo (MapBiomas), risco geológico (CPRM/SGB), meio físico (geologia, geomorfologia, pedologia, vegetação nativa, poços e APP — BDiA/IBGE e SIAGAS/CPRM) e indicadores do Censo — o retrato estrutural do município, que muda devagar.</p>
     <div class="masthead-meta">
       <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
       <span><b>Uso do solo</b> 1985–2024</span>
       <span><b>Censo</b> 2022 · <b>Risco geológico</b> 2021</span>
-      <span><b>Ver também</b> <a href="painel-saude.html">Saúde</a> · <a href="painel-clima-ambiental.html">Clima e Ambiente</a> · <a href="../index.html">Geoportal</a></span>
+      <span><b>Meio físico (BDiA)</b> escala 1:250.000, versão preliminar</span>
+      <span><b>Ver também</b> <a href="painel-saude.html">Saúde</a> · <a href="painel-clima-ambiental.html">Clima e Ambiente</a> · <a href="painel-demografia.html">Demografia</a> · <a href="../index.html">Geoportal</a></span>
     </div>
   </div>
 
@@ -184,7 +186,32 @@
       <div class="card-head"><span class="card-title">Área urbanizada</span></div>
       <div class="card-body"><div id="chart-urbano"></div><div class="chart-tooltip" id="tt-urbano"></div></div>
     </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Mosaico de Usos</span></div>
+      <div class="card-body"><div id="chart-mosaico"></div><div class="chart-tooltip" id="tt-mosaico"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Outras Lavouras Temporárias</span></div>
+      <div class="card-body"><div id="chart-outras-lavouras"></div><div class="chart-tooltip" id="tt-outras-lavouras"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Formação Florestal</span></div>
+      <div class="card-body"><div id="chart-florestal"></div><div class="chart-tooltip" id="tt-florestal"></div></div>
+    </div>
   </div>
+
+  <p class="section-note" style="margin-top:24px;">As 12 classes da área de estudo em 2024, não só as 3 em destaque acima — para dar visibilidade equivalente a lavoura, mosaico de usos e área urbana, não só vegetação nativa. O MapBiomas diferencia Soja e Arroz especificamente, mas agrupa os demais cultivos anuais em "Outras Lavouras Temporárias"; não há classe de pastagem isolada nesta série. "Mosaico de Usos" não é vegetação nem lavoura específica — é a classe do MapBiomas para áreas onde agricultura/pastagem/vegetação se misturam no pixel.</p>
+  <div class="status-legend">
+    <span class="item"><span class="dot" style="background:var(--series-aqua)"></span>Natural remanescente</span>
+    <span class="item"><span class="dot" style="background:var(--series-orange)"></span>Uso antrópico</span>
+    <span class="item"><span class="dot" style="background:var(--series-blue)"></span>Água</span>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="card-title">Área por classe, ordenada</span><span class="card-meta">2024 · 12 classes</span></div>
+    <div class="card-body"><div id="chart-uso-solo-2024"></div><div class="chart-tooltip" id="tt-uso-solo-2024"></div></div>
+  </div>
+
+  <div class="kpi-row" id="kpiRowUsoSolo"></div>
 
   <div class="section-head"><h2>Risco geológico</h2><div class="section-rule"></div></div>
   <p class="section-note">Carta de Suscetibilidade CPRM/SGB, validada em campo em 2021. Barras por <b>área</b>, não por número de polígonos — um único polígono grande pesa mais que muitos pequenos, e usar contagem aqui contaria a história errada (ver tabela para os dois números).</p>
@@ -209,6 +236,49 @@
     </div>
   </div>
 
+  <div class="section-head"><h2>Meio físico</h2><div class="section-rule"></div></div>
+  <p class="section-note">Geologia, geomorfologia, pedologia e vegetação nativa vêm do Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000 — leitura regional/contextual, não decisão em nível de microárea; versão preliminar, ainda em revisão. "Vegetação nativa" aqui é diferente do "Uso do solo" (MapBiomas) acima: classifica fitofisionomias remanescentes, não uso genérico da terra — por isso aparece quase toda como "Agropecuária" (nenhuma fitofisionomia nativa primária é detectável nessa escala dentro do município, coerente com um Pampa intensamente ocupado).</p>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Geologia — área por unidade</span><span class="card-meta">6 classes</span></div>
+    <div class="card-body"><div id="chart-geologia"></div><div class="chart-tooltip" id="tt-geologia"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Geomorfologia — área por unidade</span><span class="card-meta">3 classes</span></div>
+    <div class="card-body"><div id="chart-geomorfologia"></div><div class="chart-tooltip" id="tt-geomorfologia"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Vegetação nativa (BDiA) — área por classe</span><span class="card-meta">4 classes</span></div>
+    <div class="card-body"><div id="chart-vegetacao-bdia"></div><div class="chart-tooltip" id="tt-vegetacao-bdia"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Pedologia — área por classe de solo</span><span class="card-meta">top 7 de 13 classes, resto agrupado em "Outras"</span></div>
+    <div class="card-body"><div id="chart-pedologia"></div><div class="chart-tooltip" id="tt-pedologia"></div></div>
+  </div>
+
+  <p class="section-note" style="margin-top:24px;">Poços de água subterrânea (SIAGAS/CPRM) e Área de Preservação Permanente (APP) hídrica calculada a partir da rede de drenagem (ANA/BHO) — a APP é uma <b>aproximação metodológica</b> (largura do rio Uruguai estimada, rede local assumida &lt;10m), útil para leitura exploratória, não para fiscalização/licenciamento.</p>
+
+  <div class="kpi-row" id="kpiRowMeioFisico"></div>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Poços de água subterrânea — por aquífero</span><span class="card-meta">SIAGAS/CPRM · 340 poços</span></div>
+      <div class="card-body"><div id="chart-pocos-aquifero"></div><div class="chart-tooltip" id="tt-pocos-aquifero"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">APP hídrica — área por curso d'água</span><span class="card-meta">aproximação metodológica</span></div>
+      <div class="card-body"><div id="chart-app-curso"></div><div class="chart-tooltip" id="tt-app-curso"></div></div>
+    </div>
+  </div>
+
+  <details class="table-wrap" style="margin-top:10px;">
+    <summary>Ver pedologia completa em tabela (13 classes)</summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaPedologia"></table></div>
+  </details>
+
   <div class="section-head"><h2>Perfil censitário</h2><div class="section-rule"></div></div>
   <p class="section-note">Censo 2022 (179 setores censitários). Renda, água e esgoto só existem no nível municipal para este censo — não variam por setor no produto do IBGE.</p>
 
@@ -228,15 +298,15 @@
   </details>
 
   <footer>
-    <p><b>Fontes:</b> Uso do solo — MapBiomas Coleção 10. Risco geológico — CPRM/SGB, Carta de Suscetibilidade a Movimentos Gravitacionais de Massa e Inundações (repositório RIGEO). Censo — IBGE 2022 (Agregados por Setores Censitários + SIDRA). Ver <code>data/catalogo_fontes.csv</code> no repositório para licença, método e limitações de cada fonte.</p>
-    <p><b>Leitura recomendada:</b> a classificação de suscetibilidade é um produto de modelagem validado por campo, não medição direta — use como triagem territorial, não como laudo pontual.</p>
-    <p><b>Painéis complementares:</b> óbitos, arboviroses e internações estão no painel de <a href="painel-saude.html">Saúde</a>; clima, queimadas e nível do rio estão no painel de <a href="painel-clima-ambiental.html">Clima e Monitoramento Ambiental</a>. O <a href="../index.html">geoportal</a> traz a visão espacial de tudo isso no mapa.</p>
+    <p><b>Fontes:</b> Uso do solo — MapBiomas Coleção 10. Risco geológico — CPRM/SGB, Carta de Suscetibilidade a Movimentos Gravitacionais de Massa e Inundações (repositório RIGEO). Geologia, geomorfologia, pedologia e vegetação nativa — Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000. Poços de água subterrânea — SIAGAS/CPRM. APP hídrica — calculada a partir da rede hidrográfica ANA/BHO (aproximação metodológica) cruzada com MapBiomas 2024. Censo — IBGE 2022 (Agregados por Setores Censitários + SIDRA). Ver <code>data/catalogo_fontes.csv</code> no repositório para licença, método e limitações de cada fonte.</p>
+    <p><b>Leitura recomendada:</b> a classificação de suscetibilidade (risco geológico) é um produto de modelagem validado por campo, não medição direta — use como triagem territorial, não como laudo pontual. As camadas de meio físico do BDiA (geologia/geomorfologia/pedologia/vegetação) são leitura regional (1:250.000), não decisão em nível de microárea; a APP hídrica é uma aproximação exploratória, não uma delimitação técnica para fiscalização ou licenciamento.</p>
+    <p><b>Painéis complementares:</b> óbitos, arboviroses e internações estão no painel de <a href="painel-saude.html">Saúde</a>; clima, queimadas e nível do rio estão no painel de <a href="painel-clima-ambiental.html">Clima e Monitoramento Ambiental</a>; população, estrutura etária e indicadores de envelhecimento estão no painel de <a href="painel-demografia.html">Demografia</a>. O <a href="../index.html">geoportal</a> traz a visão espacial de tudo isso no mapa.</p>
   </footer>
 
 </div>
 
 <script>
-const DATA = {"uso_solo": [{"ano": 1985, "Arroz": 240.0461, "Formação Campestre": 3357.5432, "Área Urbanizada": 12.8288}, {"ano": 1990, "Arroz": 292.9706, "Formação Campestre": 3335.6461, "Área Urbanizada": 14.5128}, {"ano": 1995, "Arroz": 299.5007, "Formação Campestre": 3007.9891, "Área Urbanizada": 17.0093}, {"ano": 2000, "Arroz": 428.2914, "Formação Campestre": 2804.5118, "Área Urbanizada": 18.8447}, {"ano": 2005, "Arroz": 366.632, "Formação Campestre": 2912.2179, "Área Urbanizada": 19.9244}, {"ano": 2010, "Arroz": 460.7312, "Formação Campestre": 2845.8968, "Área Urbanizada": 20.7168}, {"ano": 2015, "Arroz": 803.5911, "Formação Campestre": 2868.417, "Área Urbanizada": 21.6054}, {"ano": 2020, "Arroz": 886.9021, "Formação Campestre": 2905.1074, "Área Urbanizada": 22.8984}, {"ano": 2024, "Arroz": 702.1419, "Formação Campestre": 2573.0177, "Área Urbanizada": 23.6013}], "censo": {"populacao_total": 117210, "renda_media": 1566.17, "pct_agua_inadequada": 7.94, "pct_esgoto_inadequado": 11.11, "n_setores_urbanos": 152, "n_setores_rurais": 27, "pop_urbana": 111272, "pop_rural": 5938}, "risco_geologico": {"inundacao_area_km2": {"Alta": 861.54, "Baixa": 51.23, "Média": 291.55}, "inundacao_n_poligonos": {"Média": 2543, "Baixa": 1239, "Alta": 445}, "movimento_area_km2": {"Baixa": 5698.71, "Média": 0.5}, "movimento_n_poligonos": {"Média": 42, "Baixa": 1}}};
+const DATA = {"uso_solo": [{"ano": 1985, "Arroz": 240.0461, "Formação Campestre": 3357.5432, "Área Urbanizada": 12.8288}, {"ano": 1990, "Arroz": 292.9706, "Formação Campestre": 3335.6461, "Área Urbanizada": 14.5128}, {"ano": 1995, "Arroz": 299.5007, "Formação Campestre": 3007.9891, "Área Urbanizada": 17.0093}, {"ano": 2000, "Arroz": 428.2914, "Formação Campestre": 2804.5118, "Área Urbanizada": 18.8447}, {"ano": 2005, "Arroz": 366.632, "Formação Campestre": 2912.2179, "Área Urbanizada": 19.9244}, {"ano": 2010, "Arroz": 460.7312, "Formação Campestre": 2845.8968, "Área Urbanizada": 20.7168}, {"ano": 2015, "Arroz": 803.5911, "Formação Campestre": 2868.417, "Área Urbanizada": 21.6054}, {"ano": 2020, "Arroz": 886.9021, "Formação Campestre": 2905.1074, "Área Urbanizada": 22.8984}, {"ano": 2024, "Arroz": 702.1419, "Formação Campestre": 2573.0177, "Área Urbanizada": 23.6013}], "censo": {"populacao_total": 117210, "renda_media": 1566.17, "pct_agua_inadequada": 7.94, "pct_esgoto_inadequado": 11.11, "n_setores_urbanos": 152, "n_setores_rurais": 27, "pop_urbana": 111272, "pop_rural": 5938}, "risco_geologico": {"inundacao_area_km2": {"Alta": 861.54, "Baixa": 51.23, "Média": 291.55}, "inundacao_n_poligonos": {"Média": 2543, "Baixa": 1239, "Alta": 445}, "movimento_area_km2": {"Baixa": 5698.71, "Média": 0.5}, "movimento_n_poligonos": {"Média": 42, "Baixa": 1}}, "geologia": {"Serra Geral": 4649.75, "Dep. Aluv. Holocênicos": 487.49, "Corpo d'água": 260.46, "Botucatu": 235.56, "Arenitos Interderrames": 54.39, "Dep. Aluv. Antigos": 3.85}, "geomorfologia": {"Planalto da Campanha": 4945.58, "Planícies Alúvio-coluv.": 485.47, "Corpo d'água": 260.46}, "vegetacao_bdia": {"Agropecuária": 5136.75, "Veg. Secundária": 262.19, "Corpo d'água": 260.46, "Influência urbana": 32.1}, "pedologia": {"RLm": 2945.87, "MEk": 1561.0, "Corpo d'água": 260.46, "SXe": 246.44, "FTd": 230.72, "VEk": 159.24, "RLk": 101.03, "Outras (6)": 186.73}, "pedologia_completa": [["RLm - Neossolo Litólico Chernossólico", 2945.87, 11], ["MEk - Chernossolo Ebânico Carbonático", 1561.0, 25], ["Corpo d'água continental", 260.46, 410], ["SXe - Planossolo Háplico Eutrófico", 246.44, 4], ["FTd - Plintossolo Argilúvico Distrófico", 230.72, 2], ["VEk - Vertissolo Ebânico Carbonático", 159.24, 7], ["RLk - Neossolo Litólico Carbonático", 101.03, 1], ["PVva - Argissolo Vermelho Ta Alumínico", 93.84, 7], ["AR - Afloramentos De Rochas", 34.71, 5], ["Área Urbana", 32.1, 8], ["RLd - Neossolo Litólico Distrófico", 19.68, 1], ["RYve - Neossolo Flúvico Ta Eutrófico", 6.19, 4], ["RQo - Neossolo Quartzarênico Órtico", 0.21, 3]], "pocos_siagas": {"total": 340, "profundidade_media_m": 82.93, "profundidade_mediana_m": 60, "pct_sem_profundidade": 11.8, "por_aquifero": {"Serra Geral": 178, "Guarani": 73, "Outros/sem dado": 89}}, "app_hidrica": {"area_total_km2": 321.32, "area_rede_local_km2": 304.91, "area_rio_uruguai_km2": 22.61, "pct_antropica": 18.86, "pct_antropica_excl_agua": 23.53, "area_natural_km2": 196.9, "area_antropica_km2": 60.59, "area_agua_km2": 63.83}, "uso_solo_2024_completo": [["Formação Campestre", 2573.02, "natural"], ["Mosaico de Usos", 1242.70, "antropica"], ["Arroz", 702.14, "antropica"], ["Outras Lavouras Temporárias", 465.58, "antropica"], ["Rio, Lago e Oceano", 327.99, "agua"], ["Formação Florestal", 204.31, "natural"], ["Campo Alagado e Área Pantanosa", 87.94, "natural"], ["Afloramento Rochoso", 25.06, "natural"], ["Área Urbanizada", 23.60, "antropica"], ["Soja", 22.51, "antropica"], ["Outras Áreas não Vegetadas", 15.24, "antropica"], ["Silvicultura", 1.49, "antropica"]], "uso_solo_evolucao": {"anos": [1985,1990,1995,2000,2005,2010,2015,2020,2024], "Mosaico de Usos": [967.195,293.0273,359.1798,477.0025,496.3121,269.6424,272.9291,284.9222,1242.6952], "Outras Lavouras Temporárias": [490.9878,1060.545,1305.0522,1319.9231,1247.2257,1427.0711,1027.9873,908.6015,465.5772], "Formação Florestal": [182.2845,193.1958,199.4221,200.0884,199.7422,197.1629,206.3319,203.7272,204.3055]}};
 
 const NS = 'http://www.w3.org/2000/svg';
 function el(tag, attrs, parent){
@@ -396,6 +466,64 @@ function renderBarChart(containerId, tooltipId, opts){
   function hideTip(){ tooltip.style.opacity = 0; }
 }
 
+function roundedRightBarPath(x, y, w, h, r){
+  r = Math.max(0, Math.min(r, h/2, Math.max(0, w)));
+  return `M ${x} ${y} L ${x+w-r} ${y} Q ${x+w} ${y} ${x+w} ${y+r} L ${x+w} ${y+h-r} Q ${x+w} ${y+h} ${x+w-r} ${y+h} L ${x} ${y+h} Z`;
+}
+function renderHBarChart(containerId, tooltipId, opts){
+  const container = document.getElementById(containerId);
+  const tooltip = document.getElementById(tooltipId);
+  const width = container.clientWidth || 300;
+  const n = opts.labels.length;
+  const barH = opts.barH || 22;
+  const gap = opts.gap || 11;
+  const padL = opts.padL || 200, padR = opts.padR || 56, padT = 6, padB = 24;
+  const innerH = n * (barH + gap) - gap;
+  const height = padT + innerH + padB;
+  const innerW = width - padL - padR;
+
+  const ticks = niceTicks(Math.max(...opts.data, 0), opts.tickCount || 4);
+  const maxX = ticks[ticks.length - 1] || 1;
+
+  container.innerHTML = '';
+  const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
+  const xAt = v => padL + innerW * v / maxX;
+
+  ticks.forEach(v => {
+    const x = xAt(v);
+    el('line', {x1:x, x2:x, y1:padT, y2:padT+innerH, class:'gridline'}, svg);
+    const t = el('text', {x, y:padT+innerH+16, class:'axis-label', 'text-anchor':'middle'}, svg);
+    t.textContent = opts.xFormat ? opts.xFormat(v) : fmtInt(v);
+  });
+  el('line', {x1:padL, x2:padL, y1:padT, y2:padT+innerH, class:'baseline'}, svg);
+
+  opts.data.forEach((v, i) => {
+    const y = padT + i*(barH+gap);
+    const xEnd = xAt(v);
+    const color = opts.colors ? opts.colors[i] : opts.color;
+    const path = roundedRightBarPath(padL, y, xEnd - padL, barH, 3);
+    const bar = el('path', {d:path, fill:color, class:'bar-mark'}, svg);
+    bar.addEventListener('pointermove', e => showTip(e, i));
+    bar.addEventListener('pointerleave', hideTip);
+
+    const lab = el('text', {x:padL-8, y:y+barH/2+4, class:'cat-label', 'text-anchor':'end'}, svg);
+    lab.textContent = opts.labels[i];
+
+    const val = el('text', {x:xEnd+6, y:y+barH/2+4, class:'bar-label', 'text-anchor':'start'}, svg);
+    val.textContent = opts.xFormat ? opts.xFormat(v) : fmtInt(v);
+  });
+
+  function showTip(e, i){
+    const rect = svg.getBoundingClientRect();
+    const color = opts.colors ? opts.colors[i] : opts.color;
+    tooltip.innerHTML = `<div class="tt-x">${opts.labels[i]}</div><div class="tt-row"><span class="tt-key" style="border-color:${color}"></span><span class="tt-val">${opts.xFormat ? opts.xFormat(opts.data[i]) : fmtInt(opts.data[i])}</span><span class="tt-name">${opts.seriesName || ''}</span></div>`;
+    tooltip.style.opacity = 1;
+    const pct = ((e.clientX - rect.left) / rect.width) * 100;
+    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+  }
+  function hideTip(){ tooltip.style.opacity = 0; }
+}
+
 /* ================= KPI row (Censo, sem série histórica) ================= */
 const c = DATA.censo;
 const kpiRow = document.getElementById('kpiRow');
@@ -410,6 +538,43 @@ kpis.forEach(k => {
   const valorFmt = k.unit === 'R$' ? fmt1(k.value) : (k.unit === '%' ? fmt1(k.value) : fmtInt(k.value));
   tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${k.unit==='R$'?'R$ ':''}${valorFmt}<span class="kpi-unit">${k.unit!=='R$'?k.unit:''}</span></div><div class="kpi-sub">${k.sub}</div>`;
   kpiRow.appendChild(tile);
+});
+
+/* ================= KPI row (Meio físico — poços SIAGAS e APP hídrica) ================= */
+const ps = DATA.pocos_siagas, ah = DATA.app_hidrica;
+const kpiRowMeioFisico = document.getElementById('kpiRowMeioFisico');
+const kpisMeioFisico = [
+  {label:'Poços de água subterrânea (SIAGAS)', value: ps.total, unit:'poços', sub:'Serra Geral (178) e Guarani (73) são os aquíferos predominantes'},
+  {label:'Profundidade média dos poços', value: ps.profundidade_media_m, unit:'m', sub:`mediana ${fmtInt(ps.profundidade_mediana_m)}m · ${fmt1(ps.pct_sem_profundidade)}% sem esse dado`},
+  {label:'APP hídrica — área total (aprox.)', value: ah.area_total_km2, unit:'km²', sub:`${fmt1(ah.area_rede_local_km2)} km² rede local + ${fmt1(ah.area_rio_uruguai_km2)} km² rio Uruguai`},
+  {label:'APP hídrica — ocupação antrópica', value: ah.pct_antropica, unit:'%', sub:`${fmt1(ah.pct_antropica_excl_agua)}% excluindo a lâmina d'água · MapBiomas 2024`},
+];
+kpisMeioFisico.forEach(k => {
+  const tile = document.createElement('div'); tile.className = 'kpi-tile';
+  const valorFmt = k.unit === '%' || k.unit === 'm' ? fmt1(k.value) : fmtInt(k.value);
+  tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${valorFmt}<span class="kpi-unit">${k.unit}</span></div><div class="kpi-sub">${k.sub}</div>`;
+  kpiRowMeioFisico.appendChild(tile);
+});
+
+/* ================= KPI row (Uso do solo — todas as classes, 2024) ================= */
+const usoSolo2024 = DATA.uso_solo_2024_completo;
+const areaTotalUso2024 = usoSolo2024.reduce((s,r) => s + r[1], 0);
+const areaAntropica2024 = usoSolo2024.filter(r=>r[2]==='antropica').reduce((s,r)=>s+r[1],0);
+const areaNatural2024 = usoSolo2024.filter(r=>r[2]==='natural').reduce((s,r)=>s+r[1],0);
+const areaAgua2024 = usoSolo2024.filter(r=>r[2]==='agua').reduce((s,r)=>s+r[1],0);
+const classeDominante = usoSolo2024[0];
+const kpiRowUsoSolo = document.getElementById('kpiRowUsoSolo');
+const kpisUsoSolo = [
+  {label:'Classe dominante', value: classeDominante[1], unit:'km²', sub:`${classeDominante[0]} · ${fmt1(100*classeDominante[1]/areaTotalUso2024)}% da área`},
+  {label:'Uso antrópico (total)', value: 100*areaAntropica2024/areaTotalUso2024, unit:'%', sub:`${fmtInt(areaAntropica2024)} km² — mosaico de usos, lavouras, área urbana...`},
+  {label:'Natural remanescente', value: 100*areaNatural2024/areaTotalUso2024, unit:'%', sub:`${fmtInt(areaNatural2024)} km² — campestre, florestal, alagado, afloramento`},
+  {label:'Água', value: 100*areaAgua2024/areaTotalUso2024, unit:'%', sub:`${fmtInt(areaAgua2024)} km² — rio, lago e oceano`},
+];
+kpisUsoSolo.forEach(k => {
+  const tile = document.createElement('div'); tile.className = 'kpi-tile';
+  const valorFmt = k.unit === '%' ? fmt1(k.value) : fmtInt(k.value);
+  tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${valorFmt}<span class="kpi-unit">${k.unit}</span></div><div class="kpi-sub">${k.sub}</div>`;
+  kpiRowUsoSolo.appendChild(tile);
 });
 
 /* ================= charts ================= */
@@ -431,6 +596,20 @@ function draw(){
     height: 160, yFormat: v => fmt1(v),
   });
 
+  const ev = DATA.uso_solo_evolucao;
+  renderLineChart('chart-mosaico', 'tt-mosaico', {
+    labels: ev.anos, series: [{name:'Mosaico de Usos', color: blue, data: ev['Mosaico de Usos']}],
+    height: 160, yFormat: v => fmtInt(v),
+  });
+  renderLineChart('chart-outras-lavouras', 'tt-outras-lavouras', {
+    labels: ev.anos, series: [{name:'Outras Lavouras Temporárias', color: blue, data: ev['Outras Lavouras Temporárias']}],
+    height: 160, yFormat: v => fmtInt(v),
+  });
+  renderLineChart('chart-florestal', 'tt-florestal', {
+    labels: ev.anos, series: [{name:'Formação Florestal', color: blue, data: ev['Formação Florestal']}],
+    height: 160, yFormat: v => fmtInt(v),
+  });
+
   const r = DATA.risco_geologico;
   renderBarChart('chart-risco-inund', 'tt-risco-inund', {
     labels: ['Baixa','Média','Alta'],
@@ -446,6 +625,44 @@ function draw(){
   renderBarChart('chart-pop-situacao', 'tt-pop-situacao', {
     labels: ['Urbana','Rural'], data: [c.pop_urbana, c.pop_rural],
     color: blue, seriesName: 'habitantes', height: 170, barMax: 60,
+  });
+
+  const aqua = cssVar('--series-aqua');
+  const geo = DATA.geologia, geom = DATA.geomorfologia, veg = DATA.vegetacao_bdia, pedo = DATA.pedologia;
+  renderBarChart('chart-geologia', 'tt-geologia', {
+    labels: Object.keys(geo), data: Object.values(geo),
+    color: aqua, seriesName: 'km²', height: 190, yFormat: v => fmtInt(v),
+  });
+  renderBarChart('chart-geomorfologia', 'tt-geomorfologia', {
+    labels: Object.keys(geom), data: Object.values(geom),
+    color: aqua, seriesName: 'km²', height: 190, yFormat: v => fmtInt(v),
+  });
+  renderBarChart('chart-vegetacao-bdia', 'tt-vegetacao-bdia', {
+    labels: Object.keys(veg), data: Object.values(veg),
+    color: aqua, seriesName: 'km²', height: 190, yFormat: v => fmtInt(v),
+  });
+  renderBarChart('chart-pedologia', 'tt-pedologia', {
+    labels: Object.keys(pedo), data: Object.values(pedo),
+    color: aqua, seriesName: 'km²', height: 190, padL: 46, yFormat: v => fmtInt(v),
+  });
+
+  const pa = DATA.pocos_siagas.por_aquifero;
+  renderBarChart('chart-pocos-aquifero', 'tt-pocos-aquifero', {
+    labels: Object.keys(pa), data: Object.values(pa),
+    color: blue, seriesName: 'poços', height: 190, barMax: 60,
+  });
+
+  const app = DATA.app_hidrica;
+  renderBarChart('chart-app-curso', 'tt-app-curso', {
+    labels: ['Rede local (30m)','Rio Uruguai (200m)'], data: [app.area_rede_local_km2, app.area_rio_uruguai_km2],
+    color: blue, seriesName: 'km²', height: 190, barMax: 60, yFormat: v => fmtInt(v)+' km²',
+  });
+
+  const orange = cssVar('--series-orange');
+  const corPorTipo = {natural: aqua, antropica: orange, agua: blue};
+  renderHBarChart('chart-uso-solo-2024', 'tt-uso-solo-2024', {
+    labels: usoSolo2024.map(r=>r[0]), data: usoSolo2024.map(r=>r[1]),
+    colors: usoSolo2024.map(r=>corPorTipo[r[2]]), seriesName: 'km²', xFormat: v => fmtInt(v)+' km²',
   });
 }
 draw();
@@ -480,4 +697,16 @@ const rr = DATA.risco_geologico;
   b2.appendChild(tr);
 });
 tabelaRisco.appendChild(b2);
+
+const tabelaPedologia = document.getElementById('tabelaPedologia');
+const h3 = document.createElement('thead');
+h3.innerHTML = '<tr><th>Classe de solo</th><th>Área (km²)</th><th>Nº de feições</th></tr>';
+tabelaPedologia.appendChild(h3);
+const b3 = document.createElement('tbody');
+DATA.pedologia_completa.forEach(row => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${row[0]}</td><td>${fmt1(row[1])}</td><td>${fmtInt(row[2])}</td>`;
+  b3.appendChild(tr);
+});
+tabelaPedologia.appendChild(b3);
 </script>
