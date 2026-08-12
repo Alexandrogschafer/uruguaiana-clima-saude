@@ -205,8 +205,73 @@
         <span>Malha viária</span><span class="grupo-seta">▾</span>
       </button>
       <div class="grupo-conteudo">
-        <p class="secao-ajuda">Camada de contexto (OpenStreetMap), desligada por padrão.</p>
+        <p class="secao-ajuda">Camadas de contexto, desligadas por padrão: mapeamento colaborativo (OSM) e malha federal oficial (DNIT), com classificação de pavimento.</p>
         <div id="container-camadas-malha-viaria" class="lista-checkboxes"></div>
+        <div class="legenda-demografia">
+          <div class="legenda-bloco">
+            <strong>DNIT — pavimentação</strong>
+            <div class="legenda-linha"><span class="swatch" style="background:#1d4ed8"></span>Pavimentada</div>
+            <div class="legenda-linha"><span class="swatch" style="background:#f59e0b"></span>Planejada (ainda não implantada)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grupo" data-grupo="estrutura-fundiaria">
+      <button class="grupo-titulo" aria-expanded="true">
+        <span>Estrutura fundiária</span><span class="grupo-seta">▾</span>
+      </button>
+      <div class="grupo-conteudo">
+        <p class="secao-ajuda">CAR (Cadastro Ambiental Rural) — imóveis rurais cadastrados, desligado por padrão. Só polígono do imóvel e atributos básicos; Reserva Legal, APP declarada e Área de Uso Consolidado não estão disponíveis nesta fonte.</p>
+        <div id="container-camadas-estrutura-fundiaria" class="lista-checkboxes"></div>
+        <div class="legenda-demografia">
+          <div class="legenda-bloco">
+            <strong>Status do imóvel</strong>
+            <div class="legenda-linha"><span class="swatch" style="background:#16a34a"></span>Ativo</div>
+            <div class="legenda-linha"><span class="swatch" style="background:#f59e0b"></span>Pendente</div>
+            <div class="legenda-linha"><span class="swatch" style="background:#6b7280"></span>Cancelado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grupo" data-grupo="educacao">
+      <button class="grupo-titulo" aria-expanded="true">
+        <span>Educação</span><span class="grupo-seta">▾</span>
+      </button>
+      <div class="grupo-conteudo">
+        <p class="secao-ajuda">Escolas do INEP (Catálogo + Censo Escolar 2024), por dependência administrativa — desligadas por padrão. Só 48 das 92 escolas do Catálogo têm coordenada geocodificada na fonte; as demais 44 não aparecem no mapa (dado ainda existe, só não é espacializável).</p>
+        <label class="checkbox-linha checkbox-marcar-todos">
+          <input type="checkbox" id="checkbox-escolas-todos" />
+          <strong>Marcar/desmarcar todos</strong>
+        </label>
+        <div id="filtro-tipo-escola" class="lista-checkboxes"></div>
+      </div>
+    </div>
+
+    <div class="grupo" data-grupo="cobertura-movel">
+      <button class="grupo-titulo" aria-expanded="true">
+        <span>Cobertura móvel (ANATEL)</span><span class="grupo-seta">▾</span>
+      </button>
+      <div class="grupo-conteudo">
+        <p class="secao-ajuda">% de cobertura de rede móvel por setor censitário (todas as tecnologias, agregado de todas as operadoras) — pensada para identificar onde NÃO há cobertura hoje, para planejar comunicação alternativa em eventos climáticos extremos, não para análise histórica. Escopo reduzido a 7 períodos trimestrais (12/2024–06/2026, os únicos compatíveis com a malha de setores 2022 já usada neste geoportal) — desligada por padrão.</p>
+        <label class="checkbox-linha">
+          <input type="checkbox" id="checkbox-cobertura-movel" />
+          Cobertura móvel por setor
+        </label>
+        <div class="seletor-ano-densidade" id="seletor-periodo-cobertura" style="display:none">
+          <label for="select-periodo-cobertura" class="secao-ajuda" style="margin:0 6px 0 0">Período:</label>
+          <select id="select-periodo-cobertura"></select>
+        </div>
+        <div class="legenda-demografia">
+          <div class="legenda-bloco">
+            <strong>Cobertura no período selecionado</strong>
+            <div class="legenda-linha"><span class="swatch" style="background:#ef4444"></span>Abaixo de 50%</div>
+            <div class="legenda-linha"><span class="swatch" style="background:#a7f3d0"></span>50% ou mais</div>
+            <div class="legenda-linha"><span class="swatch swatch-sem-dado"></span>Sem dado nesse período</div>
+          </div>
+        </div>
+        <p class="secao-ajuda aviso-escala">⚠ Poucos setores ficam abaixo de 50% de cobertura em número (17 de 179), mas são os setores rurais — geometricamente enormes. Isso significa que a maior parte da ÁREA do município (cerca de 4.145 km², ~73%) tem cobertura abaixo de 50%, concentrada na periferia rural — só o núcleo urbano denso tem cobertura alta. Relevante para priorizar comunicação alternativa em eventos extremos fora da área urbana.</p>
       </div>
     </div>
 
@@ -226,5 +291,7 @@
   <script src="js/inundacao-slider.js" defer></script>
   <script src="js/uso-solo-timeline.js" defer></script>
   <script src="js/filtro-saude.js" defer></script>
+  <script src="js/filtro-educacao.js" defer></script>
+  <script src="js/cobertura-movel.js" defer></script>
 </body>
 </html>

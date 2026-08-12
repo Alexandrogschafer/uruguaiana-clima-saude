@@ -37,6 +37,42 @@ const ROTULOS_TIPO_SAUDE = {
 window.App.coresTipoSaude = CORES_TIPO_SAUDE;
 window.App.rotulosTipoSaude = ROTULOS_TIPO_SAUDE;
 
+// cores/rótulos por dependência administrativa (escolas INEP) — mesmo
+// padrão de CORES_TIPO_SAUDE/ROTULOS_TIPO_SAUDE, consumido por
+// filtro-educacao.js (mesma estrutura de filtro-saude.js)
+const CORES_DEPENDENCIA_ESCOLA = {
+  Municipal: "#2b8cbe",
+  Estadual: "#31a354",
+  Privada: "#e6550d",
+  Federal: "#756bb1",
+};
+
+const ROTULOS_DEPENDENCIA_ESCOLA = {
+  Municipal: "Municipal",
+  Estadual: "Estadual",
+  Privada: "Privada",
+  Federal: "Federal",
+};
+
+window.App.coresDependenciaEscola = CORES_DEPENDENCIA_ESCOLA;
+window.App.rotulosDependenciaEscola = ROTULOS_DEPENDENCIA_ESCOLA;
+
+// cores por classificação de pavimento (DNIT/SNV) — mesmos valores hex do
+// mini-legenda estática em index.html (grupo "Malha viária"), mantidos em
+// sincronia manualmente (só 2 categorias fixas, sem geração dinâmica)
+const CORES_PAVIMENTO_DNIT = {
+  PAV: "#1d4ed8",
+  PLA: "#f59e0b",
+};
+
+// cores por status_imovel (CAR/SICAR) — mesmos valores hex da mini-legenda
+// estática em index.html (grupo "Estrutura fundiária"), sincronia manual
+const CORES_STATUS_CAR = {
+  AT: "#16a34a",
+  PE: "#f59e0b",
+  CA: "#6b7280",
+};
+
 // nomes de campo legíveis, por camada — usados na montagem dos popups
 const CAMPOS_LEGIVEIS = {
   densidadePopulacional: {
@@ -137,6 +173,49 @@ const CAMPOS_LEGIVEIS = {
   malhaViaria: {
     name: "Nome da via",
     highway: "Tipo de via",
+  },
+  malhaViariaDnit: {
+    rodovia: "Rodovia",
+    ds_local_i: "Trecho — início",
+    ds_local_f: "Trecho — fim",
+    ds_legenda: "Pavimentação",
+    ds_jurisdi: "Jurisdição",
+    km_dentro_area_estudo: "Extensão dentro do município (km)",
+  },
+  estruturaFundiaria: {
+    codigo_imovel_car: "Código CAR",
+    status_imovel_legenda: "Status",
+    tipo_imovel_legenda: "Tipo de imóvel",
+    condicao_analise: "Condição da análise",
+    area_declarada_ha: "Área declarada (ha)",
+    modulos_fiscais: "Módulos fiscais",
+  },
+  coberturaMovel: {
+    NM_BAIRRO: "Bairro",
+    NM_DIST: "Distrito",
+    cobertura_pct_202412: "Cobertura 12/2024 (%)",
+    cobertura_pct_202503: "Cobertura 03/2025 (%)",
+    cobertura_pct_202506: "Cobertura 06/2025 (%)",
+    cobertura_pct_202509: "Cobertura 09/2025 (%)",
+    cobertura_pct_202512: "Cobertura 12/2025 (%)",
+    cobertura_pct_202603: "Cobertura 03/2026 (%)",
+    cobertura_pct_202606: "Cobertura 06/2026 (%)",
+  },
+  escolasInep: {
+    codigo_inep: "Código INEP",
+    dependencia_administrativa: "Dependência administrativa",
+    localizacao: "Localização",
+    endereco: "Endereço",
+    telefone: "Telefone",
+    etapas_ensino: "Etapas de ensino",
+    porte_escola: "Porte da escola",
+    matriculas: "Matrículas",
+    docentes: "Docentes",
+    salas_utilizadas: "Salas utilizadas",
+    abastecimento_agua: "Abastecimento de água",
+    fornecimento_energia: "Fornecimento de energia",
+    esgotamento_sanitario: "Esgotamento sanitário",
+    internet: "Internet",
   },
   redeHidrografica: {
     cocursodag: "Código do curso d'água (BHO)",
@@ -250,6 +329,10 @@ const CAMPO_TITULO = {
   saudeOsm: (p) => p.name || "Estabelecimento de saúde (OSM)",
   estacoesClima: (p) => p.nome_estacao || "Estação climatológica",
   malhaViaria: (p) => p.name || "Via sem nome",
+  malhaViariaDnit: (p) => (p.rodovia ? `${p.rodovia} — trecho oficial (DNIT)` : "Trecho rodoviário federal"),
+  estruturaFundiaria: (p) => `${p.tipo_imovel_legenda || "Imóvel rural"} — ${p.status_imovel_legenda || "?"}`,
+  escolasInep: (p) => p.escola || "Escola",
+  coberturaMovel: (p) => `Setor ${p.CD_SETOR ?? ""}`.trim(),
   redeHidrografica: (p) => `Curso d'água ${p.cocursodag ?? ""}`.trim(),
   bacia: (p) => `Bacia ${p.codigo_otto ?? ""}`.trim(),
   geologia: (p) => limparRotuloClasse(p.nm_unidade),
@@ -282,6 +365,16 @@ const NOTAS_POPUP = {
     p.sem_dado
       ? "Sem dado disponível para este setor (sigilo censitário)."
       : "Valor absoluto estimado a partir do percentual do Censo (não é contagem direta).",
+  // só o trecho BR-377 coincidente com a BR-290 recebe nota — os demais 17
+  // trechos ficam sem nota (ver ajuste em construirPopup pra função que
+  // retorna null/vazio não sair como "<p>null</p>" no popup)
+  malhaViariaDnit: (p) =>
+    p.divergencia_osm
+      ? "⚠ Trecho co-sinalizado com a BR-290 (mesmo traçado físico registrado sob as duas rodovias no SNV). " +
+        "No OpenStreetMap está mapeado como BR-290/RSC-377, não como BR-377 — quem buscar só por \"BR-377\" no " +
+        "OSM não encontra este trecho, relevante para quem for usá-lo numa rota de evacuação."
+      : null,
+  coberturaMovel: (p) => (p.sem_dado ? "Sem dado ANATEL para este setor em nenhum dos 7 períodos (ano_censo=2022)." : null),
 };
 
 function formatarValor(chave, valor) {
@@ -314,8 +407,12 @@ function construirPopup(chaveCamada, propriedades) {
     .map(([rotulo, valor]) => `<tr><td>${rotulo}</td><td>${valor}</td></tr>`)
     .join("");
 
+  // funcaoNota pode existir na camada mas não se aplicar a esta feição
+  // específica (ex.: malhaViariaDnit só anota o trecho com divergência OSM)
+  // — nesse caso retorna null/vazio, e o <p> nem é montado
   const funcaoNota = NOTAS_POPUP[chaveCamada];
-  const nota = funcaoNota ? `<p class="popup-nota">${funcaoNota(propriedades)}</p>` : "";
+  const textoNota = funcaoNota ? funcaoNota(propriedades) : null;
+  const nota = textoNota ? `<p class="popup-nota">${textoNota}</p>` : "";
 
   return `<div class="popup-titulo">${titulo}</div><table class="popup-tabela">${linhas}</table>${nota}`;
 }
@@ -584,7 +681,10 @@ async function iniciarCamadas() {
       saudeOsmGeoJSON,
       estacoesClimaGeoJSON,
       malhaViariaGeoJSON,
+      malhaViariaDnitGeoJSON,
       redeHidrograficaGeoJSON,
+      estruturaFundiariaGeoJSON,
+      escolasInepGeoJSON,
     ] = await Promise.all([
       buscarGeoJSON("limite-municipal.geojson"),
       buscarGeoJSON("densidade-populacional.geojson"),
@@ -598,7 +698,10 @@ async function iniciarCamadas() {
       buscarGeoJSON("saude-osm.geojson"),
       buscarGeoJSON("estacoes-clima.geojson"),
       buscarGeoJSON("malha-viaria.geojson"),
+      buscarGeoJSON("malha-viaria-dnit.geojson"),
       buscarGeoJSON("rede-hidrografica.geojson"),
+      buscarGeoJSON("estrutura-fundiaria.geojson"),
+      buscarGeoJSON("escolas-inep.geojson"),
     ]);
 
     // limite municipal: contorno de referência, sempre visível, não interativo
@@ -665,11 +768,55 @@ async function iniciarCamadas() {
       onEachFeature: onEachFeatureComPopup("malhaViaria"),
     });
 
+    // malha viária federal oficial (DNIT/SNV) — segunda fonte do mesmo
+    // grupo "Malha viária" (sem grupo novo); estilizada por pavimentação,
+    // com o trecho co-sinalizado BR-377/BR-290 destacado (linha mais
+    // grossa) além da nota condicional no popup (ver NOTAS_POPUP.malhaViariaDnit)
+    const malhaViariaDnit = L.geoJSON(malhaViariaDnitGeoJSON, {
+      style: (feature) => ({
+        color: CORES_PAVIMENTO_DNIT[feature.properties.sg_legenda] || "#6b7280",
+        weight: feature.properties.divergencia_osm ? 4.5 : 2.5,
+        opacity: 0.9,
+        dashArray: feature.properties.sg_legenda === "PLA" ? "6 4" : null,
+      }),
+      onEachFeature: onEachFeatureComPopup("malhaViariaDnit"),
+    });
+
     // rede hidrográfica: linha azul fina, contexto, desligada por padrão
     const redeHidrografica = L.geoJSON(redeHidrograficaGeoJSON, {
       style: { color: "#2563eb", weight: 1, opacity: 0.85 },
       onEachFeature: onEachFeatureComPopup("redeHidrografica"),
     });
+
+    // estrutura fundiária (CAR/SICAR): grupo próprio, toggle único,
+    // desligada por padrão (1.672 imóveis); cor por status_imovel
+    const estruturaFundiaria = L.geoJSON(estruturaFundiariaGeoJSON, {
+      style: (feature) => {
+        const cor = CORES_STATUS_CAR[feature.properties.status_imovel] || "#374151";
+        return { color: cor, weight: 1, fillColor: cor, fillOpacity: 0.25 };
+      },
+      onEachFeature: onEachFeatureComPopup("estruturaFundiaria"),
+    });
+
+    // escolas INEP: mesmo padrão de saudeCnes — sempre montada no mapa
+    // desde o carregamento, visibilidade por categoria controlada só por
+    // filtro-educacao.js (não entra em montarTogglesCamadas); todas as
+    // categorias começam desmarcadas (ver filtro-educacao.js), então o
+    // resultado visual inicial é "camada desligada", igual às demais
+    // camadas novas, sem precisar de um mecanismo de on/off separado
+    const escolasInep = L.geoJSON(escolasInepGeoJSON, {
+      pointToLayer: (feature, latlng) => {
+        const cor = CORES_DEPENDENCIA_ESCOLA[feature.properties.dependencia_administrativa] || "#374151";
+        return L.circleMarker(latlng, {
+          radius: 6,
+          weight: 1,
+          color: "#1f2933",
+          fillColor: cor,
+          fillOpacity: 0.9,
+        });
+      },
+      onEachFeature: onEachFeatureComPopup("escolasInep"),
+    }).addTo(mapa);
 
     window.App.layers = {
       limiteMunicipal,
@@ -684,7 +831,10 @@ async function iniciarCamadas() {
       saudeOsm,
       estacoesClima,
       malhaViaria,
+      malhaViariaDnit,
       redeHidrografica,
+      estruturaFundiaria,
+      escolasInep,
     };
 
     // grupo "Demografia" — densidade populacional tem seletor de ano próprio
@@ -717,7 +867,13 @@ async function iniciarCamadas() {
 
     // grupo "Malha viária"
     montarTogglesCamadas("container-camadas-malha-viaria", [
-      { layer: malhaViaria, rotulo: "Malha viária (contexto)", ligado: false },
+      { layer: malhaViaria, rotulo: "OpenStreetMap (contexto)", ligado: false },
+      { layer: malhaViariaDnit, rotulo: "DNIT — malha federal oficial", ligado: false },
+    ]);
+
+    // grupo "Estrutura fundiária" — toggle único (sem categorias)
+    montarTogglesCamadas("container-camadas-estrutura-fundiaria", [
+      { layer: estruturaFundiaria, rotulo: "Imóveis rurais (CAR)", ligado: false },
     ]);
 
     window.dispatchEvent(new CustomEvent("climapampa:camadas-prontas"));

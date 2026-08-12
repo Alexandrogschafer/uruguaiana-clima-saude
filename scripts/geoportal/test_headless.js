@@ -72,7 +72,7 @@ async function main() {
       return !!(el && el.classList.contains("leaflet-container"));
     }),
     gruposColapsaveisPresentes: await page.evaluate(() => {
-      const esperados = ["mapa-base", "saude", "demografia", "inundacao", "uso-solo", "hidrografia-terreno", "meio-fisico", "malha-viaria"];
+      const esperados = ["mapa-base", "saude", "demografia", "inundacao", "uso-solo", "hidrografia-terreno", "meio-fisico", "malha-viaria", "estrutura-fundiaria", "educacao", "cobertura-movel"];
       return esperados.every((chave) => !!document.querySelector(`.grupo[data-grupo="${chave}"]`));
     }),
     camadasDemografiaCarregadas: await page.evaluate(() => {
@@ -81,7 +81,8 @@ async function main() {
     }),
     camadasInundacaoCarregadas: await page.evaluate(() => document.querySelectorAll("#container-camadas-inundacao input[type=checkbox]").length === 2),
     camadasHidroContextoCarregadas: await page.evaluate(() => document.querySelectorAll("#container-camadas-hidro-contexto input[type=checkbox]").length === 2),
-    camadaMalhaViariaCarregada: await page.evaluate(() => document.querySelectorAll("#container-camadas-malha-viaria input[type=checkbox]").length === 1),
+    camadaMalhaViariaCarregada: await page.evaluate(() => document.querySelectorAll("#container-camadas-malha-viaria input[type=checkbox]").length === 2),
+    camadaEstruturaFundiariaCarregada: await page.evaluate(() => document.querySelectorAll("#container-camadas-estrutura-fundiaria input[type=checkbox]").length === 1),
     sliderCotaHabilitado: await page.evaluate(() => {
       const el = document.getElementById("slider-cota");
       return !!el && !el.disabled && el.max !== "0";
@@ -93,6 +94,15 @@ async function main() {
     filtroSaudePopulado: await page.evaluate(() => {
       const el = document.getElementById("filtro-tipo-saude");
       return !!el && el.children.length > 0;
+    }),
+    filtroEscolaPopulado: await page.evaluate(() => {
+      const el = document.getElementById("filtro-tipo-escola");
+      return !!el && el.children.length === 4;
+    }),
+    coberturaMovelCheckboxPresente: await page.evaluate(() => {
+      // camada lazy (só busca o GeoJSON ao marcar o checkbox) — aqui só
+      // confirma que o controle existe antes de qualquer interação
+      return !!document.getElementById("checkbox-cobertura-movel") && !!document.getElementById("select-periodo-cobertura");
     }),
     meioFisicoPopulado: await page.evaluate(() => {
       const el = document.getElementById("container-camadas-meio-fisico");

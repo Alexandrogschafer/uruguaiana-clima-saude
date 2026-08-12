@@ -1,0 +1,20 @@
+{
+  "descricao": "Malha viária federal oficial (DNIT/SNV) — segunda fonte da camada 'Malha viária' do geoportal, ao lado de malha-viaria.geojson (OSM). Estilizada por pavimentação (Pavimentada/Planejada).",
+  "fonte": {
+    "caminho_origem": "data/raw/vetor/malha-viaria_dnit-snv_202607A_vetorial.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "colunas reduzidas a [rodovia (derivada de vl_br), ds_local_i, ds_local_f, ds_legenda, sg_legenda, ds_jurisdi, km_dentro_area_estudo, divergencia_osm (derivada: BR-377 coincidente com BR-290, tagueada como BR-290/RSC-377 no OSM)]; sem simplificação de geometria (18 feições); reprojeção -> EPSG:4326",
+  "n_features": 18,
+  "colunas": [
+    "ds_local_i",
+    "ds_local_f",
+    "ds_legenda",
+    "sg_legenda",
+    "ds_jurisdi",
+    "km_dentro_area_estudo",
+    "rodovia",
+    "divergencia_osm"
+  ],
+  "data_processamento": "2026-08-12T18:47:41.035121+00:00"
+}

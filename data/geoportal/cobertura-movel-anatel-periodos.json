@@ -1,0 +1,14 @@
+{
+  "campos_por_periodo": {
+    "12-2024": "cobertura_pct_202412",
+    "03-2025": "cobertura_pct_202503",
+    "06-2025": "cobertura_pct_202506",
+    "09-2025": "cobertura_pct_202509",
+    "12-2025": "cobertura_pct_202512",
+    "03-2026": "cobertura_pct_202603",
+    "06-2026": "cobertura_pct_202606"
+  },
+  "periodo_mais_recente": "06-2026",
+  "campo_periodo_mais_recente": "cobertura_pct_202606",
+  "limiar_alerta_pct": 50
+}
