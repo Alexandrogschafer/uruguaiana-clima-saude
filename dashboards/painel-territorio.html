@@ -158,12 +158,14 @@
     </svg>
     <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 3 de 4</span>
     <h1>Painel de território e vulnerabilidade</h1>
-    <p>Uso do solo (MapBiomas), risco geológico (CPRM/SGB), meio físico (geologia, geomorfologia, pedologia, vegetação nativa, poços e APP — BDiA/IBGE e SIAGAS/CPRM) e indicadores do Censo — o retrato estrutural do município, que muda devagar.</p>
+    <p>Uso do solo (MapBiomas), risco geológico (CPRM/SGB), meio físico (geologia, geomorfologia, pedologia, vegetação nativa, poços e APP — BDiA/IBGE e SIAGAS/CPRM), indicadores do Censo e contexto socioeconômico (PIB, PAM/PPM, RAIS/CAGED) — o retrato estrutural do município, que muda devagar.</p>
     <div class="masthead-meta">
       <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
       <span><b>Uso do solo</b> 1985–2024</span>
-      <span><b>Censo</b> 2022 · <b>Risco geológico</b> 2021</span>
+      <span><b>Censo</b> 2022 · <b>Risco geológico</b> 2021 · <b>Desastres (S2ID)</b> 2014–2025</span>
       <span><b>Meio físico (BDiA)</b> escala 1:250.000, versão preliminar</span>
+      <span><b>Economia</b> PIB 2002–2022 · PAM/PPM 1974–2024 · CAGED 2020–2026</span>
+      <span><b>Vulnerabilidade</b> IDHM 1991–2010 · CadÚnico 2012–2026</span>
       <span><b>Ver também</b> <a href="painel-saude.html">Saúde</a> · <a href="painel-clima-ambiental.html">Clima e Ambiente</a> · <a href="painel-demografia.html">Demografia</a> · <a href="../index.html">Geoportal</a></span>
     </div>
   </div>
@@ -213,8 +215,8 @@
 
   <div class="kpi-row" id="kpiRowUsoSolo"></div>
 
-  <div class="section-head"><h2>Risco geológico</h2><div class="section-rule"></div></div>
-  <p class="section-note">Carta de Suscetibilidade CPRM/SGB, validada em campo em 2021. Barras por <b>área</b>, não por número de polígonos — um único polígono grande pesa mais que muitos pequenos, e usar contagem aqui contaria a história errada (ver tabela para os dois números).</p>
+  <div class="section-head"><h2>Risco e Desastres</h2><div class="section-rule"></div></div>
+  <p class="section-note">Suscetibilidade mapeada (CPRM/SGB, validada em campo em 2021) e histórico de desastres reconhecidos oficialmente pela União (S2ID/SEDEC-MIDR). Barras de suscetibilidade por <b>área</b>, não por número de polígonos — um único polígono grande pesa mais que muitos pequenos, e usar contagem aqui contaria a história errada (ver tabela para os dois números).</p>
 
   <div class="chart-grid">
     <div class="card">
@@ -235,6 +237,23 @@
       <div class="card-body"><div id="chart-risco-mov"></div><div class="chart-tooltip" id="tt-risco-mov"></div></div>
     </div>
   </div>
+
+  <p class="section-note" style="margin-top:24px;">Reconhecimentos federais de Situação de Emergência (SE) ou Estado de Calamidade Pública (ECP) — série 2014–2025 (nenhum decreto em 2013 na fonte para o município), levantada no Sistema Integrado de Informações sobre Desastres (S2ID).</p>
+
+  <div class="kpi-row" id="kpiRowS2id"></div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Reconhecimentos federais de desastre por ano e tipo</span><span class="card-meta">S2ID · 2014–2025 · 17 reconhecimentos</span></div>
+    <div class="status-legend">
+      <span class="item"><span class="dot" style="background:var(--series-blue)"></span>Inundação</span>
+      <span class="item"><span class="dot" style="background:var(--series-orange)"></span>Estiagem</span>
+      <span class="item"><span class="dot" style="background:var(--series-aqua)"></span>Tempestade local/convectiva</span>
+      <span class="item"><span class="dot" style="background:var(--series-context)"></span>Doença infecciosa viral</span>
+      <span class="item"><span class="dot" style="background:var(--status-critical)"></span>Enxurrada</span>
+    </div>
+    <div class="card-body"><div id="chart-s2id-anual"></div><div class="chart-tooltip" id="tt-s2id-anual"></div></div>
+  </div>
+  <p class="section-note" style="margin-top:6px;">11 dos 12 anos da série tiveram pelo menos 1 reconhecimento (só 2018 sem registro). Inundação é o tipo mais frequente (7 de 17, 41%), seguido de estiagem (4). As 2 doenças infecciosas virais (2021) são Estado de Calamidade Pública (ECP, situação mais grave) — os demais 15 reconhecimentos são Situação de Emergência (SE); ambas as declarações de 2021 referem-se à pandemia de covid-19. Sem geometria própria por evento na fonte (é reconhecimento administrativo por decreto/portaria, não mapeamento de área afetada) — por isso fica como indicador de contexto, não camada no geoportal.</p>
 
   <div class="section-head"><h2>Meio físico</h2><div class="section-rule"></div></div>
   <p class="section-note">Geologia, geomorfologia, pedologia e vegetação nativa vêm do Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000 — leitura regional/contextual, não decisão em nível de microárea; versão preliminar, ainda em revisão. "Vegetação nativa" aqui é diferente do "Uso do solo" (MapBiomas) acima: classifica fitofisionomias remanescentes, não uso genérico da terra — por isso aparece quase toda como "Agropecuária" (nenhuma fitofisionomia nativa primária é detectável nessa escala dentro do município, coerente com um Pampa intensamente ocupado).</p>
@@ -297,8 +316,129 @@
     <div class="table-scroll"><table class="data-table" id="tabelaRisco"></table></div>
   </details>
 
+  <div class="section-head"><h2>Economia e Território</h2><div class="section-rule"></div></div>
+  <p class="section-note">PIB municipal e composição setorial (IBGE/SIDRA), produção agropecuária (PAM/PPM) e emprego formal (RAIS/Novo CAGED) — indicadores de contexto socioeconômico municipal, sem granularidade espacial abaixo do município na fonte (ao contrário das demais camadas deste painel, por isso não aparecem no geoportal).</p>
+
+  <div class="kpi-row" id="kpiRowEconomia"></div>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">PIB per capita</span><span class="card-meta">IBGE/SIDRA · 2002–2022</span></div>
+      <div class="card-body"><div id="chart-pib-per-capita"></div><div class="chart-tooltip" id="tt-pib-per-capita"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Composição setorial do VAB</span><span class="card-meta">% do VAB total · 2002–2021</span></div>
+      <div class="card-body"><div id="chart-pib-composicao"></div><div class="chart-tooltip" id="tt-pib-composicao"></div></div>
+    </div>
+  </div>
+  <p class="section-note" style="margin-top:-6px;">2007 não tem PIB per capita (sem fonte de população nesse ano) e 2022/2023 não têm detalhamento setorial (a fonte só publica VAB por atividade até 2021, mesmo com o PIB total mais recente). O pico da agropecuária no VAB em 2021 (27,1%) é um choque de <b>preço</b> do arroz, não de volume — a área colhida (abaixo) fica estável no mesmo período.</p>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Área colhida — arroz e soja</span><span class="card-meta">PAM · 1974–2024 · hectares</span></div>
+      <div class="card-body"><div id="chart-pam-area"></div><div class="chart-tooltip" id="tt-pam-area"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Efetivo de rebanho — bovino e ovino</span><span class="card-meta">PPM · 1974–2024 · cabeças</span></div>
+      <div class="card-body"><div id="chart-ppm-rebanho"></div><div class="chart-tooltip" id="tt-ppm-rebanho"></div></div>
+    </div>
+  </div>
+  <p class="section-note" style="margin-top:-6px;">Arroz irrigado domina a lavoura do município (~94% da área colhida em 2024); soja começou a crescer a partir de meados dos anos 2010, ainda pequena. Rebanho ovino em queda estrutural de longo prazo (de 1,43 milhão de cabeças em 1974 para 137,8 mil em 2024), mesmo padrão já visto em outros municípios do Pampa gaúcho — bovino oscila, sem tendência clara. PAM/PPM não têm versão por setor censitário nem geolocalizada na fonte (decisão confirmada com o usuário) — por isso ficam só como indicador tabular, sem virar camada no geoportal.</p>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Admissões e desligamentos — Novo CAGED</span><span class="card-meta">mensal · 2020-01 a 2026-06</span></div>
+      <div class="card-body"><div id="chart-caged-fluxo"></div><div class="chart-tooltip" id="tt-caged-fluxo"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Saldo acumulado de vínculos — Novo CAGED</span><span class="card-meta">acumulado desde 2020-01</span></div>
+      <div class="card-body"><div id="chart-caged-saldo"></div><div class="chart-tooltip" id="tt-caged-saldo"></div></div>
+    </div>
+  </div>
+  <p class="section-note" style="margin-top:-6px;">Novo CAGED (via eSocial, a partir de 2020) — período anterior fica fora de escopo por quebra metodológica com o CAGED antigo (formulário declaratório), mesmo espírito da quebra já documentada entre Censos do IBGE. Saldo de 2026 (parcial, até junho) puxado para baixo pelo setor Agropecuária — sinal a acompanhar, não uma reversão de tendência confirmada.</p>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Vínculos formais ativos por seção CNAE — RAIS</span><span class="card-meta">retrato em 31/12/2025 · 24.498 vínculos</span></div>
+    <div class="card-body"><div id="chart-rais-setor"></div><div class="chart-tooltip" id="tt-rais-setor"></div></div>
+  </div>
+  <p class="section-note" style="margin-top:6px;">RAIS não tem série histórica baixada nesta rodada (só o ano mais recente — o arquivo de estabelecimentos nacional tem ~3GB por ano) — funciona como retrato do estoque atual ao lado da série mensal de fluxo do CAGED acima, não como tendência própria. Participação da Agropecuária no emprego formal (12,8%) é menor que sua participação no PIB (14–27%), padrão esperado: agricultura mecanizada é intensiva em capital, não em mão de obra.</p>
+
+  <details class="table-wrap" style="margin-top:10px;">
+    <summary>Ver RAIS 2025 completa por seção CNAE (20 seções)</summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaRais"></table></div>
+  </details>
+
+  <div class="section-head"><h2>Vulnerabilidade e Assistência Social</h2><div class="section-rule"></div></div>
+  <p class="section-note">Desenvolvimento humano (IDHM, Atlas Brasil/PNUD) e cobertura de assistência social (CadÚnico e Bolsa Família, MDS) — indicadores de contexto municipal único, sem granularidade espacial na fonte, por isso fora do geoportal.</p>
+
+  <div class="kpi-row" id="kpiRowVulnerabilidade"></div>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">IDHM e componentes</span><span class="card-meta">Atlas Brasil · 1991–2010</span></div>
+      <div class="card-body"><div id="chart-idhm-componentes"></div><div class="chart-tooltip" id="tt-idhm-componentes"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">IDHM — Uruguaiana x Brasil</span><span class="card-meta">1991–2010</span></div>
+      <div class="card-body"><div id="chart-idhm-brasil"></div><div class="chart-tooltip" id="tt-idhm-brasil"></div></div>
+    </div>
+  </div>
+  <p class="section-note" style="margin-top:-6px;">IDHM 2022 não existe em nível municipal na fonte (nem via Censo, não computado; nem via PNAD Contínua, testada e confirmada vazia para município — inclusive Porto Alegre, usada como controle de sanidade) — a série para em 2010. Evolução acima da média do Brasil nos 3 censos, puxada principalmente pela Longevidade (0,715→0,863) e por uma forte recuperação da Educação (0,357→0,661, o componente que mais cresceu proporcionalmente).</p>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Famílias cadastradas — CadÚnico</span><span class="card-meta">dezembro de cada ano · 2012–2026</span></div>
+      <div class="card-body"><div id="chart-cadunico-familias"></div><div class="chart-tooltip" id="tt-cadunico-familias"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Taxa de atualização cadastral (2 anos)</span><span class="card-meta">% das famílias · 2012–2026</span></div>
+      <div class="card-body"><div id="chart-cadunico-taxa"></div><div class="chart-tooltip" id="tt-cadunico-taxa"></div></div>
+    </div>
+  </div>
+  <p class="section-note" style="margin-top:-6px;">Taxa de atualização 0% em 2012–2014 é valor real da fonte (métrica aparentemente não rastreada pelo MDS nesse período), não falha de extração. Último ponto (2026) é julho, não dezembro como os demais — comparar com cautela, ano ainda não fechado. Bolsa Família (ver KPIs acima) não tem série histórica confiável nesta ferramenta antes de 2023 (o módulo consultado referencia especificamente o "Novo Bolsa Família", Lei 14.601/2023), por isso não vira gráfico de série temporal, só o retrato do mês mais recente.</p>
+
+  <div class="section-head"><h2>Despesas Municipais — SICONFI</h2><div class="section-rule"></div></div>
+  <p class="section-note">Execução orçamentária por função (RREO-Anexo 02, Tesouro Nacional) — despesas liquidadas acumuladas no ano, indicador de contexto municipal único, sem granularidade espacial na fonte.</p>
+
+  <div class="kpi-row" id="kpiRowSiconfi"></div>
+  <p class="section-note" style="margin-top:-6px;"><b>Sobre o KPI "Saneamento" acima:</b> a função "Saneamento" não aparecer no orçamento por função NÃO significa ausência de investimento no serviço — água e esgoto de Uruguaiana são operados pela CORSAN (concessionária estadual), fora do orçamento municipal direto. O gasto existe, só não passa por essa peça orçamentária específica.</p>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Despesa em Saúde per capita</span><span class="card-meta">2015–2025 · R$/hab</span></div>
+      <div class="card-body"><div id="chart-siconfi-saude-pc"></div><div class="chart-tooltip" id="tt-siconfi-saude-pc"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Despesa em Assistência Social per capita</span><span class="card-meta">2015–2025 · R$/hab</span></div>
+      <div class="card-body"><div id="chart-siconfi-assist-pc"></div><div class="chart-tooltip" id="tt-siconfi-assist-pc"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Despesa em Saúde — % do PIB municipal</span><span class="card-meta">2015–2023 · anos com PIB disponível</span></div>
+    <div class="card-body"><div id="chart-siconfi-pct-pib"></div><div class="chart-tooltip" id="tt-siconfi-pct-pib"></div></div>
+  </div>
+  <p class="section-note" style="margin-top:6px;">2026 (parcial, só bimestre 3 publicado até agora) fica fora dos gráficos — R$ 418,80/hab em Saúde e R$ 19,79/hab em Assistência Social acumulados até junho não são comparáveis a um ano fechado; incluir sugeriria uma queda de investimento que não é real. % do PIB só existe até 2023 (mesma lacuna já documentada na seção de Economia — a fonte do PIB não publica detalhamento mais recente). Despesa em Saúde per capita cresce de forma monotônica desde 2015 (+193,3% entre 2015 e 2025), estável entre 1,5% e 2,3% do PIB (esperado — o piso constitucional de 15% da EC 29/86 é sobre receita própria municipal, não sobre o PIB).</p>
+
+  <div class="section-head"><h2>Continuidade de Energia — ANEEL</h2><div class="section-rule"></div></div>
+  <p class="section-note">Indicadores coletivos de continuidade (DEC — duração, FEC — frequência) da distribuidora RGE SUL, agregados por média ponderada pelo número de unidades consumidoras entre os "conjuntos" que atendem o município (a fonte reorganizou essa divisão interna ao longo do tempo — ver nota abaixo) — sem geometria publicada pela ANEEL, por isso fica como indicador de contexto, não camada no geoportal.</p>
+
+  <div class="kpi-row" id="kpiRowAneel"></div>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">DEC — Duração Equivalente de Interrupção</span><span class="card-meta">acumulado anual · horas</span></div>
+      <div class="card-body"><div id="chart-aneel-dec"></div><div class="chart-tooltip" id="tt-aneel-dec"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">FEC — Frequência Equivalente de Interrupção</span><span class="card-meta">acumulado anual · nº de interrupções</span></div>
+      <div class="card-body"><div id="chart-aneel-fec"></div><div class="chart-tooltip" id="tt-aneel-fec"></div></div>
+    </div>
+  </div>
+  <p class="section-note" style="margin-top:-6px;">2026 (parcial, só até junho) fica fora do gráfico pelo mesmo motivo do SICONFI acima — DEC de 3,98h/FEC de 1,57 acumulados em 6 meses pareceriam uma melhora dramática frente a um ano fechado, mas é só metade do período. A quebra de comparabilidade real na divisão interna de "conjuntos" ao longo do tempo (a década 2010–2019 tinha nomes diferentes dos atuais "Uruguaiana 1"/"Uruguaiana 7") não afeta este agregado — ele soma todas as unidades consumidoras do município em cada mês, independente de como a distribuidora dividiu internamente naquele período.</p>
+
   <footer>
-    <p><b>Fontes:</b> Uso do solo — MapBiomas Coleção 10. Risco geológico — CPRM/SGB, Carta de Suscetibilidade a Movimentos Gravitacionais de Massa e Inundações (repositório RIGEO). Geologia, geomorfologia, pedologia e vegetação nativa — Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000. Poços de água subterrânea — SIAGAS/CPRM. APP hídrica — calculada a partir da rede hidrográfica ANA/BHO (aproximação metodológica) cruzada com MapBiomas 2024. Censo — IBGE 2022 (Agregados por Setores Censitários + SIDRA). Ver <code>data/catalogo_fontes.csv</code> no repositório para licença, método e limitações de cada fonte.</p>
+    <p><b>Fontes:</b> Uso do solo — MapBiomas Coleção 10. Risco geológico — CPRM/SGB, Carta de Suscetibilidade a Movimentos Gravitacionais de Massa e Inundações (repositório RIGEO). Desastres — S2ID (Sistema Integrado de Informações sobre Desastres), SEDEC-MIDR. Geologia, geomorfologia, pedologia e vegetação nativa — Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000. Poços de água subterrânea — SIAGAS/CPRM. APP hídrica — calculada a partir da rede hidrográfica ANA/BHO (aproximação metodológica) cruzada com MapBiomas 2024. Censo — IBGE 2022 (Agregados por Setores Censitários + SIDRA). PIB dos Municípios — IBGE/SIDRA (tabela 5938), PIB per capita calculado localmente. Produção agrícola e efetivo de rebanho — IBGE/SIDRA, PAM (tabela 5457) e PPM (tabela 3939). Emprego formal — RAIS e Novo CAGED, Ministério do Trabalho e Emprego (microdados via FTP público). IDHM — Atlas do Desenvolvimento Humano no Brasil (PNUD/Ipea/FJP). CadÚnico e Bolsa Família — Ministério do Desenvolvimento Social (MDS), Relatório de Informações (RIv3). Ver <code>data/catalogo_fontes.csv</code> no repositório para licença, método e limitações de cada fonte.</p>
     <p><b>Leitura recomendada:</b> a classificação de suscetibilidade (risco geológico) é um produto de modelagem validado por campo, não medição direta — use como triagem territorial, não como laudo pontual. As camadas de meio físico do BDiA (geologia/geomorfologia/pedologia/vegetação) são leitura regional (1:250.000), não decisão em nível de microárea; a APP hídrica é uma aproximação exploratória, não uma delimitação técnica para fiscalização ou licenciamento.</p>
     <p><b>Painéis complementares:</b> óbitos, arboviroses e internações estão no painel de <a href="painel-saude.html">Saúde</a>; clima, queimadas e nível do rio estão no painel de <a href="painel-clima-ambiental.html">Clima e Monitoramento Ambiental</a>; população, estrutura etária e indicadores de envelhecimento estão no painel de <a href="painel-demografia.html">Demografia</a>. O <a href="../index.html">geoportal</a> traz a visão espacial de tudo isso no mapa.</p>
   </footer>
@@ -306,7 +446,7 @@
 </div>
 
 <script>
-const DATA = {"uso_solo": [{"ano": 1985, "Arroz": 240.0461, "Formação Campestre": 3357.5432, "Área Urbanizada": 12.8288}, {"ano": 1990, "Arroz": 292.9706, "Formação Campestre": 3335.6461, "Área Urbanizada": 14.5128}, {"ano": 1995, "Arroz": 299.5007, "Formação Campestre": 3007.9891, "Área Urbanizada": 17.0093}, {"ano": 2000, "Arroz": 428.2914, "Formação Campestre": 2804.5118, "Área Urbanizada": 18.8447}, {"ano": 2005, "Arroz": 366.632, "Formação Campestre": 2912.2179, "Área Urbanizada": 19.9244}, {"ano": 2010, "Arroz": 460.7312, "Formação Campestre": 2845.8968, "Área Urbanizada": 20.7168}, {"ano": 2015, "Arroz": 803.5911, "Formação Campestre": 2868.417, "Área Urbanizada": 21.6054}, {"ano": 2020, "Arroz": 886.9021, "Formação Campestre": 2905.1074, "Área Urbanizada": 22.8984}, {"ano": 2024, "Arroz": 702.1419, "Formação Campestre": 2573.0177, "Área Urbanizada": 23.6013}], "censo": {"populacao_total": 117210, "renda_media": 1566.17, "pct_agua_inadequada": 7.94, "pct_esgoto_inadequado": 11.11, "n_setores_urbanos": 152, "n_setores_rurais": 27, "pop_urbana": 111272, "pop_rural": 5938}, "risco_geologico": {"inundacao_area_km2": {"Alta": 861.54, "Baixa": 51.23, "Média": 291.55}, "inundacao_n_poligonos": {"Média": 2543, "Baixa": 1239, "Alta": 445}, "movimento_area_km2": {"Baixa": 5698.71, "Média": 0.5}, "movimento_n_poligonos": {"Média": 42, "Baixa": 1}}, "geologia": {"Serra Geral": 4649.75, "Dep. Aluv. Holocênicos": 487.49, "Corpo d'água": 260.46, "Botucatu": 235.56, "Arenitos Interderrames": 54.39, "Dep. Aluv. Antigos": 3.85}, "geomorfologia": {"Planalto da Campanha": 4945.58, "Planícies Alúvio-coluv.": 485.47, "Corpo d'água": 260.46}, "vegetacao_bdia": {"Agropecuária": 5136.75, "Veg. Secundária": 262.19, "Corpo d'água": 260.46, "Influência urbana": 32.1}, "pedologia": {"RLm": 2945.87, "MEk": 1561.0, "Corpo d'água": 260.46, "SXe": 246.44, "FTd": 230.72, "VEk": 159.24, "RLk": 101.03, "Outras (6)": 186.73}, "pedologia_completa": [["RLm - Neossolo Litólico Chernossólico", 2945.87, 11], ["MEk - Chernossolo Ebânico Carbonático", 1561.0, 25], ["Corpo d'água continental", 260.46, 410], ["SXe - Planossolo Háplico Eutrófico", 246.44, 4], ["FTd - Plintossolo Argilúvico Distrófico", 230.72, 2], ["VEk - Vertissolo Ebânico Carbonático", 159.24, 7], ["RLk - Neossolo Litólico Carbonático", 101.03, 1], ["PVva - Argissolo Vermelho Ta Alumínico", 93.84, 7], ["AR - Afloramentos De Rochas", 34.71, 5], ["Área Urbana", 32.1, 8], ["RLd - Neossolo Litólico Distrófico", 19.68, 1], ["RYve - Neossolo Flúvico Ta Eutrófico", 6.19, 4], ["RQo - Neossolo Quartzarênico Órtico", 0.21, 3]], "pocos_siagas": {"total": 340, "profundidade_media_m": 82.93, "profundidade_mediana_m": 60, "pct_sem_profundidade": 11.8, "por_aquifero": {"Serra Geral": 178, "Guarani": 73, "Outros/sem dado": 89}}, "app_hidrica": {"area_total_km2": 321.32, "area_rede_local_km2": 304.91, "area_rio_uruguai_km2": 22.61, "pct_antropica": 18.86, "pct_antropica_excl_agua": 23.53, "area_natural_km2": 196.9, "area_antropica_km2": 60.59, "area_agua_km2": 63.83}, "uso_solo_2024_completo": [["Formação Campestre", 2573.02, "natural"], ["Mosaico de Usos", 1242.70, "antropica"], ["Arroz", 702.14, "antropica"], ["Outras Lavouras Temporárias", 465.58, "antropica"], ["Rio, Lago e Oceano", 327.99, "agua"], ["Formação Florestal", 204.31, "natural"], ["Campo Alagado e Área Pantanosa", 87.94, "natural"], ["Afloramento Rochoso", 25.06, "natural"], ["Área Urbanizada", 23.60, "antropica"], ["Soja", 22.51, "antropica"], ["Outras Áreas não Vegetadas", 15.24, "antropica"], ["Silvicultura", 1.49, "antropica"]], "uso_solo_evolucao": {"anos": [1985,1990,1995,2000,2005,2010,2015,2020,2024], "Mosaico de Usos": [967.195,293.0273,359.1798,477.0025,496.3121,269.6424,272.9291,284.9222,1242.6952], "Outras Lavouras Temporárias": [490.9878,1060.545,1305.0522,1319.9231,1247.2257,1427.0711,1027.9873,908.6015,465.5772], "Formação Florestal": [182.2845,193.1958,199.4221,200.0884,199.7422,197.1629,206.3319,203.7272,204.3055]}};
+const DATA = {"uso_solo": [{"ano": 1985, "Arroz": 240.0461, "Formação Campestre": 3357.5432, "Área Urbanizada": 12.8288}, {"ano": 1990, "Arroz": 292.9706, "Formação Campestre": 3335.6461, "Área Urbanizada": 14.5128}, {"ano": 1995, "Arroz": 299.5007, "Formação Campestre": 3007.9891, "Área Urbanizada": 17.0093}, {"ano": 2000, "Arroz": 428.2914, "Formação Campestre": 2804.5118, "Área Urbanizada": 18.8447}, {"ano": 2005, "Arroz": 366.632, "Formação Campestre": 2912.2179, "Área Urbanizada": 19.9244}, {"ano": 2010, "Arroz": 460.7312, "Formação Campestre": 2845.8968, "Área Urbanizada": 20.7168}, {"ano": 2015, "Arroz": 803.5911, "Formação Campestre": 2868.417, "Área Urbanizada": 21.6054}, {"ano": 2020, "Arroz": 886.9021, "Formação Campestre": 2905.1074, "Área Urbanizada": 22.8984}, {"ano": 2024, "Arroz": 702.1419, "Formação Campestre": 2573.0177, "Área Urbanizada": 23.6013}], "censo": {"populacao_total": 117210, "renda_media": 1566.17, "pct_agua_inadequada": 7.94, "pct_esgoto_inadequado": 11.11, "n_setores_urbanos": 152, "n_setores_rurais": 27, "pop_urbana": 111272, "pop_rural": 5938}, "risco_geologico": {"inundacao_area_km2": {"Alta": 861.54, "Baixa": 51.23, "Média": 291.55}, "inundacao_n_poligonos": {"Média": 2543, "Baixa": 1239, "Alta": 445}, "movimento_area_km2": {"Baixa": 5698.71, "Média": 0.5}, "movimento_n_poligonos": {"Média": 42, "Baixa": 1}}, "geologia": {"Serra Geral": 4649.75, "Dep. Aluv. Holocênicos": 487.49, "Corpo d'água": 260.46, "Botucatu": 235.56, "Arenitos Interderrames": 54.39, "Dep. Aluv. Antigos": 3.85}, "geomorfologia": {"Planalto da Campanha": 4945.58, "Planícies Alúvio-coluv.": 485.47, "Corpo d'água": 260.46}, "vegetacao_bdia": {"Agropecuária": 5136.75, "Veg. Secundária": 262.19, "Corpo d'água": 260.46, "Influência urbana": 32.1}, "pedologia": {"RLm": 2945.87, "MEk": 1561.0, "Corpo d'água": 260.46, "SXe": 246.44, "FTd": 230.72, "VEk": 159.24, "RLk": 101.03, "Outras (6)": 186.73}, "pedologia_completa": [["RLm - Neossolo Litólico Chernossólico", 2945.87, 11], ["MEk - Chernossolo Ebânico Carbonático", 1561.0, 25], ["Corpo d'água continental", 260.46, 410], ["SXe - Planossolo Háplico Eutrófico", 246.44, 4], ["FTd - Plintossolo Argilúvico Distrófico", 230.72, 2], ["VEk - Vertissolo Ebânico Carbonático", 159.24, 7], ["RLk - Neossolo Litólico Carbonático", 101.03, 1], ["PVva - Argissolo Vermelho Ta Alumínico", 93.84, 7], ["AR - Afloramentos De Rochas", 34.71, 5], ["Área Urbana", 32.1, 8], ["RLd - Neossolo Litólico Distrófico", 19.68, 1], ["RYve - Neossolo Flúvico Ta Eutrófico", 6.19, 4], ["RQo - Neossolo Quartzarênico Órtico", 0.21, 3]], "pocos_siagas": {"total": 340, "profundidade_media_m": 82.93, "profundidade_mediana_m": 60, "pct_sem_profundidade": 11.8, "por_aquifero": {"Serra Geral": 178, "Guarani": 73, "Outros/sem dado": 89}}, "app_hidrica": {"area_total_km2": 321.32, "area_rede_local_km2": 304.91, "area_rio_uruguai_km2": 22.61, "pct_antropica": 18.86, "pct_antropica_excl_agua": 23.53, "area_natural_km2": 196.9, "area_antropica_km2": 60.59, "area_agua_km2": 63.83}, "uso_solo_2024_completo": [["Formação Campestre", 2573.02, "natural"], ["Mosaico de Usos", 1242.70, "antropica"], ["Arroz", 702.14, "antropica"], ["Outras Lavouras Temporárias", 465.58, "antropica"], ["Rio, Lago e Oceano", 327.99, "agua"], ["Formação Florestal", 204.31, "natural"], ["Campo Alagado e Área Pantanosa", 87.94, "natural"], ["Afloramento Rochoso", 25.06, "natural"], ["Área Urbanizada", 23.60, "antropica"], ["Soja", 22.51, "antropica"], ["Outras Áreas não Vegetadas", 15.24, "antropica"], ["Silvicultura", 1.49, "antropica"]], "uso_solo_evolucao": {"anos": [1985,1990,1995,2000,2005,2010,2015,2020,2024], "Mosaico de Usos": [967.195,293.0273,359.1798,477.0025,496.3121,269.6424,272.9291,284.9222,1242.6952], "Outras Lavouras Temporárias": [490.9878,1060.545,1305.0522,1319.9231,1247.2257,1427.0711,1027.9873,908.6015,465.5772], "Formação Florestal": [182.2845,193.1958,199.4221,200.0884,199.7422,197.1629,206.3319,203.7272,204.3055]}, "pib": {"anos_per_capita": [2002, 2003, 2004, 2005, 2006, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022], "pib_per_capita": [5838.13, 6744.5, 7410.63, 7103.31, 7730.34, 10443.25, 10940.78, 12106.25, 12522.03, 14407.85, 16170.71, 17713.54, 20259.72, 20116.79, 21583.63, 21820.75, 22725.29, 22417.14, 29322.63, 29505.13], "anos_composicao": [2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021], "vab_agropecuaria_pct": [21.66, 24.51, 24.23, 14.29, 17.76, 13.65, 21.3, 20.69, 17.11, 13.34, 13.03, 16.0, 17.53, 17.9, 17.02, 17.23, 14.25, 13.99, 15.42, 27.14], "vab_industria_pct": [10.27, 8.67, 9.16, 9.74, 8.24, 7.95, 8.1, 8.68, 9.51, 10.34, 10.14, 8.58, 8.61, 8.37, 8.39, 8.02, 8.41, 9.61, 11.68, 9.09], "vab_administracao_publica_pct": [15.69, 17.05, 15.91, 19.78, 19.33, 20.09, 18.0, 18.17, 21.76, 22.49, 21.52, 21.61, 22.22, 21.4, 22.11, 21.43, 22.79, 23.79, 25.13, 21.19], "vab_servicos_pct": [52.39, 49.77, 50.7, 56.18, 54.67, 58.32, 52.6, 52.46, 51.62, 53.83, 55.3, 53.81, 51.64, 52.33, 52.48, 53.32, 54.55, 52.61, 47.76, 42.58]}, "pam_ppm": {"anos": [1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "arroz_area_colhida_ha": [24743.0, 27353.0, 34589.0, 40000.0, 36400.0, 47716.0, 53000.0, 51930.0, 56540.0, 56070.0, 71616.0, 71000.0, 83000.0, 87000.0, 85000.0, 71168.0, 47700.0, 81000.0, 93000.0, 98000.0, 93000.0, 89280.0, 70000.0, 40000.0, 57500.0, 72100.0, 53627.0, 66200.0, 71580.0, 71580.0, 72267.0, 62000.0, 71124.0, 58095.0, 79853.0, 82700.0, 68750.0, 84400.0, 70900.0, 81414.0, 82748.0, 84081.0, 81353.0, 81555.0, 81235.0, 73308.0, 75000.0, 75760.0, 72785.0, 63106.0, 70825.0], "soja_area_colhida_ha": [3000.0, 3000.0, 2000.0, 3100.0, 12000.0, 14000.0, 11000.0, 8700.0, 3000.0, 1936.0, 1500.0, 1000.0, 800.0, 800.0, 0.0, 1560.0, 800.0, 50.0, 0.0, 0.0, 0.0, 80.0, 0.0, 0.0, 330.0, 160.0, 0.0, 100.0, 0.0, 400.0, 600.0, 800.0, 600.0, 633.0, 370.0, 85.0, 0.0, 0.0, 750.0, 850.0, 1000.0, 936.0, 747.0, 1000.0, 916.0, 2872.0, 1312.0, 2427.0, 4728.0, 6500.0, 4100.0], "bovino_cabecas": [394909, 392659, 397561, 401014, 333404, 348676, 418600, 424345, 426654, 404792, 416912, 402113, 424000, 410046, 412230, 477238, 445000, 438000, 420000, 410000, 354735, 376520, 393509, 331600, 374553, 329606, 307522, 341147, 346048, 379892, 389390, 368646, 346231, 330442, 355868, 357024, 349452, 345713, 351276, 355799, 353054, 368761, 370745, 354000, 353075, 356101, 309337, 324526, 363453, 368169, 365849], "ovino_cabecas": [1432802, 1296471, 1275951, 1250431, 1040160, 1040160, 1002294, 1010735, 996641, 895719, 872495, 783448, 870610, 970000, 975100, 996780, 840000, 808900, 720000, 610000, 583321, 402628, 342328, 330993, 305840, 276975, 290824, 238470, 209922, 230453, 238519, 170159, 184100, 173048, 190362, 180407, 179582, 185057, 192180, 206105, 211189, 205376, 185729, 173566, 164723, 152560, 141864, 149164, 166533, 161258, 137773]}, "emprego": {"caged_meses": ["01/20", "02/20", "03/20", "04/20", "05/20", "06/20", "07/20", "08/20", "09/20", "10/20", "11/20", "12/20", "01/21", "02/21", "03/21", "04/21", "05/21", "06/21", "07/21", "08/21", "09/21", "10/21", "11/21", "12/21", "01/22", "02/22", "03/22", "04/22", "05/22", "06/22", "07/22", "08/22", "09/22", "10/22", "11/22", "12/22", "01/23", "02/23", "03/23", "04/23", "05/23", "06/23", "07/23", "08/23", "09/23", "10/23", "11/23", "12/23", "01/24", "02/24", "03/24", "04/24", "05/24", "06/24", "07/24", "08/24", "09/24", "10/24", "11/24", "12/24", "01/25", "02/25", "03/25", "04/25", "05/25", "06/25", "07/25", "08/25", "09/25", "10/25", "11/25", "12/25", "01/26", "02/26", "03/26", "04/26", "05/26", "06/26"], "caged_admissoes": [429, 538, 524, 193, 258, 400, 343, 379, 363, 443, 539, 428, 479, 649, 560, 445, 487, 537, 536, 625, 618, 704, 797, 663, 754, 1031, 937, 717, 766, 771, 711, 805, 732, 756, 682, 645, 714, 795, 1045, 829, 839, 755, 664, 703, 550, 706, 746, 620, 803, 1096, 1018, 874, 788, 738, 754, 784, 657, 818, 892, 771, 999, 1116, 875, 815, 880, 791, 807, 789, 676, 931, 892, 570, 819, 974, 989, 769, 709, 746], "caged_desligamentos": [451, 461, 473, 511, 529, 397, 301, 335, 294, 359, 338, 350, 372, 446, 435, 588, 487, 375, 417, 500, 467, 507, 565, 579, 716, 760, 857, 796, 792, 613, 674, 681, 649, 614, 592, 682, 793, 679, 876, 968, 868, 731, 715, 699, 558, 606, 673, 644, 843, 793, 895, 984, 959, 744, 731, 792, 656, 717, 728, 758, 969, 887, 984, 1025, 912, 709, 733, 670, 739, 756, 684, 832, 876, 797, 926, 1020, 937, 733], "caged_saldo_acumulado": [-22, 55, 106, -212, -483, -480, -438, -394, -325, -241, -40, 38, 145, 348, 473, 330, 330, 492, 611, 736, 887, 1084, 1316, 1400, 1438, 1709, 1789, 1710, 1684, 1842, 1879, 2003, 2086, 2228, 2318, 2281, 2202, 2318, 2487, 2348, 2319, 2343, 2292, 2296, 2288, 2388, 2461, 2437, 2397, 2700, 2823, 2713, 2542, 2536, 2559, 2551, 2552, 2653, 2817, 2830, 2860, 3089, 2980, 2770, 2738, 2820, 2894, 3013, 2950, 3125, 3333, 3071, 3014, 3191, 3254, 3003, 2775, 2788], "rais_setor_labels": ["Comércio (G)", "Administração pública (O)", "Agropecuária (A)", "Transporte (H)", "Saúde/ass. social (Q)", "Ativ. administrativas (N)", "Ind. transformação (C)", "Alojamento/alimentação (I)", "Outras (12 seções)"], "rais_setor_dados": [7388, 3754, 3132, 2822, 1373, 1052, 832, 805, 3340], "rais_completa": [["Comércio (G)", 7388], ["Administração pública (O)", 3754], ["Agropecuária (A)", 3132], ["Transporte (H)", 2822], ["Saúde/ass. social (Q)", 1373], ["Ativ. administrativas (N)", 1052], ["Ind. transformação (C)", 832], ["Alojamento/alimentação (I)", 805], ["Construção (F)", 768], ["Educação (P)", 675], ["Ativ. profissionais/técnicas (M)", 465], ["Outros serviços (S)", 376], ["Informação/comunicação (J)", 298], ["Ativ. financeiras (K)", 208], ["Água/esgoto/resíduos (E)", 155], ["Artes/cultura (R)", 141], ["Eletricidade/gás (D)", 125], ["Ativ. imobiliárias (L)", 76], ["Ind. extrativa (B)", 47], ["Organismos internacionais (U)", 6]], "rais_total_vinculos": 24498}, "idhm": {"anos": [1991, 2000, 2010], "idhm_municipio": [0.55, 0.663, 0.744], "idhm_brasil": [0.493, 0.612, 0.727], "idhm_renda": [0.653, 0.688, 0.722], "idhm_longevidade": [0.715, 0.811, 0.863], "idhm_educacao": [0.357, 0.523, 0.661]}, "cadunico": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "jul/26"], "familias_cadastradas": [14382, 15555, 16577, 14287, 13234, 13254, 12845, 14538, 15306, 17679, 21948, 22810, 22650, 21033, 21162], "taxa_atualizacao_pct": [0.0, 0.0, 0.0, 56.8, 61.4, 73.0, 85.6, 80.7, 66.4, 59.5, 72.7, 70.9, 66.4, 88.3, 86.7]}, "bolsa_familia": {"mes_referencia": 7, "ano_referencia": 2026, "familias_atendidas": 7959, "pessoas_beneficiadas": 21737, "investimento_total_reais": 5419371, "beneficio_medio_reais": 686.78}, "siconfi": {"anos": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], "saude_per_capita_reais": [316.34, 332.54, 344.41, 400.16, 428.47, 478.04, 538.67, 633.42, 683.63, 807.71, 927.9], "assistencia_social_per_capita_reais": [13.62, 15.85, 16.69, 14.75, 11.31, 16.38, 27.67, 32.48, 27.61, 37.49, 35.78], "anos_pct_pib": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023], "saude_pct_pib": [1.56, 1.65, 1.59, 1.87, 1.89, 2.13, 1.84, 2.32, 2.21]}, "aneel": {"anos": [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], "dec_horas": [22.19, 28.07, 20.64, 15.3, 32.33, 42.18, 25.26, 31.45, 26.35, 29.32, 21.91, 21.28, 20.19, 16.93, 19.89, 23.76, 18.38, 16.37, 14.58, 10.42, 12.85, 10.63, 10.51, 6.07, 8.89, 8.09], "fec_interrupcoes": [22.2, 28.84, 18.66, 14.86, 14.28, 17.9, 10.91, 14.96, 16.43, 13.3, 13.47, 10.35, 10.37, 8.94, 8.02, 7.84, 9.36, 6.24, 4.85, 4.24, 6.68, 6.38, 5.64, 3.01, 4.75, 3.17]}, "s2id": {"anos": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], "categorias": ["Inundação", "Estiagem", "Tempestade local/convectiva", "Doença infecciosa viral", "Enxurrada"], "matriz": {"Inundação": [1, 2, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1], "Estiagem": [0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1], "Tempestade local/convectiva": [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0], "Doença infecciosa viral": [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0], "Enxurrada": [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}}};
 
 const NS = 'http://www.w3.org/2000/svg';
 function el(tag, attrs, parent){
@@ -363,12 +503,32 @@ function renderLineChart(containerId, tooltipId, opts){
   });
   el('line', {x1:padL, x2:padL+innerW, y1:padT+innerH, y2:padT+innerH, class:'baseline'}, svg);
 
+  // rótulos do eixo X: candidatos a cada xTickEvery + o último (forçado,
+  // sempre mostrado). Sobreposição real de texto (não só distância entre
+  // índices) é checada com getBBox() depois de desenhar cada um — se colidir
+  // com o rótulo anterior, remove o mais próximo do final (mantém o último,
+  // que é sempre o ponto mais recente) em vez do inverso. Sem efeito quando
+  // os rótulos não colidem (a maioria dos casos).
   const xTickEvery = Math.max(1, Math.ceil(n/5));
-  opts.labels.forEach((lab, i) => {
-    if(i % xTickEvery === 0 || i === n-1){
-      const t = el('text', {x:xAt(i), y:height-5, class:'axis-label', 'text-anchor': i===n-1 ? 'end' : (i===0?'start':'middle')}, svg);
-      t.textContent = lab;
+  const xCandidatos = [];
+  for(let i=0;i<n;i++){ if(i % xTickEvery === 0) xCandidatos.push(i); }
+  if(xCandidatos[xCandidatos.length-1] !== n-1) xCandidatos.push(n-1);
+
+  const xMantidos = [];
+  xCandidatos.forEach((i, idx) => {
+    const ehUltimo = idx === xCandidatos.length - 1;
+    const t = el('text', {x:xAt(i), y:height-5, class:'axis-label', 'text-anchor': i===n-1 ? 'end' : (i===0?'start':'middle')}, svg);
+    t.textContent = opts.labels[i];
+    const bbox = t.getBBox();
+    if(xMantidos.length){
+      const anterior = xMantidos[xMantidos.length-1];
+      const sobrepoe = bbox.x < anterior.bbox.x + anterior.bbox.width + 4;
+      if(sobrepoe){
+        if(ehUltimo){ anterior.el.remove(); xMantidos.pop(); }
+        else { t.remove(); return; }
+      }
     }
+    xMantidos.push({el:t, bbox});
   });
 
   const hoverLine = el('line', {x1:padL, x2:padL, y1:padT, y2:padT+innerH, class:'crosshair'}, svg);
@@ -379,8 +539,22 @@ function renderLineChart(containerId, tooltipId, opts){
     el('path', {d, fill:'none', stroke:s.color, 'stroke-width':2, 'stroke-linecap':'round', 'stroke-linejoin':'round'}, svg);
     const lastI = s.data.length - 1;
     el('circle', {cx:xAt(lastI), cy:yAt(s.data[lastI]), r:4, fill:s.color, stroke:cssVar('--surface-card'), 'stroke-width':2}, svg);
-    const t = el('text', {x:xAt(lastI)-2, y:yAt(s.data[lastI]) - 9, class:'end-label', fill:s.color, 'text-anchor':'end'}, svg);
-    t.textContent = opts.yFormat ? opts.yFormat(s.data[lastI]) : fmtInt(s.data[lastI]);
+  });
+
+  // rótulos de valor final: evita sobreposição quando 2+ séries terminam com
+  // valores próximos (ex.: linhas convergindo no fim) — sem efeito quando há
+  // só 1 série (a maioria dos usos deste gráfico), preserva o comportamento
+  // original nesse caso
+  const endLabelGap = 13;
+  const endPoints = opts.series.map(s => {
+    const lastI = s.data.length - 1;
+    return { s, x: xAt(lastI), yRaw: yAt(s.data[lastI]), text: opts.yFormat ? opts.yFormat(s.data[lastI]) : fmtInt(s.data[lastI]) };
+  });
+  endPoints.sort((a,b) => a.yRaw - b.yRaw);
+  endPoints.forEach((p, i) => { p.y = i === 0 ? p.yRaw : Math.max(p.yRaw, endPoints[i-1].y + endLabelGap); });
+  endPoints.forEach(p => {
+    const t = el('text', {x:p.x-2, y:p.y-9, class:'end-label', fill:p.s.color, 'text-anchor':'end'}, svg);
+    t.textContent = p.text;
   });
 
   const hit = el('rect', {x:padL, y:0, width:innerW, height, fill:'transparent'}, svg);
@@ -577,6 +751,172 @@ kpisUsoSolo.forEach(k => {
   kpiRowUsoSolo.appendChild(tile);
 });
 
+function renderStackedBarChart(containerId, tooltipId, opts){
+  const container = document.getElementById(containerId);
+  const tooltip = document.getElementById(tooltipId);
+  const width = container.clientWidth || 300;
+  const height = opts.height || 190;
+  const padL = opts.padL || 34, padR = 10, padT = 20, padB = 26;
+  const innerW = width - padL - padR;
+  const innerH = height - padT - padB;
+  const n = opts.labels.length;
+
+  const totais = opts.labels.map((_, i) => opts.series.reduce((s, ser) => s + (ser.data[i] || 0), 0));
+  const ticks = niceTicks(Math.max(...totais, 0), opts.tickCount || 4);
+  const maxY = ticks[ticks.length - 1] || 1;
+
+  container.innerHTML = '';
+  const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
+  const yAt = v => padT + innerH - (innerH * v / maxY);
+
+  ticks.forEach(v => {
+    const y = yAt(v);
+    el('line', {x1:padL, x2:padL+innerW, y1:y, y2:y, class:'gridline'}, svg);
+    const t = el('text', {x:padL-7, y:y+3.5, class:'axis-label', 'text-anchor':'end'}, svg);
+    t.textContent = opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+  });
+  el('line', {x1:padL, x2:padL+innerW, y1:padT+innerH, y2:padT+innerH, class:'baseline'}, svg);
+
+  const slot = innerW / n;
+  const barW = Math.max(3, Math.min(opts.barMax || 26, slot - Math.max(2, slot*0.25)));
+
+  opts.labels.forEach((lab, i) => {
+    const cx = padL + slot*i + slot/2;
+    const x = cx - barW/2;
+    let cum = 0;
+    opts.series.forEach(ser => {
+      const v = ser.data[i] || 0;
+      if(v > 0){
+        const yTop = yAt(cum + v), yBottom = yAt(cum);
+        const rect = el('rect', {x, y:yTop, width:barW, height:Math.max(0, yBottom-yTop), fill:ser.color, class:'bar-mark'}, svg);
+        rect.addEventListener('pointermove', e => showTip(e, i));
+        rect.addEventListener('pointerleave', hideTip);
+      }
+      cum += v;
+    });
+    if(totais[i] > 0){
+      const t = el('text', {x:cx, y:yAt(totais[i])-7, class:'bar-label', 'text-anchor':'middle'}, svg);
+      t.textContent = fmtInt(totais[i]);
+    }
+    const labEl = el('text', {x:cx, y:height-6, class:'cat-label', 'text-anchor':'middle'}, svg);
+    labEl.textContent = lab;
+  });
+
+  function showTip(e, i){
+    const rect = svg.getBoundingClientRect();
+    let html = `<div class="tt-x">${opts.labels[i]}</div>`;
+    opts.series.forEach(ser => {
+      const v = ser.data[i] || 0;
+      if(v > 0) html += `<div class="tt-row"><span class="tt-key" style="border-color:${ser.color}"></span><span class="tt-val">${fmtInt(v)}</span><span class="tt-name">${ser.name}</span></div>`;
+    });
+    tooltip.innerHTML = html;
+    tooltip.style.opacity = 1;
+    const pct = ((e.clientX - rect.left) / rect.width) * 100;
+    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+  }
+  function hideTip(){ tooltip.style.opacity = 0; }
+}
+
+/* ================= KPI row (Risco e Desastres — S2ID) ================= */
+const s2idD = DATA.s2id;
+const totalS2id = s2idD.categorias.reduce((s, cat) => s + s2idD.matriz[cat].reduce((a,b)=>a+b,0), 0);
+const totaisPorCategoria = s2idD.categorias.map(cat => ({ cat, total: s2idD.matriz[cat].reduce((a,b)=>a+b,0) }));
+const categoriaMaisFrequente = totaisPorCategoria.reduce((a,b) => b.total > a.total ? b : a);
+const anosComRegistro = s2idD.anos.filter(a => s2idD.categorias.some(cat => s2idD.matriz[cat][s2idD.anos.indexOf(a)] > 0)).length;
+const kpiRowS2id = document.getElementById('kpiRowS2id');
+const kpisS2id = [
+  {label:'Reconhecimentos federais', valueHtml: fmtInt(totalS2id), sub:`${s2idD.anos[0]}–${s2idD.anos[s2idD.anos.length-1]} · Situação de Emergência ou Calamidade`},
+  {label:'Tipo mais frequente', valueHtml: categoriaMaisFrequente.cat, sub:`${fmtInt(categoriaMaisFrequente.total)} de ${fmtInt(totalS2id)} (${fmt1(100*categoriaMaisFrequente.total/totalS2id)}%)`},
+  {label:'Anos com reconhecimento', valueHtml: `${anosComRegistro} de ${s2idD.anos.length}`, sub:'só 2018 sem registro na série'},
+  {label:'Estado de Calamidade Pública (ECP)', valueHtml: fmtInt(s2idD.matriz['Doença infecciosa viral'].reduce((a,b)=>a+b,0)), sub:'2021 · pandemia de covid-19 · os demais são Situação de Emergência'},
+];
+kpisS2id.forEach(k => {
+  const tile = document.createElement('div'); tile.className = 'kpi-tile';
+  tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${k.valueHtml}</div><div class="kpi-sub">${k.sub}</div>`;
+  kpiRowS2id.appendChild(tile);
+});
+
+/* ================= KPI row (Economia e Território) ================= */
+const pibD = DATA.pib, pamD = DATA.pam_ppm, empD = DATA.emprego;
+const pibPcRecente = pibD.pib_per_capita[pibD.pib_per_capita.length-1];
+const pibPcAno = pibD.anos_per_capita[pibD.anos_per_capita.length-1];
+const agroMax = Math.max(...pibD.vab_agropecuaria_pct);
+const agroMaxAno = pibD.anos_composicao[pibD.vab_agropecuaria_pct.indexOf(agroMax)];
+const kpiRowEconomia = document.getElementById('kpiRowEconomia');
+const kpisEconomia = [
+  {label:'PIB per capita', value: pibPcRecente, unit:'R$', sub:`${pibPcAno} · mais recente disponível`},
+  {label:'Agropecuária no VAB (pico)', value: agroMax, unit:'%', sub:`${agroMaxAno} · choque de preço do arroz, não de volume`},
+  {label:'Saldo Novo CAGED acumulado', value: empD.caged_saldo_acumulado[empD.caged_saldo_acumulado.length-1], unit:'vínculos', sub:'2020-01 a 2026-06 (78 meses)'},
+  {label:'Vínculos formais ativos (RAIS)', value: empD.rais_total_vinculos, unit:'vínculos', sub:'retrato em 31/12/2025'},
+];
+kpisEconomia.forEach(k => {
+  const tile = document.createElement('div'); tile.className = 'kpi-tile';
+  const valorFmt = k.unit === 'R$' || k.unit === '%' ? fmt1(k.value) : fmtInt(k.value);
+  tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${k.unit==='R$'?'R$ ':''}${valorFmt}<span class="kpi-unit">${k.unit!=='R$'?' '+k.unit:''}</span></div><div class="kpi-sub">${k.sub}</div>`;
+  kpiRowEconomia.appendChild(tile);
+});
+
+/* ================= KPI row (Vulnerabilidade e Assistência Social) ================= */
+const idhmD = DATA.idhm, cadD = DATA.cadunico, bfD = DATA.bolsa_familia;
+const idhmRecente = idhmD.idhm_municipio[idhmD.idhm_municipio.length-1];
+const idhmAnoRecente = idhmD.anos[idhmD.anos.length-1];
+const cadRecente = cadD.familias_cadastradas[cadD.familias_cadastradas.length-1];
+const cadLabelRecente = cadD.labels[cadD.labels.length-1];
+const bfMesFmt = `${String(bfD.mes_referencia).padStart(2,'0')}/${bfD.ano_referencia}`;
+const kpiRowVulnerabilidade = document.getElementById('kpiRowVulnerabilidade');
+const kpisVulnerabilidade = [
+  {label:'IDHM', valueHtml: idhmRecente.toLocaleString('pt-BR',{minimumFractionDigits:3,maximumFractionDigits:3}), sub:`${idhmAnoRecente} · classificação "alto" (0,700–0,799)`},
+  {label:'Famílias no CadÚnico', valueHtml: fmtInt(cadRecente), sub:`${cadLabelRecente} · mais recente disponível`},
+  {label:'Famílias atendidas — Bolsa Família', valueHtml: fmtInt(bfD.familias_atendidas), sub:`${bfMesFmt} · ${fmtInt(bfD.pessoas_beneficiadas)} pessoas beneficiadas`},
+  {label:'Benefício médio — Bolsa Família', valueHtml: 'R$ '+fmt1(bfD.beneficio_medio_reais), sub:`${bfMesFmt} · R$ ${fmtInt(bfD.investimento_total_reais)} investidos no mês`},
+];
+kpisVulnerabilidade.forEach(k => {
+  const tile = document.createElement('div'); tile.className = 'kpi-tile';
+  tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${k.valueHtml}</div><div class="kpi-sub">${k.sub}</div>`;
+  kpiRowVulnerabilidade.appendChild(tile);
+});
+
+/* ================= KPI row (SICONFI) ================= */
+const sicD = DATA.siconfi;
+const saudePcRecente = sicD.saude_per_capita_reais[sicD.saude_per_capita_reais.length-1];
+const saudePcInicial = sicD.saude_per_capita_reais[0];
+const assistPcRecente = sicD.assistencia_social_per_capita_reais[sicD.assistencia_social_per_capita_reais.length-1];
+const pctPibRecente = sicD.saude_pct_pib[sicD.saude_pct_pib.length-1];
+const pctPibAnoRecente = sicD.anos_pct_pib[sicD.anos_pct_pib.length-1];
+const crescimentoSaudePc = 100*(saudePcRecente-saudePcInicial)/saudePcInicial;
+const kpiRowSiconfi = document.getElementById('kpiRowSiconfi');
+const kpisSiconfi = [
+  {label:'Despesa em Saúde per capita', valueHtml:'R$ '+fmt1(saudePcRecente), sub:`${sicD.anos[sicD.anos.length-1]} · +${fmt1(crescimentoSaudePc)}% desde 2015`},
+  {label:'Despesa em Assistência Social per capita', valueHtml:'R$ '+fmt1(assistPcRecente), sub:`${sicD.anos[sicD.anos.length-1]} · mais recente (ano fechado)`},
+  {label:'Saúde — % do PIB municipal', valueHtml: fmt1(pctPibRecente)+'%', sub:`${pctPibAnoRecente} · estável 1,5–2,3% no período`},
+  {label:'Função "Saneamento" no orçamento', valueHtml:'ausente', sub:'em todos os 12 anos — serviço prestado pela CORSAN'},
+];
+kpisSiconfi.forEach(k => {
+  const tile = document.createElement('div'); tile.className = 'kpi-tile';
+  tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${k.valueHtml}</div><div class="kpi-sub">${k.sub}</div>`;
+  kpiRowSiconfi.appendChild(tile);
+});
+
+/* ================= KPI row (ANEEL) ================= */
+const anlD = DATA.aneel;
+const decRecente = anlD.dec_horas[anlD.dec_horas.length-1];
+const decInicial = anlD.dec_horas[0];
+const fecRecente = anlD.fec_interrupcoes[anlD.fec_interrupcoes.length-1];
+const anoRecenteAneel = anlD.anos[anlD.anos.length-1];
+const reducaoDec = 100*(decRecente-decInicial)/decInicial;
+const kpiRowAneel = document.getElementById('kpiRowAneel');
+const kpisAneel = [
+  {label:'DEC — duração de interrupção', valueHtml: fmt1(decRecente)+' h', sub:`${anoRecenteAneel} · acumulado no ano`},
+  {label:'FEC — frequência de interrupção', valueHtml: fmt1(fecRecente), sub:`${anoRecenteAneel} · interrupções por unidade consumidora`},
+  {label:'DEC — variação desde 2000', valueHtml: fmt1(reducaoDec)+'%', sub:`${anlD.anos[0]} (${fmt1(decInicial)}h) → ${anoRecenteAneel} (${fmt1(decRecente)}h)`},
+  {label:'Distribuidora', valueHtml:'RGE SUL', sub:'grupo CPFL · única distribuidora do município'},
+];
+kpisAneel.forEach(k => {
+  const tile = document.createElement('div'); tile.className = 'kpi-tile';
+  tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${k.valueHtml}</div><div class="kpi-sub">${k.sub}</div>`;
+  kpiRowAneel.appendChild(tile);
+});
+
 /* ================= charts ================= */
 function draw(){
   const blue = cssVar('--series-blue');
@@ -622,6 +962,19 @@ function draw(){
     colors: [good, warning], seriesName: 'km²', height: 190, yFormat: v => fmtInt(v)+' km²', tickCount: 3,
   });
 
+  const coresS2id = {
+    'Inundação': blue,
+    'Estiagem': cssVar('--series-orange'),
+    'Tempestade local/convectiva': cssVar('--series-aqua'),
+    'Doença infecciosa viral': cssVar('--series-context'),
+    'Enxurrada': critical,
+  };
+  renderStackedBarChart('chart-s2id-anual', 'tt-s2id-anual', {
+    labels: s2idD.anos,
+    series: s2idD.categorias.map(cat => ({ name: cat, color: coresS2id[cat], data: s2idD.matriz[cat] })),
+    height: 190, barMax: 40, tickCount: 3,
+  });
+
   renderBarChart('chart-pop-situacao', 'tt-pop-situacao', {
     labels: ['Urbana','Rural'], data: [c.pop_urbana, c.pop_rural],
     color: blue, seriesName: 'habitantes', height: 170, barMax: 60,
@@ -663,6 +1016,102 @@ function draw(){
   renderHBarChart('chart-uso-solo-2024', 'tt-uso-solo-2024', {
     labels: usoSolo2024.map(r=>r[0]), data: usoSolo2024.map(r=>r[1]),
     colors: usoSolo2024.map(r=>corPorTipo[r[2]]), seriesName: 'km²', xFormat: v => fmtInt(v)+' km²',
+  });
+
+  const gray = cssVar('--series-context');
+  renderLineChart('chart-pib-per-capita', 'tt-pib-per-capita', {
+    labels: pibD.anos_per_capita, series: [{name:'PIB per capita', color: blue, data: pibD.pib_per_capita}],
+    height: 190, yFormat: v => 'R$ '+fmtInt(v),
+  });
+  renderLineChart('chart-pib-composicao', 'tt-pib-composicao', {
+    labels: pibD.anos_composicao, series: [
+      {name:'Serviços', color: blue, data: pibD.vab_servicos_pct},
+      {name:'Adm. pública', color: gray, data: pibD.vab_administracao_publica_pct},
+      {name:'Agropecuária', color: orange, data: pibD.vab_agropecuaria_pct},
+      {name:'Indústria', color: aqua, data: pibD.vab_industria_pct},
+    ],
+    height: 190, yFormat: v => fmt1(v)+'%',
+  });
+
+  renderLineChart('chart-pam-area', 'tt-pam-area', {
+    labels: pamD.anos, series: [
+      {name:'Arroz', color: orange, data: pamD.arroz_area_colhida_ha},
+      {name:'Soja', color: aqua, data: pamD.soja_area_colhida_ha},
+    ],
+    height: 190, yFormat: v => fmtInt(v)+' ha',
+  });
+  renderLineChart('chart-ppm-rebanho', 'tt-ppm-rebanho', {
+    labels: pamD.anos, series: [
+      {name:'Bovino', color: blue, data: pamD.bovino_cabecas},
+      {name:'Ovino', color: orange, data: pamD.ovino_cabecas},
+    ],
+    height: 190, yFormat: v => fmtInt(v),
+  });
+
+  renderLineChart('chart-caged-fluxo', 'tt-caged-fluxo', {
+    labels: empD.caged_meses, series: [
+      {name:'Admissões', color: blue, data: empD.caged_admissoes},
+      {name:'Desligamentos', color: orange, data: empD.caged_desligamentos},
+    ],
+    height: 190, yFormat: v => fmtInt(v),
+  });
+  renderLineChart('chart-caged-saldo', 'tt-caged-saldo', {
+    labels: empD.caged_meses, series: [{name:'Saldo acumulado', color: aqua, data: empD.caged_saldo_acumulado}],
+    height: 190, yFormat: v => fmtInt(v),
+  });
+
+  renderHBarChart('chart-rais-setor', 'tt-rais-setor', {
+    labels: empD.rais_setor_labels, data: empD.rais_setor_dados,
+    color: blue, seriesName: 'vínculos', xFormat: v => fmtInt(v),
+  });
+
+  const fmt3 = v => v.toLocaleString('pt-BR', {minimumFractionDigits:3, maximumFractionDigits:3});
+  renderLineChart('chart-idhm-componentes', 'tt-idhm-componentes', {
+    labels: idhmD.anos, series: [
+      {name:'IDHM', color: blue, data: idhmD.idhm_municipio},
+      {name:'Longevidade', color: aqua, data: idhmD.idhm_longevidade},
+      {name:'Renda', color: orange, data: idhmD.idhm_renda},
+      {name:'Educação', color: gray, data: idhmD.idhm_educacao},
+    ],
+    height: 190, yFormat: fmt3,
+  });
+  renderLineChart('chart-idhm-brasil', 'tt-idhm-brasil', {
+    labels: idhmD.anos, series: [
+      {name:'Uruguaiana', color: blue, data: idhmD.idhm_municipio},
+      {name:'Brasil', color: gray, data: idhmD.idhm_brasil},
+    ],
+    height: 190, yFormat: fmt3,
+  });
+
+  renderLineChart('chart-cadunico-familias', 'tt-cadunico-familias', {
+    labels: cadD.labels, series: [{name:'Famílias cadastradas', color: blue, data: cadD.familias_cadastradas}],
+    height: 190, yFormat: v => fmtInt(v),
+  });
+  renderLineChart('chart-cadunico-taxa', 'tt-cadunico-taxa', {
+    labels: cadD.labels, series: [{name:'Taxa de atualização', color: orange, data: cadD.taxa_atualizacao_pct}],
+    height: 190, yFormat: v => fmt1(v)+'%',
+  });
+
+  renderLineChart('chart-siconfi-saude-pc', 'tt-siconfi-saude-pc', {
+    labels: sicD.anos, series: [{name:'Saúde per capita', color: blue, data: sicD.saude_per_capita_reais}],
+    height: 190, yFormat: v => 'R$ '+fmtInt(v),
+  });
+  renderLineChart('chart-siconfi-assist-pc', 'tt-siconfi-assist-pc', {
+    labels: sicD.anos, series: [{name:'Assistência Social per capita', color: orange, data: sicD.assistencia_social_per_capita_reais}],
+    height: 190, yFormat: v => 'R$ '+fmt1(v),
+  });
+  renderLineChart('chart-siconfi-pct-pib', 'tt-siconfi-pct-pib', {
+    labels: sicD.anos_pct_pib, series: [{name:'Saúde — % do PIB', color: aqua, data: sicD.saude_pct_pib}],
+    height: 190, yFormat: v => fmt1(v)+'%',
+  });
+
+  renderLineChart('chart-aneel-dec', 'tt-aneel-dec', {
+    labels: anlD.anos, series: [{name:'DEC', color: blue, data: anlD.dec_horas}],
+    height: 190, yFormat: v => fmt1(v)+'h',
+  });
+  renderLineChart('chart-aneel-fec', 'tt-aneel-fec', {
+    labels: anlD.anos, series: [{name:'FEC', color: orange, data: anlD.fec_interrupcoes}],
+    height: 190, yFormat: v => fmt1(v),
   });
 }
 draw();
@@ -709,4 +1158,17 @@ DATA.pedologia_completa.forEach(row => {
   b3.appendChild(tr);
 });
 tabelaPedologia.appendChild(b3);
+
+const tabelaRais = document.getElementById('tabelaRais');
+const h4 = document.createElement('thead');
+h4.innerHTML = '<tr><th>Seção CNAE</th><th>Vínculos ativos</th><th>% do total</th></tr>';
+tabelaRais.appendChild(h4);
+const b4 = document.createElement('tbody');
+DATA.emprego.rais_completa.forEach(row => {
+  const tr = document.createElement('tr');
+  const pct = 100 * row[1] / DATA.emprego.rais_total_vinculos;
+  tr.innerHTML = `<td>${row[0]}</td><td>${fmtInt(row[1])}</td><td>${fmt1(pct)}%</td>`;
+  b4.appendChild(tr);
+});
+tabelaRais.appendChild(b4);
 </script>

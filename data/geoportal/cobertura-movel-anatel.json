@@ -1,0 +1,24 @@
+{
+  "descricao": "Cobertura móvel por setor censitário (ANATEL) — escopo reduzido a ano_censo=2022 (7 períodos: 12-2024 a 06-2026), agregado 'Todas' as operadoras, todas as tecnologias combinadas (cobertura_todas_tecnologias_pct da fonte). Camada nova do geoportal, grupo 'Cobertura móvel (ANATEL)', com seletor de período (re-estiliza sem refetch). Objetivo: identificar onde não há cobertura hoje para planejar comunicação alternativa em eventos extremos, não análise histórica — por isso só o agregado, sem abrir por operadora/tecnologia, e com o período mais recente como padrão ao ativar a camada.",
+  "fonte": {
+    "caminho_origem_malha": "data/processed/setores-censitarios_vulnerabilidade_unido.gpkg",
+    "caminho_origem_anatel": "data/raw/cobertura-movel_anatel_2021-2026-06_setor-censitario.csv"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "LEFT JOIN da malha de setores 2022 (179 setores, CD_SETOR) com a tabela ANATEL pivotada por período (índice codigo_setor); sem_dado=true em 4 setores da malha sem nenhum período com valor ANATEL (mesmo padrão de criancas-0-4/idosos-60-mais); 23 setores presentes na ANATEL (ano_censo=2022) sem correspondência na malha oficial ficam de fora (join a partir da malha, não da ANATEL); colunas de período: cobertura_pct_202412, cobertura_pct_202503, cobertura_pct_202506, cobertura_pct_202509, cobertura_pct_202512, cobertura_pct_202603, cobertura_pct_202606; reprojeção -> EPSG:4326",
+  "n_features": 179,
+  "colunas": [
+    "CD_SETOR",
+    "NM_BAIRRO",
+    "NM_DIST",
+    "cobertura_pct_202503",
+    "cobertura_pct_202603",
+    "cobertura_pct_202506",
+    "cobertura_pct_202606",
+    "cobertura_pct_202509",
+    "cobertura_pct_202412",
+    "cobertura_pct_202512",
+    "sem_dado"
+  ],
+  "data_processamento": "2026-08-12T19:56:07.190740+00:00"
+}
