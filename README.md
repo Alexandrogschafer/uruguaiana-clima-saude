@@ -149,6 +149,7 @@ uruguaiana-clima-saude/
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
+python -m playwright install chromium  # necessário só para scripts/download/desastres_s2id.py
 python scripts/download/vetor_ibge.py --codigo-ibge 4322400
 ```
 
