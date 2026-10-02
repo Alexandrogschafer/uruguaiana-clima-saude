@@ -1,0 +1,5 @@
+cota_cm,tr_anos_atributo_sgb,area_mancha_km2,enderecos,enderecos_precisos_niv1_2,enderecos_aproximados_niv3_5,enderecos_em_coordenada_repetida,locais_com_enderecos_empilhados,enderecos_urbanos,enderecos_rurais,enderecos_menor_cota_esta,pop_estimada_setor,pop_estimada_grade,pct_pop_municipio_setor,dif_grade_menos_setor_pct,pop_estimada_menor_cota_esta,enderecos_rodada03_nao_cumulativo,dif_enderecos_vs_rodada03,pop_estimada_setor_rodada03,dif_pop_setor_vs_rodada03
+833,1.29999995,28.86,4,3,1,2,1,4,0,4,11.5,10.9,0.01,-5.2,11.5,4,0,11.5,0.0
+952,1.89999998,39.42,85,78,7,20,6,85,0,81,235.8,265.0,0.2,12.4,224.3,85,0,235.8,0.0
+1205,9.0,40.64,891,881,10,100,41,891,0,806,2539.3,2578.5,2.17,1.5,2303.5,888,3,2532.3,7.0
+1252,13.3999996,41.08,1245,1233,12,130,55,1245,0,354,3461.3,3543.2,2.95,2.4,922.0,1205,40,3350.3,111.0

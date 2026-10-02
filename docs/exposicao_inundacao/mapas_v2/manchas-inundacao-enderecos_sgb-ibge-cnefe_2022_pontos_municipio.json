@@ -1,0 +1,27 @@
+{
+  "produto": "manchas-inundacao-enderecos_sgb-ibge-cnefe_2022_pontos_municipio.png",
+  "data_processamento": "2026-10-02T21:30:19+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/exposicao_inundacao_enderecos.py",
+  "fontes": [
+    "SGB — manchas de inundação por cota, serviço hidrologia/BACIA_DO_URUGUAI_URUGUAIANA (camada do repositório)",
+    "IBGE — CNEFE do Censo 2022, espécie 1 (domicílio particular)",
+    "IBGE — agregados por setor e malha de setores do Censo 2022; grade estatística 2022",
+    "IBGE — histórico de formação dos setores 2010–2022 (áreas comparáveis)"
+  ],
+  "recorte": "município inteiro",
+  "janela_m": [
+    466165,
+    583908,
+    6656449,
+    6749638
+  ],
+  "definicao_exposicao": "cumulativa (união das manchas de cota <= X)",
+  "manchas_exibicao": "Manchas recortadas no limite municipal só para exibição; o dado original do SGB cobre também a outra margem do rio.",
+  "area_de_agua": "OpenStreetMap, só apresentação; outras águas pela regra c.AGUA_EXIBICAO['enderecos']",
+  "unidades_saude": "23 unidades ESF/UBS (CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026); todas as que caem no enquadramento, com destaque para as que ficam dentro da mancha da cota do mapa",
+  "tema": "manchas_e_enderecos"
+}

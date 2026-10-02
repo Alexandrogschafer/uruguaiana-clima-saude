@@ -1,0 +1,24 @@
+rotulo,cnes,nome,classe,zona,bairro,menor_cota_cm,situacao,dist_borda_maior_mancha_m
+02,2247119,ESF 02 MARDUQUE,ESF,urbana da sede,Mascarenhas de Moraes,,fora das manchas,33.0
+23,2896478,ESF 23 SANTO ANTONIO,ESF,urbana da sede,Santo Antônio,,fora das manchas,48.0
+17,2247275,ESF 17 NOVA ESPERANCA,ESF,urbana da sede,Nova Esperança,,fora das manchas,107.0
+15,2247259,ESF 15 HIPICA I E II,ESF,urbana da sede,Jóquei Clube,,fora das manchas,147.0
+05,2247127,ESF 05 TARRAGO,ESF,urbana da sede,Francisca Tarragô,,fora das manchas,201.0
+04,2247135,ESF 04 COHAB I,ESF,urbana da sede,Alexandre Zachia,,fora das manchas,332.0
+22,9203400,ESF 22 CABO LUIS QUEVEDO,ESF,urbana da sede,Cabo Luiz Quevedo,,fora das manchas,447.0
+03,2247100,ESF 03 CIDADE NOVA,ESF,urbana da sede,Cidade Nova,,fora das manchas,452.0
+19,7159366,ESF 19 JOAO PAULO II,ESF,urbana da sede,Tabajara Brites,,fora das manchas,880.0
+06,2247232,ESF 06 SAO JOAO,ESF,urbana da sede,São João,,fora das manchas,888.0
+20,6989373,ESF 20 CAIC,ESF,urbana da sede,União das Vilas,,fora das manchas,1002.0
+14,2247240,ESF 14TABAJARA BRITES,ESF,urbana da sede,Tabajara Brites,,fora das manchas,1035.0
+21,7762682,ESF 21 CENTRO,ESF,urbana da sede,Centro,,fora das manchas,1077.0
+UDM,7265220,UNIDADE DISPENSADORA DE MEDICACAO UDM,a confirmar,urbana da sede,Centro,,fora das manchas,1136.0
+16,2247267,ESF 16 CIDADE ALEGRIA,ESF,urbana da sede,Cidade Alegria,,fora das manchas,1299.0
+18,3938336,ESF 18 PROFILURB,ESF,urbana da sede,Vila Júlia,,fora das manchas,1466.0
+07,6989357,ESF 07 UNIAO DAS VILAS,ESF,urbana da sede,União das Vilas,,fora das manchas,1720.0
+01,2247143,ESF 01 RUI RAMOS,ESF,urbana da sede,Rui Ramos,,fora das manchas,1944.0
+Prisional,4126947,EQUIPE DE SAUDE PRISIONAL DE URUGUAIANA,sem classe,interior,,,fora das manchas,4568.0
+10,2247321,UNIDADE DE SAUDE SAO MARCOS 10,UBS,interior,,,fora das manchas,30294.0
+09,2247305,ESF 09 BARRAGEM SANCHURI,ESF,interior,,,fora das manchas,30628.0
+11,2247348,UNIDADE DE SAUDE JOAO ARREGUI 11,UBS,interior,,,fora das manchas,45090.0
+12,2247356,UNIDADE DE SAUDE PLANO ALTO 12,UBS,interior,,,fora das manchas,48791.0

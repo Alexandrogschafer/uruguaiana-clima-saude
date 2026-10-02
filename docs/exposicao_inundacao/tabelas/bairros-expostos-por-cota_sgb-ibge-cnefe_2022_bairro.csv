@@ -1,0 +1,32 @@
+cota_cm,posicao,bairro,enderecos,pop_estimada,pct_dos_enderecos_expostos,enderecos_do_bairro,pct_do_bairro_exposto
+833,1,Mascarenhas de Moraes,3,9.2,75.0,703,0.4
+833,2,Bela Vista,1,2.3,25.0,1890,0.1
+952,1,Mascarenhas de Moraes,54,147.8,63.5,703,7.7
+952,2,Cabo Luiz Quevedo,18,52.8,21.2,2826,0.6
+952,3,Bela Vista,7,16.7,8.2,1890,0.4
+952,4,Nova Esperança,4,10.4,4.7,2785,0.1
+952,5,Francisca Tarragô,2,8.1,2.4,506,0.4
+1205,1,Cabo Luiz Quevedo,157,463.1,17.6,2826,5.6
+1205,2,Nova Esperança,145,355.2,16.3,2785,5.2
+1205,3,Francisca Tarragô,128,488.2,14.4,506,25.3
+1205,4,Santo Antônio,120,338.8,13.5,1158,10.4
+1205,5,Mascarenhas de Moraes,115,315.0,12.9,703,16.4
+1205,6,Bela Vista,77,194.5,8.6,1890,4.1
+1205,7,Alexandre Zachia,62,164.5,7.0,867,7.2
+1205,8,Santana,47,116.9,5.3,1833,2.6
+1205,9,Jóquei Clube,29,78.7,3.3,763,3.8
+1205,10,Centro,6,13.4,0.7,4170,0.1
+1205,11,(sem bairro — setor rural),3,4.9,0.3,5291,0.1
+1205,12,Tabajara Brites,2,6.0,0.2,2824,0.1
+1252,1,Nova Esperança,212,521.7,17.0,2785,7.6
+1252,2,Santo Antônio,184,507.1,14.8,1158,15.9
+1252,3,Cabo Luiz Quevedo,173,510.4,13.9,2826,6.1
+1252,4,Francisca Tarragô,166,595.4,13.3,506,32.8
+1252,5,Mascarenhas de Moraes,143,393.8,11.5,703,20.3
+1252,6,Bela Vista,129,317.0,10.4,1890,6.8
+1252,7,Alexandre Zachia,107,283.9,8.6,867,12.3
+1252,8,Santana,67,166.4,5.4,1833,3.7
+1252,9,Jóquei Clube,48,131.1,3.9,763,6.3
+1252,10,Centro,7,15.7,0.6,4170,0.2
+1252,11,(sem bairro — setor rural),6,9.8,0.5,5291,0.1
+1252,12,Tabajara Brites,3,8.9,0.2,2824,0.1

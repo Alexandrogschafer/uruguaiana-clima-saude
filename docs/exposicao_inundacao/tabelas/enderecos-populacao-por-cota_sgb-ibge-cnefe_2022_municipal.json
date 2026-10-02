@@ -1,0 +1,46 @@
+{
+  "produto": "enderecos-populacao-por-cota_sgb-ibge-cnefe_2022_municipal.csv",
+  "data_processamento": "2026-10-02T21:30:02+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/exposicao_inundacao_enderecos.py",
+  "fontes": [
+    "SGB — manchas de inundação por cota, serviço hidrologia/BACIA_DO_URUGUAI_URUGUAIANA (camada do repositório)",
+    "IBGE — CNEFE do Censo 2022, espécie 1 (domicílio particular)",
+    "IBGE — agregados por setor e malha de setores do Censo 2022; grade estatística 2022",
+    "IBGE — histórico de formação dos setores 2010–2022 (áreas comparáveis)"
+  ],
+  "descricao": "endereços de domicílio particular (CNEFE 2022) expostos a cada cota e população estimada; CUMULATIVO: exposto à cota X = dentro da união das manchas de cota <= X; 'menor_cota_esta' = faixa pela menor cota que atinge o endereço; colunas *_rodada03 = definição não cumulativa da rodada 03",
+  "definicao_exposicao": "cumulativa (união das manchas de cota <= X), rodada 04",
+  "metodo_populacao": "população do setor 2022 repartida igualmente entre os endereços do setor (ESTIMATIVA); sensibilidade: população da célula da grade 2022 repartida entre os endereços da célula",
+  "fechamento_setor": {
+    "pop_municipio_setores": 117210.0,
+    "pop_alocada_aos_enderecos": 116784.0,
+    "diferenca": -426.0,
+    "setores_com_pop_e_sem_endereco": 3,
+    "pop_nesses_setores": 426.0,
+    "setores_com_endereco_e_sem_pop": 0
+  },
+  "fechamento_grade": {
+    "pop_grade_total": 116886.0,
+    "pop_alocada_aos_enderecos": 116880.0,
+    "diferenca_para_pop_municipio": -330.0,
+    "celulas_com_pop_e_sem_endereco": 3,
+    "pop_nessas_celulas": 6.0,
+    "enderecos_fora_de_celula": 2
+  },
+  "enderecos_em_cota_menor_fora_da_maior": {
+    "833_fora_de_952": 0,
+    "833_fora_de_1205": 0,
+    "833_fora_de_1252": 0,
+    "952_fora_de_1205": 3,
+    "952_fora_de_1252": 2,
+    "1205_fora_de_1252": 38
+  },
+  "cotas": {
+    "feicoes_originais": 21,
+    "geometrias_invalidas_reparadas": 4
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "produto": "perfil-expostos-por-cota_sgb-ibge_2022_municipal.csv",
+  "data_processamento": "2026-10-02T21:30:02+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/exposicao_inundacao_enderecos.py",
+  "fontes": [
+    "SGB — manchas de inundação por cota, serviço hidrologia/BACIA_DO_URUGUAI_URUGUAIANA (camada do repositório)",
+    "IBGE — CNEFE do Censo 2022, espécie 1 (domicílio particular)",
+    "IBGE — agregados por setor e malha de setores do Censo 2022; grade estatística 2022",
+    "IBGE — histórico de formação dos setores 2010–2022 (áreas comparáveis)"
+  ],
+  "definicao_exposicao": "cumulativa (união das manchas de cota <= X), rodada 04",
+  "descricao": "perfil da população estimada exposta por cota; % 60+ e % 0–14 do setor ponderados pela população estimada exposta (setores sob sigilo fora da média); % de domicílios com um morador do setor ponderado pelos endereços expostos",
+  "referencia": {
+    "municipio": {
+      "pct_60_mais": 17.2,
+      "pct_0_14": 20.5,
+      "pct_dom_1_morador_media_enderecos": 20.0
+    }
+  }
+}
