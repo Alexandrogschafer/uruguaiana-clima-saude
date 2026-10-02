@@ -1,3 +1,4 @@
+codigo_projeto: URUGUAIANA-CLIMA-SAUDE
 # CLAUDE.md — Contexto do projeto para o Claude Code
 
 Este arquivo é lido pelo Claude Code no início de cada sessão. Mantenha-o

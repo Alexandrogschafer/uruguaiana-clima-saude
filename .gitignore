@@ -4,6 +4,8 @@ __pycache__/
 *.pyc
 data/raw/
 data/processed/
+# auditoria local: contém campos crus com dado pessoal (ex.: CPF de diretor clínico no CNES)
+data/auditoria_cnes/
 
 node_modules/
 scripts/geoportal/geoportal-headless.png
