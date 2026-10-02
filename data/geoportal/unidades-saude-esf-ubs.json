@@ -1,0 +1,23 @@
+{
+  "descricao": "Unidades de saúde da atenção primária (ESF e UBS), 23 unidades, com classe (ESF, UBS, a confirmar, sem classe). populacao2017/2023/2026: população da unidade informada pelos profissionais de saúde do município; o conceito (cadastrada, adscrita ou atendida) está pendente de confirmação; ausente = não informado.",
+  "fonte": {
+    "caminho_origem": "data/processed/saude/unidades-saude-esf-ubs_cnes-revisado-v4_2026_pontos.gpkg",
+    "credito": "CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326; só as colunas ['cnes', 'nome', 'classe', 'endereco', 'populacao2017', 'populacao2023', 'populacao2026']",
+  "n_features": 23,
+  "colunas": [
+    "cnes",
+    "nome",
+    "classe",
+    "endereco",
+    "populacao2017",
+    "populacao2023",
+    "populacao2026"
+  ],
+  "data_processamento": "2026-10-02T20:47:10.826898+00:00",
+  "status": "pendente de conferência",
+  "credito": "CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026",
+  "nota_populacao": "rótulo no portal: 'População da unidade informada pelos profissionais de saúde do município' (2017, 2023, 2026); conceito pendente de confirmação; ausente aparece como 'não informado'"
+}

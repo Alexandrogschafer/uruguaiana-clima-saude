@@ -41,6 +41,9 @@ logger = logging.getLogger(__name__)
 
 CRS_OSM = "EPSG:4326"  # osmnx exige polígono de consulta em lat/lon não projetado
 
+# cache do Overpass em pasta ignorada pelo git (o padrão do osmnx é ./cache na raiz, versionada)
+ox.settings.cache_folder = str(Path(__file__).resolve().parents[2] / "data" / "raw" / "cache_osmnx")
+
 TAGS_SAUDE = {"amenity": ["hospital", "clinic", "doctors", "pharmacy"], "healthcare": True}
 
 CAMINHO_MALHA_VIARIA_DEFAULT = (

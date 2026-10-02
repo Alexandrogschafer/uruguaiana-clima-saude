@@ -16,7 +16,7 @@ código IBGE — específicos desta estação/seção do rio Uruguai):
     layer_id  cota_cm  tr_anos
     3         833      1.3
     4         952      1.9
-    5         1205     9.2
+    5         1205     9.0
     6         1252     13.4
 
 Uso:
@@ -45,7 +45,7 @@ BASE_URL = "https://geoportal.sgb.gov.br/server/rest/services/hidrologia/BACIA_D
 CAMADAS = [
     {"layer_id": 3, "cota_cm": 833, "tr_anos": 1.3},
     {"layer_id": 4, "cota_cm": 952, "tr_anos": 1.9},
-    {"layer_id": 5, "cota_cm": 1205, "tr_anos": 9.2},
+    {"layer_id": 5, "cota_cm": 1205, "tr_anos": 9.0},  # atributo TR do serviço = 9 (conferido em 2026-10-02)
     {"layer_id": 6, "cota_cm": 1252, "tr_anos": 13.4},
 ]
 

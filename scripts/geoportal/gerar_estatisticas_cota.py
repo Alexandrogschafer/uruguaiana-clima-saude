@@ -1,22 +1,30 @@
 """
-Consolida as duas tabelas de exposição por cota de inundação (população e
-estabelecimentos de saúde) num único JSON indexado por cota_cm, para o
-painel do slider de inundação do geoportal (evita o front-end ter que
-fazer join de dois CSVs em JS).
+Consolida, por cota de inundação (cota_cm), o tempo de retorno e as unidades
+de saúde (ESF/UBS) dentro da mancha, num único JSON para o painel do slider de
+inundação do geoportal.
 
-As cotas disponíveis nestes CSVs (833/952/1205/1252 cm) já foram
-confirmadas como idênticas às de setores-inundacao.geojson e
-cotas-inundacao.geojson — não há cota "órfã" em nenhum dos arquivos.
+- Tempo de retorno: atributo TR da própria camada de cotas do SGB.
+- Unidades de saúde: as 23 unidades da atenção primária (ESF e UBS) do
+  cadastro revisado pela equipe do projeto (versão 4, 2026). Definição
+  CUMULATIVA: unidade "na mancha" da cota X = dentro da união das manchas de
+  cota <= X (as manchas do SGB não são perfeitamente aninhadas). Geometria
+  das manchas reparada com buffer(0); ponto no polígono em EPSG:31981.
+
+Histórico: 2026-10-02 — saiu a população exposta preliminar (por área do
+setor) e, na mesma data, a contagem de estabelecimentos do CNES antigo
+(saude-estabelecimentos-exposicao-inundacao_por-cota.csv), substituída por
+esta contagem das unidades ESF/UBS.
 """
 
 import json
 
-import pandas as pd
+import geopandas as gpd
 
 from common import DIR_GEOPORTAL, RAIZ_PROJETO, logger
 
-CAMINHO_POPULACAO = RAIZ_PROJETO / "data" / "processed" / "populacao-exposta-inundacao_por-cota.csv"
-CAMINHO_SAUDE = RAIZ_PROJETO / "data" / "processed" / "saude-estabelecimentos-exposicao-inundacao_por-cota.csv"
+CRS_PADRAO = "EPSG:31981"
+CAMINHO_COTAS = RAIZ_PROJETO / "data" / "raw" / "vetor" / "cotas-inundacao_sgb_atual_vetorial.gpkg"
+CAMINHO_UNIDADES = RAIZ_PROJETO / "data" / "processed" / "saude" / "unidades-saude-esf-ubs_cnes-revisado-v4_2026_pontos.gpkg"
 CAMINHO_SAIDA = DIR_GEOPORTAL / "estatisticas-por-cota.json"
 
 
@@ -25,40 +33,38 @@ def main() -> None:
         logger.info("já existe, pulando: %s", CAMINHO_SAIDA.relative_to(RAIZ_PROJETO))
         return
 
-    df_pop = pd.read_csv(CAMINHO_POPULACAO)
-    df_saude = pd.read_csv(CAMINHO_SAUDE)
+    cotas = gpd.read_file(CAMINHO_COTAS).to_crs(CRS_PADRAO)
+    cotas["geometry"] = cotas.geometry.buffer(0)  # self-intersection em 4 feições da fonte
+    unidades = gpd.read_file(CAMINHO_UNIDADES).to_crs(CRS_PADRAO)
 
     por_cota: dict[str, dict] = {}
-    for _, linha in df_pop.iterrows():
-        cota = str(int(linha["cota_cm"]))
-        campos_populacao = linha.drop(labels=["cota_cm", "tr_anos"]).to_dict()
-        por_cota[cota] = {
-            "cota_cm": int(linha["cota_cm"]),
-            "tr_anos": float(linha["tr_anos"]),
-            "populacao": campos_populacao,
-            "saude": {"n_estabelecimentos_total": 0, "por_tipo": {}},
+    lista_cotas = sorted(int(c) for c in cotas["cota_cm"].unique())
+    for cota_cm in lista_cotas:
+        grupo = cotas[cotas["cota_cm"] == cota_cm]
+        uniao = cotas[cotas["cota_cm"] <= cota_cm].union_all()  # cumulativo
+        dentro = unidades[unidades.within(uniao)].sort_values("rotulo")
+        por_cota[str(cota_cm)] = {
+            "cota_cm": cota_cm,
+            "tr_anos": round(float(grupo["tr_anos"].iloc[0]), 1),
+            "unidades_saude": {
+                "n_na_mancha": int(len(dentro)),
+                "unidades": [{"rotulo": r.rotulo, "nome": r.nome, "classe": r.classe} for r in dentro.itertuples()],
+            },
         }
-
-    for _, linha in df_saude.iterrows():
-        cota = str(int(linha["cota_cm"]))
-        if cota not in por_cota:
-            logger.warning("cota %s presente em saúde mas ausente em população, ignorando", cota)
-            continue
-        n = int(linha["n_estabelecimentos"])
-        por_cota[cota]["saude"]["por_tipo"][linha["tipo_unidade_categoria"]] = n
-        por_cota[cota]["saude"]["n_estabelecimentos_total"] += n
 
     saida = {
         "descricao": (
-            "Estatísticas de população e estabelecimentos de saúde expostos por cota de "
-            "inundação (cota_cm), consolidadas de populacao-exposta-inundacao_por-cota.csv "
-            "e saude-estabelecimentos-exposicao-inundacao_por-cota.csv."
+            "Tempo de retorno e unidades de saúde (ESF/UBS) dentro da mancha de inundação por cota (cota_cm), "
+            "com definição cumulativa (união das manchas de cota <= X)."
         ),
         "fonte": {
-            "populacao": str(CAMINHO_POPULACAO.relative_to(RAIZ_PROJETO)),
-            "saude": str(CAMINHO_SAUDE.relative_to(RAIZ_PROJETO)),
+            "cotas": str(CAMINHO_COTAS.relative_to(RAIZ_PROJETO)),
+            "unidades_saude": str(CAMINHO_UNIDADES.relative_to(RAIZ_PROJETO)),
+            "credito_unidades": ("CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações "
+                                 "dos profissionais de saúde do município — versão 4, 2026"),
         },
-        "cotas_disponiveis_cm": sorted(int(c) for c in por_cota),
+        "status": "pendente de conferência",
+        "cotas_disponiveis_cm": lista_cotas,
         "por_cota": por_cota,
     }
 

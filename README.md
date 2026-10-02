@@ -22,9 +22,10 @@ revisão visual):
 
 - **Mapa base:** alternância entre mapa (OpenStreetMap) e imagem de
   satélite.
-- **Saúde:** estabelecimentos de saúde do município (UBS/ESF, hospitais,
-  clínicas, farmácias, laboratórios, vigilância em saúde), com filtro por
-  tipo de unidade e fontes CNES/OpenStreetMap.
+- **Saúde:** as 23 unidades de saúde da atenção primária (ESF e UBS), com
+  filtro por classe; cadastro do CNES (Ministério da Saúde) revisado e
+  corrigido pela equipe do projeto com informações dos profissionais de
+  saúde do município (versão 4, 2026).
 - **Demografia:** densidade populacional por setor censitário, com
   seletor de ano (2022/2010/2000 — 1 ano visível por vez, malhas de
   setores diferentes entre si e não comparáveis geometricamente);
@@ -32,8 +33,8 @@ revisão visual):
   só para 2022 (a fonte de 2000/2010 não traz distribuição etária por
   setor).
 - **Inundação:** cotas históricas de inundação registradas pelo Serviço
-  Geológico do Brasil, com área e população/estabelecimentos de saúde
-  estimados expostos em cada cenário.
+  Geológico do Brasil, com a mancha e as unidades de saúde (ESF/UBS)
+  dentro dela em cada cenário.
 - **Uso do solo:** série histórica MapBiomas (1985-2024), com linha do
   tempo por ano.
 - **Hidrografia e terreno:** bacias hidrográficas por nível Otto

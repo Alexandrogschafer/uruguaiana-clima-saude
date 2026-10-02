@@ -45,16 +45,12 @@
         <span>Saúde</span><span class="grupo-seta">▾</span>
       </button>
       <div class="grupo-conteudo">
-        <p class="secao-ajuda">Estabelecimentos de saúde, por tipo e fonte:</p>
+        <p class="secao-ajuda">Unidades de saúde (ESF e UBS), por classe. Fonte: CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026.</p>
         <label class="checkbox-linha checkbox-marcar-todos">
           <input type="checkbox" id="checkbox-saude-todos" checked />
           <strong>Marcar/desmarcar todos</strong>
         </label>
         <div id="filtro-tipo-saude" class="lista-checkboxes"></div>
-        <label class="checkbox-linha checkbox-osm">
-          <input type="checkbox" id="checkbox-saude-osm" checked />
-          OpenStreetMap (fonte complementar)
-        </label>
       </div>
     </div>
 
@@ -104,17 +100,14 @@
         <span>Inundação</span><span class="grupo-seta">▾</span>
       </button>
       <div class="grupo-conteudo">
-        <p class="secao-ajuda">Arraste para ver a área e a população estimada expostas em cada cota registrada pelo SGB.</p>
+        <p class="secao-ajuda">Arraste para ver a mancha de inundação e as unidades de saúde (ESF/UBS) dentro dela em cada cota registrada pelo SGB (a mancha de cada cota inclui as das cotas menores).</p>
         <input type="range" id="slider-cota" min="0" max="0" step="1" value="0" disabled />
         <div class="slider-legenda">
           <strong id="rotulo-cota">—</strong>
           <span id="rotulo-tr">período de retorno: —</span>
         </div>
         <dl class="painel-estatisticas" id="painel-estatisticas-cota">
-          <dt>Setores afetados</dt><dd id="stat-setores-afetados">—</dd>
-          <dt>População estimada (ponderada por uso do solo)</dt><dd id="stat-populacao-ponderada">—</dd>
-          <dt>% da população do município exposta</dt><dd id="stat-pct-populacao">—</dd>
-          <dt>Estabelecimentos de saúde expostos</dt><dd id="stat-estabelecimentos">—</dd>
+          <dt>Unidades de saúde (ESF/UBS) na mancha</dt><dd id="stat-unidades-saude">—</dd>
         </dl>
         <div id="container-camadas-inundacao" class="lista-checkboxes" style="margin-top:12px"></div>
       </div>

@@ -75,11 +75,12 @@ async function main() {
       const esperados = ["mapa-base", "saude", "demografia", "inundacao", "uso-solo", "hidrografia-terreno", "meio-fisico", "malha-viaria", "estrutura-fundiaria", "educacao", "cobertura-movel"];
       return esperados.every((chave) => !!document.querySelector(`.grupo[data-grupo="${chave}"]`));
     }),
+    // 2 caixas (crianças e idosos): a "Densidade populacional" virou o seletor de ano no commit 531eb53
     camadasDemografiaCarregadas: await page.evaluate(() => {
       const el = document.getElementById("container-camadas-demografia");
-      return !!el && el.textContent.trim() !== "Carregando camadas…" && el.querySelectorAll("input[type=checkbox]").length === 3;
+      return !!el && el.textContent.trim() !== "Carregando camadas…" && el.querySelectorAll("input[type=checkbox]").length === 2;
     }),
-    camadasInundacaoCarregadas: await page.evaluate(() => document.querySelectorAll("#container-camadas-inundacao input[type=checkbox]").length === 2),
+    camadasInundacaoCarregadas: await page.evaluate(() => document.querySelectorAll("#container-camadas-inundacao input[type=checkbox]").length === 1), // só a mancha (setores × manchas retirada em 2026-10-02)
     camadasHidroContextoCarregadas: await page.evaluate(() => document.querySelectorAll("#container-camadas-hidro-contexto input[type=checkbox]").length === 2),
     camadaMalhaViariaCarregada: await page.evaluate(() => document.querySelectorAll("#container-camadas-malha-viaria input[type=checkbox]").length === 2),
     camadaEstruturaFundiariaCarregada: await page.evaluate(() => document.querySelectorAll("#container-camadas-estrutura-fundiaria input[type=checkbox]").length === 1),
@@ -91,9 +92,19 @@ async function main() {
       const el = document.getElementById("slider-ano");
       return !!el && !el.disabled && el.max !== "0";
     }),
+    // saúde: camada única de unidades ESF/UBS, filtro com as 4 classes (ESF, UBS, a confirmar, sem classe) — 2026-10-02
     filtroSaudePopulado: await page.evaluate(() => {
       const el = document.getElementById("filtro-tipo-saude");
-      return !!el && el.children.length > 0;
+      return !!el && el.querySelectorAll("input[type=checkbox]").length === 4;
+    }),
+    camadaUnidadesSaudeCarregada: await page.evaluate(() => {
+      const camada = window.App && window.App.layers && window.App.layers.unidadesSaude;
+      return !!camada && camada.getLayers().length === 23 && !window.App.layers.saudeCnes && !window.App.layers.saudeOsm;
+    }),
+    indicadorUnidadesNaMancha: await page.evaluate(() => {
+      const dt = Array.from(document.querySelectorAll("#painel-estatisticas-cota dt")).map((el) => el.textContent.trim());
+      const dd = document.getElementById("stat-unidades-saude");
+      return dt.includes("Unidades de saúde (ESF/UBS) na mancha") && !!dd && dd.textContent.trim() !== "—";
     }),
     filtroEscolaPopulado: await page.evaluate(() => {
       const el = document.getElementById("filtro-tipo-escola");

@@ -1,3 +1,8 @@
+# AVISO (2026-10-02): a parte de POPULAÇÃO EXPOSTA deste cálculo (por área do setor e por uso do
+# solo) foi SUBSTITUÍDA pelo cálculo por endereços do CNEFE 2022 em
+# scripts/processamento/exposicao_inundacao_enderecos.py e retirada do portal; populacao-exposta-inundacao_por-cota.* e setores-inundacao_intersecao.* foram movidos para
+# data/processed/_substituidos/. A exposição dos estabelecimentos de saúde (contagem por ponto)
+# continua valendo.
 """
 Cruza os setores censitários (com indicadores de vulnerabilidade do Censo
 2022) e os estabelecimentos de saúde (CNES) com as cotas de inundação do
