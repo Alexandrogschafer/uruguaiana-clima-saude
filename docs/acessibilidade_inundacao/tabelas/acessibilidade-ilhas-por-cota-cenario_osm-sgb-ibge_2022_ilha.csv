@@ -1,0 +1,581 @@
+cota_cm,cenario,ilha,tipo,enderecos,pop_estimada,zona_predominante,bairros,unidade_dentro
+952,pessimista,9,parte da rede (com cruzamento ou ponta de via),11,25.6,urbana da sede,Bela Vista,nenhuma
+952,pessimista,19,parte da rede (com cruzamento ou ponta de via),1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,29,parte da rede (com cruzamento ou ponta de via),11,17.7,interior,(sem bairro — setor rural),nenhuma
+952,pessimista,33,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Centro,nenhuma
+952,pessimista,35,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+952,pessimista,38,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+952,pessimista,39,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+952,pessimista,40,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Francisca Tarragô,nenhuma
+952,pessimista,41,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Francisca Tarragô,nenhuma
+952,pessimista,52,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+952,pessimista,53,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+952,pessimista,59,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+952,pessimista,61,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+952,pessimista,62,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+952,pessimista,63,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+952,pessimista,64,pedaço de rua seco entre partes alagadas da mesma rua,2,5.8,urbana da sede,Cabo Luiz Quevedo,nenhuma
+952,pessimista,65,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+952,pessimista,71,pedaço de rua seco entre partes alagadas da mesma rua,2,4.9,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,73,pedaço de rua seco entre partes alagadas da mesma rua,1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,75,pedaço de rua seco entre partes alagadas da mesma rua,3,7.3,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,77,pedaço de rua seco entre partes alagadas da mesma rua,1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,78,pedaço de rua seco entre partes alagadas da mesma rua,1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,81,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,94,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,95,pedaço de rua seco entre partes alagadas da mesma rua,5,14.2,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,96,pedaço de rua seco entre partes alagadas da mesma rua,1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,97,pedaço de rua seco entre partes alagadas da mesma rua,1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,98,pedaço de rua seco entre partes alagadas da mesma rua,1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,105,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,108,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,110,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,pessimista,111,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,9,parte da rede (com cruzamento ou ponta de via),11,25.6,urbana da sede,Bela Vista,nenhuma
+952,otimista,19,parte da rede (com cruzamento ou ponta de via),1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,27,parte da rede (com cruzamento ou ponta de via),11,17.7,interior,(sem bairro — setor rural),nenhuma
+952,otimista,31,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Centro,nenhuma
+952,otimista,33,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+952,otimista,36,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+952,otimista,37,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+952,otimista,38,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Francisca Tarragô,nenhuma
+952,otimista,39,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Francisca Tarragô,nenhuma
+952,otimista,50,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+952,otimista,51,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+952,otimista,57,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+952,otimista,59,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+952,otimista,60,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+952,otimista,61,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+952,otimista,62,pedaço de rua seco entre partes alagadas da mesma rua,2,5.8,urbana da sede,Cabo Luiz Quevedo,nenhuma
+952,otimista,63,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+952,otimista,69,pedaço de rua seco entre partes alagadas da mesma rua,2,4.9,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,71,pedaço de rua seco entre partes alagadas da mesma rua,1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,73,pedaço de rua seco entre partes alagadas da mesma rua,3,7.3,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,75,pedaço de rua seco entre partes alagadas da mesma rua,1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,76,pedaço de rua seco entre partes alagadas da mesma rua,1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,79,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,92,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,93,pedaço de rua seco entre partes alagadas da mesma rua,5,14.2,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,94,pedaço de rua seco entre partes alagadas da mesma rua,1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,95,pedaço de rua seco entre partes alagadas da mesma rua,1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,96,pedaço de rua seco entre partes alagadas da mesma rua,1,2.4,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,103,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,106,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,108,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+952,otimista,109,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+1205,pessimista,13,parte da rede (com cruzamento ou ponta de via),7,16.3,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,53,parte da rede (com cruzamento ou ponta de via),11,17.7,interior,(sem bairro — setor rural),nenhuma
+1205,pessimista,62,pedaço de rua seco entre partes alagadas da mesma rua,1,1.7,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,63,pedaço de rua seco entre partes alagadas da mesma rua,1,1.7,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,65,pedaço de rua seco entre partes alagadas da mesma rua,1,1.7,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,68,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,69,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,71,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,72,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,73,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,86,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Centro,nenhuma
+1205,pessimista,87,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Centro,nenhuma
+1205,pessimista,93,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,94,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,95,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,98,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Centro,nenhuma
+1205,pessimista,100,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,117,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,118,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,131,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,135,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,138,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,141,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,143,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,146,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,150,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,151,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,152,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,153,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,156,pedaço de rua seco entre partes alagadas da mesma rua,20,55.7,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,195,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1205,pessimista,209,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1205,pessimista,215,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Santana,nenhuma
+1205,pessimista,221,pedaço de rua seco entre partes alagadas da mesma rua,2,5.1,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,242,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santana,nenhuma
+1205,pessimista,255,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,256,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,257,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,258,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,259,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,260,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,261,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,262,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,263,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,268,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,277,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,278,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santo Antônio,nenhuma
+1205,pessimista,290,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,293,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,294,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,301,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,303,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,304,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,307,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,312,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,314,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1205,pessimista,335,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,336,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,340,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,355,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,357,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,358,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,368,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,384,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,387,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,390,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,391,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,416,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,418,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,419,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,422,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,439,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,454,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,455,pedaço de rua seco entre partes alagadas da mesma rua,3,7.8,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,456,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,458,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,460,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,475,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,503,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,504,pedaço de rua seco entre partes alagadas da mesma rua,2,5.2,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,554,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,pessimista,555,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,pessimista,557,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,pessimista,559,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,pessimista,560,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,pessimista,583,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,pessimista,621,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,pessimista,624,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,pessimista,625,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,pessimista,644,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,pessimista,654,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,658,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,661,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,664,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,pessimista,667,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,pessimista,684,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,686,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,687,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,688,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,689,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,690,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,691,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,712,pedaço de rua seco entre partes alagadas da mesma rua,2,5.3,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,717,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,718,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,pessimista,736,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Francisca Tarragô,nenhuma
+1205,pessimista,871,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+1205,pessimista,897,pedaço de rua seco entre partes alagadas da mesma rua,2,4.9,urbana da sede,Mascarenhas de Moraes,nenhuma
+1205,pessimista,907,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+1205,pessimista,936,pedaço de rua seco entre partes alagadas da mesma rua,1,1.6,urbana da sede,(sem bairro — setor rural),nenhuma
+1205,pessimista,937,pedaço de rua seco entre partes alagadas da mesma rua,1,1.6,urbana da sede,(sem bairro — setor rural),nenhuma
+1205,otimista,13,parte da rede (com cruzamento ou ponta de via),7,16.3,urbana da sede,Bela Vista,nenhuma
+1205,otimista,50,parte da rede (com cruzamento ou ponta de via),11,17.7,interior,(sem bairro — setor rural),nenhuma
+1205,otimista,59,pedaço de rua seco entre partes alagadas da mesma rua,1,1.7,urbana da sede,Bela Vista,nenhuma
+1205,otimista,60,pedaço de rua seco entre partes alagadas da mesma rua,1,1.7,urbana da sede,Bela Vista,nenhuma
+1205,otimista,62,pedaço de rua seco entre partes alagadas da mesma rua,1,1.7,urbana da sede,Bela Vista,nenhuma
+1205,otimista,65,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,otimista,66,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,otimista,68,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,otimista,69,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,otimista,70,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,otimista,83,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Centro,nenhuma
+1205,otimista,84,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Centro,nenhuma
+1205,otimista,90,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,otimista,91,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,otimista,92,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,otimista,95,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Centro,nenhuma
+1205,otimista,97,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1205,otimista,114,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,115,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,128,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,132,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,135,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,138,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,140,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,143,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,147,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,148,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,149,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,150,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,153,pedaço de rua seco entre partes alagadas da mesma rua,20,55.7,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,192,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1205,otimista,206,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1205,otimista,212,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Santana,nenhuma
+1205,otimista,218,pedaço de rua seco entre partes alagadas da mesma rua,2,5.1,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,239,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santana,nenhuma
+1205,otimista,252,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,253,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,254,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,255,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,256,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,257,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,258,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,259,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,260,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,265,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,274,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,275,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santo Antônio,nenhuma
+1205,otimista,287,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1205,otimista,290,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1205,otimista,291,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1205,otimista,298,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1205,otimista,300,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1205,otimista,301,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1205,otimista,304,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1205,otimista,309,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1205,otimista,311,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1205,otimista,332,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,333,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,337,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,352,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,354,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,355,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,365,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,381,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,384,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,387,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,388,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,413,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,415,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,416,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,419,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,436,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,451,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,452,pedaço de rua seco entre partes alagadas da mesma rua,3,7.8,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,453,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,455,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,457,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,472,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,500,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,501,pedaço de rua seco entre partes alagadas da mesma rua,2,5.2,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,551,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,otimista,552,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,otimista,554,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,otimista,556,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,otimista,557,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,otimista,580,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,otimista,618,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,otimista,621,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,otimista,622,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,otimista,641,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1205,otimista,651,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,655,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,658,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,661,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,otimista,664,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1205,otimista,681,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,683,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,684,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,685,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,686,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,687,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,688,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,709,pedaço de rua seco entre partes alagadas da mesma rua,2,5.3,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,714,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,715,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1205,otimista,733,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Francisca Tarragô,nenhuma
+1205,otimista,868,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+1205,otimista,894,pedaço de rua seco entre partes alagadas da mesma rua,2,4.9,urbana da sede,Mascarenhas de Moraes,nenhuma
+1205,otimista,904,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+1205,otimista,933,pedaço de rua seco entre partes alagadas da mesma rua,1,1.6,urbana da sede,(sem bairro — setor rural),nenhuma
+1205,otimista,934,pedaço de rua seco entre partes alagadas da mesma rua,1,1.6,urbana da sede,(sem bairro — setor rural),nenhuma
+1252,pessimista,9,parte da rede (com cruzamento ou ponta de via),4,10.5,urbana da sede,Santana,nenhuma
+1252,pessimista,15,parte da rede (com cruzamento ou ponta de via),1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,69,parte da rede (com cruzamento ou ponta de via),11,17.7,interior,(sem bairro — setor rural),nenhuma
+1252,pessimista,79,pedaço de rua seco entre partes alagadas da mesma rua,6,9.7,interior,(sem bairro — setor rural),nenhuma
+1252,pessimista,80,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,81,pedaço de rua seco entre partes alagadas da mesma rua,1,1.7,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,82,pedaço de rua seco entre partes alagadas da mesma rua,1,1.7,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,84,pedaço de rua seco entre partes alagadas da mesma rua,1,1.7,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,98,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,99,pedaço de rua seco entre partes alagadas da mesma rua,2,5.3,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,100,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,122,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Centro,nenhuma
+1252,pessimista,123,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Centro,nenhuma
+1252,pessimista,129,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,130,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,131,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,136,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,141,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Santana,nenhuma
+1252,pessimista,196,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1252,pessimista,209,pedaço de rua seco entre partes alagadas da mesma rua,3,7.6,urbana da sede,Santo Antônio,nenhuma
+1252,pessimista,210,pedaço de rua seco entre partes alagadas da mesma rua,2,5.1,urbana da sede,Santo Antônio,nenhuma
+1252,pessimista,212,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1252,pessimista,213,pedaço de rua seco entre partes alagadas da mesma rua,5,14.7,urbana da sede,Santo Antônio,nenhuma
+1252,pessimista,252,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,pessimista,253,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,pessimista,254,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,pessimista,255,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,pessimista,256,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,pessimista,279,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,pessimista,280,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,pessimista,293,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santana,nenhuma
+1252,pessimista,294,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santana,nenhuma
+1252,pessimista,316,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,pessimista,319,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,pessimista,320,pedaço de rua seco entre partes alagadas da mesma rua,3,6.8,urbana da sede,Santana,nenhuma
+1252,pessimista,321,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,pessimista,324,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,pessimista,326,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,pessimista,353,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1252,pessimista,355,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1252,pessimista,382,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,384,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,389,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,391,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,392,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,393,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,394,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,395,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,396,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,397,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,405,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,421,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,424,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,425,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,433,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,436,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,437,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,438,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,439,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,441,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,442,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,445,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,450,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,452,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,pessimista,468,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Francisca Tarragô,nenhuma
+1252,pessimista,471,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,473,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,475,pedaço de rua seco entre partes alagadas da mesma rua,2,4.5,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,478,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,519,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,521,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,522,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,523,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,524,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,540,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,543,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,546,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,547,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,576,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,578,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,582,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,611,pedaço de rua seco entre partes alagadas da mesma rua,2,4.5,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,615,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,624,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Francisca Tarragô,nenhuma
+1252,pessimista,662,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,664,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,665,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,688,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,690,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,769,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,pessimista,770,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,pessimista,774,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,pessimista,775,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,pessimista,776,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,pessimista,799,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,pessimista,802,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,pessimista,812,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,pessimista,845,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,pessimista,848,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,pessimista,849,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,pessimista,879,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,883,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,885,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,887,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Nova Esperança,nenhuma
+1252,pessimista,902,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,pessimista,926,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,927,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,928,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,929,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,930,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,933,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,934,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,935,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,936,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,937,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,939,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,961,pedaço de rua seco entre partes alagadas da mesma rua,2,5.3,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,966,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,967,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,969,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,971,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,972,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,974,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,977,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,978,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,979,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,980,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,984,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,985,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Santana,nenhuma
+1252,pessimista,986,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Santana,nenhuma
+1252,pessimista,989,pedaço de rua seco entre partes alagadas da mesma rua,28,74.0,urbana da sede,Francisca Tarragô,nenhuma
+1252,pessimista,1103,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+1252,pessimista,1104,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+1252,pessimista,1180,pedaço de rua seco entre partes alagadas da mesma rua,2,4.9,urbana da sede,Mascarenhas de Moraes,nenhuma
+1252,pessimista,1183,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Jóquei Clube,nenhuma
+1252,pessimista,1194,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Jóquei Clube,nenhuma
+1252,pessimista,1200,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Jóquei Clube,nenhuma
+1252,pessimista,1202,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Jóquei Clube,nenhuma
+1252,pessimista,1210,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,pessimista,1228,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+1252,pessimista,1252,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Jóquei Clube,nenhuma
+1252,pessimista,1254,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Jóquei Clube,nenhuma
+1252,pessimista,1255,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Jóquei Clube,nenhuma
+1252,pessimista,1256,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Jóquei Clube,nenhuma
+1252,pessimista,1258,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Jóquei Clube,nenhuma
+1252,pessimista,1278,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Tabajara Brites,nenhuma
+1252,pessimista,1279,pedaço de rua seco entre partes alagadas da mesma rua,1,1.6,urbana da sede,(sem bairro — setor rural),nenhuma
+1252,otimista,9,parte da rede (com cruzamento ou ponta de via),4,10.5,urbana da sede,Santana,nenhuma
+1252,otimista,15,parte da rede (com cruzamento ou ponta de via),1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,66,parte da rede (com cruzamento ou ponta de via),11,17.7,interior,(sem bairro — setor rural),nenhuma
+1252,otimista,76,pedaço de rua seco entre partes alagadas da mesma rua,6,9.7,interior,(sem bairro — setor rural),nenhuma
+1252,otimista,77,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,otimista,78,pedaço de rua seco entre partes alagadas da mesma rua,1,1.7,urbana da sede,Bela Vista,nenhuma
+1252,otimista,79,pedaço de rua seco entre partes alagadas da mesma rua,1,1.7,urbana da sede,Bela Vista,nenhuma
+1252,otimista,81,pedaço de rua seco entre partes alagadas da mesma rua,1,1.7,urbana da sede,Bela Vista,nenhuma
+1252,otimista,95,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,96,pedaço de rua seco entre partes alagadas da mesma rua,2,5.3,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,97,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,119,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Centro,nenhuma
+1252,otimista,120,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Centro,nenhuma
+1252,otimista,126,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,127,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,128,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,133,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,138,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Santana,nenhuma
+1252,otimista,193,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1252,otimista,206,pedaço de rua seco entre partes alagadas da mesma rua,3,7.6,urbana da sede,Santo Antônio,nenhuma
+1252,otimista,207,pedaço de rua seco entre partes alagadas da mesma rua,2,5.1,urbana da sede,Santo Antônio,nenhuma
+1252,otimista,209,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1252,otimista,210,pedaço de rua seco entre partes alagadas da mesma rua,5,14.7,urbana da sede,Santo Antônio,nenhuma
+1252,otimista,249,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,otimista,250,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,otimista,251,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,otimista,252,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,otimista,253,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,otimista,276,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,otimista,277,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,otimista,290,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santana,nenhuma
+1252,otimista,291,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Santana,nenhuma
+1252,otimista,313,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,otimista,316,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,otimista,317,pedaço de rua seco entre partes alagadas da mesma rua,3,6.8,urbana da sede,Santana,nenhuma
+1252,otimista,318,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,otimista,321,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,otimista,323,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Santana,nenhuma
+1252,otimista,350,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1252,otimista,352,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Santo Antônio,nenhuma
+1252,otimista,379,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,381,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,386,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,388,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,389,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,390,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,391,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,392,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,393,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,394,pedaço de rua seco entre partes alagadas da mesma rua,1,2.3,urbana da sede,Bela Vista,nenhuma
+1252,otimista,402,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,otimista,418,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,otimista,421,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,otimista,422,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,otimista,430,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,otimista,433,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,otimista,434,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,otimista,435,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,otimista,436,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,otimista,438,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,otimista,439,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,otimista,442,pedaço de rua seco entre partes alagadas da mesma rua,1,3.2,urbana da sede,Bela Vista,nenhuma
+1252,otimista,447,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,otimista,449,pedaço de rua seco entre partes alagadas da mesma rua,1,2.5,urbana da sede,Bela Vista,nenhuma
+1252,otimista,465,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Francisca Tarragô,nenhuma
+1252,otimista,468,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,470,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,472,pedaço de rua seco entre partes alagadas da mesma rua,2,4.5,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,475,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,516,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,518,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,519,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,520,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,521,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,537,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,540,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,543,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,544,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,573,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,575,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,579,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,608,pedaço de rua seco entre partes alagadas da mesma rua,2,4.5,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,612,pedaço de rua seco entre partes alagadas da mesma rua,1,2.2,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,621,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Francisca Tarragô,nenhuma
+1252,otimista,659,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,661,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,662,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,685,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,687,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,766,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,otimista,767,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,otimista,771,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,otimista,772,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,otimista,773,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,otimista,796,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,otimista,799,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,otimista,809,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,otimista,842,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,otimista,845,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,otimista,846,pedaço de rua seco entre partes alagadas da mesma rua,1,3.0,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,otimista,876,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,880,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,882,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,884,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Nova Esperança,nenhuma
+1252,otimista,899,pedaço de rua seco entre partes alagadas da mesma rua,1,2.9,urbana da sede,Cabo Luiz Quevedo,nenhuma
+1252,otimista,923,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,924,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,925,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,926,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,927,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,930,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,931,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,932,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,933,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,934,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,936,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,958,pedaço de rua seco entre partes alagadas da mesma rua,2,5.3,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,963,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,964,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,966,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,968,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,969,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,971,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,974,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,975,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,976,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,977,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,981,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,982,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Santana,nenhuma
+1252,otimista,983,pedaço de rua seco entre partes alagadas da mesma rua,1,2.6,urbana da sede,Santana,nenhuma
+1252,otimista,986,pedaço de rua seco entre partes alagadas da mesma rua,28,74.0,urbana da sede,Francisca Tarragô,nenhuma
+1252,otimista,1100,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+1252,otimista,1101,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+1252,otimista,1177,pedaço de rua seco entre partes alagadas da mesma rua,2,4.9,urbana da sede,Mascarenhas de Moraes,nenhuma
+1252,otimista,1180,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Jóquei Clube,nenhuma
+1252,otimista,1191,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Jóquei Clube,nenhuma
+1252,otimista,1197,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Jóquei Clube,nenhuma
+1252,otimista,1199,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Jóquei Clube,nenhuma
+1252,otimista,1207,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Alexandre Zachia,nenhuma
+1252,otimista,1225,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Mascarenhas de Moraes,nenhuma
+1252,otimista,1249,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Jóquei Clube,nenhuma
+1252,otimista,1251,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Jóquei Clube,nenhuma
+1252,otimista,1252,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Jóquei Clube,nenhuma
+1252,otimista,1253,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Jóquei Clube,nenhuma
+1252,otimista,1255,pedaço de rua seco entre partes alagadas da mesma rua,1,2.7,urbana da sede,Jóquei Clube,nenhuma
+1252,otimista,1275,pedaço de rua seco entre partes alagadas da mesma rua,1,2.8,urbana da sede,Tabajara Brites,nenhuma
+1252,otimista,1276,pedaço de rua seco entre partes alagadas da mesma rua,1,1.6,urbana da sede,(sem bairro — setor rural),nenhuma

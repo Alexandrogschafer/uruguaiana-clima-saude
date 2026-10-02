@@ -1,0 +1,49 @@
+cota_cm,cenario,zona,grupo,enderecos,pop_estimada,pct_60_mais,pct_0_14,pop_em_setor_sob_sigilo
+833,pessimista,urbana da sede,isolados,0,0.0,,,0.0
+833,pessimista,urbana da sede,desvio > 500 m,0,0.0,,,0.0
+833,pessimista,urbana da sede,zona inteira,42042,109141.0,17.1,20.7,225.0
+833,pessimista,interior,isolados,0,0.0,,,0.0
+833,pessimista,interior,desvio > 500 m,0,0.0,,,0.0
+833,pessimista,interior,zona inteira,5151,7643.0,19.9,19.4,194.0
+833,otimista,urbana da sede,isolados,0,0.0,,,0.0
+833,otimista,urbana da sede,desvio > 500 m,0,0.0,,,0.0
+833,otimista,urbana da sede,zona inteira,42042,109141.0,17.1,20.7,225.0
+833,otimista,interior,isolados,0,0.0,,,0.0
+833,otimista,interior,desvio > 500 m,0,0.0,,,0.0
+833,otimista,interior,zona inteira,5151,7643.0,19.9,19.4,194.0
+952,pessimista,urbana da sede,isolados,49,126.0,17.6,20.9,0.0
+952,pessimista,urbana da sede,desvio > 500 m,27,44.2,13.5,21.4,0.0
+952,pessimista,urbana da sede,zona inteira,42042,109141.0,17.1,20.7,225.0
+952,pessimista,interior,isolados,11,17.7,11.9,25.3,0.0
+952,pessimista,interior,desvio > 500 m,159,265.4,24.6,16.9,35.0
+952,pessimista,interior,zona inteira,5151,7643.0,19.9,19.4,194.0
+952,otimista,urbana da sede,isolados,49,126.0,17.6,20.9,0.0
+952,otimista,urbana da sede,desvio > 500 m,27,44.2,13.5,21.4,0.0
+952,otimista,urbana da sede,zona inteira,42042,109141.0,17.1,20.7,225.0
+952,otimista,interior,isolados,11,17.7,11.9,25.3,0.0
+952,otimista,interior,desvio > 500 m,159,265.4,24.6,16.9,35.0
+952,otimista,interior,zona inteira,5151,7643.0,19.9,19.4,194.0
+1205,pessimista,urbana da sede,isolados,141,361.0,17.4,22.6,30.4
+1205,pessimista,urbana da sede,desvio > 500 m,31,53.3,14.4,20.7,0.0
+1205,pessimista,urbana da sede,zona inteira,42042,109141.0,17.1,20.7,225.0
+1205,pessimista,interior,isolados,11,17.7,11.9,25.3,0.0
+1205,pessimista,interior,desvio > 500 m,159,265.4,24.6,16.9,35.0
+1205,pessimista,interior,zona inteira,5151,7643.0,19.9,19.4,194.0
+1205,otimista,urbana da sede,isolados,141,361.0,17.4,22.6,30.4
+1205,otimista,urbana da sede,desvio > 500 m,31,53.3,14.4,20.7,0.0
+1205,otimista,urbana da sede,zona inteira,42042,109141.0,17.1,20.7,225.0
+1205,otimista,interior,isolados,11,17.7,11.9,25.3,0.0
+1205,otimista,interior,desvio > 500 m,159,265.4,24.6,16.9,35.0
+1205,otimista,interior,zona inteira,5151,7643.0,19.9,19.4,194.0
+1252,pessimista,urbana da sede,isolados,189,486.5,17.3,21.1,12.2
+1252,pessimista,urbana da sede,desvio > 500 m,27,44.2,13.5,21.4,0.0
+1252,pessimista,urbana da sede,zona inteira,42042,109141.0,17.1,20.7,225.0
+1252,pessimista,interior,isolados,17,27.4,11.9,25.3,0.0
+1252,pessimista,interior,desvio > 500 m,159,265.4,24.6,16.9,35.0
+1252,pessimista,interior,zona inteira,5151,7643.0,19.9,19.4,194.0
+1252,otimista,urbana da sede,isolados,189,486.5,17.3,21.1,12.2
+1252,otimista,urbana da sede,desvio > 500 m,27,44.2,13.5,21.4,0.0
+1252,otimista,urbana da sede,zona inteira,42042,109141.0,17.1,20.7,225.0
+1252,otimista,interior,isolados,17,27.4,11.9,25.3,0.0
+1252,otimista,interior,desvio > 500 m,159,265.4,24.6,16.9,35.0
+1252,otimista,interior,zona inteira,5151,7643.0,19.9,19.4,194.0

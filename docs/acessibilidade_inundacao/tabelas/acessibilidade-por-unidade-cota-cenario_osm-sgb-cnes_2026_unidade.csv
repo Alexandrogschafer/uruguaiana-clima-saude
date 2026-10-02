@@ -1,0 +1,169 @@
+cota_cm,cenario,rotulo,classe,zona,pop_base,pop_cenario,perde,recebe,saldo,unidade_na_mancha
+833,pessimista,01,ESF,urbana da sede,7639.3,7639.3,0.0,0.0,0.0,False
+833,pessimista,02,ESF,urbana da sede,2408.8,2399.7,9.2,0.0,-9.2,False
+833,pessimista,03,ESF,urbana da sede,5746.0,5746.0,0.0,0.0,0.0,False
+833,pessimista,04,ESF,urbana da sede,9466.6,9466.6,0.0,0.0,0.0,False
+833,pessimista,05,ESF,urbana da sede,5793.4,5793.4,0.0,0.0,0.0,False
+833,pessimista,06,ESF,urbana da sede,10126.6,10126.6,0.0,0.0,0.0,False
+833,pessimista,07,ESF,urbana da sede,8775.9,8775.9,0.0,0.0,0.0,False
+833,pessimista,09,ESF,interior,1623.1,1623.1,0.0,0.0,0.0,False
+833,pessimista,14,ESF,urbana da sede,5498.4,5498.4,0.0,0.0,0.0,False
+833,pessimista,15,ESF,urbana da sede,7257.2,7257.2,0.0,0.0,0.0,False
+833,pessimista,16,ESF,urbana da sede,6682.1,6682.1,0.0,0.0,0.0,False
+833,pessimista,17,ESF,urbana da sede,7108.3,7108.3,0.0,0.0,0.0,False
+833,pessimista,18,ESF,urbana da sede,3232.8,3232.8,0.0,0.0,0.0,False
+833,pessimista,19,ESF,urbana da sede,4630.5,4630.5,0.0,0.0,0.0,False
+833,pessimista,20,ESF,urbana da sede,2365.9,2365.9,0.0,0.0,0.0,False
+833,pessimista,21,ESF,urbana da sede,11953.7,11951.4,2.3,0.0,-2.3,False
+833,pessimista,22,ESF,urbana da sede,6751.0,6751.0,0.0,0.0,0.0,False
+833,pessimista,23,ESF,urbana da sede,6642.6,6642.6,0.0,0.0,0.0,False
+833,pessimista,10,UBS,interior,446.7,446.7,0.0,0.0,0.0,False
+833,pessimista,11,UBS,interior,633.4,633.4,0.0,0.0,0.0,False
+833,pessimista,12,UBS,interior,1962.8,1962.8,0.0,0.0,0.0,False
+833,otimista,01,ESF,urbana da sede,7639.3,7639.3,0.0,0.0,0.0,False
+833,otimista,02,ESF,urbana da sede,2408.8,2399.7,9.2,0.0,-9.2,False
+833,otimista,03,ESF,urbana da sede,5746.0,5746.0,0.0,0.0,0.0,False
+833,otimista,04,ESF,urbana da sede,9466.6,9466.6,0.0,0.0,0.0,False
+833,otimista,05,ESF,urbana da sede,5793.4,5793.4,0.0,0.0,0.0,False
+833,otimista,06,ESF,urbana da sede,10126.6,10126.6,0.0,0.0,0.0,False
+833,otimista,07,ESF,urbana da sede,8775.9,8775.9,0.0,0.0,0.0,False
+833,otimista,09,ESF,interior,1623.1,1623.1,0.0,0.0,0.0,False
+833,otimista,14,ESF,urbana da sede,5498.4,5498.4,0.0,0.0,0.0,False
+833,otimista,15,ESF,urbana da sede,7257.2,7257.2,0.0,0.0,0.0,False
+833,otimista,16,ESF,urbana da sede,6682.1,6682.1,0.0,0.0,0.0,False
+833,otimista,17,ESF,urbana da sede,7108.3,7108.3,0.0,0.0,0.0,False
+833,otimista,18,ESF,urbana da sede,3232.8,3232.8,0.0,0.0,0.0,False
+833,otimista,19,ESF,urbana da sede,4630.5,4630.5,0.0,0.0,0.0,False
+833,otimista,20,ESF,urbana da sede,2365.9,2365.9,0.0,0.0,0.0,False
+833,otimista,21,ESF,urbana da sede,11953.7,11951.4,2.3,0.0,-2.3,False
+833,otimista,22,ESF,urbana da sede,6751.0,6751.0,0.0,0.0,0.0,False
+833,otimista,23,ESF,urbana da sede,6642.6,6642.6,0.0,0.0,0.0,False
+833,otimista,10,UBS,interior,446.7,446.7,0.0,0.0,0.0,False
+833,otimista,11,UBS,interior,633.4,633.4,0.0,0.0,0.0,False
+833,otimista,12,UBS,interior,1962.8,1962.8,0.0,0.0,0.0,False
+952,pessimista,01,ESF,urbana da sede,7639.3,7639.3,0.0,0.0,0.0,False
+952,pessimista,02,ESF,urbana da sede,2408.8,2200.6,208.2,0.0,-208.2,False
+952,pessimista,03,ESF,urbana da sede,5746.0,5746.0,0.0,0.0,0.0,False
+952,pessimista,04,ESF,urbana da sede,9466.6,9448.9,17.7,0.0,-17.7,False
+952,pessimista,05,ESF,urbana da sede,5793.4,5778.8,14.6,0.0,-14.6,False
+952,pessimista,06,ESF,urbana da sede,10126.6,10126.6,0.0,0.0,0.0,False
+952,pessimista,07,ESF,urbana da sede,8775.9,8775.9,0.0,0.0,0.0,False
+952,pessimista,09,ESF,interior,1623.1,1623.1,0.0,0.0,0.0,False
+952,pessimista,14,ESF,urbana da sede,5498.4,5498.4,0.0,0.0,0.0,False
+952,pessimista,15,ESF,urbana da sede,7257.2,7257.2,0.0,0.0,0.0,False
+952,pessimista,16,ESF,urbana da sede,6682.1,6682.1,0.0,0.0,0.0,False
+952,pessimista,17,ESF,urbana da sede,7108.3,6863.4,244.9,0.0,-244.9,False
+952,pessimista,18,ESF,urbana da sede,3232.8,3232.8,0.0,0.0,0.0,False
+952,pessimista,19,ESF,urbana da sede,4630.5,4630.5,0.0,0.0,0.0,False
+952,pessimista,20,ESF,urbana da sede,2365.9,2365.9,0.0,0.0,0.0,False
+952,pessimista,21,ESF,urbana da sede,11953.7,11916.6,39.4,2.3,-37.1,False
+952,pessimista,22,ESF,urbana da sede,6751.0,6894.0,11.9,154.9,143.0,False
+952,pessimista,23,ESF,urbana da sede,6642.6,6642.6,0.0,0.0,0.0,False
+952,pessimista,10,UBS,interior,446.7,446.7,0.0,0.0,0.0,False
+952,pessimista,11,UBS,interior,633.4,633.4,0.0,0.0,0.0,False
+952,pessimista,12,UBS,interior,1962.8,1962.8,0.0,0.0,0.0,False
+952,otimista,01,ESF,urbana da sede,7639.3,7639.3,0.0,0.0,0.0,False
+952,otimista,02,ESF,urbana da sede,2408.8,2200.6,208.2,0.0,-208.2,False
+952,otimista,03,ESF,urbana da sede,5746.0,5746.0,0.0,0.0,0.0,False
+952,otimista,04,ESF,urbana da sede,9466.6,9448.9,17.7,0.0,-17.7,False
+952,otimista,05,ESF,urbana da sede,5793.4,5778.8,14.6,0.0,-14.6,False
+952,otimista,06,ESF,urbana da sede,10126.6,10126.6,0.0,0.0,0.0,False
+952,otimista,07,ESF,urbana da sede,8775.9,8775.9,0.0,0.0,0.0,False
+952,otimista,09,ESF,interior,1623.1,1623.1,0.0,0.0,0.0,False
+952,otimista,14,ESF,urbana da sede,5498.4,5498.4,0.0,0.0,0.0,False
+952,otimista,15,ESF,urbana da sede,7257.2,7257.2,0.0,0.0,0.0,False
+952,otimista,16,ESF,urbana da sede,6682.1,6682.1,0.0,0.0,0.0,False
+952,otimista,17,ESF,urbana da sede,7108.3,6863.4,244.9,0.0,-244.9,False
+952,otimista,18,ESF,urbana da sede,3232.8,3232.8,0.0,0.0,0.0,False
+952,otimista,19,ESF,urbana da sede,4630.5,4630.5,0.0,0.0,0.0,False
+952,otimista,20,ESF,urbana da sede,2365.9,2365.9,0.0,0.0,0.0,False
+952,otimista,21,ESF,urbana da sede,11953.7,11916.6,39.4,2.3,-37.1,False
+952,otimista,22,ESF,urbana da sede,6751.0,6894.0,11.9,154.9,143.0,False
+952,otimista,23,ESF,urbana da sede,6642.6,6642.6,0.0,0.0,0.0,False
+952,otimista,10,UBS,interior,446.7,446.7,0.0,0.0,0.0,False
+952,otimista,11,UBS,interior,633.4,633.4,0.0,0.0,0.0,False
+952,otimista,12,UBS,interior,1962.8,1962.8,0.0,0.0,0.0,False
+1205,pessimista,01,ESF,urbana da sede,7639.3,7639.3,0.0,0.0,0.0,False
+1205,pessimista,02,ESF,urbana da sede,2408.8,2082.6,331.7,5.4,-326.2,False
+1205,pessimista,03,ESF,urbana da sede,5746.0,5738.0,10.6,2.6,-8.0,False
+1205,pessimista,04,ESF,urbana da sede,9466.6,9392.4,76.8,2.7,-74.2,False
+1205,pessimista,05,ESF,urbana da sede,5793.4,5465.0,328.4,0.0,-328.4,False
+1205,pessimista,06,ESF,urbana da sede,10126.6,10126.6,0.0,0.0,0.0,False
+1205,pessimista,07,ESF,urbana da sede,8775.9,8775.9,0.0,0.0,0.0,False
+1205,pessimista,09,ESF,interior,1623.1,1623.1,0.0,0.0,0.0,False
+1205,pessimista,14,ESF,urbana da sede,5498.4,5498.4,0.0,0.0,0.0,False
+1205,pessimista,15,ESF,urbana da sede,7257.2,7173.2,84.1,0.0,-84.1,False
+1205,pessimista,16,ESF,urbana da sede,6682.1,6682.1,0.0,0.0,0.0,False
+1205,pessimista,17,ESF,urbana da sede,7108.3,5961.2,1147.1,0.0,-1147.1,False
+1205,pessimista,18,ESF,urbana da sede,3232.8,3232.8,0.0,0.0,0.0,False
+1205,pessimista,19,ESF,urbana da sede,4630.5,4630.5,0.0,0.0,0.0,False
+1205,pessimista,20,ESF,urbana da sede,2365.9,2365.9,0.0,0.0,0.0,False
+1205,pessimista,21,ESF,urbana da sede,11953.7,11875.5,80.6,2.3,-78.2,False
+1205,pessimista,22,ESF,urbana da sede,6751.0,6461.3,341.3,51.5,-289.8,False
+1205,pessimista,23,ESF,urbana da sede,6642.6,6060.5,582.1,0.0,-582.1,False
+1205,pessimista,10,UBS,interior,446.7,446.7,0.0,0.0,0.0,False
+1205,pessimista,11,UBS,interior,633.4,633.4,0.0,0.0,0.0,False
+1205,pessimista,12,UBS,interior,1962.8,1962.8,0.0,0.0,0.0,False
+1205,otimista,01,ESF,urbana da sede,7639.3,7639.3,0.0,0.0,0.0,False
+1205,otimista,02,ESF,urbana da sede,2408.8,2082.6,331.7,5.4,-326.2,False
+1205,otimista,03,ESF,urbana da sede,5746.0,5738.0,10.6,2.6,-8.0,False
+1205,otimista,04,ESF,urbana da sede,9466.6,9392.4,76.8,2.7,-74.2,False
+1205,otimista,05,ESF,urbana da sede,5793.4,5465.0,328.4,0.0,-328.4,False
+1205,otimista,06,ESF,urbana da sede,10126.6,10126.6,0.0,0.0,0.0,False
+1205,otimista,07,ESF,urbana da sede,8775.9,8775.9,0.0,0.0,0.0,False
+1205,otimista,09,ESF,interior,1623.1,1623.1,0.0,0.0,0.0,False
+1205,otimista,14,ESF,urbana da sede,5498.4,5498.4,0.0,0.0,0.0,False
+1205,otimista,15,ESF,urbana da sede,7257.2,7173.2,84.1,0.0,-84.1,False
+1205,otimista,16,ESF,urbana da sede,6682.1,6682.1,0.0,0.0,0.0,False
+1205,otimista,17,ESF,urbana da sede,7108.3,5961.2,1147.1,0.0,-1147.1,False
+1205,otimista,18,ESF,urbana da sede,3232.8,3232.8,0.0,0.0,0.0,False
+1205,otimista,19,ESF,urbana da sede,4630.5,4630.5,0.0,0.0,0.0,False
+1205,otimista,20,ESF,urbana da sede,2365.9,2365.9,0.0,0.0,0.0,False
+1205,otimista,21,ESF,urbana da sede,11953.7,11875.5,80.6,2.3,-78.2,False
+1205,otimista,22,ESF,urbana da sede,6751.0,6461.3,341.3,51.5,-289.8,False
+1205,otimista,23,ESF,urbana da sede,6642.6,6060.5,582.1,0.0,-582.1,False
+1205,otimista,10,UBS,interior,446.7,446.7,0.0,0.0,0.0,False
+1205,otimista,11,UBS,interior,633.4,633.4,0.0,0.0,0.0,False
+1205,otimista,12,UBS,interior,1962.8,1962.8,0.0,0.0,0.0,False
+1252,pessimista,01,ESF,urbana da sede,7639.3,7639.3,0.0,0.0,0.0,False
+1252,pessimista,02,ESF,urbana da sede,2408.8,1992.9,421.4,5.4,-416.0,False
+1252,pessimista,03,ESF,urbana da sede,5746.0,5713.1,47.4,14.4,-32.9,False
+1252,pessimista,04,ESF,urbana da sede,9466.6,9265.6,203.7,2.7,-201.0,False
+1252,pessimista,05,ESF,urbana da sede,5793.4,5266.8,526.5,0.0,-526.5,False
+1252,pessimista,06,ESF,urbana da sede,10126.6,10126.6,0.0,0.0,0.0,False
+1252,pessimista,07,ESF,urbana da sede,8775.9,8775.9,0.0,0.0,0.0,False
+1252,pessimista,09,ESF,interior,1623.1,1623.1,0.0,0.0,0.0,False
+1252,pessimista,14,ESF,urbana da sede,5498.4,5498.4,0.0,0.0,0.0,False
+1252,pessimista,15,ESF,urbana da sede,7257.2,7078.4,178.8,0.0,-178.8,False
+1252,pessimista,16,ESF,urbana da sede,6682.1,6684.7,0.0,2.7,2.7,False
+1252,pessimista,17,ESF,urbana da sede,7108.3,5703.9,1404.4,0.0,-1404.4,False
+1252,pessimista,18,ESF,urbana da sede,3232.8,3232.8,0.0,0.0,0.0,False
+1252,pessimista,19,ESF,urbana da sede,4630.5,4630.5,0.0,0.0,0.0,False
+1252,pessimista,20,ESF,urbana da sede,2365.9,2365.9,0.0,0.0,0.0,False
+1252,pessimista,21,ESF,urbana da sede,11953.7,11833.6,122.4,2.3,-120.1,False
+1252,pessimista,22,ESF,urbana da sede,6751.0,6371.2,406.1,26.3,-379.8,False
+1252,pessimista,23,ESF,urbana da sede,6642.6,5924.4,718.2,0.0,-718.2,False
+1252,pessimista,10,UBS,interior,446.7,446.7,0.0,0.0,0.0,False
+1252,pessimista,11,UBS,interior,633.4,633.4,0.0,0.0,0.0,False
+1252,pessimista,12,UBS,interior,1962.8,1962.8,0.0,0.0,0.0,False
+1252,otimista,01,ESF,urbana da sede,7639.3,7639.3,0.0,0.0,0.0,False
+1252,otimista,02,ESF,urbana da sede,2408.8,1992.9,421.4,5.4,-416.0,False
+1252,otimista,03,ESF,urbana da sede,5746.0,5713.1,47.4,14.4,-32.9,False
+1252,otimista,04,ESF,urbana da sede,9466.6,9265.6,203.7,2.7,-201.0,False
+1252,otimista,05,ESF,urbana da sede,5793.4,5266.8,526.5,0.0,-526.5,False
+1252,otimista,06,ESF,urbana da sede,10126.6,10126.6,0.0,0.0,0.0,False
+1252,otimista,07,ESF,urbana da sede,8775.9,8775.9,0.0,0.0,0.0,False
+1252,otimista,09,ESF,interior,1623.1,1623.1,0.0,0.0,0.0,False
+1252,otimista,14,ESF,urbana da sede,5498.4,5498.4,0.0,0.0,0.0,False
+1252,otimista,15,ESF,urbana da sede,7257.2,7078.4,178.8,0.0,-178.8,False
+1252,otimista,16,ESF,urbana da sede,6682.1,6684.7,0.0,2.7,2.7,False
+1252,otimista,17,ESF,urbana da sede,7108.3,5703.9,1404.4,0.0,-1404.4,False
+1252,otimista,18,ESF,urbana da sede,3232.8,3232.8,0.0,0.0,0.0,False
+1252,otimista,19,ESF,urbana da sede,4630.5,4630.5,0.0,0.0,0.0,False
+1252,otimista,20,ESF,urbana da sede,2365.9,2365.9,0.0,0.0,0.0,False
+1252,otimista,21,ESF,urbana da sede,11953.7,11833.6,122.4,2.3,-120.1,False
+1252,otimista,22,ESF,urbana da sede,6751.0,6371.2,406.1,26.3,-379.8,False
+1252,otimista,23,ESF,urbana da sede,6642.6,5924.4,718.2,0.0,-718.2,False
+1252,otimista,10,UBS,interior,446.7,446.7,0.0,0.0,0.0,False
+1252,otimista,11,UBS,interior,633.4,633.4,0.0,0.0,0.0,False
+1252,otimista,12,UBS,interior,1962.8,1962.8,0.0,0.0,0.0,False

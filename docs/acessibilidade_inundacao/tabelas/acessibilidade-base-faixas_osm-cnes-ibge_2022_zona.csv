@@ -1,0 +1,9 @@
+zona,faixa,enderecos,pop_estimada,pct_pop_zona
+urbana da sede,até 500 m,14266,38402.7,35.2
+urbana da sede,500 m a 1 km,20560,52634.9,48.2
+urbana da sede,1 a 2 km,6761,16998.1,15.6
+urbana da sede,mais de 2 km,455,1105.3,1.0
+interior,até 500 m,542,764.5,10.0
+interior,500 m a 1 km,715,920.3,12.0
+interior,1 a 2 km,223,285.8,3.7
+interior,mais de 2 km,3671,5672.4,74.2

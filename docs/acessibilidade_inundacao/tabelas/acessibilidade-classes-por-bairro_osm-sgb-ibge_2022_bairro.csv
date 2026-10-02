@@ -1,0 +1,77 @@
+cota_cm,cenario,zona,bairro,enderecos_bairro,pop_exposto,end_exposto,pop_isolado,end_isolado,pop_com_desvio,end_com_desvio,pop_desvio_mais_500m
+833,pessimista,urbana da sede,Bela Vista,1890,2.3,1,0.0,0,0.0,0,0.0
+833,pessimista,urbana da sede,Mascarenhas de Moraes,703,9.2,3,0.0,0,0.0,0,0.0
+833,otimista,urbana da sede,Bela Vista,1890,2.3,1,0.0,0,0.0,0,0.0
+833,otimista,urbana da sede,Mascarenhas de Moraes,703,9.2,3,0.0,0,0.0,0,0.0
+952,pessimista,interior,(sem bairro — setor rural),5151,0.0,0,17.7,11,276.6,166,265.4
+952,pessimista,urbana da sede,(sem bairro — setor rural),140,0.0,0,0.0,0,44.2,27,44.2
+952,pessimista,urbana da sede,Bela Vista,1890,16.7,7,32.7,14,356.7,151,0.0
+952,pessimista,urbana da sede,Cabo Luiz Quevedo,2826,52.8,18,17.5,6,154.9,53,0.0
+952,pessimista,urbana da sede,Centro,4170,0.0,0,2.2,1,0.0,0,0.0
+952,pessimista,urbana da sede,Francisca Tarragô,506,8.1,2,5.3,2,0.0,0,0.0
+952,pessimista,urbana da sede,Mascarenhas de Moraes,703,147.8,54,60.4,23,122.2,43,0.0
+952,pessimista,urbana da sede,Nova Esperança,2785,10.4,4,7.8,3,0.0,0,0.0
+952,otimista,interior,(sem bairro — setor rural),5151,0.0,0,17.7,11,276.6,166,265.4
+952,otimista,urbana da sede,(sem bairro — setor rural),140,0.0,0,0.0,0,44.2,27,44.2
+952,otimista,urbana da sede,Bela Vista,1890,16.7,7,32.7,14,356.7,151,0.0
+952,otimista,urbana da sede,Cabo Luiz Quevedo,2826,52.8,18,17.5,6,154.9,53,0.0
+952,otimista,urbana da sede,Centro,4170,0.0,0,2.2,1,0.0,0,0.0
+952,otimista,urbana da sede,Francisca Tarragô,506,8.1,2,5.3,2,0.0,0,0.0
+952,otimista,urbana da sede,Mascarenhas de Moraes,703,147.8,54,60.4,23,122.2,43,0.0
+952,otimista,urbana da sede,Nova Esperança,2785,10.4,4,7.8,3,0.0,0,0.0
+1205,pessimista,interior,(sem bairro — setor rural),5151,0.0,0,17.7,11,276.6,166,265.4
+1205,pessimista,urbana da sede,(sem bairro — setor rural),140,4.9,3,3.3,2,44.2,27,44.2
+1205,pessimista,urbana da sede,Alexandre Zachia,867,164.5,62,37.1,14,18.6,7,0.0
+1205,pessimista,urbana da sede,Bela Vista,1890,194.5,77,67.0,28,288.8,121,0.0
+1205,pessimista,urbana da sede,Cabo Luiz Quevedo,2826,463.1,157,32.4,11,191.3,70,0.0
+1205,pessimista,urbana da sede,Centro,4170,13.4,6,6.7,3,0.0,0,0.0
+1205,pessimista,urbana da sede,Francisca Tarragô,506,488.2,128,2.6,1,0.0,0,0.0
+1205,pessimista,urbana da sede,Jóquei Clube,763,78.7,29,0.0,0,0.0,0,0.0
+1205,pessimista,urbana da sede,Mascarenhas de Moraes,703,315.0,115,10.5,4,79.6,28,0.0
+1205,pessimista,urbana da sede,Nova Esperança,2785,355.2,145,69.0,28,421.2,162,0.0
+1205,pessimista,urbana da sede,Santana,1833,116.9,47,9.9,4,995.1,406,9.1
+1205,pessimista,urbana da sede,Santo Antônio,1158,338.8,120,122.4,46,272.3,103,0.0
+1205,pessimista,urbana da sede,Tabajara Brites,2824,6.0,2,0.0,0,0.0,0,0.0
+1205,otimista,interior,(sem bairro — setor rural),5151,0.0,0,17.7,11,276.6,166,265.4
+1205,otimista,urbana da sede,(sem bairro — setor rural),140,4.9,3,3.3,2,44.2,27,44.2
+1205,otimista,urbana da sede,Alexandre Zachia,867,164.5,62,37.1,14,18.6,7,0.0
+1205,otimista,urbana da sede,Bela Vista,1890,194.5,77,67.0,28,288.8,121,0.0
+1205,otimista,urbana da sede,Cabo Luiz Quevedo,2826,463.1,157,32.4,11,191.3,70,0.0
+1205,otimista,urbana da sede,Centro,4170,13.4,6,6.7,3,0.0,0,0.0
+1205,otimista,urbana da sede,Francisca Tarragô,506,488.2,128,2.6,1,0.0,0,0.0
+1205,otimista,urbana da sede,Jóquei Clube,763,78.7,29,0.0,0,0.0,0,0.0
+1205,otimista,urbana da sede,Mascarenhas de Moraes,703,315.0,115,10.5,4,79.6,28,0.0
+1205,otimista,urbana da sede,Nova Esperança,2785,355.2,145,69.0,28,421.2,162,0.0
+1205,otimista,urbana da sede,Santana,1833,116.9,47,9.9,4,995.1,406,9.1
+1205,otimista,urbana da sede,Santo Antônio,1158,338.8,120,122.4,46,272.3,103,0.0
+1205,otimista,urbana da sede,Tabajara Brites,2824,6.0,2,0.0,0,0.0,0,0.0
+1252,pessimista,interior,(sem bairro — setor rural),5151,0.0,0,27.4,17,276.6,166,265.4
+1252,pessimista,urbana da sede,(sem bairro — setor rural),140,9.8,6,1.6,1,44.2,27,44.2
+1252,pessimista,urbana da sede,Alexandre Zachia,867,283.9,107,66.3,25,0.0,0,0.0
+1252,pessimista,urbana da sede,Bela Vista,1890,317.0,129,82.5,33,213.5,90,0.0
+1252,pessimista,urbana da sede,Cabo Luiz Quevedo,2826,510.4,173,35.4,12,170.7,63,0.0
+1252,pessimista,urbana da sede,Centro,4170,15.7,7,4.5,2,0.0,0,0.0
+1252,pessimista,urbana da sede,Cidade Nova,1631,0.0,0,0.0,0,11.8,4,0.0
+1252,pessimista,urbana da sede,Francisca Tarragô,506,595.4,166,79.3,30,0.0,0,0.0
+1252,pessimista,urbana da sede,Jóquei Clube,763,131.1,48,24.5,9,36.1,13,0.0
+1252,pessimista,urbana da sede,Mascarenhas de Moraes,703,393.8,143,13.4,5,73.9,26,0.0
+1252,pessimista,urbana da sede,Nova Esperança,2785,521.7,212,80.7,33,342.3,131,0.0
+1252,pessimista,urbana da sede,Santana,1833,166.4,67,58.0,24,1092.7,443,0.0
+1252,pessimista,urbana da sede,Santo Antônio,1158,507.1,184,37.4,14,386.9,149,0.0
+1252,pessimista,urbana da sede,Santo Inácio,1054,0.0,0,0.0,0,1397.2,522,0.0
+1252,pessimista,urbana da sede,Tabajara Brites,2824,8.9,3,2.8,1,0.0,0,0.0
+1252,otimista,interior,(sem bairro — setor rural),5151,0.0,0,27.4,17,276.6,166,265.4
+1252,otimista,urbana da sede,(sem bairro — setor rural),140,9.8,6,1.6,1,44.2,27,44.2
+1252,otimista,urbana da sede,Alexandre Zachia,867,283.9,107,66.3,25,0.0,0,0.0
+1252,otimista,urbana da sede,Bela Vista,1890,317.0,129,82.5,33,213.5,90,0.0
+1252,otimista,urbana da sede,Cabo Luiz Quevedo,2826,510.4,173,35.4,12,170.7,63,0.0
+1252,otimista,urbana da sede,Centro,4170,15.7,7,4.5,2,0.0,0,0.0
+1252,otimista,urbana da sede,Cidade Nova,1631,0.0,0,0.0,0,11.8,4,0.0
+1252,otimista,urbana da sede,Francisca Tarragô,506,595.4,166,79.3,30,0.0,0,0.0
+1252,otimista,urbana da sede,Jóquei Clube,763,131.1,48,24.5,9,36.1,13,0.0
+1252,otimista,urbana da sede,Mascarenhas de Moraes,703,393.8,143,13.4,5,73.9,26,0.0
+1252,otimista,urbana da sede,Nova Esperança,2785,521.7,212,80.7,33,342.3,131,0.0
+1252,otimista,urbana da sede,Santana,1833,166.4,67,58.0,24,1092.7,443,0.0
+1252,otimista,urbana da sede,Santo Antônio,1158,507.1,184,37.4,14,386.9,149,0.0
+1252,otimista,urbana da sede,Santo Inácio,1054,0.0,0,0.0,0,1397.2,522,0.0
+1252,otimista,urbana da sede,Tabajara Brites,2824,8.9,3,2.8,1,0.0,0,0.0

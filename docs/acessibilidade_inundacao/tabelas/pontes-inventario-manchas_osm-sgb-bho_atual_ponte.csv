@@ -1,0 +1,6 @@
+ponte,eids,via,tipo_via,comprimento_m,curso_dagua,dist_maior_mancha_m,ruas_de_chegada,ponte_dentro_m_833,ponte_interrompida_833,chegadas_interrompidas_833,ponte_dentro_m_952,ponte_interrompida_952,chegadas_interrompidas_952,ponte_dentro_m_1205,ponte_interrompida_1205,chegadas_interrompidas_1205,ponte_dentro_m_1252,ponte_interrompida_1252,chegadas_interrompidas_1252
+P01,3771,Rua Coronel Rodrigues Portugal,tertiary,21.0,"nenhum curso d'água mapeado a até 40 m (viaduto, ou drenagem fora da BHO/OSM)",0.0,2,0.0,False,0,21.3,True,2,21.3,True,2,21.3,True,2
+P02,3821,(sem nome no OSM),unclassified,54.0,"nenhum curso d'água mapeado a até 40 m (viaduto, ou drenagem fora da BHO/OSM)",0.0,2,0.0,False,0,53.7,True,2,53.7,True,2,53.7,True,2
+P03,3052,Rua General Canabarro,residential,12.0,"nenhum curso d'água mapeado a até 40 m (viaduto, ou drenagem fora da BHO/OSM)",0.0,2,0.0,False,0,0.0,False,0,12.3,True,2,12.3,True,2
+P04,863,(sem nome no OSM),primary,40.0,curso d'água BHO 82532 (ordem 3),1.0,2,0.0,False,0,0.0,False,0,0.0,False,0,0.0,False,0
+P05,3008,(sem nome no OSM),trunk,39.0,"nenhum curso d'água mapeado a até 40 m (viaduto, ou drenagem fora da BHO/OSM)",4.0,2,0.0,False,0,0.0,False,0,0.0,False,0,0.0,False,0

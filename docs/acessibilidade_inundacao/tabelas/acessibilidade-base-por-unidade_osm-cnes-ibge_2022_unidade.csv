@@ -1,0 +1,24 @@
+rotulo,classe,zona,bairro,enderecos,pop_estimada,dist_mediana_m
+01,ESF,urbana da sede,Rui Ramos,2926.0,7639.3,666.9
+02,ESF,urbana da sede,Mascarenhas de Moraes,910.0,2408.8,489.5
+03,ESF,urbana da sede,Cidade Nova,2107.0,5746.0,510.4
+04,ESF,urbana da sede,Alexandre Zachia,3983.0,9466.6,790.0
+05,ESF,urbana da sede,Francisca Tarragô,2309.0,5793.4,706.2
+06,ESF,urbana da sede,São João,4068.0,10126.6,656.2
+07,ESF,urbana da sede,União das Vilas,3007.0,8775.9,612.6
+09,ESF,interior,,1157.0,1623.1,882.6
+14,ESF,urbana da sede,Tabajara Brites,1851.0,5498.4,431.9
+15,ESF,urbana da sede,Jóquei Clube,3165.0,7257.2,1258.5
+16,ESF,urbana da sede,Cidade Alegria,2454.0,6682.1,616.3
+17,ESF,urbana da sede,Nova Esperança,2782.0,7108.3,623.7
+18,ESF,urbana da sede,Vila Júlia,1164.0,3232.8,753.6
+19,ESF,urbana da sede,Tabajara Brites,1471.0,4630.5,408.6
+20,ESF,urbana da sede,União das Vilas,784.0,2365.9,499.0
+21,ESF,urbana da sede,Centro,5731.0,11953.7,809.8
+22,ESF,urbana da sede,Cabo Luiz Quevedo,2412.0,6751.0,547.7
+23,ESF,urbana da sede,Santo Antônio,2688.0,6642.6,638.5
+10,UBS,interior,,371.0,446.7,714.0
+11,UBS,interior,,418.0,633.4,7345.7
+12,UBS,interior,,1414.0,1962.8,24283.2
+UDM,a confirmar,urbana da sede,Centro,0.0,0.0,
+Prisional,sem classe,interior,,0.0,0.0,

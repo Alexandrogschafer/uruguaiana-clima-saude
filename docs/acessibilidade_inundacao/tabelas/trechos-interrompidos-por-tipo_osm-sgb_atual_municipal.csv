@@ -1,0 +1,16 @@
+cota_cm,tipo_via_osm,trechos,km
+833,residential,3,0.51
+833,unclassified,2,0.66
+952,residential,22,3.59
+952,tertiary,6,0.34
+952,unclassified,6,11.1
+1205,residential,67,10.38
+1205,residential;tertiary,1,0.3
+1205,secondary,1,0.15
+1205,tertiary,11,0.96
+1205,unclassified,10,12.95
+1252,residential,89,13.53
+1252,residential;tertiary,1,0.3
+1252,secondary,3,0.46
+1252,tertiary,13,1.26
+1252,unclassified,10,12.95
