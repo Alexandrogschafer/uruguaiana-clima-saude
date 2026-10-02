@@ -1,0 +1,36 @@
+{
+  "produto": "conferencia-cnefe-agregados_ibge-censo_2022_setor.csv",
+  "data_processamento": "2026-10-02T01:57:27+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "script": "scripts/processamento/dinamica_populacional_2022.py",
+  "ligado_ao_portal": false,
+  "descricao": "contagem de endereços CNEFE espécie 1 por setor × domicílios particulares (V0003) dos agregados",
+  "resumo": {
+    "registros_cnefe_total": 56323,
+    "enderecos_especie_1": 47193,
+    "nivel_geocodificacao_especie_1": {
+      "1": 44177,
+      "2": 2736,
+      "3": 219,
+      "4": 48,
+      "5": 13
+    },
+    "origem_do_setor_2022": {
+      "codigo_oficial": 42225,
+      "divisao_ponto_no_poligono": 4876,
+      "divisao_parte_mais_proxima": 92
+    },
+    "sem_setor": 0,
+    "pontos_fora_do_poligono_do_setor_atribuido": 1784,
+    "soma_cnefe": 47193,
+    "soma_agregados_V0003": 47193.0,
+    "setores_com_contagem_identica": 147,
+    "setores_com_dif_ate_5pct": 163,
+    "setores_com_dif_maior_10pct": 9,
+    "dif_absoluta_mediana_por_setor": 0.0,
+    "grupos_preliminar_divulgacao": 164,
+    "grupos_com_contagem_identica_pelo_codigo_preliminar": 155
+  }
+}

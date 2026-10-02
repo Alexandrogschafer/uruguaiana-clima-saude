@@ -1,0 +1,9 @@
+{
+  "produto": "populacao-variacao_ibge-censo_2000-2022_municipal.csv",
+  "data_processamento": "2026-10-02T01:54:32+00:00",
+  "descricao": "Variação absoluta, % e taxa geométrica anual por intervalo intercensitário (10 e 12 anos)",
+  "fonte": "derivado da tabela populacao-sexo-situacao",
+  "codigo_ibge": "4322400",
+  "script": "scripts/processamento/dinamica_populacional_municipio.py",
+  "transformacao": "seleção das categorias da tabela, soma e razões; sigilo/indisponível = ausente, nunca zero"
+}

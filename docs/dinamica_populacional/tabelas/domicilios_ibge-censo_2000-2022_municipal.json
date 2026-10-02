@@ -1,0 +1,9 @@
+{
+  "produto": "domicilios_ibge-censo_2000-2022_municipal.csv",
+  "data_processamento": "2026-10-02T01:54:32+00:00",
+  "descricao": "Domicílios particulares permanentes ocupados, moradores, moradores por domicílio, domicílios com um morador",
+  "fonte": "SIDRA 185, 3451, 4712; agregados por setor quando indicado",
+  "codigo_ibge": "4322400",
+  "script": "scripts/processamento/dinamica_populacional_municipio.py",
+  "transformacao": "seleção das categorias da tabela, soma e razões; sigilo/indisponível = ausente, nunca zero"
+}

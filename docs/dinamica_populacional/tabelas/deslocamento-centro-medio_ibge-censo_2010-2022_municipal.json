@@ -1,0 +1,50 @@
+{
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/dinamica_populacional_areas_comparaveis.py",
+  "deslocamento": {
+    "centro_da_cidade": {
+      "definicao": "centróide dos setores 2022 do bairro IBGE 'Centro' no distrito-sede",
+      "x": 491669.89100002265,
+      "y": 6708377.975823344
+    },
+    "2010": {
+      "centro_medio_x": 494170.6069706603,
+      "centro_medio_y": 6707079.432676147,
+      "distancia_padrao_m": 10575.265852509758,
+      "dist_centro_medio_ao_centro_cidade_m": 2817.7641262061584
+    },
+    "2022": {
+      "centro_medio_x": 493986.9083327603,
+      "centro_medio_y": 6706858.394154795,
+      "distancia_padrao_m": 10384.747613169517,
+      "dist_centro_medio_ao_centro_cidade_m": 2770.8658876955
+    },
+    "deslocamento_2010_2022": {
+      "distancia_m": 287.4077547448599,
+      "direcao": "SO (azimute 220°)",
+      "dx_m": -183.6986379000009,
+      "dy_m": -221.03852135129273
+    },
+    "2010_so_areas_urbanas": {
+      "centro_medio_x": 492868.9740739555,
+      "centro_medio_y": 6707216.754690854,
+      "distancia_padrao_m": 6158.584950543024
+    },
+    "2022_so_areas_urbanas": {
+      "centro_medio_x": 492681.6280991306,
+      "centro_medio_y": 6707052.105259949,
+      "distancia_padrao_m": 5804.861982205487
+    },
+    "deslocamento_2010_2022_so_areas_urbanas": {
+      "distancia_m": 249.41521481314206,
+      "direcao": "SO (azimute 229°)"
+    },
+    "distancia_media_ao_centro_km_ponderada": {
+      "2010": 4.796225868730776,
+      "2022": 4.779366047728072
+    }
+  }
+}

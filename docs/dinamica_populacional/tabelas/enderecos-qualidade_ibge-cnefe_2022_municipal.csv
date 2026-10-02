@@ -1,0 +1,6 @@
+nivel_geocodificacao,enderecos,pct,significado_dicionario_ibge,situacao_Rural,situacao_Urbana,em_coordenada_repetida
+1,44177,93.60922170660903,Endereço - coordenada original do Censo 2022,3612,40565,6540
+2,2736,5.7974699637658125,Endereço - coordenada modificada (apartamentos em um mesmo número no logradouro),0,2736,2728
+3,219,0.4640518720996758,Endereço - coordenada estimada (endereços originalmente sem coordenadas ou coordenadas inválidas),13,206,110
+4,48,0.1017099993643125,Face de quadra,0,48,30
+5,13,0.02754645816116797,Localidade,13,0,10

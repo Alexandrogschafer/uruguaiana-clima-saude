@@ -1,0 +1,37 @@
+{
+  "produto": "enderecos-detalhe-ganho_ibge-cnefe_2022_pontos_urbano.png",
+  "data_processamento": "2026-10-02T16:29:45+00:00",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/dinamica_populacional_cnefe_mapas.py",
+  "sem_simbolo_do_centro": true,
+  "fonte": "IBGE — CNEFE Censo 2022 (espécie 1); malha de setores 2022; hidrografia BHO/ANA; malha viária OpenStreetMap (fundo)",
+  "sem_marcadores_centro_medio": true,
+  "area_de_agua": "OpenStreetMap (data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg), só apresentação; outras águas pela regra c.AGUA_EXIBICAO (rodada 04)",
+  "pontos_fora_do_git": "a camada de pontos fica em data/processed/ (ignorada); aqui só a imagem",
+  "recorte": "ganho",
+  "tema": "detalhe",
+  "descricao": "área com maior ganho absoluto de população 2010–2022",
+  "enderecos_no_recorte": 2929,
+  "enderecos_dentro_da_area": 1915,
+  "bairros_ibge_no_recorte": [
+    "Cabo Luiz Quevedo",
+    "Tabajara Brites"
+  ],
+  "area_comparavel": {
+    "id_area": "AC109",
+    "bairros_2022": "Tabajara Brites",
+    "pop_2010": 2362.0,
+    "pop_2022": 6002.0,
+    "var_pop_abs": 3640.0,
+    "var_pop_pct": 154.1,
+    "dom_2010": 627.0,
+    "dom_2022": 1829.0
+  },
+  "janela_m": [
+    488938,
+    490151,
+    6704505,
+    6705712
+  ]
+}

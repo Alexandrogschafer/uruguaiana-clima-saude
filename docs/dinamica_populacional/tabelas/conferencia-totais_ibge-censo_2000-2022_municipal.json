@@ -1,0 +1,9 @@
+{
+  "produto": "conferencia-totais_ibge-censo_2000-2022_municipal.csv",
+  "data_processamento": "2026-10-02T01:54:32+00:00",
+  "descricao": "Conferência dos totais: SIDRA × soma dos setores × soma das idades × soma dos distritos",
+  "fonte": "SIDRA e agregados por setor de cada censo",
+  "codigo_ibge": "4322400",
+  "script": "scripts/processamento/dinamica_populacional_municipio.py",
+  "transformacao": "seleção das categorias da tabela, soma e razões; sigilo/indisponível = ausente, nunca zero"
+}

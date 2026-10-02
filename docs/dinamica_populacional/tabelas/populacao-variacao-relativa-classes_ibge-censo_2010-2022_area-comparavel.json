@@ -1,0 +1,41 @@
+{
+  "produto": "populacao-variacao-relativa-classes_ibge-censo_2010-2022_area-comparavel.csv",
+  "data_processamento": "2026-10-02T16:29:35+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/dinamica_populacional_relativo.py",
+  "fonte": "IBGE — histórico de formação dos setores 2010–2022; agregados por setor 2010 e 2022 (camada populacao-mudanca_ibge-censo_2010-2022_area-comparavel)",
+  "media_do_municipio": "variação % do município inteiro (soma das áreas = total do SIDRA), não a média das áreas",
+  "dif_pp": "variação % da área − variação % do município, em pontos percentuais",
+  "classes_pp": {
+    "muito abaixo da média": "< -15",
+    "abaixo da média": "-15 a -5",
+    "perto da média": "-5 a +5",
+    "acima da média": "+5 a +15",
+    "muito acima da média": "> +15"
+  },
+  "nota": "área sem valor em 2010 e com valor em 2022 = muito acima da média; sem domicílio particular nos dois anos = sem valor",
+  "variacao_pct_municipio": -6.557181010084904,
+  "areas_novas_sem_valor_2010": 0,
+  "areas_sem_valor_nos_dois_anos": 0,
+  "sensibilidade": {
+    "limiares_principais_pp": "±5 / ±15",
+    "limiares_alternativos_pp": "±10 / ±20",
+    "areas_que_mudam_de_classe": 53,
+    "transicoes": {
+      "abaixo da média -> perto da média": 35,
+      "acima da média -> perto da média": 3,
+      "muito abaixo da média -> abaixo da média": 9,
+      "muito acima da média -> acima da média": 6
+    },
+    "contagem_alternativa": {
+      "muito abaixo da média": 11,
+      "abaixo da média": 35,
+      "perto da média": 76,
+      "acima da média": 14,
+      "muito acima da média": 12
+    }
+  }
+}

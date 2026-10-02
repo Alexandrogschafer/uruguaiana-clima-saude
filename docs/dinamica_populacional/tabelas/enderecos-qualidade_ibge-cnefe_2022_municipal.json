@@ -1,0 +1,41 @@
+{
+  "produto": "enderecos-qualidade_ibge-cnefe_2022_municipal.csv",
+  "data_processamento": "2026-10-02T16:29:40+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/dinamica_populacional_cnefe_mapas.py",
+  "fonte": "IBGE — CNEFE Censo 2022 (espécie 1) e dicionário de variáveis do CNEFE 2022",
+  "url_dicionario": "https://ftp.ibge.gov.br/Cadastro_Nacional_de_Enderecos_para_Fins_Estatisticos/Censo_Demografico_2022/Arquivos_CNEFE/CSV/Dicionario_CNEFE_Censo_2022.xls",
+  "niveis_dicionario": {
+    "1": "Endereço - coordenada original do Censo 2022",
+    "2": "Endereço - coordenada modificada (apartamentos em um mesmo número no logradouro)",
+    "3": "Endereço - coordenada estimada (endereços originalmente sem coordenadas ou coordenadas inválidas)",
+    "4": "Face de quadra",
+    "5": "Localidade",
+    "6": "Setor censitário"
+  },
+  "enderecos_total": 47193,
+  "coordenada_repetida": {
+    "locais_com_mais_de_um_endereco": 2201,
+    "enderecos_nesses_locais": 9418,
+    "pct_dos_enderecos": 20.0,
+    "maximo_de_enderecos_num_local": 77,
+    "locais_por_tamanho": {
+      "2": 1395,
+      "3-5": 368,
+      "6-20": 391,
+      "21+": 47
+    },
+    "criterio": "mesma coordenada arredondada a 1 cm em EPSG:31981"
+  },
+  "fora_do_limite_municipal": 0,
+  "fora_de_qualquer_setor_2022": 0,
+  "fora_do_poligono_do_setor_atribuido": 1784,
+  "situacao_do_setor": {
+    "Urbana": 43555,
+    "Rural": 3638
+  },
+  "nota": "só contagens agregadas; nenhum endereço é publicado"
+}

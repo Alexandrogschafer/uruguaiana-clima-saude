@@ -1,0 +1,12 @@
+{
+  "produto": "piramide-etaria-sobreposta_ibge-censo_2000-2022_municipal.png",
+  "data_processamento": "2026-10-02T01:54:32+00:00",
+  "descricao": "pirâmide 2022 em barras com contorno de 2000, mesma escala",
+  "fonte": "tabela piramide-etaria_ibge-censo_2000-2022_municipal.csv",
+  "codigo_ibge": "4322400",
+  "script": "scripts/processamento/dinamica_populacional_municipio.py",
+  "formatos": [
+    "png",
+    "svg"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "produto": "populacao-domicilios-cruzamento_ibge-censo_2010-2022_area-comparavel.csv",
+  "data_processamento": "2026-10-02T16:29:35+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/dinamica_populacional_relativo.py",
+  "fonte": "IBGE — histórico de formação dos setores 2010–2022; agregados por setor 2010 e 2022 (camada populacao-mudanca_ibge-censo_2010-2022_area-comparavel)",
+  "descricao": "cruzamento população × domicílios por área comparável, 2010–2022: sentido da variação absoluta e classes relativas à variação do município",
+  "areas_perdem_pop_e_ganham_dom": 67,
+  "pop_2022_dessas_areas": 54866.0,
+  "areas_ganham_pop_e_ganham_dom": 27,
+  "areas_perdem_pop_e_perdem_dom": 47,
+  "variacao_pct_municipio": {
+    "populacao": -6.557181010084904,
+    "domicilios": 11.450483672705895
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "codigo_ibge": "4322400",
+  "script": "scripts/processamento/dinamica_populacional_verificacao_2000.py",
+  "correspondencia_oficial_2000_2010": {
+    "historico_formacao_2010_2022_colunas_de_ano": [
+      "2022_DIVULGAÇÃO",
+      "2022_INTERMEDIARIA",
+      "2022_PRELIMINAR",
+      "2021",
+      "2020",
+      "2019",
+      "2018",
+      "2017",
+      "2016",
+      "2015",
+      "2014",
+      "2013",
+      "2012",
+      "2011",
+      "2010"
+    ],
+    "historico_cobre_2000": false,
+    "arquivo_compatibilizacao_no_pacote_2000": [
+      "Rio Grande do Sul/Compatibilizaç╞o_2000-2001_RS.xls"
+    ],
+    "linhas_do_municipio_na_compatibilizacao": 0,
+    "ftp_censo_2010_malhas": "só setores_censitarios_shp/ e _kmz/ (sem tabela de correspondência)",
+    "conclusao": "não foi encontrada correspondência oficial setor 2000 <-> setor 2010 publicada pelo IBGE"
+  },
+  "malha_2000": {
+    "crs_origem": {
+      "malha_urbana": "EPSG:29191 (SAD69 / UTM zone 21S) — FORÇADO: o .prj original é um formato legado do ArcView sem datum explícito e o GDAL o interpreta erradamente como WGS84/UTM 21N; corrigido com base na documentação técnica oficial da Malha Municipal Digital 2000 (elipsoide UGGI67, Datum SAD69)",
+      "malha_rural": "EPSG:4618 (SAD69 geográfico) — FORÇADO: a fonte não distribui .prj algum para este produto; mesma referência SAD69 documentada oficialmente para a série"
+    },
+    "n_setores": 145,
+    "area_uniao_km2": 5707.601938942404,
+    "area_municipio_km2": 5697.668606390761,
+    "pct_municipio_coberto": 99.79363589393006,
+    "area_fora_do_municipio_km2": 21.691275438049374,
+    "soma_areas_menos_uniao_km2 (sobreposição interna)": 0.5452758819608688,
+    "geometrias_invalidas_na_fonte": 6
+  },
+  "malha_2010": {
+    "n_setores": 150,
+    "area_uniao_km2": 5711.362320295395,
+    "area_municipio_km2": 5697.668606390761,
+    "pct_municipio_coberto": 99.86014237273122,
+    "area_fora_do_municipio_km2": 21.662338027178045,
+    "soma_areas_menos_uniao_km2 (sobreposição interna)": 7.343292236328125e-11,
+    "geometrias_invalidas_na_fonte": 0
+  },
+  "encaixe_2000_2010_diagnostico": {
+    "codigos_2000": 145,
+    "codigos_2010": 150,
+    "codigos_em_comum": 145,
+    "nota_codigos": "código igual NÃO garante mesmo território: até 2010 o IBGE reaproveitava o código de um setor dividido para uma das partes",
+    "iou_setores_mesmo_codigo": {
+      "mediana": 0.5120047229867494,
+      "p10": 0.2707382961629961,
+      "n_iou_maior_0_9": 19,
+      "n_iou_menor_0_5": 68
+    },
+    "deslocamento_centroide_mesmo_codigo_m": {
+      "mediana_dx": -24.327240008395165,
+      "mediana_dy": 99.61694055981934,
+      "mediana_distancia": 102.5487682387608
+    },
+    "setores_urbanos_2000": 122
+  }
+}

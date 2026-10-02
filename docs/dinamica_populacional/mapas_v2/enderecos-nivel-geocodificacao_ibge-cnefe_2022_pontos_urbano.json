@@ -1,0 +1,22 @@
+{
+  "produto": "enderecos-nivel-geocodificacao_ibge-cnefe_2022_pontos_urbano.png",
+  "data_processamento": "2026-10-02T16:29:41+00:00",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/dinamica_populacional_cnefe_mapas.py",
+  "sem_simbolo_do_centro": true,
+  "fonte": "IBGE — CNEFE Censo 2022 (espécie 1); malha de setores 2022; hidrografia BHO/ANA; malha viária OpenStreetMap (fundo)",
+  "sem_marcadores_centro_medio": true,
+  "area_de_agua": "OpenStreetMap (data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg), só apresentação; outras águas pela regra c.AGUA_EXIBICAO (rodada 04)",
+  "pontos_fora_do_git": "a camada de pontos fica em data/processed/ (ignorada); aqui só a imagem",
+  "recorte": "área urbana da sede",
+  "tema": "nivel_geocodificacao",
+  "niveis": {
+    "1": "Endereço - coordenada original do Censo 2022",
+    "2": "Endereço - coordenada modificada (apartamentos em um mesmo número no logradouro)",
+    "3": "Endereço - coordenada estimada (endereços originalmente sem coordenadas ou coordenadas inválidas)",
+    "4": "Face de quadra",
+    "5": "Localidade",
+    "6": "Setor censitário"
+  }
+}

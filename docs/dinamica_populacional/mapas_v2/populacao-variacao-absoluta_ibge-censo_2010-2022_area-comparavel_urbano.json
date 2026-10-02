@@ -1,0 +1,43 @@
+{
+  "produto": "populacao-variacao-absoluta_ibge-censo_2010-2022_area-comparavel_urbano.png",
+  "data_processamento": "2026-10-02T16:29:33+00:00",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "codigo_ibge": "4322400",
+  "variavel": "var_pop_abs",
+  "limites_classes": [
+    -Infinity,
+    -250.0,
+    -100.0,
+    -25.0,
+    25.0,
+    100.0,
+    250.0,
+    Infinity
+  ],
+  "rotulos": [
+    "< −250",
+    "−250 a < −100",
+    "−100 a < −25",
+    "−25 a < 25",
+    "25 a < 100",
+    "100 a < 250",
+    "≥ 250"
+  ],
+  "cores": [
+    "#b2182b",
+    "#ef8a62",
+    "#fddbc7",
+    "#f0efec",
+    "#d1e5f0",
+    "#67a9cf",
+    "#2166ac"
+  ],
+  "recorte": "área urbana da sede",
+  "fonte": "Fonte: IBGE — histórico de formação dos setores 2010–2022; agregados por setor 2010 e 2022; geometria da malha 2022.",
+  "script": "scripts/processamento/dinamica_populacional_mapas.py",
+  "sem_simbolo_do_centro": true,
+  "sem_marcadores_centro_medio": true,
+  "area_de_agua": "OpenStreetMap (data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg), só apresentação",
+  "regra_outras_aguas": "tematico"
+}

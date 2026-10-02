@@ -1,0 +1,12 @@
+{
+  "produto": "populacao-situacao_ibge-censo_2000-2022_municipal.png",
+  "data_processamento": "2026-10-02T01:54:33+00:00",
+  "descricao": "barras empilhadas urbana/rural com total rotulado",
+  "fonte": "tabela populacao-sexo-situacao",
+  "codigo_ibge": "4322400",
+  "script": "scripts/processamento/dinamica_populacional_municipio.py",
+  "formatos": [
+    "png",
+    "svg"
+  ]
+}
