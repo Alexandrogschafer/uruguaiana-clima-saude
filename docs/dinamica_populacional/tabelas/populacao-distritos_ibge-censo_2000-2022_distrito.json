@@ -1,0 +1,9 @@
+{
+  "produto": "populacao-distritos_ibge-censo_2000-2022_distrito.csv",
+  "data_processamento": "2026-10-02T01:54:32+00:00",
+  "descricao": "População por distrito e situação; variação % e taxa geométrica anual",
+  "fonte": "SIDRA 202 (N10) e 9923 (N10)",
+  "codigo_ibge": "4322400",
+  "script": "scripts/processamento/dinamica_populacional_municipio.py",
+  "transformacao": "seleção das categorias da tabela, soma e razões; sigilo/indisponível = ausente, nunca zero"
+}

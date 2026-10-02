@@ -1,0 +1,36 @@
+{
+  "produto": "domicilios-variacao-relativa_ibge-censo_2010-2022_area-comparavel_municipio.png",
+  "data_processamento": "2026-10-02T16:29:37+00:00",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "codigo_ibge": "4322400",
+  "variavel": "classe_rel_dom",
+  "variacao_pct_municipio": 11.450483672705895,
+  "limiares_pp": {
+    "perto": 5,
+    "forte": 15
+  },
+  "rotulos": [
+    "muito abaixo (< −15 p.p.)",
+    "abaixo (−15 a −5 p.p.)",
+    "perto da média (−5 a +5 p.p.)",
+    "acima (+5 a +15 p.p.)",
+    "muito acima (> +15 p.p.)"
+  ],
+  "cores": [
+    "#b2182b",
+    "#ef8a62",
+    "#f0efec",
+    "#67a9cf",
+    "#2166ac"
+  ],
+  "contorno": "áreas com perda absoluta de domicílios 2010–2022",
+  "n_areas_contornadas": 47,
+  "recorte": "município inteiro",
+  "fonte": "Fonte: IBGE — histórico de formação dos setores 2010–2022; agregados por setor 2010 e 2022; geometria da malha 2022.",
+  "script": "scripts/processamento/dinamica_populacional_relativo.py",
+  "sem_simbolo_do_centro": true,
+  "sem_marcadores_centro_medio": true,
+  "area_de_agua": "OpenStreetMap (data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg), só apresentação",
+  "regra_outras_aguas": "tematico (só o rio)"
+}

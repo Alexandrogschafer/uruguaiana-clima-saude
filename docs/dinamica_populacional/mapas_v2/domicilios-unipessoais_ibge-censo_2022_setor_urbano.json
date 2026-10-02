@@ -1,0 +1,37 @@
+{
+  "produto": "domicilios-unipessoais_ibge-censo_2022_setor_urbano.png",
+  "data_processamento": "2026-10-02T16:29:31+00:00",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "codigo_ibge": "4322400",
+  "variavel": "pct_dom_1_morador",
+  "limites_classes": [
+    0.0,
+    10.0,
+    15.0,
+    20.0,
+    25.0,
+    Infinity
+  ],
+  "rotulos": [
+    "0 a < 10 %",
+    "10 a < 15 %",
+    "15 a < 20 %",
+    "20 a < 25 %",
+    "≥ 25 %"
+  ],
+  "cores": [
+    "#9ec5f4",
+    "#6da7ec",
+    "#3987e5",
+    "#256abf",
+    "#104281"
+  ],
+  "recorte": "área urbana da sede",
+  "fonte": "Fonte: IBGE, Censo 2022 — malha e agregados por setor.",
+  "script": "scripts/processamento/dinamica_populacional_mapas.py",
+  "sem_simbolo_do_centro": true,
+  "sem_marcadores_centro_medio": true,
+  "area_de_agua": "OpenStreetMap (data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg), só apresentação",
+  "regra_outras_aguas": "tematico"
+}

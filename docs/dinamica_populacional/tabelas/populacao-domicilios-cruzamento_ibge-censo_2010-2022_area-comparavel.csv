@@ -1,0 +1,11 @@
+# bloco 1: sentido da variação absoluta (áreas)
+populacao,ganhou,igual,perdeu,sem domicílio particular
+ganhou,27,0,0,0
+perdeu,67,4,47,3
+# bloco 2: classe relativa da população (linhas) x classe relativa dos domicílios (colunas) (áreas)
+classe_rel_pop,muito abaixo da média,abaixo da média,perto da média,acima da média,muito acima da média,sem valor
+muito abaixo da média,17,2,0,0,0,1
+abaixo da média,10,34,14,2,0,1
+perto da média,1,11,22,3,0,1
+acima da média,0,0,1,6,4,0
+muito acima da média,0,0,1,1,16,0

@@ -1,0 +1,10 @@
+{
+  "produto": "populacao-mudanca-top10_ibge-censo_2010-2022_area-comparavel.csv",
+  "data_processamento": "2026-10-02T01:59:32+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/dinamica_populacional_areas_comparaveis.py",
+  "descricao": "10 áreas comparáveis com maior ganho e 10 com maior perda absoluta de população; referência = bairro IBGE 2022 dominante + logradouro mais frequente no CNEFE 2022"
+}

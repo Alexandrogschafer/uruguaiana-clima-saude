@@ -1,0 +1,61 @@
+{
+  "produto": "populacao-setores_ibge-censo_2022_setor.csv",
+  "data_processamento": "2026-10-02T01:57:26+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "script": "scripts/processamento/dinamica_populacional_2022.py",
+  "ligado_ao_portal": false,
+  "descricao": "atributos da camada de setores 2022, sem geometria",
+  "cobertura_por_indicador": {
+    "pop": {
+      "setores_sem_valor": 0,
+      "dos_quais_por_sigilo_X": 0,
+      "dos_quais_setor_sem_moradores": 0,
+      "populacao_nos_setores_sem_valor": 0.0,
+      "pct_populacao_sem_valor": 0.0
+    },
+    "dom_ocupados": {
+      "setores_sem_valor": 0,
+      "dos_quais_por_sigilo_X": 0,
+      "dos_quais_setor_sem_moradores": 0,
+      "populacao_nos_setores_sem_valor": 0.0,
+      "pct_populacao_sem_valor": 0.0
+    },
+    "dens_hab_ha": {
+      "setores_sem_valor": 0,
+      "dos_quais_por_sigilo_X": 0,
+      "dos_quais_setor_sem_moradores": 0,
+      "populacao_nos_setores_sem_valor": 0.0,
+      "pct_populacao_sem_valor": 0.0
+    },
+    "mor_por_dom": {
+      "setores_sem_valor": 3,
+      "dos_quais_por_sigilo_X": 3,
+      "dos_quais_setor_sem_moradores": 0,
+      "populacao_nos_setores_sem_valor": 426.0,
+      "pct_populacao_sem_valor": 0.36
+    },
+    "pct_0_14": {
+      "setores_sem_valor": 8,
+      "dos_quais_por_sigilo_X": 8,
+      "dos_quais_setor_sem_moradores": 0,
+      "populacao_nos_setores_sem_valor": 691.0,
+      "pct_populacao_sem_valor": 0.59
+    },
+    "pct_60_mais": {
+      "setores_sem_valor": 7,
+      "dos_quais_por_sigilo_X": 7,
+      "dos_quais_setor_sem_moradores": 0,
+      "populacao_nos_setores_sem_valor": 845.0,
+      "pct_populacao_sem_valor": 0.72
+    },
+    "pct_dom_1_morador": {
+      "setores_sem_valor": 5,
+      "dos_quais_por_sigilo_X": 5,
+      "dos_quais_setor_sem_moradores": 0,
+      "populacao_nos_setores_sem_valor": 486.0,
+      "pct_populacao_sem_valor": 0.41
+    }
+  }
+}

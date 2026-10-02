@@ -1,0 +1,37 @@
+{
+  "produto": "populacao-grade_ibge-censo_2022_200m-1km_urbano.png",
+  "data_processamento": "2026-10-02T16:29:32+00:00",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "codigo_ibge": "4322400",
+  "variavel": "pop",
+  "limites_classes": [
+    1.0,
+    11.0,
+    51.0,
+    101.0,
+    201.0,
+    Infinity
+  ],
+  "rotulos": [
+    "1 a 10",
+    "11 a 50",
+    "51 a 100",
+    "101 a 200",
+    "mais de 200"
+  ],
+  "cores": [
+    "#9ec5f4",
+    "#6da7ec",
+    "#3987e5",
+    "#256abf",
+    "#104281"
+  ],
+  "recorte": "área urbana da sede",
+  "fonte": "Fonte: IBGE, Grade Estatística do Censo 2022.",
+  "script": "scripts/processamento/dinamica_populacional_mapas.py",
+  "sem_simbolo_do_centro": true,
+  "sem_marcadores_centro_medio": true,
+  "area_de_agua": "OpenStreetMap (data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg), só apresentação",
+  "regra_outras_aguas": "tematico"
+}

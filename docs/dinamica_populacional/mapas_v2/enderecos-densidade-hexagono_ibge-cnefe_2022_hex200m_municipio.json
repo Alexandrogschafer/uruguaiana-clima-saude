@@ -1,0 +1,33 @@
+{
+  "produto": "enderecos-densidade-hexagono_ibge-cnefe_2022_hex200m_municipio.png",
+  "data_processamento": "2026-10-02T16:29:43+00:00",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/dinamica_populacional_cnefe_mapas.py",
+  "sem_simbolo_do_centro": true,
+  "fonte": "IBGE — CNEFE Censo 2022 (espécie 1); malha de setores 2022; hidrografia BHO/ANA; malha viária OpenStreetMap (fundo)",
+  "sem_marcadores_centro_medio": true,
+  "area_de_agua": "OpenStreetMap (data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg), só apresentação; outras águas pela regra c.AGUA_EXIBICAO (rodada 04)",
+  "pontos_fora_do_git": "a camada de pontos fica em data/processed/ (ignorada); aqui só a imagem",
+  "recorte": "município inteiro (inclui os pontos rurais)",
+  "tema": "hexagono",
+  "hex_largura_m": 200.0,
+  "limites_classes": [
+    1,
+    6,
+    21,
+    51,
+    101,
+    201
+  ],
+  "rotulos": [
+    "1 a 5",
+    "6 a 20",
+    "21 a 50",
+    "51 a 100",
+    "101 a 200",
+    "mais de 200"
+  ],
+  "hexagonos_ocupados": 2649,
+  "maximo_por_hexagono": 231
+}

@@ -1,0 +1,35 @@
+{
+  "produto": "enderecos-detalhe-rio_ibge-cnefe_2022_pontos_urbano.png",
+  "data_processamento": "2026-10-02T16:29:46+00:00",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/dinamica_populacional_cnefe_mapas.py",
+  "sem_simbolo_do_centro": true,
+  "fonte": "IBGE — CNEFE Censo 2022 (espécie 1); malha de setores 2022; hidrografia BHO/ANA; malha viária OpenStreetMap (fundo)",
+  "sem_marcadores_centro_medio": true,
+  "area_de_agua": "OpenStreetMap (data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg), só apresentação; outras águas pela regra c.AGUA_EXIBICAO (rodada 04)",
+  "pontos_fora_do_git": "a camada de pontos fica em data/processed/ (ignorada); aqui só a imagem",
+  "recorte": "rio",
+  "tema": "detalhe",
+  "descricao": "margem do rio Uruguai junto à área urbana (trecho com mais endereços a até 300 m da margem)",
+  "enderecos_no_recorte": 5313,
+  "enderecos_dentro_da_area": null,
+  "bairros_ibge_no_recorte": [
+    "Bela Vista",
+    "Centro",
+    "Mascarenhas de Moraes"
+  ],
+  "area_comparavel": null,
+  "janela_m": [
+    490246,
+    492246,
+    6707795,
+    6709795
+  ],
+  "distancia_endereco_mais_proximo_da_margem_m": 36.5,
+  "enderecos_urbanos_ate_100m_da_margem": 88,
+  "enderecos_urbanos_ate_300m_da_margem": 1179,
+  "enderecos_urbanos_ate_500m_da_margem": 2507,
+  "enderecos_dentro_de_qualquer_area_de_agua": 6,
+  "enderecos_dentro_do_rio_principal": 0
+}

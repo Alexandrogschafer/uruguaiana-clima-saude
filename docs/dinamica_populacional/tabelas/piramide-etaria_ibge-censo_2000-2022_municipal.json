@@ -1,0 +1,9 @@
+{
+  "produto": "piramide-etaria_ibge-censo_2000-2022_municipal.csv",
+  "data_processamento": "2026-10-02T01:54:32+00:00",
+  "descricao": "População por sexo e grupo quinquenal (80+ aberto), em número e % da população total do ano",
+  "fonte": "SIDRA 1552 (2000, 2010; universo, idade simples) e 9514 (2022)",
+  "codigo_ibge": "4322400",
+  "script": "scripts/processamento/dinamica_populacional_municipio.py",
+  "transformacao": "seleção das categorias da tabela, soma e razões; sigilo/indisponível = ausente, nunca zero"
+}

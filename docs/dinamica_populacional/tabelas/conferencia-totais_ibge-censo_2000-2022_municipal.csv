@@ -1,0 +1,18 @@
+ano,item,sidra,soma_setores,fonte_setores,dif_setores_menos_sidra
+2000,população residente,126936.0,126936.0,Morador V0237,0.0
+2000,população (soma das idades simples),126936.0,126936.0,SIDRA 1552/9514 (idades),0.0
+2000,homens + mulheres,126936.0,126936.0,SIDRA (sexo),0.0
+2010,população residente,125435.0,125435.0,Pessoa03 V001,0.0
+2010,população (soma das idades simples),125435.0,125435.0,SIDRA 1552/9514 (idades),0.0
+2010,homens + mulheres,125435.0,125435.0,SIDRA (sexo),0.0
+2022,população residente,117210.0,117210.0,basico V0001,0.0
+2022,população (soma das idades simples),117210.0,117210.0,SIDRA 1552/9514 (idades),0.0
+2022,homens + mulheres,117210.0,117210.0,SIDRA (sexo),0.0
+2000,domicílios particulares permanentes (ocupados),34558.0,34558.0,Domicilio V0003,0.0
+2010,domicílios particulares permanentes (ocupados),37422.0,37422.0,Basico V001,0.0
+2022,domicílios particulares permanentes (ocupados),41707.0,41707.0,caracteristicas_domicilio1 V00001,0.0
+2010,moradores em DPP,124321.0,124321.0,Basico V002,0.0
+2022,moradores em DPPO,116405.0,116405.0,caracteristicas_domicilio1 V00005,0.0
+2000,soma dos distritos (SIDRA N10),126936.0,126936.0,SIDRA 202/9923 nível distrito,0.0
+2010,soma dos distritos (SIDRA N10),125435.0,125435.0,SIDRA 202/9923 nível distrito,0.0
+2022,soma dos distritos (SIDRA N10),117210.0,117210.0,SIDRA 202/9923 nível distrito,0.0

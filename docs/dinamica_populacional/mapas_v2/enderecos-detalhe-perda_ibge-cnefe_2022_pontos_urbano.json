@@ -1,0 +1,43 @@
+{
+  "produto": "enderecos-detalhe-perda_ibge-cnefe_2022_pontos_urbano.png",
+  "data_processamento": "2026-10-02T16:29:46+00:00",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/dinamica_populacional_cnefe_mapas.py",
+  "sem_simbolo_do_centro": true,
+  "fonte": "IBGE — CNEFE Censo 2022 (espécie 1); malha de setores 2022; hidrografia BHO/ANA; malha viária OpenStreetMap (fundo)",
+  "sem_marcadores_centro_medio": true,
+  "area_de_agua": "OpenStreetMap (data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg), só apresentação; outras águas pela regra c.AGUA_EXIBICAO (rodada 04)",
+  "pontos_fora_do_git": "a camada de pontos fica em data/processed/ (ignorada); aqui só a imagem",
+  "recorte": "perda",
+  "tema": "detalhe",
+  "descricao": "área com maior perda absoluta de população 2010–2022",
+  "enderecos_no_recorte": 5154,
+  "enderecos_dentro_da_area": 386,
+  "bairros_ibge_no_recorte": [
+    "Cidade Alegria",
+    "Ipiranga",
+    "Rui Ramos",
+    "Salso de Baixo",
+    "São João",
+    "São Miguel",
+    "União das Vilas",
+    "Vila Júlia"
+  ],
+  "area_comparavel": {
+    "id_area": "AC046",
+    "bairros_2022": "Vila Júlia",
+    "pop_2010": 1597.0,
+    "pop_2022": 1087.0,
+    "var_pop_abs": -510.0,
+    "var_pop_pct": -31.9,
+    "dom_2010": 438.0,
+    "dom_2022": 369.0
+  },
+  "janela_m": [
+    491610,
+    493510,
+    6704577,
+    6706477
+  ]
+}

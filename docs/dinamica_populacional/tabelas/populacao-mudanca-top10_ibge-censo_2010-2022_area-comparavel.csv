@@ -1,0 +1,21 @@
+id_area,tipo,referencia,situacao_2022,pop_2010,pop_2022,var_pop_abs,var_pop_pct,classe_mudanca,dist_centro_km,direcao_do_centro,lista
+AC109,1:6,Tabajara Brites — RUA ALBERTINO PIRES,Urbana,2362.0,6002.0,3640.0,154.10668924640134,ganho forte,4.78518843118947,SO (azimute 218°),10 maiores ganhos
+AC116,1:2,Vila Júlia — RUA ERICO VERISSIMO,Urbana,1819.0,2321.0,502.0,27.59758108851017,ganho forte,3.039607262466244,S (azimute 175°),10 maiores ganhos
+AC110,1:2,Salso de Baixo — RUA LOTEAMENTO VILA NOVA B,Urbana,369.0,719.0,350.0,94.8509485094851,ganho forte,4.1560289990104495,S (azimute 170°),10 maiores ganhos
+AC039,1:1,Jardim do Salso — RUA DAS CAMELIAS,Urbana,308.0,632.0,324.0,105.1948051948052,ganho forte,4.804037025492468,SE (azimute 137°),10 maiores ganhos
+AC113,1:3,União das Vilas — RUA V,Urbana,1520.0,1764.0,244.0,16.05263157894737,ganho,4.974789338498265,SE (azimute 146°),10 maiores ganhos
+AC115,1:3,Cidade Nova — RUA HERCULES ALAOR BOM,Urbana,1774.0,1994.0,220.0,12.401352874859075,ganho,2.711594748548944,SE (azimute 117°),10 maiores ganhos
+AC114,1:3,União das Vilas — RUA SAO CRISTOVAO,Urbana,2145.0,2362.0,217.0,10.116550116550117,ganho,4.778695358412385,SE (azimute 155°),10 maiores ganhos
+AC020,1:1,Santana — RUA GENERAL BENTO MARTINS,Urbana,839.0,983.0,144.0,17.163289630512516,ganho,1.5318454833816033,L (azimute 95°),10 maiores ganhos
+AC006,1:1,Centro — RUA QUINZE DE NOVEMBRO,Urbana,996.0,1118.0,122.0,12.248995983935743,ganho,0.7534775523736138,NO (azimute 329°),10 maiores ganhos
+AC117,1:3,distrito Uruguaiana — RODOVIA BR 472,Rural/Urbana,617.0,736.0,119.0,19.286871961102108,ganho,11.448032985907606,NE (azimute 59°),10 maiores ganhos
+AC046,1:1,Vila Júlia — RUA ANTONIO ARACY MEUS,Urbana,1597.0,1087.0,-510.0,-31.934877896055102,perda forte,2.9828918064549623,S (azimute 161°),10 maiores perdas
+AC045,1:1,União das Vilas — RUA ITAPITOCAI,Urbana,1211.0,918.0,-293.0,-24.194880264244425,perda forte,4.162506512339167,SE (azimute 147°),10 maiores perdas
+AC062,1:1,Emílio Brandi — RUA UM,Urbana,962.0,685.0,-277.0,-28.794178794178794,perda forte,3.0618293792273383,SE (azimute 123°),10 maiores perdas
+AC119,1:2,Cabo Luiz Quevedo — RUA RODRIGUES PORTUGAL,Urbana,1383.0,1110.0,-273.0,-19.739696312364426,perda,2.3623937392212104,SO (azimute 213°),10 maiores perdas
+AC069,1:1,São Miguel — RUA SETE DE SETEMBRO,Urbana,817.0,555.0,-262.0,-32.06854345165239,perda forte,1.0985328175189324,SE (azimute 156°),10 maiores perdas
+AC023,1:1,São João — RUA PRADO LIMA,Urbana,1044.0,784.0,-260.0,-24.904214559386972,perda forte,2.007636165509453,SE (azimute 124°),10 maiores perdas
+AC031,1:1,São João — RUA PRADO LIMA,Urbana,1475.0,1217.0,-258.0,-17.491525423728813,perda,1.7245153001604483,SE (azimute 132°),10 maiores perdas
+AC012,1:1,Mascarenhas de Moraes — RUA DOS ANDRADAS,Urbana,1263.0,1006.0,-257.0,-20.34837688044339,perda forte,1.4942997955194577,NE (azimute 33°),10 maiores perdas
+AC077,1:1,Nova Esperança — RUA PRADO LIMA,Urbana,931.0,686.0,-245.0,-26.31578947368421,perda forte,1.4906600721190792,SO (azimute 216°),10 maiores perdas
+AC042,1:1,União das Vilas — RUA ARACA,Urbana,902.0,667.0,-235.0,-26.053215077605323,perda forte,3.9815431885743724,SE (azimute 145°),10 maiores perdas

@@ -1,0 +1,9 @@
+{
+  "produto": "indicadores-etarios_ibge-censo_2000-2022_municipal.csv",
+  "data_processamento": "2026-10-02T01:54:32+00:00",
+  "descricao": "Indicadores etários; índice de envelhecimento = 60+/0–14 ×100; razões de dependência por 100 pessoas de 15–59; razão de sexos = H/M ×100; idade mediana interpolada na idade simples",
+  "fonte": "SIDRA 1552 e 9514",
+  "codigo_ibge": "4322400",
+  "script": "scripts/processamento/dinamica_populacional_municipio.py",
+  "transformacao": "seleção das categorias da tabela, soma e razões; sigilo/indisponível = ausente, nunca zero"
+}

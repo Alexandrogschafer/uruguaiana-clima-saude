@@ -1,0 +1,15 @@
+{
+  "produto": "populacao-faixa-distancia-centro_ibge-censo_2010-2022_area-comparavel.csv",
+  "data_processamento": "2026-10-02T01:59:32+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/dinamica_populacional_areas_comparaveis.py",
+  "descricao": "população por faixa de distância (centróide da área comparável) ao centro da cidade",
+  "centro": {
+    "definicao": "centróide dos setores 2022 do bairro IBGE 'Centro' no distrito-sede",
+    "x": 491669.89100002265,
+    "y": 6708377.975823344
+  }
+}

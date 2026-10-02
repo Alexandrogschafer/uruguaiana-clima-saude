@@ -1,0 +1,4 @@
+ano,conceito,domicilios,moradores,moradores_por_domicilio,dom_1_morador,pct_dom_1_morador,fonte_domicilios,fonte_moradores,fonte_1_morador
+2000,domicílios particulares permanentes (ocupados),34558.0,125824.0,3.64,3735.0,10.81,SIDRA 185,"agregados por setor 2000, Morador V0239 (soma dos setores)",SIDRA 185
+2010,domicílios particulares permanentes (ocupados),37422.0,124321.0,3.32,4863.0,13.0,SIDRA 185,SIDRA 3451,SIDRA 185
+2022,domicílios particulares permanentes ocupados,41707.0,116405.0,2.79,8195.0,19.65,SIDRA 4712,SIDRA 4712,"agregados por setor 2022, V00017 (soma; 5 setores com sigilo 'X' ficam fora — valor mínimo)"
