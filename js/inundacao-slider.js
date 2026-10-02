@@ -1,19 +1,20 @@
 /**
  * Slider de cota de inundação. Espera o evento "climapampa:camadas-prontas"
  * (disparado por layers.js ao fim do carregamento assíncrono dos GeoJSON)
- * antes de tocar em App.layers.setoresInundacao / cotasInundacao.
+ * antes de tocar em App.layers.cotasInundacao.
  *
- * Em vez de recolorir todas as cotas ao mesmo tempo, mostra só os polígonos
- * (setor censitário e mancha de inundação) da cota selecionada — as demais
- * ficam com opacidade 0, já que setores-inundacao.geojson tem uma feição
- * por combinação setor×cota (múltiplas cotas se sobrepõem no mesmo setor).
+ * Em vez de recolorir todas as cotas ao mesmo tempo, mostra só a mancha de
+ * inundação da cota selecionada — as demais ficam com opacidade 0.
+ *
+ * A população exposta por cota (estimativa preliminar por área do setor) foi
+ * retirada do portal em 2026-10-02: substituída pelo cálculo por endereços
+ * (scripts/processamento/exposicao_inundacao_enderecos.py), ainda pendente de
+ * conferência e por isso não publicado aqui.
  */
 
 let cotasDisponiveis = [];
 let estatisticasPorCota = {};
 
-const ESTILO_SETOR_VISIVEL = { color: "#c2410c", weight: 1, fillColor: "#fb8500", fillOpacity: 0.45 };
-const ESTILO_SETOR_OCULTO = { color: "#c2410c", weight: 0, fillColor: "#fb8500", fillOpacity: 0, opacity: 0 };
 const ESTILO_MANCHA_VISIVEL = { color: "#1d4ed8", weight: 1.5, fillColor: "#2563eb", fillOpacity: 0.35 };
 const ESTILO_MANCHA_OCULTA = { color: "#1d4ed8", weight: 0, fillColor: "#2563eb", fillOpacity: 0, opacity: 0 };
 
@@ -28,12 +29,6 @@ function atualizarCota(indice) {
 
   const { layers } = window.App;
 
-  layers.setoresInundacao.eachLayer((camada) => {
-    const visivel = camada.feature.properties.cota_cm === cota;
-    camada.setStyle(visivel ? ESTILO_SETOR_VISIVEL : ESTILO_SETOR_OCULTO);
-    camada.options.interactive = visivel;
-  });
-
   layers.cotasInundacao.eachLayer((camada) => {
     const visivel = camada.feature.properties.cota_cm === cota;
     camada.setStyle(visivel ? ESTILO_MANCHA_VISIVEL : ESTILO_MANCHA_OCULTA);
@@ -47,17 +42,9 @@ function atualizarCota(indice) {
     ? `período de retorno: ${formatarNumero(stats.tr_anos, 1)} anos`
     : "período de retorno: —";
 
-  document.getElementById("stat-setores-afetados").textContent = stats
-    ? formatarNumero(stats.populacao.n_setores_afetados)
-    : "—";
-  document.getElementById("stat-populacao-ponderada").textContent = stats
-    ? `${formatarNumero(stats.populacao["populacao_estimada_ponderada_uso-solo"], 1)} hab.`
-    : "—";
-  document.getElementById("stat-pct-populacao").textContent = stats
-    ? `${formatarNumero(stats.populacao["pct_populacao_municipio_exposta_ponderada_uso-solo"], 2)}%`
-    : "—";
-  document.getElementById("stat-estabelecimentos").textContent = stats
-    ? formatarNumero(stats.saude.n_estabelecimentos_total)
+  // unidades de saúde (ESF/UBS) dentro da mancha — definição cumulativa (união das manchas de cota <= X)
+  document.getElementById("stat-unidades-saude").textContent = stats
+    ? formatarNumero(stats.unidades_saude.n_na_mancha)
     : "—";
 }
 

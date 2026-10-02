@@ -77,6 +77,30 @@ def converter_saude_osm() -> None:
     )
 
 
+CREDITO_SAUDE = ("CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos "
+                 "profissionais de saúde do município — versão 4, 2026")
+
+
+def converter_unidades_saude() -> None:
+    """Camada única de saúde do portal: as 23 unidades da atenção primária (ESF e UBS), 2026-10-02."""
+    caminho = DIR_PROCESSED / "saude" / "unidades-saude-esf-ubs_cnes-revisado-v4_2026_pontos.gpkg"
+    gdf = gpd.read_file(caminho)
+    colunas = ["cnes", "nome", "classe", "endereco", "populacao2017", "populacao2023", "populacao2026"]
+    for col in colunas:
+        assert col in gdf.columns, f"coluna {col} não encontrada em {caminho}"
+    salvar_geojson_wgs84(
+        gdf[colunas + ["geometry"]],
+        DIR_GEOPORTAL / "unidades-saude-esf-ubs.geojson",
+        descricao=(
+            "Unidades de saúde da atenção primária (ESF e UBS), 23 unidades, com classe (ESF, UBS, a confirmar, "
+            "sem classe). populacao2017/2023/2026: população da unidade informada pelos profissionais de saúde do "
+            "município; o conceito (cadastrada, adscrita ou atendida) está pendente de confirmação; ausente = não informado."
+        ),
+        fonte={"caminho_origem": str(caminho.relative_to(RAIZ_PROJETO)), "credito": CREDITO_SAUDE},
+        transformacao=f"reprojeção {gdf.crs} -> EPSG:4326; só as colunas {colunas}",
+    )
+
+
 def converter_clima_inmet() -> None:
     caminho = DIR_RAW_VETOR / "estacoes-clima_inmet_atual_vetorial.gpkg"
     gdf = gpd.read_file(caminho)
@@ -91,9 +115,12 @@ def converter_clima_inmet() -> None:
 
 def main() -> None:
     converter_limite_municipal()
-    converter_setores_inundacao()
-    converter_saude_cnes()
-    converter_saude_osm()
+    # converter_setores_inundacao() — retirado em 2026-10-02: a camada setores × manchas trazia a
+    # população exposta preliminar (por área do setor), substituída pelo cálculo por endereços
+    # (scripts/processamento/exposicao_inundacao_enderecos.py), pendente de conferência
+    # converter_saude_cnes() e converter_saude_osm() — retirados em 2026-10-02: o portal passa a ter uma só
+    # camada de saúde, a das unidades ESF/UBS revisadas (converter_unidades_saude)
+    converter_unidades_saude()
     converter_clima_inmet()
 
 

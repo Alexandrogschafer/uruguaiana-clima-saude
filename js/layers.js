@@ -4,35 +4,37 @@
  * caixa flutuante padrão do Leaflet — o container do L.control.layers é
  * reaproveitado dentro do nosso próprio painel).
  *
- * saudeCnes e saudeOsm não entram no L.control.layers: as duas ficam
- * sempre no mapa desde o carregamento, e a visibilidade (por tipo de
- * estabelecimento ou por fonte) é controlada só pela seção "Saúde"
- * (filtro-saude.js) — evita ter dois controles pra mesma camada.
+ * unidadesSaude não entra no L.control.layers: fica sempre no mapa desde o
+ * carregamento, e a visibilidade (por classe: ESF, UBS, a confirmar, sem
+ * classe) é controlada só pela seção "Saúde" (filtro-saude.js).
+ *
+ * 2026-10-02: o portal passou a ter UMA só camada de saúde, a das 23 unidades
+ * da atenção primária (ESF e UBS) do cadastro revisado pela equipe do projeto
+ * (versão 4, 2026). As camadas saude-cnes (categorias do CNES) e saude-osm
+ * (OpenStreetMap) foram retiradas.
  */
 
 const DIR_DADOS = "data/geoportal";
 
-// cores por categoria de estabelecimento de saúde — usadas tanto no estilo
+// cores por classe da unidade de saúde (ESF/UBS) — usadas tanto no estilo
 // dos pontos aqui quanto na legenda/checkboxes de filtro-saude.js
 const CORES_TIPO_SAUDE = {
-  clinica_ambulatorio: "#2b8cbe",
-  farmacia: "#31a354",
-  ubs_esf: "#e6550d",
-  laboratorio_apoio_diagnostico: "#756bb1",
-  outro: "#969696",
-  vigilancia_saude: "#c51b8a",
-  hospital: "#de2d26",
+  ESF: "#e6550d",
+  UBS: "#2b8cbe",
+  "a confirmar": "#f2c14e",
+  "sem classe": "#969696",
 };
 
 const ROTULOS_TIPO_SAUDE = {
-  clinica_ambulatorio: "Clínica / Ambulatório",
-  farmacia: "Farmácia",
-  ubs_esf: "UBS / ESF",
-  laboratorio_apoio_diagnostico: "Laboratório / Apoio diagnóstico",
-  outro: "Outro",
-  vigilancia_saude: "Vigilância em saúde",
-  hospital: "Hospital",
+  ESF: "ESF (Estratégia Saúde da Família)",
+  UBS: "UBS do interior",
+  "a confirmar": "Classe a confirmar",
+  "sem classe": "Sem classe",
 };
+
+const CREDITO_SAUDE =
+  "Fonte: CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos " +
+  "profissionais de saúde do município — versão 4, 2026.";
 
 window.App.coresTipoSaude = CORES_TIPO_SAUDE;
 window.App.rotulosTipoSaude = ROTULOS_TIPO_SAUDE;
@@ -115,20 +117,6 @@ const CAMPOS_LEGIVEIS = {
     pct_populacao_60_anos_ou_mais: "% população 60+ anos (Censo)",
     estimativa_idosos_60_mais: "Idosos 60+ anos (estimativa)",
   },
-  setoresInundacao: {
-    CD_SETOR: "Código do setor",
-    cota_cm: "Cota de inundação (cm)",
-    tr_anos: "Período de retorno (anos)",
-    area_setor_km2: "Área do setor (km²)",
-    area_intersecao_km2: "Área inundada no setor (km²)",
-    pct_area_coberta: "% da área do setor coberta",
-    metodo_estimativa_uso_solo: "Método de estimativa",
-    populacao_total: "População total do setor",
-    "populacao_estimada_area-proporcional": "População estimada (área-proporcional)",
-    "populacao_estimada_ponderada_uso-solo": "População estimada (ponderada por uso do solo)",
-    pct_populacao_0_a_4_anos: "% população 0-4 anos",
-    pct_populacao_60_anos_ou_mais: "% população 60+ anos",
-  },
   cotasInundacao: {
     cota_cm: "Cota de inundação (cm)",
     tr_anos: "Período de retorno (anos)",
@@ -136,30 +124,14 @@ const CAMPOS_LEGIVEIS = {
     municipio: "Município",
     estado: "Estado",
   },
-  saudeCnes: {
-    nome_fantasia: "Nome",
-    nome_empresarial: "Razão social",
-    tipo_unidade_categoria: "Categoria",
-    tipo_unidade: "Tipo de unidade (CNES)",
-    endereco: "Endereço",
-    cep: "CEP",
-    telefone: "Telefone",
-    atende_sus: "Atende SUS",
-    gestao: "Gestão",
+  unidadesSaude: {
+    nome: "Nome",
+    classe: "Classe",
     cnes: "Código CNES",
-  },
-  saudeOsm: {
-    name: "Nome",
-    amenity: "Categoria (OSM)",
-    healthcare: "Tipo de assistência",
-    "healthcare:speciality": "Especialidade",
-    "addr:street": "Rua",
-    "addr:housenumber": "Número",
-    "addr:suburb": "Bairro",
-    "addr:postcode": "CEP",
-    dispensing: "Dispensa medicamentos",
-    website: "Site",
-    "ref:CNES": "Código CNES (referência)",
+    endereco: "Endereço",
+    populacao2017: "População da unidade informada pelos profissionais de saúde do município (2017)",
+    populacao2023: "População da unidade informada pelos profissionais de saúde do município (2023)",
+    populacao2026: "População da unidade informada pelos profissionais de saúde do município (2026)",
   },
   estacoesClima: {
     nome_estacao: "Nome da estação",
@@ -283,7 +255,9 @@ const CAMPOS_LEGIVEIS = {
 // de ser ocultado — usado nos poços SIAGAS pra deixar claro que a ausência
 // de um atributo (ex. vazão específica, ~58% de dado faltante na fonte) é
 // informação relevante, não um poço com popup "incompleto" por acidente
-const CAMPOS_MOSTRAR_SEM_DADO = new Set(["pocosSiagas"]);
+const CAMPOS_MOSTRAR_SEM_DADO = new Set(["pocosSiagas", "unidadesSaude"]);
+// texto do valor ausente por camada (padrão: "sem dado"); população das unidades: "não informado", nunca zero
+const TEXTO_SEM_DADO = { unidadesSaude: "não informado" };
 
 // ---------- utilitários de texto compartilhados (também usados por meio-fisico.js) ----------
 
@@ -323,10 +297,8 @@ const CAMPO_TITULO = {
   densidadePopulacional2000: (p) => `Setor ${p.cd_setor ?? ""}`.trim(),
   criancas0a4: (p) => `Setor ${p.CD_SETOR ?? ""}`.trim(),
   idosos60Mais: (p) => `Setor ${p.CD_SETOR ?? ""}`.trim(),
-  setoresInundacao: (p) => `Setor ${p.CD_SETOR ?? ""} — cota ${p.cota_cm ?? "?"} cm`,
   cotasInundacao: (p) => `Mancha de inundação — cota ${p.cota_cm ?? "?"} cm`,
-  saudeCnes: (p) => p.nome_fantasia || p.nome_empresarial || "Estabelecimento de saúde",
-  saudeOsm: (p) => p.name || "Estabelecimento de saúde (OSM)",
+  unidadesSaude: (p) => p.nome || "Unidade de saúde (ESF/UBS)",
   estacoesClima: (p) => p.nome_estacao || "Estação climatológica",
   malhaViaria: (p) => p.name || "Via sem nome",
   malhaViariaDnit: (p) => (p.rodovia ? `${p.rodovia} — trecho oficial (DNIT)` : "Trecho rodoviário federal"),
@@ -353,6 +325,9 @@ const AVISO_MALHA_HISTORICA =
   "(setores mudam de configuração a cada Censo; ver metodologia em data/raw/vetor/).";
 
 const NOTAS_POPUP = {
+  unidadesSaude: () =>
+    "População: número informado pelos profissionais de saúde do município; o conceito (cadastrada, adscrita " +
+    "ou atendida) está pendente de confirmação. " + CREDITO_SAUDE,
   densidadePopulacional2010: (p) =>
     p.sem_dado ? "Sem dado atributivo na fonte para este setor. " + AVISO_MALHA_HISTORICA : AVISO_MALHA_HISTORICA,
   densidadePopulacional2000: (p) =>
@@ -399,7 +374,7 @@ function construirPopup(chaveCamada, propriedades) {
     .map(([chave, rotulo]) => {
       const valorFormatado = formatarValor(chave, propriedades[chave]);
       if (valorFormatado === null) {
-        return mostrarSemDado ? [rotulo, "sem dado"] : null;
+        return mostrarSemDado ? [rotulo, TEXTO_SEM_DADO[chaveCamada] || "sem dado"] : null;
       }
       return [rotulo, valorFormatado];
     })
@@ -675,10 +650,8 @@ async function iniciarCamadas() {
       densidadePopulacional2000GeoJSON,
       criancas0a4GeoJSON,
       idosos60MaisGeoJSON,
-      setoresInundacaoGeoJSON,
       cotasInundacaoGeoJSON,
-      saudeCnesGeoJSON,
-      saudeOsmGeoJSON,
+      unidadesSaudeGeoJSON,
       estacoesClimaGeoJSON,
       malhaViariaGeoJSON,
       malhaViariaDnitGeoJSON,
@@ -692,10 +665,8 @@ async function iniciarCamadas() {
       buscarGeoJSON("densidade-populacional-2000.geojson"),
       buscarGeoJSON("criancas-0-4.geojson"),
       buscarGeoJSON("idosos-60-mais.geojson"),
-      buscarGeoJSON("setores-inundacao.geojson"),
       buscarGeoJSON("cotas-inundacao.geojson"),
-      buscarGeoJSON("saude-cnes.geojson"),
-      buscarGeoJSON("saude-osm.geojson"),
+      buscarGeoJSON("unidades-saude-esf-ubs.geojson"),
       buscarGeoJSON("estacoes-clima.geojson"),
       buscarGeoJSON("malha-viaria.geojson"),
       buscarGeoJSON("malha-viaria-dnit.geojson"),
@@ -725,35 +696,26 @@ async function iniciarCamadas() {
     const criancas0a4 = construirCamadaChoropleth("criancas0a4", criancas0a4GeoJSON);
     const idosos60Mais = construirCamadaChoropleth("idosos60Mais", idosos60MaisGeoJSON);
 
-    const setoresInundacao = L.geoJSON(setoresInundacaoGeoJSON, {
-      style: { color: "#c2410c", weight: 1, fillColor: "#fb8500", fillOpacity: 0.45 },
-      onEachFeature: onEachFeatureComPopup("setoresInundacao"),
-    });
-
     const cotasInundacao = L.geoJSON(cotasInundacaoGeoJSON, {
       style: { color: "#1d4ed8", weight: 1, fillColor: "#2563eb", fillOpacity: 0.3 },
       onEachFeature: onEachFeatureComPopup("cotasInundacao"),
     });
 
-    const saudeCnes = L.geoJSON(saudeCnesGeoJSON, {
+    // camada única de saúde: unidades ESF/UBS (classes com cor; "a confirmar" e "sem classe" com borda tracejada)
+    const unidadesSaude = L.geoJSON(unidadesSaudeGeoJSON, {
       pointToLayer: (feature, latlng) => {
-        const cor = CORES_TIPO_SAUDE[feature.properties.tipo_unidade_categoria] || "#374151";
+        const classe = feature.properties.classe;
+        const incerta = classe === "a confirmar" || classe === "sem classe";
         return L.circleMarker(latlng, {
-          radius: 5,
-          weight: 1,
+          radius: 7,
+          weight: incerta ? 2 : 1.2,
+          dashArray: incerta ? "3 2" : null,
           color: "#1f2933",
-          fillColor: cor,
-          fillOpacity: 0.9,
+          fillColor: CORES_TIPO_SAUDE[classe] || "#374151",
+          fillOpacity: 0.95,
         });
       },
-      onEachFeature: onEachFeatureComPopup("saudeCnes"),
-    }).addTo(mapa);
-
-    const saudeOsm = L.geoJSON(saudeOsmGeoJSON, {
-      pointToLayer: (feature, latlng) =>
-        L.circleMarker(latlng, { radius: 6, weight: 1, color: "#115e59", fillColor: "#0ea5a5", fillOpacity: 0.85 }),
-      style: { color: "#115e59", weight: 1, fillColor: "#0ea5a5", fillOpacity: 0.35 },
-      onEachFeature: onEachFeatureComPopup("saudeOsm"),
+      onEachFeature: onEachFeatureComPopup("unidadesSaude"),
     }).addTo(mapa);
 
     const estacoesClima = L.geoJSON(estacoesClimaGeoJSON, {
@@ -798,7 +760,7 @@ async function iniciarCamadas() {
       onEachFeature: onEachFeatureComPopup("estruturaFundiaria"),
     });
 
-    // escolas INEP: mesmo padrão de saudeCnes — sempre montada no mapa
+    // escolas INEP: mesmo padrão de unidadesSaude — sempre montada no mapa
     // desde o carregamento, visibilidade por categoria controlada só por
     // filtro-educacao.js (não entra em montarTogglesCamadas); todas as
     // categorias começam desmarcadas (ver filtro-educacao.js), então o
@@ -825,10 +787,8 @@ async function iniciarCamadas() {
       densidadePopulacional2000,
       criancas0a4,
       idosos60Mais,
-      setoresInundacao,
       cotasInundacao,
-      saudeCnes,
-      saudeOsm,
+      unidadesSaude,
       estacoesClima,
       malhaViaria,
       malhaViariaDnit,
@@ -853,9 +813,9 @@ async function iniciarCamadas() {
     });
     atualizarLegendaDemografia();
 
-    // grupo "Inundação" — mesmo estado inicial de antes (ambas ligadas)
+    // grupo "Inundação" — só a mancha por cota; a camada "Setores expostos à inundação"
+    // (população estimada preliminar por área do setor) foi retirada em 2026-10-02
     montarTogglesCamadas("container-camadas-inundacao", [
-      { layer: setoresInundacao, rotulo: "Setores expostos à inundação", ligado: true },
       { layer: cotasInundacao, rotulo: "Mancha de inundação (contorno real)", ligado: true },
     ]);
 

@@ -1,3 +1,8 @@
+# AVISO (2026-10-02): a parte de POPULAÇÃO EXPOSTA deste cálculo (por área do setor e por uso do
+# solo) foi SUBSTITUÍDA pelo cálculo por endereços do CNEFE 2022 em
+# scripts/processamento/exposicao_inundacao_enderecos.py e retirada do portal; os produtos deste script (docs/mapa-consolidado-risco-inundacao.png e
+# docs/mapa-interativo-risco-inundacao.html) foram retirados; ele lê a camada movida para
+# data/processed/_substituidos/ e não deve ser rodado sem revisão.
 """
 Gera um mapa consolidado (PNG estático + HTML interativo) da situação de
 risco de inundação de Uruguaiana, reunindo as principais camadas já
