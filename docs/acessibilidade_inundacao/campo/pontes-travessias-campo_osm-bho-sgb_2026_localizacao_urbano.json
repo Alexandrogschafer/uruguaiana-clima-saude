@@ -1,0 +1,59 @@
+{
+  "produto": "pontes-travessias-campo_osm-bho-sgb_2026_localizacao_urbano.png",
+  "data_processamento": "2026-10-02T22:44:31+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/acessibilidade_campo_lista.py",
+  "fonte": "Fonte: OpenStreetMap — vias e pontes (contribuidores do OpenStreetMap); ANA — Base Hidrográfica Ottocodificada (curso d'água); SGB — manchas de inundação por cota; IBGE — bairros (malha de setores 2022).",
+  "camadas_de_entrada": "data/processed/acessibilidade_inundacao/ (pontes e cruzamentos; fora do git)",
+  "dado_pessoal": "nenhum",
+  "recorte": "área urbana da sede, com quadros de detalhe dos aglomerados (ligação a até 400 m, 4 pontos ou mais)",
+  "pontos": 38,
+  "fora_do_enquadramento": [
+    "T01"
+  ],
+  "quadros_de_detalhe": {
+    "A": [
+      "T02",
+      "T03",
+      "T04",
+      "T05"
+    ],
+    "B": [
+      "P01",
+      "P03",
+      "T06",
+      "T07",
+      "T10",
+      "T12",
+      "T13",
+      "T15",
+      "T16",
+      "T18",
+      "T19",
+      "T20",
+      "T21",
+      "T22",
+      "T23"
+    ],
+    "C": [
+      "T08",
+      "T09",
+      "T11",
+      "T14",
+      "T17"
+    ],
+    "D": [
+      "T24",
+      "T25",
+      "T26",
+      "T27",
+      "T28",
+      "T29",
+      "T30",
+      "T31"
+    ]
+  }
+}

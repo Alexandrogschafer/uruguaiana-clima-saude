@@ -1,0 +1,24 @@
+rotulo,classe,zona,bairro,trechos_de_acesso,unidade_na_mancha_833,acessos_na_mancha_833,acessos_ponte_na_mancha_833,unidade_na_mancha_952,acessos_na_mancha_952,acessos_ponte_na_mancha_952,unidade_na_mancha_1205,acessos_na_mancha_1205,acessos_ponte_na_mancha_1205,unidade_na_mancha_1252,acessos_na_mancha_1252,acessos_ponte_na_mancha_1252
+01,ESF,urbana da sede,Rui Ramos,13,False,0,0,False,0,0,False,0,0,False,0,0
+02,ESF,urbana da sede,Mascarenhas de Moraes,7,False,1,0,False,3,0,False,3,0,False,3,0
+03,ESF,urbana da sede,Cidade Nova,18,False,0,0,False,0,0,False,0,0,False,0,0
+04,ESF,urbana da sede,Alexandre Zachia,15,False,0,0,False,0,0,False,0,0,False,0,0
+05,ESF,urbana da sede,Francisca Tarragô,20,False,0,0,False,0,0,False,0,0,False,0,0
+06,ESF,urbana da sede,São João,11,False,0,0,False,0,0,False,0,0,False,0,0
+07,ESF,urbana da sede,União das Vilas,32,False,0,0,False,0,0,False,0,0,False,0,0
+09,ESF,interior,,28,False,0,0,False,0,0,False,0,0,False,0,0
+14,ESF,urbana da sede,Tabajara Brites,29,False,0,0,False,0,0,False,0,0,False,0,0
+15,ESF,urbana da sede,Jóquei Clube,21,False,0,0,False,0,0,False,0,0,False,2,0
+16,ESF,urbana da sede,Cidade Alegria,24,False,0,0,False,0,0,False,0,0,False,0,0
+17,ESF,urbana da sede,Nova Esperança,11,False,0,0,False,1,0,False,2,0,False,2,0
+18,ESF,urbana da sede,Vila Júlia,7,False,0,0,False,0,0,False,0,0,False,0,0
+19,ESF,urbana da sede,Tabajara Brites,29,False,0,0,False,0,0,False,0,0,False,0,0
+20,ESF,urbana da sede,União das Vilas,16,False,0,0,False,0,0,False,0,0,False,0,0
+21,ESF,urbana da sede,Centro,12,False,0,0,False,0,0,False,0,0,False,0,0
+22,ESF,urbana da sede,Cabo Luiz Quevedo,17,False,0,0,False,0,0,False,0,0,False,0,0
+23,ESF,urbana da sede,Santo Antônio,9,False,0,0,False,0,0,False,2,0,False,3,0
+10,UBS,interior,,4,False,0,0,False,0,0,False,0,0,False,0,0
+11,UBS,interior,,12,False,0,0,False,0,0,False,0,0,False,0,0
+12,UBS,interior,,12,False,0,0,False,0,0,False,0,0,False,0,0
+UDM,a confirmar,urbana da sede,Centro,10,False,0,0,False,0,0,False,0,0,False,0,0
+Prisional,sem classe,interior,,1,False,0,0,False,0,0,False,0,0,False,0,0

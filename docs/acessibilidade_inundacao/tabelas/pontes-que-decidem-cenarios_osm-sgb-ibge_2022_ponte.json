@@ -1,0 +1,34 @@
+{
+  "produto": "pontes-que-decidem-cenarios_osm-sgb-ibge_2022_ponte.csv",
+  "data_processamento": "2026-10-02T22:16:44+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/acessibilidade_inundacao.py",
+  "fontes": [
+    "OpenStreetMap — malha viária (network_type drive), pontes como trechos próprios (contribuidores do OpenStreetMap, ODbL)",
+    "SGB — manchas de inundação por cota, serviço hidrologia/BACIA_DO_URUGUAI_URUGUAIANA (camada do repositório)",
+    "IBGE — CNEFE do Censo 2022, espécie 1 (domicílio particular); agregados e malha de setores 2022",
+    "CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026",
+    "ANA — Base Hidrográfica Ottocodificada (curso d'água), para o cruzamento das pontes"
+  ],
+  "parametros": {
+    "codigo_ibge": "4322400",
+    "limiar_m": 5.0,
+    "limiares_sensibilidade": [
+      0.0,
+      20.0
+    ],
+    "dist_max_via_m": 100.0,
+    "raio_acesso_unidade_m": 200.0,
+    "raio_pontes_m": 300.0,
+    "cotas_criticas": [
+      1205,
+      1252
+    ],
+    "n_criticos": 15
+  },
+  "descricao": "para cada ponte interrompida na cota: população que piora de classe (e que passa a ter caminho mais longo) se SÓ essa ponte for retirada do cenário otimista",
+  "metodo": "retirada de uma ponte por vez; efeitos não somam quando duas pontes servem a mesma área"
+}

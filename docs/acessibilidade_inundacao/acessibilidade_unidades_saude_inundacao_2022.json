@@ -1,0 +1,10 @@
+{
+  "produto": "acessibilidade_unidades_saude_inundacao_2022.md",
+  "data_processamento": "2026-10-02T22:29:45+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "descricao": "documento da rodada 08: acessibilidade às unidades ESF/UBS com vias dentro das manchas de inundação, por cota e cenário",
+  "fontes_dos_numeros": "docs/acessibilidade_inundacao/tabelas/ (scripts/processamento/acessibilidade_inundacao.py)"
+}

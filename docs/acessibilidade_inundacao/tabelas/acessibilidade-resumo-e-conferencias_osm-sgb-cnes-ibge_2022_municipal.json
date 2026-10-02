@@ -1,0 +1,232 @@
+{
+  "produto": "acessibilidade-resumo-e-conferencias_osm-sgb-cnes-ibge_2022_municipal.json",
+  "status": "pendente de conferência",
+  "script": "scripts/processamento/acessibilidade_inundacao.py",
+  "parametros": {
+    "codigo_ibge": "4322400",
+    "limiar_m": 5.0,
+    "limiares_sensibilidade": [
+      0.0,
+      20.0
+    ],
+    "dist_max_via_m": 100.0,
+    "raio_acesso_unidade_m": 200.0,
+    "raio_pontes_m": 300.0,
+    "cotas_criticas": [
+      1205,
+      1252
+    ],
+    "n_criticos": 15
+  },
+  "rede": {
+    "trechos_direcionados": 7915,
+    "trechos_nao_direcionados": 4271,
+    "nos": 2973,
+    "km_nao_direcionado": 1996.9,
+    "trechos_ponte": 62,
+    "atributos": {
+      "nome": 2905,
+      "ponte (bridge)": 62,
+      "tunel (tunnel)": 1,
+      "mao_unica (oneway, ignorada: rede não direcionada)": 627,
+      "layer": 59
+    },
+    "laços_u_igual_v": 4,
+    "malha_original_2026_07_27": {
+      "trechos_direcionados": 7609,
+      "km_direcionado": 3827.9,
+      "pontes_fundidas_com_ruas": 104,
+      "comprimento_mediano_trecho_ponte_m": 3482.0
+    },
+    "comprimento_mediano_trecho_ponte_m": 31.0,
+    "km_nao_direcionado_area_urbana_da_sede": 363.2,
+    "km_por_tipo_highway": {
+      "unclassified": 1137.6,
+      "tertiary": 327.0,
+      "residential": 277.5,
+      "trunk": 161.2,
+      "primary": 59.7,
+      "secondary": 23.1,
+      "primary;unclassified": 4.3,
+      "living_street": 2.3,
+      "trunk_link": 2.1,
+      "residential;unclassified": 1.1,
+      "primary_link": 0.4,
+      "residential;tertiary": 0.3,
+      "secondary_link": 0.1,
+      "tertiary_link": 0.0
+    },
+    "componentes_conexas_base": 12,
+    "enderecos_fora_da_componente_principal": 21,
+    "pop_fora_da_componente_principal": 38.8,
+    "unidades_ligadas_ao_no": 0,
+    "unidades_dist_via_max_m": 42.2
+  },
+  "conferencias": {
+    "sem_trechos_retirados_igual_tarefa1": true,
+    "otimista_nunca_pior_que_pessimista": {
+      "833": {
+        "enderecos_otimista_mais_longe": 0,
+        "enderecos_otimista_classe_pior": 0
+      },
+      "952": {
+        "enderecos_otimista_mais_longe": 0,
+        "enderecos_otimista_classe_pior": 0
+      },
+      "1205": {
+        "enderecos_otimista_mais_longe": 0,
+        "enderecos_otimista_classe_pior": 0
+      },
+      "1252": {
+        "enderecos_otimista_mais_longe": 0,
+        "enderecos_otimista_classe_pior": 0
+      }
+    },
+    "isolados_e_expostos_nao_diminuem_com_a_cota": {
+      "pessimista": {
+        "serie": [
+          {
+            "cota": 833,
+            "isolados": 0,
+            "expostos": 4,
+            "isolados_mais_expostos": 4
+          },
+          {
+            "cota": 952,
+            "isolados": 60,
+            "expostos": 85,
+            "isolados_mais_expostos": 145
+          },
+          {
+            "cota": 1205,
+            "isolados": 152,
+            "expostos": 891,
+            "isolados_mais_expostos": 1043
+          },
+          {
+            "cota": 1252,
+            "isolados": 206,
+            "expostos": 1245,
+            "isolados_mais_expostos": 1451
+          }
+        ],
+        "expostos_nao_diminuem": true,
+        "isolados_nao_diminuem": true,
+        "isolados_mais_expostos_nao_diminuem": true,
+        "isolados_que_deixam_de_ser_isolados_na_cota_seguinte": {
+          "833->952": {},
+          "952->1205": {
+            "exposto": 40
+          },
+          "1205->1252": {
+            "exposto": 87
+          }
+        }
+      },
+      "otimista": {
+        "serie": [
+          {
+            "cota": 833,
+            "isolados": 0,
+            "expostos": 4,
+            "isolados_mais_expostos": 4
+          },
+          {
+            "cota": 952,
+            "isolados": 60,
+            "expostos": 85,
+            "isolados_mais_expostos": 145
+          },
+          {
+            "cota": 1205,
+            "isolados": 152,
+            "expostos": 891,
+            "isolados_mais_expostos": 1043
+          },
+          {
+            "cota": 1252,
+            "isolados": 206,
+            "expostos": 1245,
+            "isolados_mais_expostos": 1451
+          }
+        ],
+        "expostos_nao_diminuem": true,
+        "isolados_nao_diminuem": true,
+        "isolados_mais_expostos_nao_diminuem": true,
+        "isolados_que_deixam_de_ser_isolados_na_cota_seguinte": {
+          "833->952": {},
+          "952->1205": {
+            "exposto": 40
+          },
+          "1205->1252": {
+            "exposto": 87
+          }
+        }
+      }
+    },
+    "nenhuma_distancia_de_cenario_menor_que_a_base": {
+      "833_pessimista": 0,
+      "833_otimista": 0,
+      "952_pessimista": 0,
+      "952_otimista": 0,
+      "1205_pessimista": 0,
+      "1205_otimista": 0,
+      "1252_pessimista": 0,
+      "1252_otimista": 0
+    },
+    "trechos_interrompidos_aninhados_por_cota": true
+  },
+  "cruzamentos_sem_ponte": {
+    "area": "até 300 m da maior mancha, dentro do município",
+    "cruzamentos_via_curso_dagua_bho": 35,
+    "com_ponte_osm_a_ate_60m": 2,
+    "sem_ponte_marcada": 33,
+    "sem_ponte_por_ordem_do_curso": {
+      "3": 10,
+      "4": 23
+    },
+    "ressalva": "a BHO é derivada de modelo de terreno e não coincide exatamente com o traçado real; cruzamento sem ponte marcada pode ser bueiro, ponte não mapeada no OSM ou desalinhamento da BHO"
+  },
+  "cotas": [
+    833,
+    952,
+    1205,
+    1252
+  ],
+  "tr_anos": {
+    "833": 1.29999995,
+    "952": 1.89999998,
+    "1205": 9.0,
+    "1252": 13.3999996
+  },
+  "unidades_destino": [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "09",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "10",
+    "11",
+    "12"
+  ],
+  "unidades_na_mancha": {
+    "833": [],
+    "952": [],
+    "1205": [],
+    "1252": []
+  },
+  "sede_distrito": "432240005"
+}

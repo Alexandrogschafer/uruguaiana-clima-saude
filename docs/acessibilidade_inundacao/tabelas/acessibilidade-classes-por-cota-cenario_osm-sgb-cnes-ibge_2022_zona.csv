@@ -1,0 +1,177 @@
+cota_cm,tr_anos,cenario,zona,classe,enderecos,pop_estimada
+833,1.29999995,pessimista,urbana da sede,exposto,4,11.5
+833,1.29999995,pessimista,urbana da sede,isolado,0,0.0
+833,1.29999995,pessimista,urbana da sede,com desvio,0,0.0
+833,1.29999995,pessimista,urbana da sede,sem alteração,42037,109126.7
+833,1.29999995,pessimista,urbana da sede,sem caminho já na base,1,2.8
+833,1.29999995,pessimista,urbana da sede,com desvio: até 250 m,0,0.0
+833,1.29999995,pessimista,urbana da sede,com desvio: 250 a 500 m,0,0.0
+833,1.29999995,pessimista,urbana da sede,com desvio: 500 m a 1 km,0,0.0
+833,1.29999995,pessimista,urbana da sede,com desvio: 1 a 2 km,0,0.0
+833,1.29999995,pessimista,urbana da sede,com desvio: mais de 2 km,0,0.0
+833,1.29999995,pessimista,urbana da sede,com desvio: muda a unidade mais próxima,0,0.0
+833,1.29999995,pessimista,interior,exposto,0,0.0
+833,1.29999995,pessimista,interior,isolado,0,0.0
+833,1.29999995,pessimista,interior,com desvio,0,0.0
+833,1.29999995,pessimista,interior,sem alteração,5131,7607.0
+833,1.29999995,pessimista,interior,sem caminho já na base,20,36.0
+833,1.29999995,pessimista,interior,com desvio: até 250 m,0,0.0
+833,1.29999995,pessimista,interior,com desvio: 250 a 500 m,0,0.0
+833,1.29999995,pessimista,interior,com desvio: 500 m a 1 km,0,0.0
+833,1.29999995,pessimista,interior,com desvio: 1 a 2 km,0,0.0
+833,1.29999995,pessimista,interior,com desvio: mais de 2 km,0,0.0
+833,1.29999995,pessimista,interior,com desvio: muda a unidade mais próxima,0,0.0
+833,1.29999995,otimista,urbana da sede,exposto,4,11.5
+833,1.29999995,otimista,urbana da sede,isolado,0,0.0
+833,1.29999995,otimista,urbana da sede,com desvio,0,0.0
+833,1.29999995,otimista,urbana da sede,sem alteração,42037,109126.7
+833,1.29999995,otimista,urbana da sede,sem caminho já na base,1,2.8
+833,1.29999995,otimista,urbana da sede,com desvio: até 250 m,0,0.0
+833,1.29999995,otimista,urbana da sede,com desvio: 250 a 500 m,0,0.0
+833,1.29999995,otimista,urbana da sede,com desvio: 500 m a 1 km,0,0.0
+833,1.29999995,otimista,urbana da sede,com desvio: 1 a 2 km,0,0.0
+833,1.29999995,otimista,urbana da sede,com desvio: mais de 2 km,0,0.0
+833,1.29999995,otimista,urbana da sede,com desvio: muda a unidade mais próxima,0,0.0
+833,1.29999995,otimista,interior,exposto,0,0.0
+833,1.29999995,otimista,interior,isolado,0,0.0
+833,1.29999995,otimista,interior,com desvio,0,0.0
+833,1.29999995,otimista,interior,sem alteração,5131,7607.0
+833,1.29999995,otimista,interior,sem caminho já na base,20,36.0
+833,1.29999995,otimista,interior,com desvio: até 250 m,0,0.0
+833,1.29999995,otimista,interior,com desvio: 250 a 500 m,0,0.0
+833,1.29999995,otimista,interior,com desvio: 500 m a 1 km,0,0.0
+833,1.29999995,otimista,interior,com desvio: 1 a 2 km,0,0.0
+833,1.29999995,otimista,interior,com desvio: mais de 2 km,0,0.0
+833,1.29999995,otimista,interior,com desvio: muda a unidade mais próxima,0,0.0
+952,1.89999998,pessimista,urbana da sede,exposto,85,235.8
+952,1.89999998,pessimista,urbana da sede,isolado,49,126.0
+952,1.89999998,pessimista,urbana da sede,com desvio,274,678.0
+952,1.89999998,pessimista,urbana da sede,sem alteração,41633,108098.4
+952,1.89999998,pessimista,urbana da sede,sem caminho já na base,1,2.8
+952,1.89999998,pessimista,urbana da sede,com desvio: até 250 m,247,633.8
+952,1.89999998,pessimista,urbana da sede,com desvio: 250 a 500 m,0,0.0
+952,1.89999998,pessimista,urbana da sede,com desvio: 500 m a 1 km,0,0.0
+952,1.89999998,pessimista,urbana da sede,com desvio: 1 a 2 km,0,0.0
+952,1.89999998,pessimista,urbana da sede,com desvio: mais de 2 km,27,44.2
+952,1.89999998,pessimista,urbana da sede,com desvio: muda a unidade mais próxima,54,157.2
+952,1.89999998,pessimista,interior,exposto,0,0.0
+952,1.89999998,pessimista,interior,isolado,11,17.7
+952,1.89999998,pessimista,interior,com desvio,166,276.6
+952,1.89999998,pessimista,interior,sem alteração,4954,7312.6
+952,1.89999998,pessimista,interior,sem caminho já na base,20,36.0
+952,1.89999998,pessimista,interior,com desvio: até 250 m,2,3.2
+952,1.89999998,pessimista,interior,com desvio: 250 a 500 m,5,8.1
+952,1.89999998,pessimista,interior,com desvio: 500 m a 1 km,3,4.8
+952,1.89999998,pessimista,interior,com desvio: 1 a 2 km,120,193.3
+952,1.89999998,pessimista,interior,com desvio: mais de 2 km,36,67.2
+952,1.89999998,pessimista,interior,com desvio: muda a unidade mais próxima,0,0.0
+952,1.89999998,otimista,urbana da sede,exposto,85,235.8
+952,1.89999998,otimista,urbana da sede,isolado,49,126.0
+952,1.89999998,otimista,urbana da sede,com desvio,274,678.0
+952,1.89999998,otimista,urbana da sede,sem alteração,41633,108098.4
+952,1.89999998,otimista,urbana da sede,sem caminho já na base,1,2.8
+952,1.89999998,otimista,urbana da sede,com desvio: até 250 m,247,633.8
+952,1.89999998,otimista,urbana da sede,com desvio: 250 a 500 m,0,0.0
+952,1.89999998,otimista,urbana da sede,com desvio: 500 m a 1 km,0,0.0
+952,1.89999998,otimista,urbana da sede,com desvio: 1 a 2 km,0,0.0
+952,1.89999998,otimista,urbana da sede,com desvio: mais de 2 km,27,44.2
+952,1.89999998,otimista,urbana da sede,com desvio: muda a unidade mais próxima,54,157.2
+952,1.89999998,otimista,interior,exposto,0,0.0
+952,1.89999998,otimista,interior,isolado,11,17.7
+952,1.89999998,otimista,interior,com desvio,166,276.6
+952,1.89999998,otimista,interior,sem alteração,4954,7312.6
+952,1.89999998,otimista,interior,sem caminho já na base,20,36.0
+952,1.89999998,otimista,interior,com desvio: até 250 m,2,3.2
+952,1.89999998,otimista,interior,com desvio: 250 a 500 m,5,8.1
+952,1.89999998,otimista,interior,com desvio: 500 m a 1 km,3,4.8
+952,1.89999998,otimista,interior,com desvio: 1 a 2 km,120,193.3
+952,1.89999998,otimista,interior,com desvio: mais de 2 km,36,67.2
+952,1.89999998,otimista,interior,com desvio: muda a unidade mais próxima,0,0.0
+1205,9.0,pessimista,urbana da sede,exposto,891,2539.3
+1205,9.0,pessimista,urbana da sede,isolado,141,361.0
+1205,9.0,pessimista,urbana da sede,com desvio,924,2311.0
+1205,9.0,pessimista,urbana da sede,sem alteração,40085,103926.9
+1205,9.0,pessimista,urbana da sede,sem caminho já na base,1,2.8
+1205,9.0,pessimista,urbana da sede,com desvio: até 250 m,691,1778.8
+1205,9.0,pessimista,urbana da sede,com desvio: 250 a 500 m,202,479.0
+1205,9.0,pessimista,urbana da sede,com desvio: 500 m a 1 km,4,9.1
+1205,9.0,pessimista,urbana da sede,com desvio: 1 a 2 km,0,0.0
+1205,9.0,pessimista,urbana da sede,com desvio: mais de 2 km,27,44.2
+1205,9.0,pessimista,urbana da sede,com desvio: muda a unidade mais próxima,23,64.6
+1205,9.0,pessimista,interior,exposto,0,0.0
+1205,9.0,pessimista,interior,isolado,11,17.7
+1205,9.0,pessimista,interior,com desvio,166,276.6
+1205,9.0,pessimista,interior,sem alteração,4954,7312.6
+1205,9.0,pessimista,interior,sem caminho já na base,20,36.0
+1205,9.0,pessimista,interior,com desvio: até 250 m,2,3.2
+1205,9.0,pessimista,interior,com desvio: 250 a 500 m,5,8.1
+1205,9.0,pessimista,interior,com desvio: 500 m a 1 km,3,4.8
+1205,9.0,pessimista,interior,com desvio: 1 a 2 km,120,193.3
+1205,9.0,pessimista,interior,com desvio: mais de 2 km,36,67.2
+1205,9.0,pessimista,interior,com desvio: muda a unidade mais próxima,0,0.0
+1205,9.0,otimista,urbana da sede,exposto,891,2539.3
+1205,9.0,otimista,urbana da sede,isolado,141,361.0
+1205,9.0,otimista,urbana da sede,com desvio,924,2311.0
+1205,9.0,otimista,urbana da sede,sem alteração,40085,103926.9
+1205,9.0,otimista,urbana da sede,sem caminho já na base,1,2.8
+1205,9.0,otimista,urbana da sede,com desvio: até 250 m,691,1778.8
+1205,9.0,otimista,urbana da sede,com desvio: 250 a 500 m,202,479.0
+1205,9.0,otimista,urbana da sede,com desvio: 500 m a 1 km,4,9.1
+1205,9.0,otimista,urbana da sede,com desvio: 1 a 2 km,0,0.0
+1205,9.0,otimista,urbana da sede,com desvio: mais de 2 km,27,44.2
+1205,9.0,otimista,urbana da sede,com desvio: muda a unidade mais próxima,23,64.6
+1205,9.0,otimista,interior,exposto,0,0.0
+1205,9.0,otimista,interior,isolado,11,17.7
+1205,9.0,otimista,interior,com desvio,166,276.6
+1205,9.0,otimista,interior,sem alteração,4954,7312.6
+1205,9.0,otimista,interior,sem caminho já na base,20,36.0
+1205,9.0,otimista,interior,com desvio: até 250 m,2,3.2
+1205,9.0,otimista,interior,com desvio: 250 a 500 m,5,8.1
+1205,9.0,otimista,interior,com desvio: 500 m a 1 km,3,4.8
+1205,9.0,otimista,interior,com desvio: 1 a 2 km,120,193.3
+1205,9.0,otimista,interior,com desvio: mais de 2 km,36,67.2
+1205,9.0,otimista,interior,com desvio: muda a unidade mais próxima,0,0.0
+1252,13.3999996,pessimista,urbana da sede,exposto,1245,3461.3
+1252,13.3999996,pessimista,urbana da sede,isolado,189,486.5
+1252,13.3999996,pessimista,urbana da sede,com desvio,1468,3769.3
+1252,13.3999996,pessimista,urbana da sede,sem alteração,39139,101421.2
+1252,13.3999996,pessimista,urbana da sede,sem caminho já na base,1,2.8
+1252,13.3999996,pessimista,urbana da sede,com desvio: até 250 m,1253,3277.9
+1252,13.3999996,pessimista,urbana da sede,com desvio: 250 a 500 m,188,447.2
+1252,13.3999996,pessimista,urbana da sede,com desvio: 500 m a 1 km,0,0.0
+1252,13.3999996,pessimista,urbana da sede,com desvio: 1 a 2 km,0,0.0
+1252,13.3999996,pessimista,urbana da sede,com desvio: mais de 2 km,27,44.2
+1252,13.3999996,pessimista,urbana da sede,com desvio: muda a unidade mais próxima,19,53.8
+1252,13.3999996,pessimista,interior,exposto,0,0.0
+1252,13.3999996,pessimista,interior,isolado,17,27.4
+1252,13.3999996,pessimista,interior,com desvio,166,276.6
+1252,13.3999996,pessimista,interior,sem alteração,4948,7303.0
+1252,13.3999996,pessimista,interior,sem caminho já na base,20,36.0
+1252,13.3999996,pessimista,interior,com desvio: até 250 m,2,3.2
+1252,13.3999996,pessimista,interior,com desvio: 250 a 500 m,5,8.1
+1252,13.3999996,pessimista,interior,com desvio: 500 m a 1 km,3,4.8
+1252,13.3999996,pessimista,interior,com desvio: 1 a 2 km,120,193.3
+1252,13.3999996,pessimista,interior,com desvio: mais de 2 km,36,67.2
+1252,13.3999996,pessimista,interior,com desvio: muda a unidade mais próxima,0,0.0
+1252,13.3999996,otimista,urbana da sede,exposto,1245,3461.3
+1252,13.3999996,otimista,urbana da sede,isolado,189,486.5
+1252,13.3999996,otimista,urbana da sede,com desvio,1468,3769.3
+1252,13.3999996,otimista,urbana da sede,sem alteração,39139,101421.2
+1252,13.3999996,otimista,urbana da sede,sem caminho já na base,1,2.8
+1252,13.3999996,otimista,urbana da sede,com desvio: até 250 m,1253,3277.9
+1252,13.3999996,otimista,urbana da sede,com desvio: 250 a 500 m,188,447.2
+1252,13.3999996,otimista,urbana da sede,com desvio: 500 m a 1 km,0,0.0
+1252,13.3999996,otimista,urbana da sede,com desvio: 1 a 2 km,0,0.0
+1252,13.3999996,otimista,urbana da sede,com desvio: mais de 2 km,27,44.2
+1252,13.3999996,otimista,urbana da sede,com desvio: muda a unidade mais próxima,19,53.8
+1252,13.3999996,otimista,interior,exposto,0,0.0
+1252,13.3999996,otimista,interior,isolado,17,27.4
+1252,13.3999996,otimista,interior,com desvio,166,276.6
+1252,13.3999996,otimista,interior,sem alteração,4948,7303.0
+1252,13.3999996,otimista,interior,sem caminho já na base,20,36.0
+1252,13.3999996,otimista,interior,com desvio: até 250 m,2,3.2
+1252,13.3999996,otimista,interior,com desvio: 250 a 500 m,5,8.1
+1252,13.3999996,otimista,interior,com desvio: 500 m a 1 km,3,4.8
+1252,13.3999996,otimista,interior,com desvio: 1 a 2 km,120,193.3
+1252,13.3999996,otimista,interior,com desvio: mais de 2 km,36,67.2
+1252,13.3999996,otimista,interior,com desvio: muda a unidade mais próxima,0,0.0

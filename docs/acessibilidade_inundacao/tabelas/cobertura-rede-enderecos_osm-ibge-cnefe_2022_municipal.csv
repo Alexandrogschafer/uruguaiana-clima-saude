@@ -1,0 +1,4 @@
+zona,enderecos,pop_estimada,dist_via_mediana_m,dist_via_p90_m,dist_via_max_m,enderecos_a_mais_de_100m,pop_a_mais_de_100m
+municipio,47193,116784.0,8.1,36.3,5530.5,2092,3276.3
+urbana da sede,42042,109141.0,7.7,20.3,782.8,106,278.8
+interior,5151,7643.0,46.1,1360.5,5530.5,1986,2997.4
