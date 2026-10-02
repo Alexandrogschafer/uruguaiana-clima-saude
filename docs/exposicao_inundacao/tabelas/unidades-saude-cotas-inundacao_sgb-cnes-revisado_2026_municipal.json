@@ -1,0 +1,19 @@
+{
+  "produto": "unidades-saude-cotas-inundacao_sgb-cnes-revisado_2026_municipal.csv",
+  "data_processamento": "2026-10-02T21:30:03+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/exposicao_inundacao_enderecos.py",
+  "fontes": [
+    "SGB — manchas de inundação por cota, serviço hidrologia/BACIA_DO_URUGUAI_URUGUAIANA (camada do repositório)",
+    "IBGE — CNEFE do Censo 2022, espécie 1 (domicílio particular)",
+    "IBGE — agregados por setor e malha de setores do Censo 2022; grade estatística 2022",
+    "IBGE — histórico de formação dos setores 2010–2022 (áreas comparáveis)"
+  ],
+  "descricao": "número e lista das unidades de saúde ESF/UBS dentro da mancha de cada cota (cumulativa)",
+  "credito_unidades": "CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026",
+  "definicao_exposicao": "cumulativa (união das manchas de cota <= X)",
+  "substitui": "data/processed/saude-estabelecimentos-exposicao-inundacao_por-cota.csv (CNES antigo), movida para data/processed/_substituidos/"
+}

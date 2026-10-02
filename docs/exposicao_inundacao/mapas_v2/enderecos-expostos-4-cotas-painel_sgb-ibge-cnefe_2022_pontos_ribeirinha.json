@@ -1,0 +1,19 @@
+{
+  "produto": "enderecos-expostos-4-cotas-painel_sgb-ibge-cnefe_2022_pontos_ribeirinha.png",
+  "data_processamento": "2026-10-02T21:30:15+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "ligado_ao_portal": false,
+  "script": "scripts/processamento/exposicao_inundacao_enderecos.py",
+  "fontes": [
+    "SGB — manchas de inundação por cota, serviço hidrologia/BACIA_DO_URUGUAI_URUGUAIANA (camada do repositório)",
+    "IBGE — CNEFE do Censo 2022, espécie 1 (domicílio particular)",
+    "IBGE — agregados por setor e malha de setores do Censo 2022; grade estatística 2022",
+    "IBGE — histórico de formação dos setores 2010–2022 (áreas comparáveis)"
+  ],
+  "recorte": "faixa ribeirinha da área urbana (onde se concentram os endereços urbanos expostos à maior cota)",
+  "tema": "painel_4_cotas",
+  "definicao_exposicao": "cumulativa",
+  "manchas_exibicao": "Manchas recortadas no limite municipal só para exibição; o dado original do SGB cobre também a outra margem do rio."
+}
