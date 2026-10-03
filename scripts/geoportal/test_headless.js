@@ -92,14 +92,14 @@ async function main() {
       const el = document.getElementById("slider-ano");
       return !!el && !el.disabled && el.max !== "0";
     }),
-    // saúde: camada única de unidades ESF/UBS, filtro com as 4 classes (ESF, UBS, a confirmar, sem classe) — 2026-10-02
+    // saúde: camada única de unidades ESF/UBS, filtro com as 3 classes (ESF, UBS, sem classe) — 2026-10-02
     filtroSaudePopulado: await page.evaluate(() => {
       const el = document.getElementById("filtro-tipo-saude");
-      return !!el && el.querySelectorAll("input[type=checkbox]").length === 4;
+      return !!el && el.querySelectorAll("input[type=checkbox]").length === 3;
     }),
     camadaUnidadesSaudeCarregada: await page.evaluate(() => {
       const camada = window.App && window.App.layers && window.App.layers.unidadesSaude;
-      return !!camada && camada.getLayers().length === 23 && !window.App.layers.saudeCnes && !window.App.layers.saudeOsm;
+      return !!camada && camada.getLayers().length === 22 && !window.App.layers.saudeCnes && !window.App.layers.saudeOsm;
     }),
     indicadorUnidadesNaMancha: await page.evaluate(() => {
       const dt = Array.from(document.querySelectorAll("#painel-estatisticas-cota dt")).map((el) => el.textContent.trim());

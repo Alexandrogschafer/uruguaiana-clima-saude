@@ -5,10 +5,10 @@
  * reaproveitado dentro do nosso próprio painel).
  *
  * unidadesSaude não entra no L.control.layers: fica sempre no mapa desde o
- * carregamento, e a visibilidade (por classe: ESF, UBS, a confirmar, sem
- * classe) é controlada só pela seção "Saúde" (filtro-saude.js).
+ * carregamento, e a visibilidade (por classe: ESF, UBS, sem classe) é
+ * controlada só pela seção "Saúde" (filtro-saude.js).
  *
- * 2026-10-02: o portal passou a ter UMA só camada de saúde, a das 23 unidades
+ * 2026-10-02: o portal passou a ter UMA só camada de saúde, a das 22 unidades
  * da atenção primária (ESF e UBS) do cadastro revisado pela equipe do projeto
  * (versão 4, 2026). As camadas saude-cnes (categorias do CNES) e saude-osm
  * (OpenStreetMap) foram retiradas.
@@ -21,14 +21,12 @@ const DIR_DADOS = "data/geoportal";
 const CORES_TIPO_SAUDE = {
   ESF: "#e6550d",
   UBS: "#2b8cbe",
-  "a confirmar": "#f2c14e",
   "sem classe": "#969696",
 };
 
 const ROTULOS_TIPO_SAUDE = {
   ESF: "ESF (Estratégia Saúde da Família)",
   UBS: "UBS do interior",
-  "a confirmar": "Classe a confirmar",
   "sem classe": "Sem classe",
 };
 
@@ -701,11 +699,11 @@ async function iniciarCamadas() {
       onEachFeature: onEachFeatureComPopup("cotasInundacao"),
     });
 
-    // camada única de saúde: unidades ESF/UBS (classes com cor; "a confirmar" e "sem classe" com borda tracejada)
+    // camada única de saúde: unidades ESF/UBS (classes com cor; "sem classe" com borda tracejada)
     const unidadesSaude = L.geoJSON(unidadesSaudeGeoJSON, {
       pointToLayer: (feature, latlng) => {
         const classe = feature.properties.classe;
-        const incerta = classe === "a confirmar" || classe === "sem classe";
+        const incerta = classe === "sem classe";
         return L.circleMarker(latlng, {
           radius: 7,
           weight: incerta ? 2 : 1.2,

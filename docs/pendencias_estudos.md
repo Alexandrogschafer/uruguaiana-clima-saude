@@ -10,8 +10,7 @@
   vias de veículos do OpenStreetMap. Material: `scripts/processamento/acessibilidade_inundacao.py`
   e `scripts/download/infraestrutura_osm.py`.
 - **População informada por unidade de saúde.** Falta saber o conceito (cadastrada,
-  adscrita ou atendida) e a classe da Unidade Dispensadora de Medicação (hoje "a
-  confirmar"). Material: `scripts/download/saude_unidades_revisadas.py` e o `.json` da
+  adscrita ou atendida). Material: `scripts/download/saude_unidades_revisadas.py` e o `.json` da
   camada de unidades.
 - **Manchas de inundação.** Régua, referência de nível e data das manchas não constam nos
   metadados da fonte (SGB). A maior mancha (1252 cm) tem tempo de retorno de 13,4 anos;

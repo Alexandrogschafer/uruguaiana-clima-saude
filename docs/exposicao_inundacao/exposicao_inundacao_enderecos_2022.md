@@ -105,15 +105,14 @@ Tabelas: [`dinâmica`](tabelas/expostos-dinamica-2010-2022-por-cota_sgb-ibge_201
 
 ## Unidades de saúde (ESF e UBS) e as manchas
 
-As unidades de saúde vêm do cadastro do CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026. Entram as 23 unidades da atenção primária:
+As unidades de saúde vêm do cadastro do CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026. Entram as 22 unidades da atenção primária:
 - 18 ESF;
 - 3 UBS do interior;
-- a Unidade Dispensadora de Medicação, com **classe a confirmar** (está registrada como ESF, mas é da assistência farmacêutica);
 - a Equipe de Saúde Prisional, **sem classe**.
 
-Ficam de fora o Consultório na Rua e os demais estabelecimentos (hospital, urgência, vigilância, farmácias etc.).
+Ficam de fora o Consultório na Rua, a Unidade Dispensadora de Medicação e os demais estabelecimentos (hospital, urgência, vigilância, farmácias etc.).
 
-**Nenhuma das 23 unidades está dentro da mancha de nenhuma cota** (contagem cumulativa: mancha da cota X = união das manchas de cota até X).
+**Nenhuma das 22 unidades está dentro da mancha de nenhuma cota** (contagem cumulativa: mancha da cota X = união das manchas de cota até X).
 - As mais próximas da borda da maior mancha (1252 cm) são a ESF 02, a 33 m, e a ESF 23, a 48 m. Seguem a ESF 17 (107 m), a ESF 15 (147 m) e a ESF 05 (201 m).
 - As unidades do interior ficam a mais de 4 km das manchas, que cobrem só o trecho do rio junto à cidade.
 
@@ -139,7 +138,6 @@ Ficam de fora o Consultório na Rua e os demais estabelecimentos (hospital, urg�
 | 20 | ESF 20 CAIC | ESF | urbana da sede | fora das manchas | 1.002 |
 | 14 | ESF 14TABAJARA BRITES | ESF | urbana da sede | fora das manchas | 1.035 |
 | 21 | ESF 21 CENTRO | ESF | urbana da sede | fora das manchas | 1.077 |
-| UDM | UNIDADE DISPENSADORA DE MEDICACAO UDM | a confirmar | urbana da sede | fora das manchas | 1.136 |
 | 16 | ESF 16 CIDADE ALEGRIA | ESF | urbana da sede | fora das manchas | 1.299 |
 | 18 | ESF 18 PROFILURB | ESF | urbana da sede | fora das manchas | 1.466 |
 | 07 | ESF 07 UNIAO DAS VILAS | ESF | urbana da sede | fora das manchas | 1.720 |
@@ -150,7 +148,7 @@ Ficam de fora o Consultório na Rua e os demais estabelecimentos (hospital, urg�
 | 11 | UNIDADE DE SAUDE JOAO ARREGUI 11 | UBS | interior | fora das manchas | 45.090 |
 | 12 | UNIDADE DE SAUDE PLANO ALTO 12 | UBS | interior | fora das manchas | 48.791 |
 
-A ESF 21 e a UDM têm o mesmo endereço; os pontos estão a 63 m um do outro. Tabelas: [`por unidade`](tabelas/unidades-saude-cotas-inundacao_sgb-cnes-revisado_2026_unidade.csv), [`por cota`](tabelas/unidades-saude-cotas-inundacao_sgb-cnes-revisado_2026_municipal.csv).
+Tabelas: [`por unidade`](tabelas/unidades-saude-cotas-inundacao_sgb-cnes-revisado_2026_unidade.csv), [`por cota`](tabelas/unidades-saude-cotas-inundacao_sgb-cnes-revisado_2026_municipal.csv).
 
 O arquivo traz também uma população por unidade em 2017, 2023 e 2026, informada pelos profissionais de saúde do município. O arquivo não define o conceito — população cadastrada, adscrita ou atendida —, que fica **pendente de confirmação**. Por isso esses números não são somados nem comparados com a população do Censo.
 
@@ -169,7 +167,7 @@ Todos estão em [`mapas_v2/`](mapas_v2/). Cada série usa o mesmo enquadramento 
 
 Há também a visão geral do [município inteiro](mapas_v2/manchas-inundacao-enderecos_sgb-ibge-cnefe_2022_pontos_municipio.png).
 
-Em todos os mapas aparecem as 23 unidades de saúde (ESF e UBS) que caem no enquadramento, com símbolo por classe e o número da unidade como rótulo. As que ficam dentro da mancha da cota do mapa ganhariam um anel vermelho; nenhuma fica.
+Em todos os mapas aparecem as 22 unidades de saúde (ESF e UBS) que caem no enquadramento, com símbolo por classe e o número da unidade como rótulo. As que ficam dentro da mancha da cota do mapa ganhariam um anel vermelho; nenhuma fica.
 
 Para conferir a posição de cada unidade há dois mapas de localização, sobre a densidade de 2022 em tons claros: [município inteiro](mapas_v2/unidades-saude-esf-ubs-localizacao_cnes-revisado-v4_2026_pontos_municipio.png) e [área urbana da sede](mapas_v2/unidades-saude-esf-ubs-localizacao_cnes-revisado-v4_2026_pontos_urbano.png).
 
@@ -194,6 +192,6 @@ Para conferir a posição de cada unidade há dois mapas de localização, sobre
 Fica só listado; nada disto foi calculado. Seriam necessários:
 - uma rede viária roteável do OpenStreetMap, com sentido e topologia, recortada com folga além do município;
 - os trechos de via e as pontes cobertos por cada mancha, com uma regra para decidir quando um trecho fica intransitável;
-- os destinos de saúde: as 23 unidades de ESF e UBS revisadas (e os demais serviços, quando tiverem a mesma revisão), com o tipo de atendimento;
+- os destinos de saúde: as 22 unidades de ESF e UBS revisadas (e os demais serviços, quando tiverem a mesma revisão), com o tipo de atendimento;
 - as origens: endereços do CNEFE ou células da grade, com a população estimada;
 - tempos de viagem por modo, para comparar o acesso com e sem cada cota.

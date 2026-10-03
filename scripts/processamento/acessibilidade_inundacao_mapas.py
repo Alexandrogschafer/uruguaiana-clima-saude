@@ -60,7 +60,7 @@ DESC_CEN = {"pes": "cenário PESSIMISTA — todo trecho com parte na mancha inte
 # cores (Okabe-Ito e rampas de luminância ordenada; a forma separa isolado de desvio em tons de cinza)
 COR_MANCHA, COR_BORDA = "#9e9ac8", "#54278f"
 COR_INTERROMP = "#7a0177"
-COR_PONTE = "#ffffff"  # branco com contorno preto (símbolo de ponte); o amarelo confundia com o losango da UDM
+COR_PONTE = "#ffffff"  # branco com contorno preto (símbolo de ponte)
 COR_CLASSE = {"exposto": "#d55e00", "isolado": "#000000", "com desvio": "#0072b2", "sem alteração": "#cfcfcb", "sem caminho já na base": "#8c8c8c"}
 MK_CLASSE = {"exposto": "o", "isolado": "s", "com desvio": "o", "sem alteração": "o", "sem caminho já na base": "x"}
 FAIXAS_BASE = [0, 500, 1000, 2000, np.inf]

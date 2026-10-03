@@ -8,21 +8,23 @@ Não há API: o arquivo é entregue pela equipe (GeoJSON local, passado em
 de --forcar), confere o sha256 esperado e grava:
 
   a) data/raw/vetor/saude-estabelecimentos_cnes-revisado-v4_2026_vetorial.gpkg (+ .json)
-     — arquivo completo interno (66 estabelecimentos), SEM as colunas "path" e
-       "layer" (caminho de pasta pessoal) e SEM o registro "Consultório na Rua"
+     — arquivo completo interno (65 estabelecimentos), SEM as colunas "path" e
+       "layer" (caminho de pasta pessoal), SEM o registro "Consultório na Rua"
        (CNES 7129440), que guardava a soma das populações das unidades, não uma
-       unidade (decisão do responsável, 2026-10-02). Telefone institucional fica só aqui.
+       unidade, e SEM a Unidade Dispensadora de Medicação (CNES 7265220)
+       (decisões do responsável, 2026-10-02). Telefone institucional fica só aqui.
        CRS original (EPSG:4326, CRS84 no arquivo).
   b) data/processed/saude/unidades-saude-esf-ubs_cnes-revisado-v4_2026_pontos.gpkg (+ .json)
-     — camada de trabalho das 23 unidades da atenção primária (ESF e UBS),
+     — camada de trabalho das 22 unidades da atenção primária (ESF e UBS),
        EPSG:31981, com classe, rótulo, zona e bairro (malha de setores 2022).
 
 Seleção e classe (decisão do responsável, 2026-10-02):
   - tipo_unidade "ESF" e categoria "APS" (18)                   -> "ESF"
   - UBS do interior, CNES 2247356, 2247348, 2247321 (3)         -> "UBS"
-  - Unidade Dispensadora de Medicação, CNES 7265220 (1)         -> "a confirmar"
   - Equipe de Saúde Prisional, CNES 4126947 (1)                 -> "sem classe"
-  Ficam de fora o Consultório na Rua (CNES 7129440) e os demais.
+  Ficam de fora o Consultório na Rua (CNES 7129440), a Unidade Dispensadora de
+  Medicação (CNES 7265220) e os demais. O arquivo de origem não é alterado: a
+  exclusão é regra deste script.
 
 As colunas populacao2017/2023/2026 são números informados diretamente pelos
 profissionais de saúde do município. O arquivo não define o conceito
@@ -63,14 +65,15 @@ CREDITO = ("CNES (Ministério da Saúde), revisado e corrigido pela equipe do pr
 CAMPOS_RETIRADOS = ["path", "layer"]  # trazem o caminho de uma pasta pessoal: nunca entram no repositório
 UBS_INTERIOR = {"2247356", "2247348", "2247321"}
 # registro que não é uma unidade: guardava a SOMA das populações das outras (sai de todas as cópias)
-CNES_RETIRADOS = {"7129440": "registro retirado: guardava a soma das populações das unidades, não uma unidade (Consultório na Rua)"}
-CNES_UDM, CNES_PRISIONAL = "7265220", "4126947"
-ROTULO_FIXO = {CNES_UDM: "UDM", CNES_PRISIONAL: "Prisional"}
+CNES_RETIRADOS = {"7129440": "registro retirado: guardava a soma das populações das unidades, não uma unidade (Consultório na Rua)",
+                  "7265220": "Unidade Dispensadora de Medicação: excluída por decisão do responsável em 2026-10-02"}
+CNES_PRISIONAL = "4126947"
+ROTULO_FIXO = {CNES_PRISIONAL: "Prisional"}
 POP = ["populacao2017", "populacao2023", "populacao2026"]
 NOTA_POP = ("População da unidade informada pelos profissionais de saúde do município (2017, 2023, 2026). "
             "O arquivo não define o conceito (população cadastrada, adscrita ou atendida): PENDENTE DE CONFIRMAÇÃO. "
             "Valor ausente = não informado (nulo, nunca zero). Não somar nem comparar com o Censo.")
-N_ESPERADO = 23
+N_ESPERADO = 22
 
 
 def sha256(caminho: Path) -> str:
@@ -85,7 +88,6 @@ def classificar(g: gpd.GeoDataFrame) -> pd.Series:
     classe = pd.Series(pd.NA, index=g.index, dtype="string")
     classe[(g.tipo_unidade == "ESF") & (g.categoria == "APS")] = "ESF"
     classe[g.cnes.isin(UBS_INTERIOR)] = "UBS"
-    classe[g.cnes == CNES_UDM] = "a confirmar"
     classe[g.cnes == CNES_PRISIONAL] = "sem classe"
     return classe
 
@@ -148,7 +150,7 @@ def main() -> None:
     SAIDA_RAW.with_suffix(".json").write_text(json.dumps(meta_raw, ensure_ascii=False, indent=2), encoding="utf-8")
     logger.info("Arquivo completo: %s (%d feições, sem %s)", SAIDA_RAW.name, len(g), CAMPOS_RETIRADOS)
 
-    # ---------- b) camada de trabalho das 23 unidades
+    # ---------- b) camada de trabalho das 22 unidades
     g["classe"] = classificar(g)
     u = g[g.classe.notna()].copy()
     if len(u) != N_ESPERADO:
@@ -203,10 +205,9 @@ def main() -> None:
         "registros_retirados_da_origem": CNES_RETIRADOS,
         "codigo_ibge": a.codigo_ibge, "crs": CRS_PADRAO, "origem_sha256": soma, "campos_retirados": CAMPOS_RETIRADOS,
         "selecao": {"ESF": "tipo_unidade ESF e categoria APS (18)", "UBS": sorted(UBS_INTERIOR),
-                    "a confirmar": [CNES_UDM, "Unidade Dispensadora de Medicação (assistência farmacêutica; no arquivo como ESF)"],
                     "sem classe": [CNES_PRISIONAL, "Equipe de Saúde Prisional"],
-                    "fora": "os demais estabelecimentos; o Consultório na Rua (CNES 7129440) foi retirado de todas as cópias (guardava a soma das populações)"},
-        "rotulo": "número da unidade tirado do nome; UDM e Prisional para as duas sem número",
+                    "fora": "os demais estabelecimentos; o Consultório na Rua (CNES 7129440) e a Unidade Dispensadora de Medicação (CNES 7265220) foram retirados de todas as cópias"},
+        "rotulo": "número da unidade tirado do nome; Prisional para a única sem número",
         "zona_bairro": "malha de setores 2022 (dinâmica populacional): 'urbana da sede' = setor urbano do distrito-sede; bairro = atributo do setor",
         "nota_populacao": NOTA_POP, "conferencias": conf,
         "data_processamento": datetime.now(timezone.utc).isoformat(timespec="seconds"),

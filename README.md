@@ -22,7 +22,7 @@ revisão visual):
 
 - **Mapa base:** alternância entre mapa (OpenStreetMap) e imagem de
   satélite.
-- **Saúde:** as 23 unidades de saúde da atenção primária (ESF e UBS), com
+- **Saúde:** as 22 unidades de saúde da atenção primária (ESF e UBS), com
   filtro por classe; cadastro do CNES (Ministério da Saúde) revisado e
   corrigido pela equipe do projeto com informações dos profissionais de
   saúde do município (versão 4, 2026).

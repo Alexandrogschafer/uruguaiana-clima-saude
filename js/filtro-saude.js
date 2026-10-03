@@ -1,10 +1,10 @@
 /**
  * Filtro das unidades de saúde (ESF e UBS) — único controle pra essa camada
- * no painel. Checkboxes por classe da unidade (ESF, UBS, a confirmar, sem
- * classe), todos marcados por padrão, mais um checkbox "Marcar/desmarcar
+ * no painel. Checkboxes por classe da unidade (ESF, UBS, sem classe),
+ * todos marcados por padrão, mais um checkbox "Marcar/desmarcar
  * todos" no topo.
  *
- * 2026-10-02: o portal passou a ter uma só camada de saúde, a das 23
+ * 2026-10-02: o portal passou a ter uma só camada de saúde, a das 22
  * unidades da atenção primária do cadastro revisado pela equipe do projeto
  * (versão 4, 2026). O filtro por categoria do CNES e o checkbox do
  * OpenStreetMap saíram junto com essas camadas.

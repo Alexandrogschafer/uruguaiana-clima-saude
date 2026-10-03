@@ -12,8 +12,8 @@ pontes decidem isso?
 ## O método, em linguagem simples
 
 - **Destinos:** as 21 unidades de classe ESF e UBS do cadastro revisado (versão 4,
-  2026). A Unidade Dispensadora de Medicação (UDM, "a confirmar") e a Equipe de Saúde
-  Prisional ("sem classe") aparecem nos mapas, mas não são destino.
+  2026). A Equipe de Saúde Prisional ("sem classe") aparece nos mapas, mas não
+  é destino.
 - **Origens:** os 47.193 endereços de domicílio particular do CNEFE 2022. A população
   de cada setor censitário é repartida igualmente entre os endereços do setor — é uma
   estimativa, como nas rodadas anteriores.
@@ -71,7 +71,7 @@ duas partes alagadas da mesma rua, ou na ponta de ruas sem saída que descem par
 (144 desses pedaços na cota 1252). Há poucas "ilhas" maiores, partes da rede com
 cruzamento que perdem a ligação com o resto: 3 na cota 952, 2 na 1205 e 3 na 1252,
 com até 11 endereços cada, em Bela Vista, Santana, Mascarenhas de Moraes e numa área rural. Nenhuma unidade de
-saúde fica dentro de uma ilha ou fora da rede principal, e nenhuma das 23 fica dentro da
+saúde fica dentro de uma ilha ou fora da rede principal, e nenhuma das 22 fica dentro da
 mancha.
 
 Os bairros com mais gente isolada ou com desvio na cota 1252 são Santo Inácio (≈ 1.400

@@ -11,7 +11,7 @@ Entradas (todas no repositório; nada é baixado aqui):
   - manchas por cota do SGB (cumulativas: união das cotas <= X);
   - endereços de domicílio particular do CNEFE 2022 com exposição e população
     estimada (data/processed/exposicao_inundacao/, rodadas 03/04);
-  - 23 unidades de saúde (data/processed/saude/); destino = classes ESF e UBS.
+  - 22 unidades de saúde (data/processed/saude/); destino = classes ESF e UBS.
 
 Método (resumo; detalhes no .json de cada produto):
   - rede NÃO direcionada; medida = distância pela rede, em metros;
@@ -461,7 +461,7 @@ def main() -> None:
     tu = end.groupby("unid_base").agg(enderecos=("pop", "size"), pop_estimada=("pop", "sum"), dist_mediana_m=("dist_base_m", "median")).round(1)
     tu = unid.set_index("rotulo")[["classe", "zona", "bairro"]].join(tu, how="left").reset_index().fillna({"enderecos": 0, "pop_estimada": 0})
     salvar_tab(tu, "acessibilidade-base-por-unidade_osm-cnes-ibge_2022_unidade.csv",
-               "endereços e população estimada que cada unidade recebe como 'mais próxima pela rede' (sem inundação); UDM e Prisional não são destino",
+               "endereços e população estimada que cada unidade recebe como 'mais próxima pela rede' (sem inundação); a Prisional (sem classe) não é destino",
                nota="NÃO é o território oficial nem a população adscrita da equipe")
 
     # ---- Tarefa 2a: trechos interrompidos por cota
@@ -505,7 +505,7 @@ def main() -> None:
         tac.append(lin)
     tac = pd.DataFrame(tac)
     salvar_tab(tac, "unidades-saude-acessos-na-mancha_osm-sgb-cnes_2026_unidade.csv",
-               f"para cada uma das 23 unidades: trechos de via a até {ARGS.raio_acesso_unidade_m:g} m pela rede a partir do ponto e quantos ficam interrompidos (limiar {ARGS.limiar_m:g} m) em cada cota")
+               f"para cada uma das {len(unid)} unidades: trechos de via a até {ARGS.raio_acesso_unidade_m:g} m pela rede a partir do ponto e quantos ficam interrompidos (limiar {ARGS.limiar_m:g} m) em cada cota")
 
     # ---- Tarefa 3: tabela principal e detalhamentos
     t3, perf, bai, por_un, ilhas_t, un_isol = [], [], [], [], [], []

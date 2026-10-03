@@ -82,7 +82,7 @@ CREDITO_SAUDE = ("CNES (Ministério da Saúde), revisado e corrigido pela equipe
 
 
 def converter_unidades_saude() -> None:
-    """Camada única de saúde do portal: as 23 unidades da atenção primária (ESF e UBS), 2026-10-02."""
+    """Camada única de saúde do portal: as 22 unidades da atenção primária (ESF e UBS), 2026-10-02."""
     caminho = DIR_PROCESSED / "saude" / "unidades-saude-esf-ubs_cnes-revisado-v4_2026_pontos.gpkg"
     gdf = gpd.read_file(caminho)
     colunas = ["cnes", "nome", "classe", "endereco", "populacao2017", "populacao2023", "populacao2026"]
@@ -92,7 +92,7 @@ def converter_unidades_saude() -> None:
         gdf[colunas + ["geometry"]],
         DIR_GEOPORTAL / "unidades-saude-esf-ubs.geojson",
         descricao=(
-            "Unidades de saúde da atenção primária (ESF e UBS), 23 unidades, com classe (ESF, UBS, a confirmar, "
+            "Unidades de saúde da atenção primária (ESF e UBS), 22 unidades, com classe (ESF, UBS, "
             "sem classe). populacao2017/2023/2026: população da unidade informada pelos profissionais de saúde do "
             "município; o conceito (cadastrada, adscrita ou atendida) está pendente de confirmação; ausente = não informado."
         ),

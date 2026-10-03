@@ -235,7 +235,7 @@ def main() -> None:
                 Line2D([], [], marker="X", ls="", mfc="#ffffff", mec=INK, ms=7, label=f"travessia sem ponte marcada ({len(tt)})")]
         hand += [Patch(facecolor=cores[i], alpha=0.5, edgecolor="none", label=f"mancha até a cota {k} cm") for i, k in enumerate(K)]
         hand += [Line2D([], [], marker=mk, ls="", mfc=cor, mec=INK, ms=5.5, alpha=0.8, label=f"unidade de saúde: {cl}")
-                 for cl, (mk, cor) in SIMB_UNIDADE.items() if (unid.classe == cl).any() and cl in ("ESF", "a confirmar")]
+                 for cl, (mk, cor) in SIMB_UNIDADE.items() if (unid.classe == cl).any() and cl == "ESF"]
         hand.append(Line2D([], [], color=INK, lw=0.9, label="quadro de detalhe (A, B, ...)"))
         return fundo.comum(hand)
 
