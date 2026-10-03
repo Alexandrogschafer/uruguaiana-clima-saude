@@ -24,11 +24,18 @@ Opções da rodada 03:
                       temáticos, com a margem, e o limite municipal por cima de
                       tudo — só apresentação: nenhuma área ou contagem muda;
   --nome-rio TEXTO    rótulo do rio principal na legenda (padrão "rio Uruguai").
+Opção da rodada 10:
+  --layout {lateral,a4}  "lateral" (padrão) = mapas como antes; "a4" = edição
+                      para folha A4 (legenda abaixo do mapa, 16 cm, 300 dpi),
+                      gravada só em <pasta>_a4 (ex.: mapas_v2 -> mapas_a4), com o
+                      mapa da pasta --saida como origem; nada mais é regravado.
 
 Uso:
   python scripts/processamento/dinamica_populacional_mapas.py --codigo-ibge 4322400
   python scripts/processamento/dinamica_populacional_mapas.py --codigo-ibge 4322400 \
       --sem-centro --sem-centro-medio --com-agua --saida docs/dinamica_populacional/mapas_v2
+  python scripts/processamento/dinamica_populacional_mapas.py --codigo-ibge 4322400 \
+      --sem-centro --sem-centro-medio --com-agua --saida docs/dinamica_populacional/mapas_v2 --layout a4
 """
 
 from __future__ import annotations
@@ -47,6 +54,7 @@ from matplotlib.lines import Line2D  # noqa: E402
 from matplotlib.patches import Patch  # noqa: E402
 
 import dinamica_populacional_comum as c  # noqa: E402
+from layout_mapa import LAYOUTS, LayoutA4, finalizar_a4, finalizar_lateral, pasta_a4  # noqa: E402  (scripts/utils, via c)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -169,14 +177,18 @@ Base.legenda_agua = _legenda_agua
 
 
 def mapa(base: Base, gdf, col, limites, cores, titulo, legenda_titulo, nome, fonte, fmt="{:g}", unidade="", extras=None, recortes=("municipio", "urbano"), labs=None,
-         saida: Path | None = None, meta_extra: dict | None = None):
+         saida: Path | None = None, meta_extra: dict | None = None, layout: str = "lateral"):
     gdf = gdf.copy()
     gdf["_cl"] = classificar(gdf[col], limites)
     labs = labs or rotulos(limites, fmt, unidade)
     caminhos = []
     for rec in recortes:
         ext = base.ext_urb if rec == "urbano" else base.ext_mun
-        fig, ax = plt.subplots(figsize=(7.2, 7.2 * (ext[3] - ext[2]) / (ext[1] - ext[0]) + 0.6))
+        if layout == "a4":
+            lay = LayoutA4([[ext]])  # quadro na largura da folha, mesma extensão
+            fig, ax = lay.fig, lay.eixos[0]
+        else:
+            fig, ax = plt.subplots(figsize=(7.2, 7.2 * (ext[3] - ext[2]) / (ext[1] - ext[0]) + 0.6))
         sem = gdf[gdf._cl < 0]
         if len(sem):
             sem.plot(ax=ax, color=AUSENTE, hatch="///", edgecolor="#b5b4ad", linewidth=0.2, zorder=1)
@@ -194,14 +206,16 @@ def mapa(base: Base, gdf, col, limites, cores, titulo, legenda_titulo, nome, fon
         hand += [Line2D([], [], color=AGUA, lw=1, label="hidrografia (BHO/ANA)"), Line2D([], [], color=INK, lw=1, label="limite municipal")]
         if extras and hasattr(extras, "legenda"):
             hand += extras.legenda
-        ax.legend(handles=hand, title=legenda_titulo, loc="upper left", bbox_to_anchor=(1.01, 1), frameon=False, fontsize=7.5, title_fontsize=8)
         sufixo = "município inteiro" if rec == "municipio" else "área urbana da sede"
-        ax.set_title(f"{titulo}\n{sufixo}", loc="left", fontsize=10, color=INK)
-        ax.annotate(f"{fonte}\nProduto de trabalho — pendente de conferência. EPSG:31981.", xy=(0, -0.015), xycoords="axes fraction",
-                    va="top", fontsize=6.5, color=MUTED)
         caminho = (saida or c.MAPAS) / f"{nome}_{rec}.png"
-        fig.savefig(caminho, dpi=180, facecolor="#fcfcfb", bbox_inches="tight")
-        plt.close(fig)
+        if layout == "a4":
+            destino = pasta_a4(caminho.parent) / caminho.name
+            finalizar_a4(lay, f"{titulo}\n{sufixo}", hand, legenda_titulo, fonte, destino, origem=caminho,
+                         texto_retirado="Produto de trabalho — pendente de conferência. EPSG:31981.")
+            caminhos.append(destino)
+            continue
+        finalizar_lateral(fig, ax, f"{titulo}\n{sufixo}", hand, legenda_titulo,
+                          f"{fonte}\nProduto de trabalho — pendente de conferência. EPSG:31981.", caminho)
         c.gravar_meta(caminho, status=c.STATUS_CONFERENCIA, ligado_ao_portal=False, codigo_ibge=base.cod, variavel=col,
                       limites_classes=[float(x) for x in limites], rotulos=labs, cores=cores, recorte=sufixo, fonte=fonte,
                       script="scripts/processamento/dinamica_populacional_mapas.py", **(meta_extra or {}))
@@ -218,6 +232,7 @@ def main() -> None:
     p.add_argument("--com-agua", action="store_true", help="desenha a área de água (OSM) por cima dos polígonos temáticos")
     p.add_argument("--nome-rio", default=c.NOME_RIO_DEFAULT, help="rótulo do rio principal na legenda")
     p.add_argument("--modo-agua", default="tematico", choices=sorted(c.AGUA_EXIBICAO), help="regra de exibição das outras águas (padrão: só o rio)")
+    p.add_argument("--layout", default="lateral", choices=LAYOUTS, help="lateral (padrão, mapas atuais) ou a4 (edição A4, pasta *_a4)")
     a = p.parse_args()
     c.garantir_pastas()
     saida = (a.saida if a.saida is None or a.saida.is_absolute() else c.RAIZ / a.saida)
@@ -232,7 +247,7 @@ def main() -> None:
         meta_extra["area_de_agua"] = "OpenStreetMap (data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg), só apresentação"
         meta_extra["regra_outras_aguas"] = a.modo_agua
     meta_extra = meta_extra or None
-    opc = dict(saida=saida, meta_extra=meta_extra)
+    opc = dict(saida=saida, meta_extra=meta_extra, layout=a.layout)
     base = Base(a.codigo_ibge, agua=a.com_agua, nome_rio=a.nome_rio, modo_agua=a.modo_agua)
     st = gpd.read_file(c.CAMADAS / "populacao-setores_ibge-censo_2022_setor.gpkg")
     gr = gpd.read_file(c.CAMADAS / "populacao-grade_ibge-censo_2022_200m-1km.gpkg")

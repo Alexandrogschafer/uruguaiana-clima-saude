@@ -22,8 +22,13 @@ Acrescenta colunas à camada e à tabela CSV da mudança por área comparável
 e grava tabelas e mapas em docs/dinamica_populacional/ (tabelas/ e mapas_v2/).
 Nada vai para o portal.
 
+Rodada 10: --layout a4 grava só a edição A4 dos mapas (docs/dinamica_populacional/
+mapas_a4/; legenda abaixo do mapa, 16 cm, 300 dpi); as classes são calculadas
+em memória e nenhuma tabela, camada ou mapa atual é regravado.
+
 Uso:
   python scripts/processamento/dinamica_populacional_relativo.py --codigo-ibge 4322400
+  python scripts/processamento/dinamica_populacional_relativo.py --codigo-ibge 4322400 --layout a4
 """
 
 from __future__ import annotations
@@ -44,6 +49,7 @@ from matplotlib.patches import Patch  # noqa: E402
 
 import dinamica_populacional_comum as c  # noqa: E402
 from dinamica_populacional_mapas import AUSENTE, DIV5, INK, MUTED, AGUA, Base  # noqa: E402
+from layout_mapa import LAYOUTS, LayoutA4, finalizar_a4, pasta_a4  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -97,7 +103,7 @@ def tabela_classes(g, tema: str) -> pd.DataFrame:
     return t.reset_index()
 
 
-def mapa_rel(base: Base, g, tema: str, var_mun: float, titulo: str, nome: str, fonte: str, perto=5, forte=15) -> list:
+def mapa_rel(base: Base, g, tema: str, var_mun: float, titulo: str, nome: str, fonte: str, perto=5, forte=15, layout: str = "lateral") -> list:
     col = f"classe_rel_{tema}"
     labs = [f"muito abaixo (< −{forte} p.p.)", f"abaixo (−{forte} a −{perto} p.p.)", f"perto da média (−{perto} a +{perto} p.p.)",
             f"acima (+{perto} a +{forte} p.p.)", f"muito acima (> +{forte} p.p.)"]
@@ -114,7 +120,11 @@ def mapa_rel(base: Base, g, tema: str, var_mun: float, titulo: str, nome: str, f
     caminhos = []
     for rec in ("municipio", "urbano"):
         ext = base.ext_urb if rec == "urbano" else base.ext_mun
-        fig, ax = plt.subplots(figsize=(7.2, 7.2 * (ext[3] - ext[2]) / (ext[1] - ext[0]) + 0.6))
+        if layout == "a4":
+            lay = LayoutA4([[ext]])
+            fig, ax = lay.fig, lay.eixos[0]
+        else:
+            fig, ax = plt.subplots(figsize=(7.2, 7.2 * (ext[3] - ext[2]) / (ext[1] - ext[0]) + 0.6))
         sem = g[g[col].isna()]
         if len(sem):
             sem.plot(ax=ax, color=AUSENTE, hatch="///", edgecolor="#b5b4ad", linewidth=0.2, zorder=1)
@@ -133,6 +143,16 @@ def mapa_rel(base: Base, g, tema: str, var_mun: float, titulo: str, nome: str, f
                  Line2D([], [], color=AGUA, lw=1, label="hidrografia (BHO/ANA)"), Line2D([], [], color=INK, lw=1, label="limite municipal")]
         leg_tit = (f"variação da área − variação do município\n(município: {sinal} %, 2010–2022)\n"
                    "\"média\" = variação do município inteiro,\nnão a média das áreas")
+        sufixo = "município inteiro" if rec == "municipio" else "área urbana da sede"
+        if layout == "a4":
+            # título da legenda em uma linha; a definição de "média" vai para a linha de método do rodapé
+            caminho = MAPAS_V2 / f"{nome}_{rec}.png"
+            destino = pasta_a4(MAPAS_V2) / caminho.name
+            finalizar_a4(lay, f"{titulo}\n{sufixo}", hand, f"variação da área − variação do município (município: {sinal} %, 2010–2022)", fonte,
+                         destino, origem=caminho, metodo="\"Média\" = variação do município inteiro, não a média das áreas.",
+                         texto_retirado="Produto de trabalho — pendente de conferência. EPSG:31981.")
+            caminhos.append(destino)
+            continue
         ax.legend(handles=hand, title=leg_tit, loc="upper left", bbox_to_anchor=(1.01, 1), frameon=False, fontsize=7.5, title_fontsize=7.5,
                   alignment="left")
         sufixo = "município inteiro" if rec == "municipio" else "área urbana da sede"
@@ -155,6 +175,7 @@ def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--codigo-ibge", default=c.CODIGO_IBGE_DEFAULT)
     p.add_argument("--nome-rio", default=c.NOME_RIO_DEFAULT, help="rótulo do rio principal na legenda")
+    p.add_argument("--layout", default="lateral", choices=LAYOUTS, help="lateral (padrão, recalcula e grava tudo) ou a4 (só a edição A4 dos mapas)")
     a = p.parse_args()
     MAPAS_V2.mkdir(parents=True, exist_ok=True)
     camada = c.CAMADAS / "populacao-mudanca_ibge-censo_2010-2022_area-comparavel.gpkg"
@@ -175,6 +196,20 @@ def main() -> None:
     novas = ["dif_pp_pop", "classe_rel_pop", "classe_rel_pop_lim10_20", "ganho_absoluto_pop",
              "dif_pp_dom", "classe_rel_dom", "classe_rel_dom_lim10_20", "ganho_absoluto_dom"]
     g = g[cols_orig + novas + ["geometry"]]
+
+    def mapas(layout):
+        base = Base(a.codigo_ibge, agua=True, nome_rio=a.nome_rio)
+        fm = "Fonte: IBGE — histórico de formação dos setores 2010–2022; agregados por setor 2010 e 2022; geometria da malha 2022."
+        out = mapa_rel(base, g, "pop", var_pop, "Variação da população 2010–2022 relativa à do município, por área comparável",
+                       "populacao-variacao-relativa_ibge-censo_2010-2022_area-comparavel", fm, layout=layout)
+        out += mapa_rel(base, g, "dom", var_dom, "Variação dos domicílios 2010–2022 relativa à do município, por área comparável",
+                        "domicilios-variacao-relativa_ibge-censo_2010-2022_area-comparavel", fm, layout=layout)
+        return out
+
+    if a.layout == "a4":  # edição A4: só os mapas, a partir das classes calculadas em memória (nada é gravado fora de mapas_a4/)
+        for f in mapas("a4"):
+            logger.info("Mapa A4: %s", f.relative_to(c.RAIZ))
+        return
 
     # ----- sensibilidade
     sens = {}
@@ -249,12 +284,7 @@ def main() -> None:
     csv.with_suffix(".json").write_text(json.dumps(meta_csv, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
 
     # ----- mapas
-    base = Base(a.codigo_ibge, agua=True, nome_rio=a.nome_rio)
-    fm = "Fonte: IBGE — histórico de formação dos setores 2010–2022; agregados por setor 2010 e 2022; geometria da malha 2022."
-    feitos += mapa_rel(base, g, "pop", var_pop, "Variação da população 2010–2022 relativa à do município, por área comparável",
-                       "populacao-variacao-relativa_ibge-censo_2010-2022_area-comparavel", fm)
-    feitos += mapa_rel(base, g, "dom", var_dom, "Variação dos domicílios 2010–2022 relativa à do município, por área comparável",
-                       "domicilios-variacao-relativa_ibge-censo_2010-2022_area-comparavel", fm)
+    feitos += mapas("lateral")
     for f in feitos:
         logger.info("Produto: %s", f.relative_to(c.RAIZ))
 

@@ -14,8 +14,13 @@ Mapas (área urbana da sede e faixa ribeirinha), em docs/acessibilidade_inundaca
 Manchas cumulativas recortadas no limite municipal só para exibição.
 Produtos "pendente de conferência"; não vão para o portal.
 
+Rodada 10: --layout a4 grava só a edição A4 (docs/acessibilidade_inundacao/mapas_a4/;
+legenda abaixo do mapa, 16 cm, 300 dpi); quadros de texto vão para baixo da
+legenda; os mapas de mapas/ não são regravados.
+
 Uso:
   python scripts/processamento/acessibilidade_inundacao_mapas.py --codigo-ibge 4322400
+  python scripts/processamento/acessibilidade_inundacao_mapas.py --codigo-ibge 4322400 --layout a4
 """
 
 from __future__ import annotations
@@ -39,6 +44,7 @@ import dinamica_populacional_comum as c  # noqa: E402
 from dinamica_populacional_cnefe_mapas import Fundo, mil  # noqa: E402
 from dinamica_populacional_mapas import INK, MUTED, Base  # noqa: E402
 from exposicao_inundacao_enderecos import ESCALA_POS, SIMB_UNIDADE, TAM_UNIDADE, rotular_unidades  # noqa: E402
+from layout_mapa import LAYOUTS, LayoutA4, finalizar_a4, fonte_rotulo, pasta_a4  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -69,6 +75,12 @@ FONTE = ("Fonte: OpenStreetMap — malha viária e pontes (contribuidores do Ope
 NOTA = ("Manchas cumulativas (união das cotas ≤ X), recortadas no limite municipal só para exibição. Via 'alagada' = trecho com ≥ 5 m dentro da mancha; "
         "a mancha não informa profundidade.\nA resposta real fica entre os cenários pessimista e otimista. 'Unidade mais próxima pela rede' não é o território da equipe. "
         "Produto de trabalho — pendente de conferência. EPSG:31981.")
+
+# edição A4 (rodada 10): rodapé só com a fonte (compacta) e uma linha de método; o texto completo fica no .json
+FONTE_A4 = ("Fonte: OpenStreetMap (vias, pontes); SGB (manchas por cota); IBGE (CNEFE e setores, Censo 2022); unidades: CNES (Ministério "
+            "da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município (v. 4, 2026).")
+METODO_A4 = "Via alagada: ≥ 5 m na mancha cumulativa (sem profundidade). Unidade mais próxima pela rede ≠ território da equipe."
+SUB_A4 = {"urbano": "área urbana da sede", "ribeirinha": "faixa ribeirinha da área urbana"}
 
 
 def meta(caminho, **kw):
@@ -109,8 +121,13 @@ def main() -> None:
     sub = {"urbano": "área urbana da sede", "ribeirinha": "faixa ribeirinha da área urbana (onde se concentram os endereços urbanos expostos à maior cota)"}
     ms = {"urbano": 0.5, "ribeirinha": 3.0}
     feitos = []
+    a4 = ARGS.layout == "a4"
 
     def fig_ext(ext, largura=7.2):
+        if a4:
+            lay = LayoutA4([[ext]])
+            lay.fig._layout_a4 = lay
+            return lay.fig, lay.eixos[0]
         return plt.subplots(figsize=(largura, largura * (ext[3] - ext[2]) / (ext[1] - ext[0]) + 0.6))
 
     def plot_geom(ax, geom, **kw):
@@ -119,13 +136,14 @@ def main() -> None:
     def desenhar_fundo(ax, rec):
         fundo.desenhar(ax, exts[rec], "detalhe" if rec == "ribeirinha" else rec, esc[rec], modo_agua="enderecos", escala_pos=ESCALA_POS[rec])
 
-    def saude(ax, rec, fs=6.5):
+    def saude(ax, rec, fs=6.5, esc_simb=1.0):
         ext = exts[rec]
         u = unid[unid.within(box(ext[0], ext[2], ext[1], ext[3]))]
         for classe, (mk, cor) in SIMB_UNIDADE.items():
             x = u[u.classe == classe]
-            ax.scatter(x.geometry.x, x.geometry.y, marker=mk, s=TAM_UNIDADE[classe] + 4, color=cor, edgecolor=INK, linewidth=0.9, zorder=9)
-        rotular_unidades(ax, u, c.escala_do_mapa(ext), fs)
+            ax.scatter(x.geometry.x, x.geometry.y, marker=mk, s=(TAM_UNIDADE[classe] + 4) * esc_simb, color=cor, edgecolor=INK,
+                       linewidth=0.9 * min(1, esc_simb ** 0.5), zorder=9)
+        rotular_unidades(ax, u, c.escala_do_mapa(ext), fonte_rotulo(fs, ARGS.layout), fs_nota=fonte_rotulo(6.8, ARGS.layout))
         return [Line2D([], [], marker=mk, ls="", mfc=cor, mec=INK, ms=6.5,
                        label=f"unidade de saúde: {classe}" + (" (destino)" if classe in ("ESF", "UBS") else " (não é destino)"))
                 for classe, (mk, cor) in SIMB_UNIDADE.items() if (u.classe == classe).any()]
@@ -141,16 +159,18 @@ def main() -> None:
         if len(g):
             g.plot(ax=ax, color=color, linewidth=lw, linestyle=ls, zorder=z)
 
-    def marcar_pontes(ax, rec, rotulo=True, fs=6.5):
+    def marcar_pontes(ax, rec, rotulo=True, fs=6.5, esc_simb=1.0):
         ext = exts[rec]
         b = box(ext[0], ext[2], ext[1], ext[3])
         tp = todas_pontes[todas_pontes.intersects(b)]
+        fs = fonte_rotulo(fs, ARGS.layout)
+        f_lw = min(1, esc_simb ** 0.5)
         if len(tp):
-            tp.plot(ax=ax, color=INK, linewidth=4.2, zorder=7.0)
-            tp.plot(ax=ax, color=COR_PONTE, linewidth=2.6, zorder=7.1)
+            tp.plot(ax=ax, color=INK, linewidth=4.2 * f_lw, zorder=7.0)
+            tp.plot(ax=ax, color=COR_PONTE, linewidth=2.6 * f_lw, zorder=7.1)
             # pontes têm 10–200 m: marcador no centro para ficarem visíveis na escala da área urbana
             cen = tp.geometry.centroid
-            ax.scatter(cen.x, cen.y, marker="^", s=16 if rec == "urbano" else 30, color=COR_PONTE, edgecolor=INK, linewidth=0.8, zorder=7.2)
+            ax.scatter(cen.x, cen.y, marker="^", s=(16 if rec == "urbano" else 30) * esc_simb, color=COR_PONTE, edgecolor=INK, linewidth=0.8 * f_lw, zorder=7.2)
         if rotulo:
             halo = [pe.withStroke(linewidth=2.2, foreground="#ffffff")]
             # P01 e P03 ficam a ~150 m da ESF 04: na escala da área urbana, rótulos deslocados para não cobrir o "04"
@@ -165,7 +185,17 @@ def main() -> None:
     def rodape(ax, extra="", y=-0.015):
         ax.annotate(f"{FONTE}\n{NOTA}{extra}", xy=(0, y), xycoords="axes fraction", va="top", fontsize=6.0, color=MUTED)
 
-    def salvar(fig, ax, nome, titulo, rec, hand, leg_tit, extra_meta, quadro=None, rod_extra=""):
+    def salvar(fig, ax, nome, titulo, rec, hand, leg_tit, extra_meta, quadro=None, rod_extra="", titulo_a4=None, metodo_a4=None,
+               notas_a4=None, notas_lista=None, notas_colunas=1):
+        if a4:  # quadro de texto vai para o quadro de notas, abaixo da legenda
+            origem = MAPAS / f"{nome}_{rec}.png"
+            destino = pasta_a4(MAPAS) / origem.name
+            finalizar_a4(fig._layout_a4, f"{titulo_a4 or titulo}\n{SUB_A4[rec]}", fundo.comum(hand), leg_tit.replace("\n", " "), FONTE_A4, destino,
+                         origem=origem, metodo=metodo_a4 or METODO_A4, notas=notas_a4 if notas_a4 is not None else quadro,
+                         notas_lista=notas_lista, notas_colunas=notas_colunas,
+                         texto_retirado=f"{NOTA}{rod_extra}".replace("\n", " "), meta_extra={"recorte_completo": sub[rec]})
+            feitos.append(destino)
+            return
         leg = ax.legend(handles=fundo.comum(hand), title=leg_tit, loc="upper left", bbox_to_anchor=(1.01, 1), frameon=False, fontsize=7.3,
                         title_fontsize=8, alignment="left")
         fig.canvas.draw()
@@ -222,6 +252,30 @@ def main() -> None:
     for cen in CENARIOS:
         for rec in exts:
             ext = exts[rec]
+            if a4:
+                # painel A4: 2 x 2 quadros de meia largura (≈ 0,57 do quadro lateral): pontos, linhas e símbolos reduzidos
+                lay = LayoutA4([[ext, ext], [ext, ext]])
+                for ax, k in zip(lay.eixos, K):
+                    plot_geom(ax, disp[k], color=COR_MANCHA, alpha=0.45, edgecolor="none", zorder=1.5)
+                    interrompidos(ax, k, cen, lw=1.2 * 0.75)
+                    for classe in ("sem alteração", "com desvio", "exposto", "isolado"):
+                        x = end[end[f"cls_{k}_{cen}"] == classe]
+                        s = ms[rec] * (1 if classe == "sem alteração" else 4) * 0.6 * 0.45
+                        ax.scatter(x.geometry.x, x.geometry.y, s=s, marker=MK_CLASSE[classe], color=COR_CLASSE[classe],
+                                   edgecolor="#ffffff" if classe == "isolado" else "none", linewidths=0.15,
+                                   zorder={"sem alteração": 5, "com desvio": 6.5, "exposto": 6.6, "isolado": 6.8}[classe])
+                    desenhar_fundo(ax, rec)
+                    hp = marcar_pontes(ax, rec, rotulo=rec == "ribeirinha", fs=5.5, esc_simb=0.5)
+                    hs = saude(ax, rec, fs=5.5, esc_simb=0.5)
+                    ax.set_title(f"{rot_cota[k]} · {texto_contagem(k, cen, curto=True)} (área urbana, pessoas, estimativa)", loc="left")
+                origem = MAPAS / f"acessibilidade-4-cotas-painel-{CENARIOS[cen]}_osm-sgb-cnes-ibge_2022_pontos_{rec}.png"
+                destino = pasta_a4(MAPAS) / origem.name
+                finalizar_a4(lay, f"Acesso às unidades ESF/UBS com vias na mancha, cota a cota — cenário {CENARIOS[cen]}\n{SUB_A4[rec]}",
+                             fundo.comum(hand_cls + hp + hs), "classe do endereço, vias interrompidas e pontes (mesma legenda nos 4 quadros)",
+                             FONTE_A4, destino, origem=origem, metodo=DESC_CEN[cen][0].upper() + DESC_CEN[cen][1:] + ".",
+                             texto_retirado=NOTA.replace("\n", " "), meta_extra={"recorte_completo": sub[rec]})
+                feitos.append(destino)
+                continue
             h = (ext[3] - ext[2]) / (ext[1] - ext[0])
             larg_ax, leg_h, rod_h, tit_h, sub_h = 5.4, 0.85, 0.6, 0.6, 0.3
             alt_ax = larg_ax * h
@@ -298,7 +352,10 @@ def main() -> None:
                        f"Acréscimo de distância até a unidade ESF/UBS mais próxima — cota {k} cm, {CENARIOS[cen]}", rec, hand,
                        "classe do endereço e acréscimo de distância\npela rede (em relação à situação sem inundação)",
                        {"tema": "acrescimo_distancia", "cota_cm": k, "cenario": CENARIOS[cen], "ilhas": len(il)}, quadro=quadro,
-                       rod_extra="\n" + DESC_CEN[cen] + ".")
+                       rod_extra="\n" + DESC_CEN[cen] + ".",
+                       titulo_a4=f"Acréscimo de distância até a unidade ESF/UBS mais próxima — {k} cm, {CENARIOS[cen]}",
+                       metodo_a4=DESC_CEN[cen][0].upper() + DESC_CEN[cen][1:] + ".",
+                       notas_a4=f"{rot_cota[k]}, {CENARIOS[cen]} — área urbana da sede (estimativa): " + texto_contagem(k, cen).replace("\n", "; "))
 
     # ---------------- (d) pontes
     for rec in exts:
@@ -326,7 +383,11 @@ def main() -> None:
         salvar(fig, ax, "pontes-inventario-manchas_osm-sgb-bho_atual_linhas", "Pontes e viadutos do OpenStreetMap junto às manchas de inundação — lista para conferência em campo",
                rec, hand, "pontes, cruzamentos e manchas por cota\n(manchas cumulativas)", {"tema": "pontes", "pontes_inventario": n_inv,
                "pontes_que_decidem": sorted(pontes_decidem), "cruzamentos_sem_ponte_no_quadro": len(sem)}, quadro=quadro,
-               rod_extra="\nCurso d'água: BHO/ANA (derivada de modelo de terreno; pode não coincidir com o traçado real). Cruzamento sem ponte marcada = bueiro, ponte não mapeada ou desalinhamento.")
+               rod_extra="\nCurso d'água: BHO/ANA (derivada de modelo de terreno; pode não coincidir com o traçado real). Cruzamento sem ponte marcada = bueiro, ponte não mapeada ou desalinhamento.",
+               titulo_a4="Pontes e viadutos do OpenStreetMap junto às manchas — para conferência em campo",
+               notas_a4="", notas_colunas=2,
+               notas_lista=[quadro.replace("\n", " "), "Curso d'água: BHO/ANA (derivada de modelo de terreno; pode não coincidir "
+                            "com o traçado real). Cruzamento sem ponte marcada = bueiro, ponte não mapeada ou desalinhamento."])
 
     # ---------------- (e) trechos críticos
     for k in ARGS.cotas_mapa:
@@ -358,7 +419,8 @@ def main() -> None:
                     if all(abs(px + dx - ux) > 13 or abs(py + dy - uy) > 10 for ux, uy in usados):
                         break
                 usados.append((px + dx, py + dy))
-                ax.annotate(str(r.posicao), (p.x, p.y), xytext=(dx, dy), textcoords="offset points", fontsize=7 if rec == "ribeirinha" else 6,
+                ax.annotate(str(r.posicao), (p.x, p.y), xytext=(dx, dy), textcoords="offset points",
+                            fontsize=fonte_rotulo(7 if rec == "ribeirinha" else 6, ARGS.layout),
                             fontweight="bold", color=INK, zorder=11, path_effects=halo)
             fora = [str(r.posicao) for r in ck.itertuples() if not r.geometry.intersects(b)]
             hand = [Patch(facecolor=COR_MANCHA, alpha=0.35, edgecolor="none", label=f"mancha até a {rot_cota[k]}"),
@@ -374,7 +436,9 @@ def main() -> None:
                 hand.append(Line2D([], [], color=INK, lw=0.7, ls=(0, (4, 2)), label="faixa ribeirinha: trechos numerados\nno mapa da faixa"))
             salvar(fig, ax, f"trechos-criticos-cota{k}_osm-sgb-ibge_2022_linhas", f"Trechos interrompidos por onde passava o caminho de mais pessoas até a unidade — cota {k} cm",
                    rec, hand, "trechos críticos (interrompidos no cenário\npessimista; caminho de base sem inundação)", {"tema": "trechos_criticos", "cota_cm": k, "fora_do_quadro": fora},
-                   quadro=quadro)
+                   quadro=quadro, titulo_a4=f"Trechos interrompidos no caminho de mais pessoas até a unidade — cota {k} cm",
+                   notas_a4="Pessoas cujo caminho de base passava pelo trecho" + (f" (fora deste enquadramento: {', '.join(fora)})" if fora else "") + ":",
+                   notas_lista=[x.replace(" — ≈ ", "\u00a0≈\u00a0") for x in linhas], notas_colunas=3)  # "≈ n" não se separa na quebra
     for f in feitos:
         logger.info("Mapa: %s", f.relative_to(c.RAIZ))
 
@@ -384,5 +448,6 @@ if __name__ == "__main__":
     _p.add_argument("--codigo-ibge", default=c.CODIGO_IBGE_DEFAULT)
     _p.add_argument("--nome-rio", default=c.NOME_RIO_DEFAULT)
     _p.add_argument("--cotas-mapa", type=int, nargs="*", default=[1205, 1252])
+    _p.add_argument("--layout", default="lateral", choices=LAYOUTS, help="lateral (padrão, mapas atuais) ou a4 (edição A4, pasta mapas_a4/)")
     ARGS = _p.parse_args()
     main()

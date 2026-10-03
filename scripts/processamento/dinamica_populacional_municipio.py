@@ -11,8 +11,13 @@ Fontes (universo do Censo; ver scripts/download/dinamica_populacional_sidra.py):
 Taxa geométrica anual: r = (P1/P0)^(1/t) − 1, com t = anos entre as datas de
 referência (1º/ago/2000, 1º/ago/2010, 1º/ago/2022 → 10 e 12 anos).
 
+Rodada 11: --layout a4 grava só a edição A4 das duas pirâmides em
+docs/dinamica_populacional/figuras_a4/ (16 cm, 300 dpi, legenda abaixo, PNG +
+.json irmão); tabelas e figuras atuais não são regravadas.
+
 Uso:
   python scripts/processamento/dinamica_populacional_municipio.py --codigo-ibge 4322400
+  python scripts/processamento/dinamica_populacional_municipio.py --codigo-ibge 4322400 --layout a4
 """
 
 from __future__ import annotations
@@ -29,6 +34,7 @@ import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 
 import dinamica_populacional_comum as c  # noqa: E402
+import layout_mapa as lm  # noqa: E402  (scripts/utils, via c)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -41,6 +47,129 @@ GRUPOS = [f"{i} a {i + 4}" for i in range(0, 80, 5)] + ["80+"]
 AZUL, LARANJA = "#2a78d6", "#eb6834"
 INK, INK2, MUTED, GRID = "#0b0b0b", "#52514e", "#898781", "#e1e0d9"
 FONTE_TXT = "Fonte: IBGE, Censos Demográficos 2000, 2010 e 2022 (universo)."
+FIGURAS_A4 = c.DOCS / "figuras_a4"
+
+
+def piramides_a4(pir: pd.DataFrame, xmax: float, cod: str, fonte_geral: dict) -> list:
+    """Edição A4 (rodada 11) das duas pirâmides: mesmos dados, cores e grupos; só a página muda.
+
+    Página de 16 cm montada em polegadas a partir do topo: título, pirâmide(s), legenda em uma linha
+    abaixo, rodapé com a fonte (até 3 linhas). Duas passadas: medir a altura e montar nela.
+    """
+    from matplotlib.patches import Patch
+
+    FIGURAS_A4.mkdir(parents=True, exist_ok=True)
+    W = lm.A4_LARGURA_CM * lm.CM
+    y = np.arange(len(GRUPOS))
+    feitos = []
+
+    def barras(ax, ano, rotulos_grupos):
+        d = pir[pir.ano == ano].set_index(["sexo", "grupo"]).pct_pop_total
+        ax.barh(y, [-d.get(("Homens", g), 0) for g in GRUPOS], color=AZUL, height=0.82, edgecolor="#fcfcfb", linewidth=0.6)
+        ax.barh(y, [d.get(("Mulheres", g), 0) for g in GRUPOS], color=LARANJA, height=0.82, edgecolor="#fcfcfb", linewidth=0.6)
+        ax.set_xlim(-xmax, xmax)
+        ax.set_ylim(-0.6, len(GRUPOS) - 0.4)
+        ax.set_yticks(y, GRUPOS if rotulos_grupos else [""] * len(GRUPOS))
+        tk = np.arange(-xmax, xmax + 0.01, 2)
+        ax.set_xticks(tk, [f"{abs(v):.0f}" for v in tk])
+        ax.tick_params(labelsize=lm.FS_LEGENDA, length=2.5, pad=2)
+        ax.axvline(0, color="#c3c2b7", lw=0.6)
+        ax.grid(axis="x", color=GRID, lw=0.5)
+        ax.set_axisbelow(True)
+        for sp in ("top", "right"):
+            ax.spines[sp].set_visible(False)
+        ax.set_xlabel("% da população total", fontsize=lm.FS_LEGENDA, labelpad=2)
+
+    def pagina(nome, titulo, montar, handles, rodape, h_max_cm, descricao, Hmax=None):
+        medir = Hmax is None  # 1ª passada mede a altura usada; 2ª monta a página nessa altura (sem recorte)
+        Hmax = Hmax or lm.A4_ALTURA_MAX_CM * lm.CM
+        fig = plt.figure(figsize=(W, Hmax), dpi=lm.A4_DPI)
+        fig.canvas.draw()
+        rend = fig.canvas.get_renderer()
+        util_pt = (W - 2 * lm.MARGEM) * 72
+        lin_tit = titulo.split("\n")
+        if len(lin_tit) > 2 or any(lm._largura_pt(fig, rend, x, lm.FS_TITULO) > util_pt for x in lin_tit):
+            raise ValueError(f"título não cabe em 2 linhas de 16 cm: {titulo!r}")
+        tr = fig.dpi_scale_trans
+        yt = Hmax - lm.TOPO
+        fig.text(lm.MARGEM, yt, titulo, transform=tr, ha="left", va="top", fontsize=lm.FS_TITULO, color=INK, linespacing=1.25)
+        yt -= lm._altura_linhas_in(len(lin_tit), lm.FS_TITULO, 1.25) + lm.GAP_BLOCO
+        eixos = montar(fig, yt, Hmax)
+        fig.canvas.draw()
+        y_base = min(ax.get_tightbbox(rend).y0 for ax in eixos) / fig.dpi  # polegadas, inclui rótulos e título do eixo x
+        leg = fig.legend(handles=handles, loc="upper left", ncol=len(handles), frameon=False, fontsize=lm.FS_LEGENDA,
+                         borderpad=0, borderaxespad=0, columnspacing=1.6, handlelength=1.8, handletextpad=0.6,
+                         bbox_to_anchor=(lm.MARGEM, y_base - lm.GAP_BLOCO), bbox_transform=tr)
+        fig.canvas.draw()
+        bl = leg.get_window_extent(rend)
+        if bl.width / fig.dpi > W - 2 * lm.MARGEM:
+            raise ValueError("legenda não cabe em uma linha")
+        y_leg = bl.y0 / fig.dpi
+        lin_rod = lm.quebrar(fig, rend, rodape, util_pt, lm.FS_RODAPE)
+        if len(lin_rod) > lm.MAX_LINHAS_RODAPE:
+            raise ValueError("rodapé com mais de 3 linhas")
+        fig.text(lm.MARGEM, y_leg - lm.GAP_BLOCO, "\n".join(lin_rod), transform=tr, ha="left", va="top", fontsize=lm.FS_RODAPE,
+                 color=MUTED, linespacing=1.25)
+        y_fim = y_leg - lm.GAP_BLOCO - lm._altura_linhas_in(len(lin_rod), lm.FS_RODAPE, 1.25) - lm.BASE
+        H = Hmax - y_fim
+        if medir:
+            plt.close(fig)
+            return pagina(nome, titulo, montar, handles, rodape, h_max_cm, descricao, Hmax=H)
+        if H > h_max_cm * lm.CM + 1e-6:
+            raise ValueError(f"{nome}: altura {H / lm.CM:.1f} cm passa de {h_max_cm} cm")
+        fig.canvas.draw()  # nada fora da página: textos dentro de [0, W] na horizontal e acima do corte
+        for t in fig.texts + [leg] + [tl for ax in eixos for tl in ax.get_yticklabels() + ax.get_xticklabels()]:
+            b = t.get_window_extent(rend)
+            if b.width and (b.x0 < -0.5 or b.x1 > fig.bbox.width + 0.5 or b.y0 < y_fim * fig.dpi - 0.5):
+                raise ValueError(f"{nome}: texto fora da página: {t}")
+        destino = FIGURAS_A4 / f"{nome}.png"
+        fig.savefig(destino, dpi=lm.A4_DPI, facecolor=lm.FUNDO)
+        plt.close(fig)
+        lm.gravar_meta_a4(destino, c.FIGURAS / f"{nome}.png", layout="a4", largura_cm=lm.A4_LARGURA_CM, altura_cm=round(H / lm.CM, 2),
+                          dpi=lm.A4_DPI, legenda_colunas=len(handles), descricao=descricao, formatos=["png"],
+                          status=c.STATUS_CONFERENCIA, **fonte_geral)
+        logger.info("A4: %s (%.1f × %.1f cm)", destino.relative_to(c.RAIZ), lm.A4_LARGURA_CM, H / lm.CM)
+        feitos.append(destino)
+
+    leg_sexo = [Patch(color=AZUL, label="Homens (esquerda)"), Patch(color=LARANJA, label="Mulheres (direita)")]
+    tit = ("Pirâmides etárias — Uruguaiana (RS), Censos 2000, 2010 e 2022 (mesma escala)" if cod == "4322400" else
+           f"Pirâmides etárias — município {cod}, Censos 2000, 2010 e 2022 (mesma escala)")
+
+    def lado_a_lado(fig, yt, Hmax):
+        esq, gap, alt = 0.50, 0.24, 2.95  # esq: espaço dos grupos de idade (só na primeira)
+        larg = (W - 0.10 - esq - 2 * gap) / 3  # 0,10 pol à direita: o último rótulo do eixo x não sai da folha
+        h_ano = 9 * 1.3 / 72
+        eixos = []
+        for i, ano in enumerate(ANOS):
+            x = esq + i * (larg + gap)
+            fig.text(x, yt, str(ano), transform=fig.dpi_scale_trans, ha="left", va="top", fontsize=9, color=INK)
+            ax = fig.add_axes([x / W, (yt - h_ano - alt) / Hmax, larg / W, alt / Hmax])
+            barras(ax, ano, rotulos_grupos=i == 0)
+            eixos.append(ax)
+        return eixos
+
+    pagina("piramide-etaria-lado-a-lado_ibge-censo_2000-2022_municipal", tit, lado_a_lado, leg_sexo,
+           FONTE_TXT + " Grupos quinquenais, 80+ aberto; barras em % da população total do ano.", 11,
+           "três pirâmides lado a lado, mesma escala horizontal; grupos de idade só na primeira")
+
+    def sobreposta(fig, yt, Hmax):
+        esq, alt = 0.50, 3.60
+        ax = fig.add_axes([esq / W, (yt - alt) / Hmax, (W - esq - 0.10) / W, alt / Hmax])
+        barras(ax, 2022, rotulos_grupos=True)
+        d00 = pir[pir.ano == 2000].set_index(["sexo", "grupo"]).pct_pop_total
+        for vals in ([-d00.get(("Homens", g), 0) for g in GRUPOS], [d00.get(("Mulheres", g), 0) for g in GRUPOS]):
+            xs, ys = [], []
+            for yi, v in zip(y, vals):
+                xs += [v, v]
+                ys += [yi - 0.5, yi + 0.5]  # contorno em degraus = 2000
+            ax.plot(xs, ys, color=INK, lw=1.2)
+        return [ax]
+
+    pagina("piramide-etaria-sobreposta_ibge-censo_2000-2022_municipal", "Pirâmide etária sobreposta: 2000 (contorno) × 2022 (barras)",
+           sobreposta, [Patch(color=AZUL, label="Homens 2022"), Patch(color=LARANJA, label="Mulheres 2022"),
+                        plt.Line2D([], [], color=INK, lw=1.2, label="2000 (contorno)")], FONTE_TXT, 12,
+           "pirâmide 2022 em barras com contorno de 2000, mesma escala")
+    return feitos
 
 
 def _idade_num(rotulo: str) -> int | None:
@@ -85,6 +214,7 @@ def mediana(idades: pd.Series, pops: pd.Series) -> float:
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--codigo-ibge", default=c.CODIGO_IBGE_DEFAULT)
+    p.add_argument("--layout", default="lateral", choices=lm.LAYOUTS, help="lateral (padrão: tabelas e figuras atuais) ou a4 (só as pirâmides A4)")
     a = p.parse_args()
     cod = a.codigo_ibge
     c.garantir_pastas()
@@ -241,6 +371,11 @@ def main() -> None:
         "domicilios_ibge-censo_2000-2022_municipal.csv": (dom, "Domicílios particulares permanentes ocupados, moradores, moradores por domicílio, domicílios com um morador", "SIDRA 185, 3451, 4712; agregados por setor quando indicado"),
         "conferencia-totais_ibge-censo_2000-2022_municipal.csv": (conf, "Conferência dos totais: SIDRA × soma dos setores × soma das idades × soma dos distritos", "SIDRA e agregados por setor de cada censo"),
     }
+    if a.layout == "a4":  # edição A4: só as duas pirâmides, a partir das tabelas calculadas em memória
+        plt.rcParams.update({"font.family": "DejaVu Sans", "axes.edgecolor": "#c3c2b7", "axes.labelcolor": INK2,
+                             "xtick.color": INK2, "ytick.color": INK2})
+        piramides_a4(pir, float(np.ceil(pir.pct_pop_total.max() + 0.5)), cod, fonte_geral)
+        return
     for nome, (df, desc, fonte) in saidas.items():
         caminho = c.TABELAS / nome
         df.to_csv(caminho, index=False)
