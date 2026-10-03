@@ -31,8 +31,13 @@ Rodada 03: a área de água (OSM) é desenhada por cima dos hexágonos e o
 recorte da área de maior ganho é apertado nas quadras com endereços. Malha viária de fundo: OpenStreetMap (camada já existente no
 repositório), em cinza claro, só como referência visual.
 
+Rodada 10: --layout a4 grava só a edição A4 dos mapas (docs/dinamica_populacional/
+mapas_a4/; legenda abaixo do mapa, 16 cm, 300 dpi), com os mapas de mapas_v2/
+como origem; a tabela de qualidade não é regravada.
+
 Uso:
   python scripts/processamento/dinamica_populacional_cnefe_mapas.py --codigo-ibge 4322400 --nome-rio "rio Uruguai"
+  python scripts/processamento/dinamica_populacional_cnefe_mapas.py --codigo-ibge 4322400 --layout a4
 """
 
 from __future__ import annotations
@@ -56,6 +61,7 @@ from shapely.geometry import Polygon, box  # noqa: E402
 
 import dinamica_populacional_comum as c  # noqa: E402
 from dinamica_populacional_mapas import AGUA, INK, MUTED, SEQ, Base  # noqa: E402
+from layout_mapa import LAYOUTS, LayoutA4, finalizar_a4, pasta_a4  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -71,6 +77,8 @@ VIA, PONTO = "#c9c8c1", "#1f3a5f"
 DESTAQUE = "#762a83"  # contorno da área comparável em destaque (roxo; distinto do limite municipal)
 NIVEL_CORES = {"1": "#2166ac", "2": "#e08214", "3-5": "#b2182b"}  # azul / laranja / vermelho (legível p/ daltônicos)
 FONTE = "Fonte: IBGE — CNEFE do Censo 2022 (espécie 1, domicílio particular); malha de setores 2022."
+LAYOUT = "lateral"  # --layout (rodada 10)
+METODO_A4 = "Um ponto por endereço, sem número de moradores."
 
 
 def mil(n) -> str:
@@ -197,7 +205,15 @@ class Fundo:
                                   Line2D([], [], color=INK, lw=1, label="limite municipal")]
 
 
-def salvar(fig, ax, nome, titulo, sub, hand, leg_tit, meta, nota=""):
+def salvar(fig, ax, nome, titulo, sub, hand, leg_tit, meta, nota="", leg_a4=None, sub_a4=None):
+    if LAYOUT == "a4":
+        # leg_a4 = (título da legenda em uma linha, complemento para a linha de método), quando o título lateral é longo
+        tit_a4, compl = leg_a4 if leg_a4 else (leg_tit.replace("\n", " "), "")
+        origem = MAPAS_V2 / f"{nome}.png"
+        finalizar_a4(fig._layout_a4, f"{titulo}\n{sub_a4 or sub}", hand, tit_a4, FONTE + nota, pasta_a4(MAPAS_V2) / origem.name, origem=origem,
+                     metodo=(METODO_A4 + (" " + compl if compl else "")),
+                     texto_retirado="Um ponto por endereço, sem número de moradores. Produto de trabalho — pendente de conferência. EPSG:31981.")
+        return pasta_a4(MAPAS_V2) / origem.name
     ax.legend(handles=hand, title=leg_tit, loc="upper left", bbox_to_anchor=(1.01, 1), frameon=False, fontsize=7.5, title_fontsize=8,
               alignment="left")
     ax.set_title(f"{titulo}\n{sub}", loc="left", fontsize=10, color=INK)
@@ -215,6 +231,10 @@ def salvar(fig, ax, nome, titulo, sub, hand, leg_tit, meta, nota=""):
 
 
 def fig_ext(ext, largura=7.2):
+    if LAYOUT == "a4":  # quadro na largura da folha A4, mesma extensão
+        lay = LayoutA4([[ext]])
+        lay.fig._layout_a4 = lay
+        return lay.fig, lay.eixos[0]
     return plt.subplots(figsize=(largura, largura * (ext[3] - ext[2]) / (ext[1] - ext[0]) + 0.6))
 
 
@@ -222,7 +242,10 @@ def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--codigo-ibge", default=c.CODIGO_IBGE_DEFAULT)
     p.add_argument("--nome-rio", default=c.NOME_RIO_DEFAULT, help="rótulo do curso d'água principal (maior área de contribuição na BHO)")
+    p.add_argument("--layout", default="lateral", choices=LAYOUTS, help="lateral (padrão) ou a4 (só a edição A4 dos mapas)")
     a = p.parse_args()
+    global LAYOUT
+    LAYOUT = a.layout
     MAPAS_V2.mkdir(parents=True, exist_ok=True)
     arq_pts = c.CAMADAS / "enderecos-domicilios_ibge-cnefe_2022_pontos.gpkg"
     if not arq_pts.exists():
@@ -237,10 +260,11 @@ def main() -> None:
     # ----- qualidade
     tab, info = qualidade(pts, base.limite, st, niveis)
     arq_q = c.TABELAS / "enderecos-qualidade_ibge-cnefe_2022_municipal.csv"
-    tab.to_csv(arq_q, index=False)
-    c.gravar_meta(arq_q, codigo_ibge=a.codigo_ibge, crs=c.CRS_PADRAO, status=c.STATUS_CONFERENCIA, ligado_ao_portal=False, script=SCRIPT,
-                  fonte="IBGE — CNEFE Censo 2022 (espécie 1) e dicionário de variáveis do CNEFE 2022", url_dicionario=URL_DIC,
-                  niveis_dicionario=niveis, **info, nota="só contagens agregadas; nenhum endereço é publicado")
+    if LAYOUT == "lateral":  # edição A4 não regrava a tabela
+        tab.to_csv(arq_q, index=False)
+        c.gravar_meta(arq_q, codigo_ibge=a.codigo_ibge, crs=c.CRS_PADRAO, status=c.STATUS_CONFERENCIA, ligado_ao_portal=False, script=SCRIPT,
+                      fonte="IBGE — CNEFE Censo 2022 (espécie 1) e dicionário de variáveis do CNEFE 2022", url_dicionario=URL_DIC,
+                      niveis_dicionario=niveis, **info, nota="só contagens agregadas; nenhum endereço é publicado")
     print(tab.to_string(index=False))
     print(json.dumps(info, ensure_ascii=False, indent=1))
 
@@ -279,7 +303,8 @@ def main() -> None:
             hand.append(Line2D([], [], marker="o", ls="", color=cor, ms=4, label=f"{rot_niv[k]} — {mil(len(s))}"))
         feitos.append(salvar(fig, ax, f"enderecos-nivel-geocodificacao_ibge-cnefe_2022_pontos_{rec}", "Endereços por nível de geocodificação, CNEFE 2022", sub,
                              fundo.comum(hand), "nível de geocodificação\n(dicionário do CNEFE 2022)\n1 = preciso; 2 = posição ajustada;\n3 a 5 = aproximado",
-                             {"recorte": sub, "tema": "nivel_geocodificacao", "niveis": niveis}))
+                             {"recorte": sub, "tema": "nivel_geocodificacao", "niveis": niveis},
+                             leg_a4=("nível de geocodificação (dicionário do CNEFE 2022)", "Nível 1 = preciso; 2 = posição ajustada; 3 a 5 = aproximado.")))
         # (3) hexágonos
         fig, ax = fig_ext(ext)
         cores = SEQ
@@ -360,7 +385,8 @@ def main() -> None:
                          "janela_m": [round(x) for x in ext], **(info_margem if d["chave"] == "rio" else {})})
         feitos.append(salvar(fig, ax, nome, "Endereços de domicílios particulares sobre a malha viária, CNEFE 2022", sub,
                              fundo.comum(hand), "pontos: um por endereço\n(cor = nível de geocodificação)",
-                             {"recorte": sub, "tema": "detalhe", **info_det[-1]}))
+                             {"recorte": sub, "tema": "detalhe", **info_det[-1]},
+                             sub_a4=f"detalhe: margem do {a.nome_rio} junto à área urbana" if d["chave"] == "rio" else None))
     print(json.dumps(info_det, ensure_ascii=False, indent=1, default=str))
     for f in feitos:
         logger.info("Mapa: %s", f.relative_to(c.RAIZ))

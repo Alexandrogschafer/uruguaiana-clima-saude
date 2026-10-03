@@ -38,8 +38,14 @@ Saídas:
   docs/exposicao_inundacao/mapas_v2/*.png (+ .json)   — rodada 04 (mapas/ da rodada 03 fica intacta)
   data/processed/exposicao_inundacao/*.gpkg (+ .json) — pontos (fora do git)
 
+Rodada 10: --layout a4 grava só a edição A4 dos mapas em
+docs/exposicao_inundacao/mapas_a4/ (legenda abaixo do mapa, 16 cm, 300 dpi),
+lendo a camada de pontos já gravada (data/processed/exposicao_inundacao/);
+nada é recalculado e nenhuma tabela, camada ou mapa atual é regravado.
+
 Uso:
   python scripts/processamento/exposicao_inundacao_enderecos.py --codigo-ibge 4322400
+  python scripts/processamento/exposicao_inundacao_enderecos.py --codigo-ibge 4322400 --layout a4
 """
 
 from __future__ import annotations
@@ -63,6 +69,7 @@ from shapely.geometry import box  # noqa: E402
 import dinamica_populacional_comum as c  # noqa: E402
 from dinamica_populacional_cnefe_mapas import Fundo, hexagonos, mil  # noqa: E402
 from dinamica_populacional_mapas import INK, MUTED, SEQ, Base  # noqa: E402
+from layout_mapa import LAYOUTS, LayoutA4, finalizar_a4, fonte_rotulo, pasta_a4  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -99,6 +106,17 @@ FONTES_META = ["SGB — manchas de inundação por cota, serviço hidrologia/BAC
                "IBGE — histórico de formação dos setores 2010–2022 (áreas comparáveis)"]
 
 
+# edição A4 (rodada 10): rodapé só com a fonte (compacta) e uma linha de método; o resto fica no .json
+FONTE_A4 = ("Fonte: SGB (manchas por cota); IBGE (CNEFE e setores, Censo 2022); OpenStreetMap (água, vias); unidades: CNES (Ministério "
+            "da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município (v. 4, 2026).")
+METODO_A4 = "Ponto = endereço, sem número de moradores. Exposição cumulativa (união das manchas de cota ≤ X)."
+RETIRADO_A4 = "Produto de trabalho — pendente de conferência. EPSG:31981."
+
+
+def layout() -> str:
+    return getattr(ARGS, "layout", "lateral")
+
+
 def fmt_cota(k) -> str:
     return f"{int(k)} cm"
 
@@ -123,6 +141,13 @@ def main() -> None:
     cotas, info_cotas = carregar_cotas()
     K = list(cotas.index)
     limite = c.carregar_area_estudo()
+    if layout() == "a4":
+        # edição A4: lê a camada de pontos já calculada (exposição, menor cota, população estimada); nada é regravado
+        pts = gpd.read_file(CAMADAS / "enderecos-exposicao-inundacao_sgb-ibge-cnefe_2022_pontos.gpkg").to_crs(c.CRS_PADRAO)
+        st = gpd.read_file(c.CAMADAS / "populacao-setores_ibge-censo_2022_setor.gpkg")
+        mapas(pts, cotas, K, limite, st)
+        mapas_localizacao_unidades(st)
+        return
 
     pts = gpd.read_file(c.CAMADAS / "enderecos-domicilios_ibge-cnefe_2022_pontos.gpkg",
                         columns=["COD_UNICO_ENDERECO", "setor_2022", "NV_GEO_COORD"]).to_crs(c.CRS_PADRAO)
@@ -309,7 +334,7 @@ COR_SERIE_MANCHA, COR_SERIE_PONTO = "#9e9ac8", "#e66101"  # série por cota: man
 NOTA_RECORTE = "Manchas recortadas no limite municipal só para exibição; o dado original do SGB cobre também a outra margem do rio."
 
 
-def rotular_unidades(ax, u, escala: str, fs: float) -> None:
+def rotular_unidades(ax, u, escala: str, fs: float, fs_nota: float = 6.8) -> None:
     """Rótulos das unidades de saúde com regras anti-sobreposição (rodada 06):
     - município: só as unidades do interior; as 18 urbanas recebem uma nota única;
     - área urbana: ESF 21 e UDM (mesmo endereço, 63 m) num rótulo só, "21 · UDM";
@@ -329,7 +354,7 @@ def rotular_unidades(ax, u, escala: str, fs: float) -> None:
         urb = u[u.zona == "urbana da sede"]
         if len(urb):
             ax.annotate(f"{len(urb)} unidades na área urbana da sede\n(rótulos no mapa da área urbana)", (urb.geometry.x.mean(), urb.geometry.y.mean()),
-                        xytext=(48, 22), textcoords="offset points", fontsize=6.8, color=INK, zorder=11, ha="left",  # à direita: abaixo fica a Prisional
+                        xytext=(48, 22), textcoords="offset points", fontsize=fs_nota, color=INK, zorder=11, ha="left",  # à direita: abaixo fica a Prisional
                         arrowprops=dict(arrowstyle="-", color=INK, lw=0.6),
                         bbox=dict(boxstyle="round,pad=0.25", facecolor="#ffffff", edgecolor="#8f8e88", linewidth=0.5, alpha=0.92))
 
@@ -376,7 +401,12 @@ def mapas_localizacao_unidades(st):
     st = st.copy()
     st["_cl"] = np.searchsorted(lim[1:-1], st.dens_hab_ha.fillna(-1), side="right")
     for rec, ext, esc, fs in (("municipio", base.ext_mun, 20000, 6.5), ("urbano", base.ext_urb, 1000, 7)):
-        fig, ax = plt.subplots(figsize=(7.2, 7.2 * (ext[3] - ext[2]) / (ext[1] - ext[0]) + 0.6))
+        a4 = layout() == "a4"
+        if a4:
+            lay = LayoutA4([[ext]])
+            fig, ax = lay.fig, lay.eixos[0]
+        else:
+            fig, ax = plt.subplots(figsize=(7.2, 7.2 * (ext[3] - ext[2]) / (ext[1] - ext[0]) + 0.6))
         for i, cor in enumerate(claros):
             st[st._cl == i].plot(ax=ax, color=cor, edgecolor="#ffffff", linewidth=0.15, zorder=0.5)
         fundo.desenhar(ax, ext, rec, esc, modo_agua="tematico")
@@ -385,10 +415,19 @@ def mapas_localizacao_unidades(st):
         for classe, (mk, cor) in SIMB_UNIDADE.items():
             x = u[u.classe == classe]
             ax.scatter(x.geometry.x, x.geometry.y, marker=mk, s=TAM_UNIDADE[classe] + 6, color=cor, edgecolor=INK, linewidth=0.9, zorder=9)
-        rotular_unidades(ax, u, rec, fs)
+        rotular_unidades(ax, u, rec, fonte_rotulo(fs, layout()), fs_nota=fonte_rotulo(6.8, layout()))
         hand = [Line2D([], [], marker=mk, ls="", mfc=cor, mec=INK, ms=7, label=f"{classe} ({int((unid.classe == classe).sum())})")
                 for classe, (mk, cor) in SIMB_UNIDADE.items()]
         hand += [Patch(facecolor=cor, edgecolor="#b5b4ad", linewidth=0.3, label=l) for cor, l in zip(claros, rot)]
+        if a4:
+            sub = "município inteiro" if rec == "municipio" else "área urbana da sede"
+            origem = MAPAS / f"unidades-saude-esf-ubs-localizacao_cnes-revisado-v4_2026_pontos_{rec}.png"
+            finalizar_a4(lay, f"Unidades de saúde da atenção primária (ESF e UBS) — localização\n{sub}", fundo.comum(hand),
+                         "unidade de saúde (ESF/UBS) por classe, rótulo = número; densidade 2022 (hab/ha), tons claros",
+                         f"Unidades: {CREDITO_SAUDE}. Densidade: IBGE, Censo 2022 — malha e agregados por setor. Vias e água: OpenStreetMap.",
+                         pasta_a4(MAPAS) / origem.name, origem=origem,
+                         texto_retirado="Mapa para conferência da posição das unidades — pendente de conferência. EPSG:31981.")
+            continue
         ax.legend(handles=fundo.comum(hand), title="unidade de saúde (ESF/UBS), por classe\n— rótulo = número da unidade —\ndensidade 2022 (hab/ha), tons claros",
                   loc="upper left", bbox_to_anchor=(1.01, 1), frameon=False, fontsize=7.5, title_fontsize=8, alignment="left")
         sub = "município inteiro" if rec == "municipio" else "área urbana da sede"
@@ -430,7 +469,10 @@ def mapas(pts, cotas, K, limite, st):
     def rec_fundo(rec):
         return rec if rec != "ribeirinha" else "detalhe"
 
-    def saude(ax, ext, k, fs=6.5):
+    a4 = layout() == "a4"
+    SUB_A4 = {"municipio": "município inteiro", "urbano": "área urbana da sede", "ribeirinha": "faixa ribeirinha da área urbana"}
+
+    def saude(ax, ext, k, fs=6.5, esc_simb=1.0):
         """Todas as unidades ESF/UBS no enquadramento, símbolo por classe, rótulo com o número;
         anel vermelho nas que ficam dentro da mancha (cumulativa) da cota k do mapa."""
         b = box(ext[0], ext[2], ext[1], ext[3])
@@ -438,10 +480,12 @@ def mapas(pts, cotas, K, limite, st):
         dentro = u[u.within(uniao[k])]
         for classe, (mk, cor) in SIMB_UNIDADE.items():
             x = u[u.classe == classe]
-            ax.scatter(x.geometry.x, x.geometry.y, marker=mk, s=TAM_UNIDADE[classe], color=cor, edgecolor=INK, linewidth=0.9, zorder=9)
+            ax.scatter(x.geometry.x, x.geometry.y, marker=mk, s=TAM_UNIDADE[classe] * esc_simb, color=cor, edgecolor=INK,
+                       linewidth=0.9 * min(1, esc_simb ** 0.5), zorder=9)
         if len(dentro):
-            ax.scatter(dentro.geometry.x, dentro.geometry.y, marker="o", s=190, facecolor="none", edgecolor="#d7191c", linewidth=1.8, zorder=9.5)
-        rotular_unidades(ax, u, c.escala_do_mapa(ext), fs)
+            ax.scatter(dentro.geometry.x, dentro.geometry.y, marker="o", s=190 * esc_simb, facecolor="none", edgecolor="#d7191c",
+                       linewidth=1.8 * min(1, esc_simb ** 0.5), zorder=9.5)
+        rotular_unidades(ax, u, c.escala_do_mapa(ext), fonte_rotulo(fs, layout()), fs_nota=fonte_rotulo(6.8, layout()))
         hand = [Line2D([], [], marker=mk, ls="", mfc=cor, mec=INK, ms=6.5, label=f"unidade de saúde (ESF/UBS): {classe}")
                 for classe, (mk, cor) in SIMB_UNIDADE.items() if (u.classe == classe).any()]
         if len(dentro):
@@ -455,7 +499,19 @@ def mapas(pts, cotas, K, limite, st):
         ax.annotate(f"{FONTE_MAPA}\n{NOTA_RECORTE}\nPonto = endereço, sem número de moradores. Exposição cumulativa (união das manchas de cota ≤ X). "
                     "Produto de trabalho — pendente de conferência. EPSG:31981.", xy=(0, -0.015), xycoords="axes fraction", va="top", fontsize=6.3, color=MUTED)
 
-    def salvar(fig, ax, nome, titulo, rec, hand, leg_tit, extra, quadro_k=None):
+    def salvar(fig, ax, nome, titulo, rec, hand, leg_tit, extra, quadro_k=None, leg_a4=None):
+        if a4:  # cota e totais no quadro de notas, abaixo da legenda
+            origem = MAPAS / f"{nome}_{rec}.png"
+            notas = None
+            if quadro_k is not None:
+                e = pts[pts[f"exp_cum_{quadro_k}"]]
+                notas = f"{rot_cota[quadro_k]} · {mil(len(e))} endereços expostos · ≈ {mil(e.pop_est_setor.sum())} pessoas (estimativa)"
+            destino = pasta_a4(MAPAS) / origem.name
+            finalizar_a4(fig._layout_a4, f"{titulo}\n{SUB_A4[rec]}", fundo.comum(hand), leg_a4 or leg_tit.replace("\n", " "), FONTE_A4, destino,
+                         origem=origem, metodo=METODO_A4, notas=notas, texto_retirado=f"{NOTA_RECORTE} {RETIRADO_A4}",
+                         meta_extra={"recorte_completo": sub[rec]})
+            feitos.append(destino)
+            return
         leg = ax.legend(handles=fundo.comum(hand), title=leg_tit, loc="upper left", bbox_to_anchor=(1.01, 1), frameon=False, fontsize=7.5,
                         title_fontsize=8, alignment="left")
         if quadro_k is not None:  # quadro da cota logo abaixo da legenda, medida no desenho (não cobre a legenda nem o mapa)
@@ -473,6 +529,10 @@ def mapas(pts, cotas, K, limite, st):
         feitos.append(caminho)
 
     def fig_ext(ext, largura=7.2):
+        if a4:
+            lay = LayoutA4([[ext]])
+            lay.fig._layout_a4 = lay
+            return lay.fig, lay.eixos[0]
         return plt.subplots(figsize=(largura, largura * (ext[3] - ext[2]) / (ext[1] - ext[0]) + 0.6))
 
     def quadro(ax, k, fs=8, no_titulo=False, y_topo=1.0):
@@ -487,7 +547,7 @@ def mapas(pts, cotas, K, limite, st):
                 ha="left", va="top", fontsize=fs, color=INK, zorder=12, clip_on=False,
                 bbox=dict(boxstyle="round,pad=0.4", facecolor="#ffffff", edgecolor="#8f8e88", linewidth=0.6))
 
-    def desenhar_serie(ax, k, rec, ms_fora, ms_exp):
+    def desenhar_serie(ax, k, rec, ms_fora, ms_exp, esc_simb=1.0):
         ext = exts[rec]
         plot_geom(ax, disp[k], color=COR_SERIE_MANCHA, alpha=0.45, edgecolor="none", zorder=1.5)
         plot_geom(ax, disp[k].boundary, color="#54278f", linewidth=0.5, zorder=1.6)
@@ -496,7 +556,7 @@ def mapas(pts, cotas, K, limite, st):
         ax.scatter(fora.geometry.x, fora.geometry.y, s=ms_fora, color="#bdbcb5", alpha=0.6, linewidths=0, zorder=5)
         ax.scatter(e.geometry.x, e.geometry.y, s=ms_exp, color=COR_SERIE_PONTO, edgecolor="#3a1500", linewidths=0.25, zorder=7)
         fundo.desenhar(ax, ext, rec_fundo(rec), esc[rec], modo_agua="enderecos", escala_pos=ESCALA_POS[rec])
-        return saude(ax, ext, k)
+        return saude(ax, ext, k, esc_simb=esc_simb)
 
     hand_serie = [Patch(facecolor=COR_SERIE_MANCHA, alpha=0.45, edgecolor="#54278f", linewidth=0.5, label="mancha de inundação até a cota\n(união das cotas ≤ X)"),
                   Line2D([], [], marker="o", ls="", mfc=COR_SERIE_PONTO, mec="#3a1500", ms=5, label="endereço exposto"),
@@ -512,6 +572,22 @@ def mapas(pts, cotas, K, limite, st):
             salvar(fig, ax, f"enderecos-expostos-cota{k}_sgb-ibge-cnefe_2022_pontos", f"Endereços expostos à inundação até a cota {fmt_cota(k)}", rec,
                    hand_serie + hs, "mesma legenda e enquadramento\nnos 4 mapas da série", {"tema": "serie_por_cota", "cota_cm": k,
                    "enderecos_expostos": int(pts[f"exp_cum_{k}"].sum()), "pop_estimada": round(float(pts.loc[pts[f"exp_cum_{k}"], "pop_est_setor"].sum()), 1)}, quadro_k=k)
+        if a4:
+            # painel A4: 2 x 2 quadros de meia largura (≈ 0,57 do quadro lateral): pontos e símbolos reduzidos na mesma proporção
+            lay = LayoutA4([[ext, ext], [ext, ext]])
+            hs_painel = []
+            for ax, k in zip(lay.eixos, K):
+                hs = desenhar_serie(ax, k, rec, ms_fora * 0.7 * 0.45, ms_exp * 0.6 * 0.45, esc_simb=0.5)
+                if len(hs) > len(hs_painel):
+                    hs_painel = hs
+                quadro(ax, k, fs=8, no_titulo=True)
+            origem = MAPAS / f"enderecos-expostos-4-cotas-painel_sgb-ibge-cnefe_2022_pontos_{rec}.png"
+            destino = pasta_a4(MAPAS) / origem.name
+            finalizar_a4(lay, f"Endereços expostos à inundação, cota a cota\n{SUB_A4[rec]}", fundo.comum(hand_serie + hs_painel),
+                         "mesma legenda e enquadramento nos 4 quadros", FONTE_A4, destino, origem=origem, metodo=METODO_A4,
+                         texto_retirado=f"{NOTA_RECORTE} {RETIRADO_A4}", meta_extra={"recorte_completo": sub[rec]})
+            feitos.append(destino)
+            continue
         h = (ext[3] - ext[2]) / (ext[1] - ext[0])
         # layout explícito (o tight_layout cortava os quadros da linha de cima no recorte urbano):
         # 2 x 2 mapas de largura fixa, faixa de legenda e faixa de rodapé com altura própria (polegadas)
@@ -595,7 +671,8 @@ def mapas(pts, cotas, K, limite, st):
         hs = saude(ax, ext, K[-1])
         hand = hand_manchas + [Line2D([], [], marker="o", ls="", color="#3a3a3a", alpha=0.6, ms=3, label="endereço de domicílio particular (CNEFE 2022)")] + hs
         salvar(fig, ax, "manchas-inundacao-enderecos_sgb-ibge-cnefe_2022_pontos", "Manchas de inundação por cota do rio e endereços residenciais", rec, hand,
-               "mancha de inundação por cota (SGB)\nescura = cota mais baixa (cheia mais frequente)", {"tema": "manchas_e_enderecos"})
+               "mancha de inundação por cota (SGB)\nescura = cota mais baixa (cheia mais frequente)", {"tema": "manchas_e_enderecos"},
+               leg_a4="mancha de inundação por cota (SGB); escura = cota mais baixa (cheia mais frequente)")
     for f in feitos:
         logger.info("Mapa: %s", f.relative_to(c.RAIZ))
 
@@ -604,5 +681,6 @@ if __name__ == "__main__":
     _p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     _p.add_argument("--codigo-ibge", default=c.CODIGO_IBGE_DEFAULT)
     _p.add_argument("--nome-rio", default=c.NOME_RIO_DEFAULT, help="rótulo do rio principal na legenda")
+    _p.add_argument("--layout", default="lateral", choices=LAYOUTS, help="lateral (padrão, recalcula e grava tudo) ou a4 (só a edição A4 dos mapas)")
     ARGS = _p.parse_args()
     main()
