@@ -1,6 +1,6 @@
 {
   "produto": "acessibilidade-base-por-unidade_osm-cnes-ibge_2022_unidade.csv",
-  "data_processamento": "2026-10-02T22:16:39+00:00",
+  "data_processamento": "2026-10-03T01:38:35+00:00",
   "codigo_ibge": "4322400",
   "crs": "EPSG:31981",
   "status": "pendente de conferência",
@@ -29,6 +29,6 @@
     ],
     "n_criticos": 15
   },
-  "descricao": "endereços e população estimada que cada unidade recebe como 'mais próxima pela rede' (sem inundação); UDM e Prisional não são destino",
+  "descricao": "endereços e população estimada que cada unidade recebe como 'mais próxima pela rede' (sem inundação); a Prisional (sem classe) não é destino",
   "nota": "NÃO é o território oficial nem a população adscrita da equipe"
 }

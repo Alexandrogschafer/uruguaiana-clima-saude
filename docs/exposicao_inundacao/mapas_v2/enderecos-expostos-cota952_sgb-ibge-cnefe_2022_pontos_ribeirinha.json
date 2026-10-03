@@ -1,6 +1,6 @@
 {
   "produto": "enderecos-expostos-cota952_sgb-ibge-cnefe_2022_pontos_ribeirinha.png",
-  "data_processamento": "2026-10-02T21:30:11+00:00",
+  "data_processamento": "2026-10-03T01:38:12+00:00",
   "codigo_ibge": "4322400",
   "crs": "EPSG:31981",
   "status": "pendente de conferência",
@@ -22,7 +22,7 @@
   "definicao_exposicao": "cumulativa (união das manchas de cota <= X)",
   "manchas_exibicao": "Manchas recortadas no limite municipal só para exibição; o dado original do SGB cobre também a outra margem do rio.",
   "area_de_agua": "OpenStreetMap, só apresentação; outras águas pela regra c.AGUA_EXIBICAO['enderecos']",
-  "unidades_saude": "23 unidades ESF/UBS (CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026); todas as que caem no enquadramento, com destaque para as que ficam dentro da mancha da cota do mapa",
+  "unidades_saude": "22 unidades ESF/UBS (CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026); todas as que caem no enquadramento, com destaque para as que ficam dentro da mancha da cota do mapa",
   "tema": "serie_por_cota",
   "cota_cm": 952,
   "enderecos_expostos": 85,

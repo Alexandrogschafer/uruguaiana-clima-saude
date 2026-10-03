@@ -4,7 +4,7 @@ de saúde (ESF/UBS) dentro da mancha, num único JSON para o painel do slider de
 inundação do geoportal.
 
 - Tempo de retorno: atributo TR da própria camada de cotas do SGB.
-- Unidades de saúde: as 23 unidades da atenção primária (ESF e UBS) do
+- Unidades de saúde: as 22 unidades da atenção primária (ESF e UBS) do
   cadastro revisado pela equipe do projeto (versão 4, 2026). Definição
   CUMULATIVA: unidade "na mancha" da cota X = dentro da união das manchas de
   cota <= X (as manchas do SGB não são perfeitamente aninhadas). Geometria

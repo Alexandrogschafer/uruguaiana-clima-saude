@@ -1,6 +1,6 @@
 {
   "produto": "unidades-saude-acessos-na-mancha_osm-sgb-cnes_2026_unidade.csv",
-  "data_processamento": "2026-10-02T22:16:41+00:00",
+  "data_processamento": "2026-10-03T01:38:37+00:00",
   "codigo_ibge": "4322400",
   "crs": "EPSG:31981",
   "status": "pendente de conferência",
@@ -29,5 +29,5 @@
     ],
     "n_criticos": 15
   },
-  "descricao": "para cada uma das 23 unidades: trechos de via a até 200 m pela rede a partir do ponto e quantos ficam interrompidos (limiar 5 m) em cada cota"
+  "descricao": "para cada uma das 22 unidades: trechos de via a até 200 m pela rede a partir do ponto e quantos ficam interrompidos (limiar 5 m) em cada cota"
 }

@@ -1,6 +1,6 @@
 {
   "produto": "unidades-saude-esf-ubs-localizacao_cnes-revisado-v4_2026_pontos_municipio.png",
-  "data_processamento": "2026-10-02T21:30:21+00:00",
+  "data_processamento": "2026-10-03T01:38:24+00:00",
   "codigo_ibge": "4322400",
   "crs": "EPSG:31981",
   "status": "pendente de conferência",
@@ -15,6 +15,6 @@
   "recorte": "município inteiro",
   "tema": "localizacao_unidades_saude",
   "credito_unidades": "CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026",
-  "unidades_no_enquadramento": 23,
+  "unidades_no_enquadramento": 22,
   "fundo": "densidade demográfica por setor 2022 em tons claros"
 }

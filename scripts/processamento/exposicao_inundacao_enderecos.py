@@ -85,10 +85,10 @@ ARQ_UNIDADES = c.RAIZ / "data" / "processed" / "saude" / "unidades-saude-esf-ubs
 CREDITO_SAUDE = ("CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos "
                  "profissionais de saúde do município — versão 4, 2026")
 # símbolo por classe: forma + cor (a forma garante a leitura em tons de cinza e para daltônicos)
-SIMB_UNIDADE = {"ESF": ("o", "#1b7837"), "UBS": ("s", "#2166ac"), "a confirmar": ("D", "#f2c14e"), "sem classe": ("X", "#bdbdbd")}
-TAM_UNIDADE = {"ESF": 46, "UBS": 46, "a confirmar": 30, "sem classe": 46}  # losango menor: a ESF 21 fica a 63 m da UDM
-# deslocamento do rótulo (pontos): ESF 21 e UDM têm o mesmo endereço e quase se sobrepõem
-OFFSET_ROTULO = {"21": (-15, 4), "UDM": (-30, -12)}
+SIMB_UNIDADE = {"ESF": ("o", "#1b7837"), "UBS": ("s", "#2166ac"), "sem classe": ("X", "#bdbdbd")}
+TAM_UNIDADE = {"ESF": 46, "UBS": 46, "sem classe": 46}
+# deslocamento do rótulo (pontos); vazio = padrão (4, 3) à direita e acima do símbolo
+OFFSET_ROTULO: dict[str, tuple[int, int]] = {}
 # barra de escala no alto à esquerda (sobre o rio) nos recortes, onde o canto inferior esquerdo tem unidades
 ESCALA_POS = {"municipio": (0.05, 0.04), "urbano": (0.05, 0.04), "ribeirinha": (0.05, 0.93)}
 # cotas de referência dos hexágonos: 1205 cm (onde a exposição salta: ~10x a de 952 cm) e 1252 cm (maior mancha);
@@ -336,18 +336,12 @@ NOTA_RECORTE = "Manchas recortadas no limite municipal só para exibição; o da
 
 def rotular_unidades(ax, u, escala: str, fs: float, fs_nota: float = 6.8) -> None:
     """Rótulos das unidades de saúde com regras anti-sobreposição (rodada 06):
-    - município: só as unidades do interior; as 18 urbanas recebem uma nota única;
-    - área urbana: ESF 21 e UDM (mesmo endereço, 63 m) num rótulo só, "21 · UDM";
-    - recortes de detalhe: cada unidade com o seu rótulo (21 e UDM com deslocamentos próprios)."""
+    - município: só as unidades do interior; as urbanas recebem uma nota única;
+    - área urbana e recortes de detalhe: cada unidade com o seu rótulo."""
     halo = [pe.withStroke(linewidth=2.2, foreground="#ffffff")]
     alvo = u if escala != "municipio" else u[u.zona == "interior"]
-    juntar = escala == "urbano" and {"21", "UDM"} <= set(alvo.rotulo)
     for r in alvo.itertuples():
-        if juntar and r.rotulo == "UDM":
-            continue
         txt, off = r.rotulo, OFFSET_ROTULO.get(r.rotulo, (4, 3))
-        if juntar and r.rotulo == "21":
-            txt, off = "21 · UDM", (-44, 5)
         ax.annotate(txt, (r.geometry.x, r.geometry.y), xytext=off, textcoords="offset points", fontsize=fs, fontweight="bold",
                     color=INK, zorder=11, path_effects=halo)
     if escala == "municipio":
@@ -391,7 +385,7 @@ def unidades_e_cotas(cotas, K):
 
 
 def mapas_localizacao_unidades(st):
-    """Rodada 06, Tarefa 4b: localização das 23 unidades sobre a densidade de 2022 em tons claros (para conferência da posição)."""
+    """Rodada 06, Tarefa 4b: localização das unidades sobre a densidade de 2022 em tons claros (para conferência da posição)."""
     base = Base(ARGS.codigo_ibge, agua=True, nome_rio=ARGS.nome_rio, modo_agua="tematico")
     fundo = Fundo(base)
     unid = gpd.read_file(ARQ_UNIDADES).to_crs(c.CRS_PADRAO)
@@ -525,7 +519,7 @@ def mapas(pts, cotas, K, limite, st):
         plt.close(fig)
         meta(caminho, recorte=sub[rec], janela_m=[round(v) for v in exts[rec]], definicao_exposicao="cumulativa (união das manchas de cota <= X)",
              manchas_exibicao=NOTA_RECORTE, area_de_agua="OpenStreetMap, só apresentação; outras águas pela regra c.AGUA_EXIBICAO['enderecos']",
-             unidades_saude=f"23 unidades ESF/UBS ({CREDITO_SAUDE}); todas as que caem no enquadramento, com destaque para as que ficam dentro da mancha da cota do mapa", **extra)
+             unidades_saude=f"{len(unid)} unidades ESF/UBS ({CREDITO_SAUDE}); todas as que caem no enquadramento, com destaque para as que ficam dentro da mancha da cota do mapa", **extra)
         feitos.append(caminho)
 
     def fig_ext(ext, largura=7.2):
