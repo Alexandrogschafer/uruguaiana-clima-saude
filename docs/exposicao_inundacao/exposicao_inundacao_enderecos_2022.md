@@ -16,7 +16,7 @@ Cada tabela e mapa tem um `.json` irmão.
 
 | Cota (cm) | Tempo de retorno (TR) | Endereços expostos | População estimada |
 |---:|---:|---:|---:|
-| 833 | 1,3 ano | 4 | 12 |
+| 833 | 1,3 ano | 4 | 11 |
 | 952 | 1,9 ano | 85 | 236 |
 | 1205 | 9 anos | 891 | 2.539 |
 | 1252 | 13,4 anos | 1.245 | 3.461 (3,0 % do município) |
@@ -52,9 +52,9 @@ As manchas cobrem só o trecho do rio junto à cidade. Incluem o próprio leito 
 
 | Cota | Endereços | Precisos (nív. 1–2) | Aproximados (nív. 3–5) | Em coordenada repetida (locais) | Menor cota é esta | Pop. estimada (setor) | Pop. estimada (grade) |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| 833 cm | 4 | 3 | 1 | 2 (1) | 4 | 12 | 11 |
+| 833 cm | 4 | 3 | 1 | 2 (1) | 4 | 11 | 11 |
 | 952 cm | 85 | 78 | 7 | 20 (6) | 81 | 236 | 265 |
-| 1205 cm | 891 | 881 | 10 | 100 (41) | 806 | 2.539 | 2.579 |
+| 1205 cm | 891 | 881 | 10 | 100 (41) | 806 | 2.539 | 2.578 |
 | 1252 cm | 1.245 | 1.233 | 12 | 130 (55) | 354 | 3.461 | 3.543 |
 
 A repartição pela grade dá valores de 1,5 % a 12 % maiores nas três cotas mais altas, a mesma ordem de grandeza. Tabela: [`enderecos-populacao-por-cota`](tabelas/enderecos-populacao-por-cota_sgb-ibge-cnefe_2022_municipal.csv). A versão anterior, que tratava cada cota por si, foi guardada com o sufixo `_nao-cumulativo`.
