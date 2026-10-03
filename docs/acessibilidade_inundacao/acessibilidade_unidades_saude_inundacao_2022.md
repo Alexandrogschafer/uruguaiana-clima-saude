@@ -55,12 +55,12 @@ estimada (endereços entre parênteses):
 
 | Cota (TR) | Exposto | Isolado | Com desvio | Desvio > 500 m |
 |---|---|---|---|---|
-| 833 cm (1,3 anos) | 12 (4) | 0 | 0 | 0 |
+| 833 cm (1,3 anos) | 11 (4) | 0 | 0 | 0 |
 | 952 cm (1,9 anos) | 236 (85) | 126 (49) | 678 (274) | 44 (27) |
 | 1205 cm (9 anos) | 2.539 (891) | 361 (141) | 2.311 (924) | 53 (31) |
 | 1252 cm (13,4 anos) | 3.461 (1.245) | 486 (189) | 3.769 (1.468) | 44 (27) |
 
-Na maior cota, cerca de 4.255 pessoas (estimativa) fora da mancha passam a ficar
+Na maior cota, cerca de 4.256 pessoas (estimativa) fora da mancha passam a ficar
 isoladas ou com o caminho mais longo, além das 3.461 que moram dentro dela. Quase todo o
 desvio é curto: na cota 1252, 87 % das pessoas com desvio dão uma volta de até 250 m. A
 exceção é um grupo de 27 endereços (≈ 44 pessoas) no extremo leste da área urbana, em

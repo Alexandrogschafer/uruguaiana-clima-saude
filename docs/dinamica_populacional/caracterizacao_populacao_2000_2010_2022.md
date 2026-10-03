@@ -36,13 +36,13 @@ Todos os totais foram conferidos com o SIDRA: a soma dos setores, a soma das ida
 | Indicador | 2000 | 2010 | 2022 |
 |---|---:|---:|---:|
 | % 0–14 anos | 30,2 | 26,0 | 20,6 |
-| % 15–59 anos | 61,5 | 63,1 | 62,2 |
+| % 15–59 anos | 61,5 | 63,0 | 62,2 |
 | % 60 anos ou mais | 8,3 | 10,9 | 17,3 |
 | % 80 anos ou mais | 1,0 | 1,4 | 2,2 |
 | Índice de envelhecimento (60+ por 100 de 0–14) | 27,6 | 42,0 | 83,9 |
 | Razão de dependência total (por 100 de 15–59) | 62,5 | 58,6 | 60,8 |
 | — jovem | 49,0 | 41,3 | 33,1 |
-| — idosa | 13,5 | 17,3 | 27,8 |
+| — idosa | 13,5 | 17,3 | 27,7 |
 | Razão de sexos (homens por 100 mulheres) | 97,8 | 94,7 | 92,9 |
 | Idade mediana (anos) | 25,7 | 29,4 | 35,4 |
 
