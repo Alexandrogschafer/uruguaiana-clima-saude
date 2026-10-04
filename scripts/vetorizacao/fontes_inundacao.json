@@ -1,0 +1,73 @@
+{
+  "descricao": "Fontes de mancha de inundação e seus cenários, para a comparação entre fontes (scripts/vetorizacao/comparar_fontes_inundacao.py) e para a exposição por endereços (scripts/processamento/exposicao_inundacao_cenarios.py). Caminhos relativos à raiz do repositório.",
+  "dominio": {
+    "nome_saida": "dominio-comum_fontes-inundacao_2026_vetorial",
+    "descricao": "terra coberta pelo modelo de terreno da fonte V004 (sem o leito), cortada pelos quadros dos mapas das fontes listadas e pelo município",
+    "base": {"fonte": "V004", "camada": "faixas", "atributo": "classe", "excluir": ["leito"]},
+    "quadros": ["V001", "V002", "V003"]
+  },
+  "fontes": [
+    {
+      "id": "SGB", "nome_curto": "sgb", "tipo": "observada (vetor oficial)", "situacao": "oficial", "na_comparacao": true,
+      "arquivo": "data/raw/vetor/cotas-inundacao_sgb_atual_vetorial.gpkg", "camada": "cotas_inundacao", "atributo": "cota_cm", "atributo_tr": "tr_anos",
+      "cenarios": [
+        {"valor": 833, "rotulo": "833 cm", "cota_cm": 833},
+        {"valor": 952, "rotulo": "952 cm", "cota_cm": 952},
+        {"valor": 1205, "rotulo": "1205 cm", "cota_cm": 1205},
+        {"valor": 1252, "rotulo": "1252 cm", "cota_cm": 1252}
+      ]
+    },
+    {
+      "id": "V001", "nome_curto": "defesacivil-rs-rhama", "tipo": "modelo hidráulico", "situacao": "conferido", "na_comparacao": true,
+      "arquivo": "data/processed/vetorizado/manchas-inundacao_defesacivil-rs-rhama_2025_tr2-1000_extraido-de-figura.gpkg",
+      "camada": "manchas_cumulativas", "atributo": "tr_anos", "quadro": "quadro_do_mapa",
+      "cenarios": [
+        {"valor": 2, "rotulo": "TR 2", "tr_anos": 2}, {"valor": 5, "rotulo": "TR 5", "tr_anos": 5},
+        {"valor": 10, "rotulo": "TR 10", "tr_anos": 10}, {"valor": 50, "rotulo": "TR 50", "tr_anos": 50},
+        {"valor": 100, "rotulo": "TR 100", "tr_anos": 100}, {"valor": 200, "rotulo": "TR 200", "tr_anos": 200},
+        {"valor": 500, "rotulo": "TR 500", "tr_anos": 500}, {"valor": 1000, "rotulo": "TR 1000", "tr_anos": 1000}
+      ]
+    },
+    {
+      "id": "V002", "nome_curto": "aimon-ufsm-perigo", "tipo": "cota sobre modelo de terreno", "situacao": "extraído", "na_comparacao": true,
+      "arquivo": "data/processed/vetorizado/perigo-inundacao_aimon-ufsm_2017_tr2-100_extraido-de-figura.gpkg",
+      "camada": "manchas_cumulativas", "atributo": "tr_anos", "quadro": "quadro_do_mapa",
+      "cenarios": [
+        {"valor": 2, "rotulo": "TR 2", "tr_anos": 2, "altitude_m": 48.99}, {"valor": 5, "rotulo": "TR 5", "tr_anos": 5, "altitude_m": 50.07},
+        {"valor": 25, "rotulo": "TR 25", "tr_anos": 25, "altitude_m": 51.95}, {"valor": 100, "rotulo": "TR 100", "tr_anos": 100, "altitude_m": 53.58}
+      ]
+    },
+    {
+      "id": "V003", "nome_curto": "aimon-ufsm-cheia-2014", "tipo": "observada", "situacao": "extraído", "na_comparacao": true,
+      "arquivo": "data/processed/vetorizado/mancha-inundacao-observada_aimon-ufsm_2014-07-07_extraido-de-figura.gpkg",
+      "camada": "manchas_cumulativas", "atributo": "classe", "quadro": "quadro_do_mapa",
+      "cenarios": [{"valor": "cheia de 07/07/2014", "rotulo": "cheia de 07/07/2014"}]
+    },
+    {
+      "id": "V004", "nome_curto": "aimon-ufsm-suscetibilidade", "tipo": "cota sobre modelo de terreno", "situacao": "extraído", "na_comparacao": true,
+      "arquivo": "data/processed/vetorizado/suscetibilidade-inundacao_aimon-ufsm_2017_cota-53-02m_extraido-de-figura.gpkg",
+      "camada": "manchas_cumulativas", "atributo": "classe", "quadro": "quadro_do_mapa",
+      "cenarios": [{"valor": "suscetível (até 53,02 m)", "rotulo": "53,02 m (cheia de 19/07/1983)", "altitude_m": 53.02}]
+    },
+    {
+      "id": "V005", "nome_curto": "righi-ufrgs-zoneamento", "tipo": "zoneamento de risco", "situacao": "extraído", "na_comparacao": false,
+      "arquivo": "data/processed/vetorizado/zoneamento-risco-inundacao_righi-ufrgs_2016_extraido-de-figura.gpkg",
+      "camada": "zonas_cumulativas", "atributo": "classe", "quadro": "quadro_do_mapa",
+      "cenarios": [
+        {"valor": "risco alto", "rotulo": "risco alto"}, {"valor": "risco médio", "rotulo": "risco alto + médio"},
+        {"valor": "risco baixo", "rotulo": "risco alto + médio + baixo"}
+      ]
+    }
+  ],
+  "pares_destacados": [
+    ["SGB 1252 cm", "V003 cheia de 07/07/2014"], ["SGB 952 cm", "V001 TR 2"], ["SGB 1205 cm", "V001 TR 10"], ["SGB 1252 cm", "V002 TR 25"],
+    ["V002 TR 100", "V001 TR 100"],
+    ["V004 53,02 m (cheia de 19/07/1983)", "V001 TR 2"], ["V004 53,02 m (cheia de 19/07/1983)", "V001 TR 5"],
+    ["V004 53,02 m (cheia de 19/07/1983)", "V001 TR 10"], ["V004 53,02 m (cheia de 19/07/1983)", "V001 TR 50"],
+    ["V004 53,02 m (cheia de 19/07/1983)", "V001 TR 100"], ["V004 53,02 m (cheia de 19/07/1983)", "V001 TR 200"],
+    ["V004 53,02 m (cheia de 19/07/1983)", "V001 TR 500"], ["V004 53,02 m (cheia de 19/07/1983)", "V001 TR 1000"]
+  ],
+  "figura_contornos": ["SGB 1252 cm", "V003 cheia de 07/07/2014", "V002 TR 100", "V004 53,02 m (cheia de 19/07/1983)", "V001 TR 10", "V001 TR 100"],
+  "cruzamento_enderecos": {"linhas": "SGB", "colunas": "V001"},
+  "observado_x_calculado": {"observado": "V003 cheia de 07/07/2014", "calculados": ["V001 TR 10", "V002 TR 25"]}
+}
