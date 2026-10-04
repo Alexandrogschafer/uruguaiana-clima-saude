@@ -1,0 +1,22 @@
+{
+  "produto": "piramides-etarias_ibge-censo_1970-2022_municipal.png",
+  "data_processamento": "2026-10-03T14:18:24+00:00",
+  "layout": "atual",
+  "largura_px": 1800,
+  "altura_px": 1959,
+  "dpi": 200,
+  "codigo_ibge": "4322400",
+  "codigos_desmembrados": [
+    "4301875"
+  ],
+  "script": "scripts/processamento/dinamica_populacional_serie_longa.py",
+  "status": "pendente de conferência",
+  "descricao": "6 pirâmides em 3 colunas, mesma escala horizontal; grupos de idade só na primeira coluna; série como publicada",
+  "fonte": "tabela piramide-etaria_ibge-censo_1970-2022_municipal.csv",
+  "formatos": [
+    "png",
+    "svg"
+  ],
+  "rotulos_sobrepostos": 0,
+  "rotulos_sem_posicao_livre": 0
+}

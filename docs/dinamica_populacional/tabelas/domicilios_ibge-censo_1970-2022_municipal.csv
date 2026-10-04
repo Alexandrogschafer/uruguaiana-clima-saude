@@ -1,0 +1,7 @@
+ano,conceito,domicilios_publicado,moradores_publicado,moradores_por_domicilio_publicado,domicilios_urbanos_publicado,domicilios_rurais_publicado,dom_1_morador_publicado,pct_dom_1_morador_publicado,domicilios_constante,moradores_constante,moradores_por_domicilio_constante,fonte_domicilios,fonte_moradores,fonte_1_morador
+1970,domicílios particulares permanentes (ocupados),14890.0,,,12578.0,2312.0,,,14890.0,,,SIDRA 206,sem tabela municipal na API,fora desta tabela (ver a tabela de 2000–2022) ou sem tabela municipal na API
+1980,domicílios particulares permanentes (ocupados),20577.0,,,18030.0,2547.0,,,20577.0,,,SIDRA 206,sem tabela municipal na API,fora desta tabela (ver a tabela de 2000–2022) ou sem tabela municipal na API
+1991,domicílios particulares permanentes (ocupados),29849.0,116365.0,3.898456,26464.0,3385.0,2578.0,8.636805,29849.0,116365.0,3.898456,SIDRA 185,SIDRA 207,SIDRA 185
+2000,domicílios particulares permanentes (ocupados),34558.0,125824.0,3.640951,,,3735.0,10.807917,35587.0,129634.0,3.642735,SIDRA 185,SIDRA 207,SIDRA 185
+2010,domicílios particulares permanentes (ocupados),37422.0,124321.0,3.322137,,,4863.0,12.99503,38634.0,128292.0,3.320702,SIDRA 185,SIDRA 3451,SIDRA 185
+2022,domicílios particulares permanentes ocupados,41707.0,116405.0,2.791018,,,,,43169.0,120636.0,2.794505,SIDRA 4712,SIDRA 4712,fora desta tabela (ver a tabela de 2000–2022) ou sem tabela municipal na API

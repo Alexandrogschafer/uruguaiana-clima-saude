@@ -1,0 +1,17 @@
+{
+  "produto": "populacao-sexo-situacao_ibge-censo_1970-2022_municipal.csv",
+  "data_processamento": "2026-10-03T14:18:22+00:00",
+  "descricao": "População residente total, urbana, rural, homens e mulheres; % urbana; razão de sexos — duas séries lado a lado; séries: 'publicado' = município com o território de cada Censo; 'constante' = município somado aos desmembrados nos Censos em que estes aparecem separados (coluna desmembrados_somados); nos demais as duas séries coincidem",
+  "fonte": "SIDRA 202 (1970–2010), 9923 e 9514 (2022)",
+  "codigo_ibge": "4322400",
+  "codigos_desmembrados": [
+    "4301875"
+  ],
+  "script": "scripts/processamento/dinamica_populacional_serie_longa.py",
+  "status": "pendente de conferência",
+  "municipio": "Uruguaiana (RS)",
+  "desmembrados": [
+    "Barra do Quaraí (RS)"
+  ],
+  "transformacao": "seleção das categorias da tabela, soma e razões; indisponível = ausente, nunca zero; valores sem arredondar (6 casas): toda exibição arredonda a partir deles"
+}

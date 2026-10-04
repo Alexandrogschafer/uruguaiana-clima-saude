@@ -1,0 +1,22 @@
+{
+  "produto": "envelhecimento-idade-mediana_ibge-censo_1970-2022_municipal.png",
+  "data_processamento": "2026-10-03T14:18:25+00:00",
+  "layout": "atual",
+  "largura_px": 1800,
+  "altura_px": 857,
+  "dpi": 200,
+  "codigo_ibge": "4322400",
+  "codigos_desmembrados": [
+    "4301875"
+  ],
+  "script": "scripts/processamento/dinamica_populacional_serie_longa.py",
+  "status": "pendente de conferência",
+  "descricao": "dois quadros: índice de envelhecimento (60+/0–14 ×100) e idade mediana por Censo; série como publicada",
+  "fonte": "tabela indicadores-etarios_ibge-censo_1970-2022_municipal.csv",
+  "formatos": [
+    "png",
+    "svg"
+  ],
+  "rotulos_sobrepostos": "0",
+  "rotulos_sem_posicao_livre": 0
+}

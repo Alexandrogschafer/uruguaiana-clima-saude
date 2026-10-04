@@ -1,0 +1,17 @@
+{
+  "produto": "indicadores-etarios_ibge-censo_1970-2022_municipal.csv",
+  "data_processamento": "2026-10-03T14:18:22+00:00",
+  "descricao": "Indicadores etários nas duas séries; índice de envelhecimento = 60+/0–14 ×100; razões de dependência por 100 pessoas de 15–59; razão de sexos = H/M ×100 (população total, com idade ignorada); idade_mediana_anos: 1970–1991 interpolada DENTRO DO GRUPO QUINQUENAL, de 2000 em diante na idade simples (coluna idade_mediana_metodo); idade_mediana_grupo_quinquenal_anos = mesmo método em todos os Censos; grupos quinquenais comuns a todos os Censos, grupo aberto 80+; 1970–1991: SIDRA 200 (idade ignorada fora dos percentuais); de 2000 em diante: universo em idade simples (SIDRA 1552 e 9514), agrupado",
+  "fonte": "SIDRA 200, 1552 e 9514",
+  "codigo_ibge": "4322400",
+  "codigos_desmembrados": [
+    "4301875"
+  ],
+  "script": "scripts/processamento/dinamica_populacional_serie_longa.py",
+  "status": "pendente de conferência",
+  "municipio": "Uruguaiana (RS)",
+  "desmembrados": [
+    "Barra do Quaraí (RS)"
+  ],
+  "transformacao": "seleção das categorias da tabela, soma e razões; indisponível = ausente, nunca zero; valores sem arredondar (6 casas): toda exibição arredonda a partir deles"
+}

@@ -1,0 +1,17 @@
+{
+  "produto": "populacao-variacao_ibge-censo_1970-2022_municipal.csv",
+  "data_processamento": "2026-10-03T14:18:22+00:00",
+  "descricao": "Variação absoluta, % e taxa geométrica anual entre Censos, nas duas séries; anos = intervalo entre as datas de referência (1º/set até 1991, 1º/ago de 2000 em diante); séries: 'publicado' = município com o território de cada Censo; 'constante' = município somado aos desmembrados nos Censos em que estes aparecem separados (coluna desmembrados_somados); nos demais as duas séries coincidem",
+  "fonte": "derivado da tabela populacao-sexo-situacao_ibge-censo_1970-2022_municipal.csv",
+  "codigo_ibge": "4322400",
+  "codigos_desmembrados": [
+    "4301875"
+  ],
+  "script": "scripts/processamento/dinamica_populacional_serie_longa.py",
+  "status": "pendente de conferência",
+  "municipio": "Uruguaiana (RS)",
+  "desmembrados": [
+    "Barra do Quaraí (RS)"
+  ],
+  "transformacao": "seleção das categorias da tabela, soma e razões; indisponível = ausente, nunca zero; valores sem arredondar (6 casas): toda exibição arredonda a partir deles"
+}
