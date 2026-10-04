@@ -1,0 +1,77 @@
+{
+ "documento": {
+  "arquivo": "plano-diretor_pagina-prefeitura_10-mapa-6-18031951.pdf",
+  "titulo": "Plano Diretor de Uruguaiana (Lei Complementar nº 3/2014), Mapa 6 - Estratégias 2040, consolidação urbana",
+  "origem": "página do Plano Diretor no sítio da Prefeitura de Uruguaiana; planta de 10/11/2013, gerada pelo AutoCAD 2012",
+  "sha256": "3f7db475d6cb9f056c57f86f0d24c3dd848408ee8c8783b762fdbd8f3d618d7a",
+  "pagina": 1
+ },
+ "epsg": 31981,
+ "georreferenciamento": {
+  "a": 3.2840205531,
+  "b": -0.0004534079,
+  "tx": 486280.8003,
+  "ty": 6702645.8353,
+  "formula": "E = a.x - b.y + tx; N = b.x + a.y + ty, com x e y em pontos do PDF (origem embaixo, à esquerda)",
+  "metodo": "mesma transformação do Mapa 10 (as plantas urbanas do Plano têm o mesmo enquadramento); conferida de novo contra as quadras deste mapa",
+  "referencia": "quadras formadas pela malha de ruas do OpenStreetMap (camada malha-viaria do geoportal)",
+  "ajustado_em": "2026-10-03",
+  "pares": 689,
+  "residuo_mediano_m": 2.06,
+  "rms_m": 2.75,
+  "escala_m_por_ponto": 3.284,
+  "rotacao_graus": -0.008,
+  "conferencia": {
+   "quadras": {
+    "camada_cad": "Quadra",
+    "cor": [
+     0.46,
+     0.46,
+     0.46
+    ]
+   },
+   "area_min_m2": 1000,
+   "limiar_m": 8.0
+  }
+ },
+ "atributos": {
+  "fonte": "Plano Diretor de Uruguaiana, LC nº 3/2014, Mapa 6 (planta de 10/11/2013)",
+  "obtencao": "extraído dos traços do PDF vetorial; posição ajustada às quadras do OpenStreetMap",
+  "status": "NÃO OFICIAL - extraído; conferir antes de usar; fora do portal"
+ },
+ "produtos": [
+  {
+   "tipo": "vetor",
+   "nome_saida": "ocupacao-urbana_plano-diretor-uruguaiana_2013_vetorial_extraido-de-pdf",
+   "observacoes": "Assentamentos irregulares e vazios urbanos, como desenhados no Mapa 6 (situação de 2013). Cada área é a união dos preenchimentos da planta. Os assentamentos pequenos aparecem na planta como círculos, e assim ficam.",
+   "camadas": [
+    {
+     "nome": "assentamentos_irregulares",
+     "camada_cad": "ASSENTAMENTO IRREGULAR",
+     "fill": [
+      1.0,
+      0.5,
+      0.87
+     ],
+     "geometria": "uniao",
+     "fechar_m": 0.5,
+     "area_min_m2": 100.0,
+     "rotulo_no_mapa": "ASSENTAMENTOS IRREGULARES"
+    },
+    {
+     "nome": "vazios_urbanos",
+     "camada_cad": "MAPA 7 VAZIOS URBANOS",
+     "fill": [
+      0.72,
+      0.63,
+      0.36
+     ],
+     "geometria": "uniao",
+     "fechar_m": 0.5,
+     "area_min_m2": 100.0,
+     "rotulo_no_mapa": "VAZIOS URBANOS"
+    }
+   ]
+  }
+ ]
+}

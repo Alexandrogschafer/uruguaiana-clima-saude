@@ -1,0 +1,1065 @@
+{
+ "documento": {
+  "arquivo": "plano-diretor_pagina-prefeitura_05-mapa-13-18031952.pdf",
+  "titulo": "Plano Diretor de Uruguaiana (Lei Complementar nº 3/2014), Mapa 13 - Plano Regulador, uso e ocupação do solo urbano",
+  "origem": "página do Plano Diretor no sítio da Prefeitura de Uruguaiana; planta de 10/11/2013, gerada pelo AutoCAD 2012",
+  "sha256": "2494713a3f143cd5c630a7e03934b257ead538468efbc9777feac2d919d4a4cc",
+  "pagina": 1
+ },
+ "epsg": 31981,
+ "georreferenciamento": {
+  "a": 3.2840205531,
+  "b": -0.0004534079,
+  "tx": 486280.8003,
+  "ty": 6702645.8353,
+  "formula": "E = a.x - b.y + tx; N = b.x + a.y + ty, com x e y em pontos do PDF (origem embaixo, à esquerda)",
+  "metodo": "mesma transformação do Mapa 10 (as plantas urbanas do Plano têm o mesmo enquadramento); conferida de novo contra as quadras deste mapa",
+  "referencia": "quadras formadas pela malha de ruas do OpenStreetMap (camada malha-viaria do geoportal)",
+  "ajustado_em": "2026-10-03",
+  "pares": 689,
+  "residuo_mediano_m": 2.06,
+  "rms_m": 2.75,
+  "escala_m_por_ponto": 3.284,
+  "rotacao_graus": -0.008,
+  "conferencia": {
+   "quadras": {
+    "camada_cad": "Quadra",
+    "cor": [
+     0.46,
+     0.46,
+     0.46
+    ]
+   },
+   "area_min_m2": 1000,
+   "limiar_m": 8.0
+  }
+ },
+ "atributos": {
+  "fonte": "Plano Diretor de Uruguaiana, LC nº 3/2014, Mapa 13 (planta de 10/11/2013)",
+  "obtencao": "extraído dos traços e dos textos do PDF vetorial; posição ajustada às quadras do OpenStreetMap",
+  "status": "NÃO OFICIAL - extraído; conferir antes de usar; fora do portal"
+ },
+ "produtos": [
+  {
+   "tipo": "vetor",
+   "nome_saida": "zoneamento_plano-diretor-uruguaiana_2013_vetorial_extraido-de-pdf",
+   "observacoes": "Zonas de uso do Mapa 13, obtidas da hachura de cada zona (o contorno acompanha o fim dos traços da hachura; cantos arredondados em até a meia distância usada). A sigla vem da cor da hachura, conferida contra os rótulos lidos na planta; ZR1 e ZR3 têm a mesma cor e são separadas pelos rótulos. Zupe2 não tem hachura e Zupe3 não foi separada: ficam só como rótulo. APP e zona rural não foram convertidas em polígono. A zona de risco (ZRISCO) é a mesma hachura da camada V009. Zonas podem se sobrepor, como no desenho. O significado de cada sigla está no Anexo II da lei.",
+   "resumir_por": {
+    "zonas": [
+     "sigla"
+    ]
+   },
+   "camadas": [
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      0.72,
+      0.0,
+      0.54
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 5.0,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZCR1"
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      0.0,
+      0.5,
+      1.0
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 2.5,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZCR2"
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      0.0,
+      0.36,
+      0.72
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 2.5,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZCR3"
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      0.0,
+      0.87,
+      0.87
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 2.5,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZCR4"
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      1.0,
+      0.5,
+      0.0
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 7.0,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZR1"
+     },
+     "atributo_por_ponto": {
+      "campo": "sigla",
+      "pontos": [
+       [
+        1479.9,
+        1747.8,
+        "ZR3"
+       ],
+       [
+        1344.2,
+        1703.0,
+        "ZR3"
+       ]
+      ]
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      1.0,
+      1.0,
+      0.0
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 7.0,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZR2"
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      0.72,
+      0.54,
+      0.0
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 3.0,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZCI 1"
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      0.58,
+      0.15,
+      0.0
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 2.5,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZCI 2"
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      1.0,
+      0.0,
+      1.0
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 3.0,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZEIS"
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      0.73,
+      0.73,
+      0.73
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 7.0,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZMILITAR"
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      0.75,
+      0.5,
+      1.0
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 5.0,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZAERO"
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      0.75,
+      0.0,
+      1.0
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 2.5,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZI"
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZONEAMENTO POLILINES",
+     "cor": [
+      0.72,
+      0.0,
+      0.18
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 2.5,
+     "pontas": "redondas",
+     "area_min_m2": 2000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "Zupe1"
+     }
+    },
+    {
+     "nome": "zonas",
+     "camada_cad": "ZRISCO",
+     "cor": [
+      0.87,
+      0.0,
+      0.0
+     ],
+     "geometria": "hachura",
+     "meia_distancia_m": 5.0,
+     "area_min_m2": 10000.0,
+     "tapar_furos_ate_m2": 1000.0,
+     "atributos": {
+      "sigla": "ZRISCO"
+     }
+    },
+    {
+     "nome": "rotulos_das_zonas",
+     "camada_cad": "Texto",
+     "geometria": "pontos_lidos",
+     "pontos": [
+      [
+       2218.6,
+       1876.4,
+       "ZRISCO"
+      ],
+      [
+       1713.6,
+       1787.7,
+       "ZCR1"
+      ],
+      [
+       1960.5,
+       1755.7,
+       "ZR2"
+      ],
+      [
+       1479.9,
+       1747.8,
+       "ZR3"
+      ],
+      [
+       1397.4,
+       1747.6,
+       "ZCR1"
+      ],
+      [
+       2657.9,
+       1723.6,
+       "ZR1"
+      ],
+      [
+       1344.2,
+       1703.0,
+       "ZR3"
+      ],
+      [
+       2152.6,
+       1631.3,
+       "ZCR3"
+      ],
+      [
+       1723.1,
+       1625.1,
+       "ZCR2"
+      ],
+      [
+       1387.4,
+       1593.2,
+       "ZCR1"
+      ],
+      [
+       3840.7,
+       1544.9,
+       "ZI"
+      ],
+      [
+       2811.5,
+       1537.1,
+       "ZCI 1"
+      ],
+      [
+       2967.5,
+       1506.4,
+       "ZR1"
+      ],
+      [
+       2738.0,
+       1461.9,
+       "ZCR3"
+      ],
+      [
+       2427.6,
+       1448.0,
+       "ZCR3"
+      ],
+      [
+       2660.7,
+       1435.5,
+       "ZCR3"
+      ],
+      [
+       2109.0,
+       1422.8,
+       "ZCR1"
+      ],
+      [
+       2649.8,
+       1371.4,
+       "ZR1"
+      ],
+      [
+       1964.5,
+       1366.0,
+       "ZR2"
+      ],
+      [
+       1719.0,
+       1364.0,
+       "ZCR1"
+      ],
+      [
+       1494.3,
+       1359.8,
+       "ZR2"
+      ],
+      [
+       2299.4,
+       1359.8,
+       "ZR2"
+      ],
+      [
+       1402.4,
+       1357.1,
+       "ZCR1"
+      ],
+      [
+       2249.3,
+       1316.9,
+       "ZEIS"
+      ],
+      [
+       1521.5,
+       1276.2,
+       "ZCR4"
+      ],
+      [
+       1198.7,
+       1268.4,
+       "ZRISCO"
+      ],
+      [
+       2902.4,
+       1245.0,
+       "ZCI 2"
+      ],
+      [
+       2603.8,
+       1219.0,
+       "ZEIS"
+      ],
+      [
+       913.2,
+       1149.7,
+       "ZMILITAR"
+      ],
+      [
+       1711.8,
+       1147.4,
+       "ZCR4"
+      ],
+      [
+       1154.7,
+       1069.6,
+       "ZR2"
+      ],
+      [
+       2219.2,
+       1060.0,
+       "ZCR3"
+      ],
+      [
+       2284.0,
+       1048.1,
+       "ZCI 2"
+      ],
+      [
+       2553.9,
+       984.3,
+       "ZCI 1"
+      ],
+      [
+       1919.0,
+       981.3,
+       "ZCR2"
+      ],
+      [
+       1369.2,
+       940.3,
+       "ZCR1"
+      ],
+      [
+       2931.0,
+       923.1,
+       "ZAERO"
+      ],
+      [
+       2208.9,
+       917.8,
+       "ZCR3"
+      ],
+      [
+       1876.7,
+       895.6,
+       "ZR1"
+      ],
+      [
+       2723.9,
+       893.1,
+       "ZR1"
+      ],
+      [
+       695.3,
+       831.0,
+       "ZR2"
+      ],
+      [
+       1418.8,
+       812.1,
+       "ZMILITAR"
+      ],
+      [
+       1635.1,
+       812.0,
+       "ZMILITAR"
+      ],
+      [
+       2345.7,
+       794.7,
+       "ZCR1"
+      ],
+      [
+       1784.3,
+       742.8,
+       "ZCI 1"
+      ],
+      [
+       1232.6,
+       730.8,
+       "Zupe1"
+      ],
+      [
+       994.9,
+       711.4,
+       "ZEIS"
+      ],
+      [
+       2244.0,
+       634.1,
+       "ZEIS"
+      ],
+      [
+       2968.7,
+       584.0,
+       "ZCI 1"
+      ],
+      [
+       482.5,
+       566.2,
+       "ZRISCO"
+      ],
+      [
+       1089.5,
+       563.6,
+       "ZR2"
+      ],
+      [
+       1401.4,
+       553.8,
+       "ZCI 1"
+      ],
+      [
+       2511.4,
+       529.6,
+       "ZR1"
+      ],
+      [
+       1230.6,
+       517.1,
+       "Zupe2"
+      ],
+      [
+       1814.8,
+       488.4,
+       "ZCI 1"
+      ],
+      [
+       2339.3,
+       347.1,
+       "ZEIS"
+      ],
+      [
+       1913.9,
+       2281.0,
+       "APP"
+      ],
+      [
+       2585.7,
+       2099.6,
+       "APP"
+      ],
+      [
+       2258.7,
+       2054.0,
+       "APP"
+      ],
+      [
+       1679.4,
+       2051.5,
+       "APP"
+      ],
+      [
+       2019.9,
+       2002.0,
+       "APP"
+      ],
+      [
+       2868.3,
+       1847.8,
+       "APP"
+      ],
+      [
+       2370.1,
+       1796.1,
+       "APP"
+      ],
+      [
+       1231.5,
+       1673.6,
+       "APP"
+      ],
+      [
+       1040.9,
+       1438.2,
+       "APP"
+      ],
+      [
+       3296.5,
+       1255.8,
+       "APP"
+      ],
+      [
+       818.7,
+       1252.2,
+       "APP"
+      ],
+      [
+       387.1,
+       967.3,
+       "APP"
+      ],
+      [
+       260.7,
+       733.2,
+       "APP"
+      ],
+      [
+       3223.8,
+       608.9,
+       "APP"
+      ],
+      [
+       2995.7,
+       475.8,
+       "APP"
+      ],
+      [
+       451.4,
+       426.6,
+       "APP"
+      ],
+      [
+       2679.0,
+       388.5,
+       "APP"
+      ],
+      [
+       1493.4,
+       277.9,
+       "APP"
+      ],
+      [
+       802.5,
+       228.6,
+       "APP"
+      ],
+      [
+       2294.0,
+       216.2,
+       "APP"
+      ],
+      [
+       1816.8,
+       206.0,
+       "APP"
+      ],
+      [
+       1260.2,
+       150.5,
+       "APP"
+      ],
+      [
+       2250.3,
+       2307.8,
+       "ZONA RURAL"
+      ],
+      [
+       2958.1,
+       1918.1,
+       "ZONA RURAL"
+      ],
+      [
+       3480.3,
+       900.6,
+       "ZONA RURAL"
+      ],
+      [
+       442.7,
+       317.1,
+       "ZONA RURAL"
+      ],
+      [
+       2444.6,
+       128.3,
+       "ZONA RURAL"
+      ],
+      [
+       1303.5,
+       1491.3,
+       "ZR2"
+      ],
+      [
+       3146.2,
+       1175.1,
+       "Zupe3"
+      ]
+     ],
+     "rotulo_no_mapa": "rótulo desenhado como contorno, lido na planta"
+    }
+   ]
+  },
+  {
+   "tipo": "vetor",
+   "nome_saida": "sistema-viario_plano-diretor-uruguaiana_2013_vetorial_extraido-de-pdf",
+   "observacoes": "Vias por classe, como desenhadas no Mapa 13. Cada linha é o traço da planta sobre a via, e não o eixo levantado. A classe vem da camada do desenho e confere com a legenda.",
+   "resumir_por": {
+    "vias_por_classe": [
+     "classe"
+    ]
+   },
+   "camadas": [
+    {
+     "nome": "vias_por_classe",
+     "camada_cad": "VIA ART URB CL1",
+     "cor": [
+      0.54,
+      0.0,
+      0.72
+     ],
+     "geometria": "linha",
+     "atributos": {
+      "classe": "via arterial classe 1"
+     }
+    },
+    {
+     "nome": "vias_por_classe",
+     "camada_cad": "VIA ART URB CL2",
+     "cor": [
+      0.87,
+      0.0,
+      0.43
+     ],
+     "geometria": "linha",
+     "atributos": {
+      "classe": "via arterial classe 2"
+     }
+    },
+    {
+     "nome": "vias_por_classe",
+     "camada_cad": "VIA PRINCIPAL URB",
+     "cor": [
+      1.0,
+      0.25,
+      0.0
+     ],
+     "pintura": "traco",
+     "geometria": "linha",
+     "atributos": {
+      "classe": "via principal"
+     }
+    },
+    {
+     "nome": "vias_por_classe",
+     "camada_cad": "VIA COLETORA URB",
+     "cor": [
+      1.0,
+      0.75,
+      0.0
+     ],
+     "geometria": "linha",
+     "atributos": {
+      "classe": "via coletora"
+     }
+    },
+    {
+     "nome": "vias_por_classe",
+     "camada_cad": "VIA CICLOVIAS",
+     "cor": [
+      0.5,
+      0.87,
+      1.0
+     ],
+     "geometria": "linha",
+     "atributos": {
+      "classe": "ciclovia (plano geral)"
+     }
+    },
+    {
+     "nome": "vias_por_classe",
+     "camada_cad": "VIAS PROJETADAS",
+     "geometria": "linha",
+     "atributos": {
+      "classe": "via projetada"
+     }
+    },
+    {
+     "nome": "vias_por_classe",
+     "camada_cad": "via de acesso proposta",
+     "geometria": "linha",
+     "atributos": {
+      "classe": "via de acesso proposta"
+     }
+    },
+    {
+     "nome": "vias_por_classe",
+     "camada_cad": "VIA ALL linha do trem",
+     "cor": [
+      0.36,
+      0.45,
+      0.72
+     ],
+     "geometria": "linha",
+     "atributos": {
+      "classe": "via férrea"
+     }
+    }
+   ]
+  },
+  {
+   "tipo": "vetor",
+   "nome_saida": "toponimia_plano-diretor-uruguaiana_2013_vetorial_extraido-de-pdf",
+   "observacoes": "Nomes escritos na planta, como pontos. O Plano Diretor NÃO desenha limite de bairro: só o nome. O campo tipo é leitura nossa (a planta não distingue bairro de vila ou de referência); 'bairro ou vila' foi conferido contra os nomes de bairro da malha do Censo 2022 (BOA VISTA não é bairro nessa malha). Nomes de rua: o ponto é a origem do texto, com o ângulo de escrita. A grafia é a da planta; os nomes de rio e de arroio, escritos com as letras espaçadas, foram juntados.",
+   "resumir_por": {
+    "nomes_de_lugares": [
+     "tipo"
+    ]
+   },
+   "camadas": [
+    {
+     "nome": "nomes_de_lugares",
+     "camada_cad": "BAIRROS",
+     "geometria": "texto",
+     "altura_min_pt": 10.0,
+     "altura_max_pt": 10.4,
+     "excluir_regex": "^(A R R O I O|R I O)",
+     "atributos": {
+      "tipo": "bairro ou vila",
+      "origem": "texto do PDF"
+     }
+    },
+    {
+     "nome": "nomes_de_lugares",
+     "camada_cad": "BAIRROS",
+     "geometria": "texto",
+     "regex": "^(VILA JÚLIA|RUI RAMOS)$",
+     "atributos": {
+      "tipo": "bairro ou vila",
+      "origem": "texto do PDF"
+     }
+    },
+    {
+     "nome": "nomes_de_lugares",
+     "camada_cad": "BAIRROS",
+     "geometria": "pontos_lidos",
+     "pontos": [
+      [
+       1812.6,
+       2045.4,
+       "MASCARENHAS DE MORAES"
+      ],
+      [
+       1631.9,
+       1652.6,
+       "CENTRO"
+      ],
+      [
+       2615.1,
+       1536.2,
+       "JÓQUEI CLUBE"
+      ],
+      [
+       1107.4,
+       828.1,
+       "TABAJARA BRITES"
+      ],
+      [
+       2209.8,
+       675.6,
+       "SALSO DE BAIXO"
+      ],
+      [
+       1230.1,
+       1513.6,
+       "FRANCISCA TARRAGO"
+      ]
+     ],
+     "atributos": {
+      "tipo": "bairro ou vila",
+      "origem": "rótulo lido na planta"
+     }
+    },
+    {
+     "nome": "nomes_de_lugares",
+     "camada_cad": "BAIRROS",
+     "geometria": "texto",
+     "altura_max_pt": 9.9,
+     "excluir_regex": "^RUI RAMOS$",
+     "atributos": {
+      "tipo": "equipamento ou referência",
+      "origem": "texto do PDF"
+     }
+    },
+    {
+     "nome": "nomes_de_lugares",
+     "camada_cad": "BAIRROS",
+     "geometria": "texto",
+     "altura_min_pt": 10.5,
+     "altura_max_pt": 12.0,
+     "excluir_regex": "^VILA JÚLIA$",
+     "atributos": {
+      "tipo": "equipamento ou referência",
+      "origem": "texto do PDF"
+     }
+    },
+    {
+     "nome": "nomes_de_lugares",
+     "camada_cad": "Ruas",
+     "geometria": "texto",
+     "regex": "^AES",
+     "atributos": {
+      "tipo": "equipamento ou referência",
+      "origem": "texto do PDF"
+     }
+    },
+    {
+     "nome": "nomes_de_lugares",
+     "camada_cad": "BAIRROS",
+     "geometria": "pontos_lidos",
+     "pontos": [
+      [
+       4151.2,
+       1449.1,
+       "USINA TERMOELÉTRICA"
+      ],
+      [
+       3007.7,
+       1373.3,
+       "PARQUE AGRIC"
+      ],
+      [
+       3994.2,
+       1355.6,
+       "CAUL"
+      ],
+      [
+       1100.9,
+       1320.8,
+       "PROJETO - PARQUE MUNICIPAL BEIRA-RIO"
+      ],
+      [
+       846.8,
+       1090.2,
+       "QUARTEL GENERAL"
+      ],
+      [
+       1246.7,
+       773.4,
+       "CEMITÉRIO MUNICIPAL"
+      ],
+      [
+       3139.4,
+       1202.7,
+       "DEPÓSITO DE RESÍDUOS SÓLIDOS URBANO"
+      ]
+     ],
+     "atributos": {
+      "tipo": "equipamento ou referência",
+      "origem": "rótulo lido na planta"
+     }
+    },
+    {
+     "nome": "nomes_de_lugares",
+     "camada_cad": "BAIRROS",
+     "geometria": "texto",
+     "regex": "^(A R R O I O|R I O)",
+     "atributos": {
+      "tipo": "hidrografia",
+      "origem": "texto do PDF"
+     },
+     "corrigir": {
+      "R I O U R U G U A I": "RIO URUGUAI",
+      "A R R O I O C A C A R É U": "ARROIO CACARÉU",
+      "A R R O I O D O S A L S O D E B A I X O": "ARROIO DO SALSO DE BAIXO",
+      "A R R O I O D O S A L S O D E C I M A": "ARROIO DO SALSO DE CIMA"
+     }
+    },
+    {
+     "nome": "nomes_de_ruas",
+     "camada_cad": "Ruas",
+     "geometria": "texto",
+     "excluir_regex": "^AES"
+    }
+   ]
+  },
+  {
+   "tipo": "vetor",
+   "nome_saida": "areas-verdes-e-patrimonio_plano-diretor-uruguaiana_2013_vetorial_extraido-de-pdf",
+   "observacoes": "Praças, parques e equipamentos especiais (hachura verde da legenda 'PRAÇA/PARQUE/EQUIP ESP') e imóveis tombados ou inventariados (símbolo da legenda), um ponto por símbolo.",
+   "camadas": [
+    {
+     "nome": "pracas_e_parques",
+     "camada_cad": "PRAÇAS E PARQUES",
+     "cor": [
+      0.0,
+      0.72,
+      0.18
+     ],
+     "geometria": "hachura",
+     "meia_distancia_m": 2.5,
+     "pontas": "redondas",
+     "area_min_m2": 300.0,
+     "rotulo_no_mapa": "PRAÇA/PARQUE/EQUIP ESP"
+    },
+    {
+     "nome": "patrimonio_historico",
+     "camada_cad": "PATRIMÔNIO HISTÓRICO MUNC",
+     "geometria": "simbolo",
+     "juntar_ate_m": 8.0,
+     "rotulo_no_mapa": "IMÓVEIS TOMBADOS/INVENT"
+    }
+   ]
+  }
+ ]
+}

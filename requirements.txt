@@ -16,3 +16,4 @@ Pillow>=10.0
 playwright>=1.62
 py7zr>=0.21
 scipy>=1.11
+pikepdf>=8
