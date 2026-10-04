@@ -1,0 +1,116 @@
+{
+ "documento": {
+  "arquivo": "plano-diretor_pagina-prefeitura_06-mapa-2-18031951.pdf",
+  "titulo": "Plano Diretor de Uruguaiana (Lei Complementar nº 3/2014), Mapa 2 - Estratégias 2040, mobilidade e transporte de cargas",
+  "origem": "página do Plano Diretor no sítio da Prefeitura de Uruguaiana; planta de 10/11/2013, gerada pelo AutoCAD 2012",
+  "sha256": "dabe7354f264a9bc8618a8c94605a02770bbe41b36c2aa7e5f097a84f874b15c",
+  "pagina": 1
+ },
+ "epsg": 31981,
+ "georreferenciamento": {
+  "a": 3.2840205531,
+  "b": -0.0004534079,
+  "tx": 486280.8003,
+  "ty": 6702645.8353,
+  "formula": "E = a.x - b.y + tx; N = b.x + a.y + ty, com x e y em pontos do PDF (origem embaixo, à esquerda)",
+  "metodo": "mesma transformação do Mapa 10 (as plantas urbanas do Plano têm o mesmo enquadramento); conferida de novo contra as quadras deste mapa",
+  "referencia": "quadras formadas pela malha de ruas do OpenStreetMap (camada malha-viaria do geoportal)",
+  "ajustado_em": "2026-10-03",
+  "pares": 689,
+  "residuo_mediano_m": 2.06,
+  "rms_m": 2.75,
+  "escala_m_por_ponto": 3.284,
+  "rotacao_graus": -0.008,
+  "conferencia": {
+   "quadras": {
+    "camada_cad": "Quadra",
+    "cor": [
+     0.46,
+     0.46,
+     0.46
+    ]
+   },
+   "area_min_m2": 1000,
+   "limiar_m": 8.0
+  }
+ },
+ "atributos": {
+  "fonte": "Plano Diretor de Uruguaiana, LC nº 3/2014, Mapa 2 (planta de 10/11/2013)",
+  "obtencao": "extraído dos traços do PDF vetorial; posição ajustada às quadras do OpenStreetMap",
+  "status": "NÃO OFICIAL - extraído; conferir antes de usar; fora do portal"
+ },
+ "produtos": [
+  {
+   "tipo": "vetor",
+   "nome_saida": "equipamentos-de-mobilidade_plano-diretor-uruguaiana_2013_vetorial_extraido-de-pdf",
+   "observacoes": "Equipamentos de mobilidade e de transporte de cargas que o Mapa 2 destaca com um círculo. O ponto é o centro do círculo (de 250 a 820 m de diâmetro): indica o local, não o prédio. O nome é o do rótulo da planta, lido por nós, porque o rótulo está desenhado como contorno.",
+   "camadas": [
+    {
+     "nome": "equipamentos",
+     "camada_cad": "MAPA 2 MOBILIDADE",
+     "cor": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "pintura": "traco",
+     "extensao_min_m": 200.0,
+     "extensao_max_m": 900.0,
+     "geometria": "simbolo",
+     "juntar_ate_m": 1.0,
+     "atributo_por_ponto": {
+      "campo": "nome",
+      "ate_m": 30.0,
+      "pontos": [
+       [
+        1567,
+        1972,
+        "PONTE RODO-FERROVIÁRIA INTERNACIONAL BRASIL - ARGENTINA"
+       ],
+       [
+        1724,
+        1986,
+        "ADUANA / RECEITA FEDERAL"
+       ],
+       [
+        1708,
+        1602,
+        "TERMINAL DE PASSAGEIROS URBANOS"
+       ],
+       [
+        1803,
+        1602,
+        "TERMINAL DE PASSAGEIROS INTERURBANOS"
+       ],
+       [
+        1866,
+        1465,
+        "ESTAÇÃO FERROVIÁRIA - DESATIVADA"
+       ],
+       [
+        2727,
+        1259,
+        "PORTO SECO INTERNACIONAL FERROVIÁRIO"
+       ],
+       [
+        2878,
+        1146,
+        "PORTO SECO INTERNACIONAL RODOVIÁRIO"
+       ],
+       [
+        2396,
+        730,
+        "TERMINAL SECUNDÁRIO DE PASSAGEIROS URBANOS"
+       ],
+       [
+        3091,
+        787,
+        "AEROPORTO INTERNACIONAL DE PASSAGEIROS - RUBEN BERTA"
+       ]
+      ]
+     }
+    }
+   ]
+  }
+ ]
+}

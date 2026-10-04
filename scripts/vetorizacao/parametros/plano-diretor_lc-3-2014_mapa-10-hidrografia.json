@@ -1,0 +1,225 @@
+{
+ "documento": {
+  "arquivo": "plano-diretor_lc-3-2014_mapa-10.pdf",
+  "titulo": "Plano Diretor de Uruguaiana (Lei Complementar nº 3/2014), Mapa 10",
+  "origem": "página do Plano Diretor no sítio da Prefeitura de Uruguaiana; planta de 10/11/2013, gerada pelo AutoCAD 2012",
+  "sha256": "0b1e52029ec36bf35c3aebf8acb4de99e64b6caba0e8626e7b3e5a45ffa6069d",
+  "pagina": 1
+ },
+ "epsg": 31981,
+ "georreferenciamento": {
+  "a": 3.2840205531,
+  "b": -0.0004534079,
+  "tx": 486280.8003,
+  "ty": 6702645.8353,
+  "formula": "E = a.x - b.y + tx; N = b.x + a.y + ty, com x e y em pontos do PDF (origem embaixo, à esquerda)",
+  "metodo": "semelhança de 4 parâmetros ajustada por mínimos quadrados ao centro das quadras; a planta não traz malha de coordenadas",
+  "referencia": "quadras formadas pela malha de ruas do OpenStreetMap (camada malha-viaria do geoportal)",
+  "ajustado_em": "2026-10-03",
+  "pares": 689,
+  "residuo_mediano_m": 2.06,
+  "rms_m": 2.75,
+  "escala_m_por_ponto": 3.284,
+  "rotacao_graus": -0.008,
+  "conferencia": {
+   "quadras": {
+    "camada_cad": "Quadra",
+    "cor": [
+     0.46,
+     0.46,
+     0.46
+    ]
+   },
+   "area_min_m2": 1000,
+   "limiar_m": 8.0
+  }
+ },
+ "atributos": {
+  "fonte": "Plano Diretor de Uruguaiana, LC nº 3/2014, Mapa 10 (planta de 10/11/2013)",
+  "obtencao": "extraído dos traços do PDF vetorial; posição ajustada às quadras do OpenStreetMap",
+  "status": "NÃO OFICIAL - extraído; conferir antes de usar; fora do portal"
+ },
+ "produtos": [
+  {
+   "tipo": "vetor",
+   "nome_saida": "hidrografia_plano-diretor-uruguaiana_2013_vetorial_extraido-de-pdf",
+   "observacoes": "Hidrografia como desenhada na base das plantas urbanas do Plano Diretor (situação de 2013), lida no Mapa 10. linhas_de_agua: todas as linhas azuis da camada de corpos d'água; a planta usa o mesmo traço para vala, arroio de traço simples, margem de rio e contorno de açude ou banhado, e não os distingue. A margem do rio Uruguai é uma linha; o rio não tem polígono. corpos_dagua: polígonos com o campo tipo. 'rio, arroio ou lagoa' é a união do preenchimento azul; 'açude ou lagoa' é a união do preenchimento azul-claro; as quatro lagoas com o rótulo 'E.T.E FOZ DO BRASIL' foram marcadas por nós como lagoa da estação de tratamento de esgoto; 'banhado' é o contorno fechado que contém o pontilhado de banhado; 'corpo d'água só com contorno' é o contorno fechado sem nenhum preenchimento na planta (os maiores ficam a leste da área urbanizada). mata_ciliar: polígono obtido da hachura de cruzes; o limite acompanha a borda da hachura, a poucos metros do contorno desenhado. A planta não traz nome de curso d'água nesta base; os nomes estão no produto de toponímia.",
+   "resumir_por": {
+    "corpos_dagua": [
+     "tipo"
+    ]
+   },
+   "camadas": [
+    {
+     "nome": "linhas_de_agua",
+     "camada_cad": "CORPOS D´ÁGUA",
+     "cor": [
+      0.0,
+      0.22,
+      0.87
+     ],
+     "geometria": "linha",
+     "sem_duplicadas": true,
+     "rotulo_no_mapa": "VALA / RIO PERMANENTE"
+    },
+    {
+     "nome": "corpos_dagua",
+     "camada_cad": [
+      "Lagos e Alagados2",
+      "MATA CILIAR"
+     ],
+     "fill": [
+      0.5,
+      0.62,
+      1.0
+     ],
+     "geometria": "uniao",
+     "fechar_m": 0.5,
+     "area_min_m2": 50.0,
+     "atributos": {
+      "tipo": "rio, arroio ou lagoa",
+      "limite_obtido_de": "preenchimento"
+     },
+     "rotulo_no_mapa": "RIO PERMANENTE"
+    },
+    {
+     "nome": "corpos_dagua",
+     "camada_cad": "HATCH AGUA",
+     "pintura": "traco+fill",
+     "geometria": "uniao",
+     "fechar_m": 0.5,
+     "area_min_m2": 50.0,
+     "atributos": {
+      "tipo": "açude ou lagoa",
+      "limite_obtido_de": "preenchimento"
+     },
+     "rotulo_no_mapa": "AÇUDE",
+     "atributo_por_ponto": {
+      "campo": "tipo",
+      "pontos": [
+       [
+        1286,
+        590,
+        "lagoa da estação de tratamento de esgoto"
+       ],
+       [
+        1238,
+        542,
+        "lagoa da estação de tratamento de esgoto"
+       ],
+       [
+        1190,
+        468,
+        "lagoa da estação de tratamento de esgoto"
+       ],
+       [
+        1158,
+        450,
+        "lagoa da estação de tratamento de esgoto"
+       ]
+      ]
+     }
+    },
+    {
+     "nome": "corpos_dagua",
+     "camada_cad": "CORPOS D´ÁGUA",
+     "cor": [
+      0.0,
+      0.22,
+      0.87
+     ],
+     "geometria": "poligono",
+     "fechar_ate_m": 5.0,
+     "area_min_m2": 50.0,
+     "com_tracos_de": {
+      "camada_cad": "CORPOS D´ÁGUA",
+      "cor": [
+       0.43,
+       0.87,
+       0.87
+      ]
+     },
+     "tracos_min": 20,
+     "atributos": {
+      "tipo": "banhado",
+      "limite_obtido_de": "contorno"
+     },
+     "rotulo_no_mapa": "BANHADO"
+    },
+    {
+     "nome": "corpos_dagua",
+     "camada_cad": "CORPOS D´ÁGUA",
+     "cor": [
+      0.0,
+      0.22,
+      0.87
+     ],
+     "geometria": "poligono",
+     "fechar_ate_m": 5.0,
+     "area_min_m2": 50.0,
+     "sem_tracos_de": [
+      {
+       "camada_cad": "CORPOS D´ÁGUA",
+       "cor": [
+        0.43,
+        0.87,
+        0.87
+       ]
+      },
+      {
+       "camada_cad": [
+        "Lagos e Alagados2",
+        "MATA CILIAR"
+       ],
+       "fill": [
+        0.5,
+        0.62,
+        1.0
+       ]
+      },
+      {
+       "camada_cad": "HATCH AGUA",
+       "pintura": "traco+fill"
+      },
+      {
+       "camada_cad": "MATA CILIAR",
+       "cor": [
+        0.22,
+        0.87,
+        0.0
+       ],
+       "pintura": "traco"
+      }
+     ],
+     "atributos": {
+      "tipo": "corpo d'água só com contorno",
+      "limite_obtido_de": "contorno"
+     }
+    },
+    {
+     "nome": "mata_ciliar",
+     "camada_cad": "MATA CILIAR",
+     "cor": [
+      0.22,
+      0.87,
+      0.0
+     ],
+     "pintura": "traco",
+     "geometria": "hachura",
+     "meia_distancia_m": 5.0,
+     "pontas": "redondas",
+     "area_min_m2": 500.0,
+     "excluir_caixas_pdf": [
+      [
+       2850,
+       2190,
+       4420,
+       2440
+      ]
+     ],
+     "rotulo_no_mapa": "MATA CILIAR"
+    }
+   ]
+  }
+ ]
+}

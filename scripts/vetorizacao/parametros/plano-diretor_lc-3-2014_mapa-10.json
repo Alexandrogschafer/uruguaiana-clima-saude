@@ -1,0 +1,727 @@
+{
+ "documento": {
+  "arquivo": "plano-diretor_lc-3-2014_mapa-10.pdf",
+  "titulo": "Plano Diretor de Uruguaiana (Lei Complementar nº 3/2014), Mapa 10",
+  "origem": "página do Plano Diretor no sítio da Prefeitura de Uruguaiana; planta de 10/11/2013, gerada pelo AutoCAD 2012",
+  "sha256": "0b1e52029ec36bf35c3aebf8acb4de99e64b6caba0e8626e7b3e5a45ffa6069d",
+  "pagina": 1
+ },
+ "epsg": 31981,
+ "georreferenciamento": {
+  "a": 3.2840205531,
+  "b": -0.0004534079,
+  "tx": 486280.8003,
+  "ty": 6702645.8353,
+  "formula": "E = a.x - b.y + tx; N = b.x + a.y + ty, com x e y em pontos do PDF (origem embaixo, à esquerda)",
+  "metodo": "semelhança de 4 parâmetros ajustada por mínimos quadrados ao centro das quadras; a planta não traz malha de coordenadas",
+  "referencia": "quadras formadas pela malha de ruas do OpenStreetMap (camada malha-viaria do geoportal)",
+  "ajustado_em": "2026-10-03",
+  "pares": 689,
+  "residuo_mediano_m": 2.06,
+  "rms_m": 2.75,
+  "escala_m_por_ponto": 3.284,
+  "rotacao_graus": -0.008,
+  "conferencia": {
+   "quadras": {
+    "camada_cad": "Quadra",
+    "cor": [
+     0.46,
+     0.46,
+     0.46
+    ]
+   },
+   "area_min_m2": 1000,
+   "limiar_m": 8.0
+  }
+ },
+ "atributos": {
+  "fonte": "Plano Diretor de Uruguaiana, LC nº 3/2014, Mapa 10 (planta de 10/11/2013)",
+  "obtencao": "extraído dos traços do PDF vetorial; posição ajustada às quadras do OpenStreetMap",
+  "status": "NÃO OFICIAL - conferido pelo responsável em 2026-10-04; fora do portal por decisão do responsável"
+ },
+ "produtos": [
+  {
+   "tipo": "curvas",
+   "nome_saida": "curvas-nivel_plano-diretor-uruguaiana_2013_1m_extraido-de-pdf",
+   "mestra": {
+    "camada_cad": "CURVA DE NÍVEL MESTRA",
+    "cor": [
+     1.0,
+     0.5,
+     0.0
+    ]
+   },
+   "intermediaria": {
+    "camada_cad": "CURVA DE NÍVEL INTERMEDIÁRIA",
+    "cor": [
+     1.0,
+     0.75,
+     0.0
+    ]
+   },
+   "equidistancia_m": 1,
+   "mestra_a_cada_m": 5,
+   "extensao_minima_curva_m": 20.0,
+   "comprimento_do_raio_m": 2300.0,
+   "passo_das_amostras_m": 80.0,
+   "juntar_mestras_ate_m": 16.0,
+   "juntar_intermediarias_ate_m": 3.0,
+   "rotulo_ate_m": 35.0,
+   "concordancia_minima": 0.8,
+   "rotulos_explicacao": "cada item: x e y do rótulo em pontos do PDF e a cota lida na planta (m); a cota vai para a curva mestra mais próxima",
+   "rotulos": [
+    [
+     876.88,
+     653.44,
+     60
+    ],
+    [
+     990.1,
+     662.8,
+     65
+    ],
+    [
+     1672.96,
+     1220.56,
+     70
+    ],
+    [
+     2695.12,
+     1510.72,
+     60
+    ],
+    [
+     2817.94,
+     1371.1,
+     60
+    ],
+    [
+     2859.46,
+     1444.84,
+     55
+    ],
+    [
+     2844.7,
+     1529.74,
+     55
+    ],
+    [
+     2873.56,
+     1527.64,
+     55
+    ],
+    [
+     1827.82,
+     1409.08,
+     75
+    ],
+    [
+     1924.96,
+     1423.18,
+     75
+    ],
+    [
+     1897.72,
+     1429.36,
+     75
+    ],
+    [
+     1844.26,
+     1480.0,
+     75
+    ],
+    [
+     1840.66,
+     1488.52,
+     75
+    ],
+    [
+     1841.32,
+     1449.46,
+     75
+    ],
+    [
+     1856.5,
+     1425.64,
+     75
+    ],
+    [
+     1869.04,
+     1436.38,
+     75
+    ],
+    [
+     1926.7,
+     1596.82,
+     75
+    ],
+    [
+     2336.02,
+     272.14,
+     55
+    ],
+    [
+     2470.48,
+     345.04,
+     60
+    ],
+    [
+     2386.0,
+     521.98,
+     70
+    ],
+    [
+     2365.78,
+     446.5,
+     65
+    ],
+    [
+     2407.06,
+     632.68,
+     75
+    ],
+    [
+     2274.4,
+     688.78,
+     70
+    ],
+    [
+     2167.6,
+     625.48,
+     75
+    ],
+    [
+     2166.52,
+     816.34,
+     80
+    ],
+    [
+     1725.1,
+     841.84,
+     70
+    ],
+    [
+     1816.66,
+     821.8,
+     75
+    ],
+    [
+     1654.72,
+     926.98,
+     65
+    ],
+    [
+     1567.54,
+     989.5,
+     60
+    ],
+    [
+     1484.26,
+     1031.86,
+     55
+    ],
+    [
+     1300.36,
+     1235.74,
+     50
+    ],
+    [
+     1345.78,
+     1237.18,
+     55
+    ],
+    [
+     1157.2,
+     1068.82,
+     60
+    ],
+    [
+     1152.16,
+     1012.96,
+     65
+    ],
+    [
+     1136.68,
+     1136.56,
+     55
+    ],
+    [
+     1180.54,
+     1183.54,
+     50
+    ],
+    [
+     1424.14,
+     1176.46,
+     55
+    ],
+    [
+     1282.12,
+     977.44,
+     60
+    ],
+    [
+     1226.14,
+     946.06,
+     65
+    ],
+    [
+     1165.36,
+     938.14,
+     70
+    ],
+    [
+     1350.76,
+     997.18,
+     55
+    ],
+    [
+     1379.14,
+     1121.2,
+     50
+    ],
+    [
+     1381.0,
+     1059.16,
+     50
+    ],
+    [
+     1369.36,
+     1060.18,
+     50
+    ],
+    [
+     1369.72,
+     1068.34,
+     50
+    ],
+    [
+     2104.9,
+     1029.04,
+     75
+    ],
+    [
+     2188.3,
+     1080.28,
+     80
+    ],
+    [
+     2171.5,
+     1069.12,
+     80
+    ],
+    [
+     2180.98,
+     1060.42,
+     80
+    ],
+    [
+     1937.98,
+     1143.88,
+     70
+    ],
+    [
+     1921.42,
+     1041.82,
+     65
+    ],
+    [
+     2006.02,
+     1016.14,
+     70
+    ],
+    [
+     2386.12,
+     865.3,
+     80
+    ],
+    [
+     2306.02,
+     826.72,
+     75
+    ],
+    [
+     2300.26,
+     1013.62,
+     75
+    ],
+    [
+     2467.96,
+     984.04,
+     80
+    ],
+    [
+     2429.32,
+     1027.78,
+     80
+    ],
+    [
+     2439.04,
+     1032.04,
+     80
+    ],
+    [
+     2407.3,
+     997.9,
+     80
+    ],
+    [
+     2394.28,
+     970.12,
+     80
+    ],
+    [
+     2086.0,
+     1456.84,
+     75
+    ],
+    [
+     2243.26,
+     1718.62,
+     55
+    ],
+    [
+     2328.94,
+     1696.78,
+     55
+    ],
+    [
+     2334.52,
+     1718.62,
+     55
+    ],
+    [
+     1906.42,
+     1756.36,
+     65
+    ],
+    [
+     1957.84,
+     1756.78,
+     60
+    ],
+    [
+     2052.94,
+     1767.94,
+     50
+    ],
+    [
+     2005.54,
+     1767.7,
+     55
+    ],
+    [
+     2124.28,
+     1793.86,
+     50
+    ],
+    [
+     1734.46,
+     1719.04,
+     75
+    ],
+    [
+     1782.52,
+     1730.68,
+     75
+    ],
+    [
+     1789.36,
+     1863.94,
+     70
+    ],
+    [
+     1807.84,
+     1823.86,
+     75
+    ],
+    [
+     1645.72,
+     1832.32,
+     70
+    ],
+    [
+     1720.66,
+     1828.72,
+     65
+    ],
+    [
+     1689.22,
+     1808.02,
+     65
+    ],
+    [
+     1670.32,
+     1778.98,
+     70
+    ],
+    [
+     1570.54,
+     1837.42,
+     65
+    ],
+    [
+     1493.68,
+     1877.74,
+     55
+    ],
+    [
+     1510.72,
+     1852.18,
+     60
+    ],
+    [
+     1897.78,
+     2030.56,
+     50
+    ],
+    [
+     1628.74,
+     1990.18,
+     50
+    ],
+    [
+     1709.26,
+     2050.72,
+     50
+    ],
+    [
+     1780.66,
+     2072.68,
+     50
+    ],
+    [
+     1373.92,
+     1605.34,
+     65
+    ],
+    [
+     1423.36,
+     1696.66,
+     70
+    ],
+    [
+     1302.58,
+     1483.0,
+     55
+    ],
+    [
+     1285.0,
+     1524.7,
+     60
+    ],
+    [
+     1415.26,
+     1372.96,
+     55
+    ],
+    [
+     1510.42,
+     1337.02,
+     60
+    ],
+    [
+     1520.92,
+     1306.18,
+     65
+    ],
+    [
+     2723.2,
+     985.9,
+     75
+    ],
+    [
+     2180.8,
+     1258.12,
+     75
+    ],
+    [
+     2023.3,
+     1305.64,
+     75
+    ],
+    [
+     2400.16,
+     1402.18,
+     55
+    ],
+    [
+     2349.16,
+     1442.56,
+     55
+    ],
+    [
+     2314.18,
+     1439.8,
+     60
+    ],
+    [
+     2252.98,
+     1433.62,
+     65
+    ],
+    [
+     2221.48,
+     1395.34,
+     70
+    ],
+    [
+     2852.32,
+     1051.42,
+     70
+    ],
+    [
+     2532.16,
+     1367.92,
+     60
+    ],
+    [
+     2551.36,
+     1413.82,
+     55
+    ],
+    [
+     2514.34,
+     1194.52,
+     75
+    ],
+    [
+     2556.64,
+     1304.56,
+     65
+    ],
+    [
+     2533.72,
+     1256.98,
+     70
+    ]
+   ],
+   "mdt": {
+    "nome_saida": "mdt_plano-diretor-uruguaiana_2013_5m_extraido-de-pdf",
+    "celula_m": 5.0,
+    "passo_dos_pontos_m": 5.0,
+    "distancia_maxima_da_curva_m": 150.0,
+    "observacoes": "Interpolação das curvas, e não levantamento: entre duas curvas o valor é linear; topos e fundos ficam planos. Inclui as curvas cotadas por suposição. Mesma referência de nível das curvas (não informada na planta)."
+   },
+   "curvas_de_cota_fixa": [
+    {
+     "camada_cad": "CURVA DE NÍVEL INTERMEDIÁRIA",
+     "cor": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "cota_m": 53,
+     "vertices_a_cada_ate_m": 8.0,
+     "origem": "legenda da planta (COTA 53m LEV FOZ DO BRASIL)"
+    }
+   ],
+   "conferencia_ate_m": 500.0,
+   "observacoes": "Curvas mestras a cada 5 m e intermediárias a cada 1 m. A planta não informa a referência de nível (datum altimétrico) nem a data e o método do levantamento. A curva de 53 m aparece na planta em traço preto, nomeada na legenda 'COTA 53m LEV FOZ DO BRASIL'. Cota marcada como suposição: curva na borda do desenho ou em topo ou fundo fechado, cotada pela continuação da sequência das duas vizinhas. Curvas sem cota foram descartadas por decisão do responsável (2026-10-04): são anéis fechados pequenos entre duas curvas de cotas vizinhas, que tanto podem ser uma elevação quanto uma depressão; a planta não distingue.",
+   "descartar_curvas_sem_cota": true
+  },
+  {
+   "tipo": "vetor",
+   "nome_saida": "base-urbana_plano-diretor-uruguaiana_2013_vetorial_extraido-de-pdf",
+   "camadas": [
+    {
+     "nome": "quadras",
+     "camada_cad": "Quadra",
+     "geometria": "faces",
+     "area_min_m2": 200.0,
+     "rotulo_no_mapa": "faces fechadas pelos traços da camada Quadra; quadra de contorno aberto no desenho fica só em quadras_tracos"
+    },
+    {
+     "nome": "quadras_tracos",
+     "camada_cad": "Quadra",
+     "cor": [
+      0.46,
+      0.46,
+      0.46
+     ],
+     "geometria": "linha"
+    },
+    {
+     "nome": "bordo_de_via",
+     "camada_cad": [
+      "Bordo",
+      "bordo complementar giorgi"
+     ],
+     "cor": [
+      0.73,
+      0.73,
+      0.73
+     ],
+     "geometria": "linha"
+    },
+    {
+     "nome": "ferrovia",
+     "camada_cad": "VIA ALL linha do trem",
+     "geometria": "linha",
+     "extensao_min_m": 1000.0
+    },
+    {
+     "nome": "perimetro_urbano_trecho",
+     "camada_cad": "perímetro urbano",
+     "geometria": "linha",
+     "rotulo_no_mapa": "só o trecho desenhado neste mapa; o perímetro inteiro está no Mapa 13"
+    }
+   ],
+   "observacoes": "Base cartográfica desenhada na planta: contorno das quadras, bordo das vias, ferrovia e o trecho do perímetro urbano que este mapa traz."
+  },
+  {
+   "tipo": "vetor",
+   "nome_saida": "linhas-de-cheia_plano-diretor-uruguaiana_2013_vetorial_extraido-de-pdf",
+   "camadas": [
+    {
+     "nome": "linha_de_enchente",
+     "camada_cad": "linha de enchente Top Bola",
+     "cor": [
+      0.58,
+      0.0,
+      0.29
+     ],
+     "geometria": "linha",
+     "rotulo_no_mapa": "LINHA DE ENCHENTE TOP PMU",
+     "largura_min_pt": 0.3
+    },
+    {
+     "nome": "cota_53m",
+     "camada_cad": "CURVA DE NÍVEL INTERMEDIÁRIA",
+     "cor": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "geometria": "linha",
+     "rotulo_no_mapa": "COTA 53m LEV FOZ DO BRASIL"
+    },
+    {
+     "nome": "limite_zona_de_risco",
+     "camada_cad": "ZRISCO",
+     "cor": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "geometria": "linha",
+     "rotulo_no_mapa": "limite desenhado da zona de risco (traço preto na camada ZRISCO)"
+    },
+    {
+     "nome": "zona_de_risco",
+     "camada_cad": "ZRISCO",
+     "cor": [
+      0.87,
+      0.0,
+      0.0
+     ],
+     "geometria": "hachura",
+     "meia_distancia_m": 5.0,
+     "area_min_m2": 10000.0,
+     "rotulo_no_mapa": "ZONA DE RISCO (hachura convertida em polígono)"
+    }
+   ],
+   "observacoes": "Linhas e zona ligadas à cheia no Mapa 10. A camada cota_53m traz os quatro desenhos em traço preto: dois são a curva de 53 m do levantamento (vértices densos, dentro da área com curvas) e dois são traçado esquemático fora dessa área (vértices a cada 16 m e 34 m); o campo vertices_a_cada_m distingue. A zona de risco vem da hachura: o desenho interrompe a hachura nos cursos d'água."
+  }
+ ]
+}
