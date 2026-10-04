@@ -354,6 +354,36 @@ select {
   mix-blend-mode: multiply;
 }
 
+/* ---------- rótulo dos bairros ---------- */
+
+.leaflet-tooltip.rotulo-bairro {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  color: #3b0f6b;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: center;
+  line-height: 1.15;
+  cursor: pointer;
+  text-shadow: 0 0 2px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #fff;
+}
+
+/* tooltip centralizado não tem seta, mas o Leaflet ainda desenha o ::before */
+.leaflet-tooltip.rotulo-bairro::before {
+  display: none;
+}
+
+/* nome escondido por js/layers.js (zoom baixo, ou não cabe sem sobrepor outro); o contorno fica.
+   visibility, e não display: o Leaflet centraliza o tooltip pela largura do elemento, que seria
+   zero com display:none, e o nome voltaria fora do lugar */
+.leaflet-tooltip.rotulo-bairro.rotulo-bairro-oculto {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* ---------- popups ---------- */
 
 .leaflet-popup-content {

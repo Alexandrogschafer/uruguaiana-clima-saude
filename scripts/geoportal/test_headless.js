@@ -75,10 +75,10 @@ async function main() {
       const esperados = ["mapa-base", "saude", "demografia", "inundacao", "uso-solo", "hidrografia-terreno", "meio-fisico", "malha-viaria", "estrutura-fundiaria", "educacao", "cobertura-movel"];
       return esperados.every((chave) => !!document.querySelector(`.grupo[data-grupo="${chave}"]`));
     }),
-    // 2 caixas (crianças e idosos): a "Densidade populacional" virou o seletor de ano no commit 531eb53
+    // 3 caixas (crianças, idosos e bairros): a "Densidade populacional" virou o seletor de ano no commit 531eb53
     camadasDemografiaCarregadas: await page.evaluate(() => {
       const el = document.getElementById("container-camadas-demografia");
-      return !!el && el.textContent.trim() !== "Carregando camadas…" && el.querySelectorAll("input[type=checkbox]").length === 2;
+      return !!el && el.textContent.trim() !== "Carregando camadas…" && el.querySelectorAll("input[type=checkbox]").length === 3;
     }),
     camadasInundacaoCarregadas: await page.evaluate(() => document.querySelectorAll("#container-camadas-inundacao input[type=checkbox]").length === 1), // só a mancha (setores × manchas retirada em 2026-10-02)
     camadasHidroContextoCarregadas: await page.evaluate(() => document.querySelectorAll("#container-camadas-hidro-contexto input[type=checkbox]").length === 2),
@@ -120,6 +120,61 @@ async function main() {
       return !!el && el.querySelectorAll("input[type=checkbox]").length === 6;
     }),
   };
+
+  // bairros (grupo "Demografia"): desligada ao abrir; ao ligar a caixa, a camada
+  // entra no mapa com os 26 bairros; ao desligar, sai
+  const caixaBairros = await page.evaluateHandle(() => {
+    const rotulos = Array.from(document.querySelectorAll("#container-camadas-demografia label"));
+    const rotulo = rotulos.find((el) => el.textContent.trim() === "Bairros (IBGE, Censo 2022)");
+    return rotulo ? rotulo.querySelector("input[type=checkbox]") : null;
+  });
+  const bairrosNoMapa = () =>
+    page.evaluate(() => {
+      const camada = window.App && window.App.layers && window.App.layers.bairros;
+      return !!camada && window.App.map.hasLayer(camada);
+    });
+  const elementoCaixaBairros = caixaBairros.asElement();
+  checks.camadaBairrosDesligadaAoAbrir = !!elementoCaixaBairros && !(await elementoCaixaBairros.isChecked()) && !(await bairrosNoMapa());
+  if (elementoCaixaBairros) await elementoCaixaBairros.click();
+  checks.camadaBairrosLigaCom26 =
+    (await bairrosNoMapa()) && (await page.evaluate(() => window.App.layers.bairros.getLayers().length === 26));
+  // nomes dos bairros: no zoom 13 só os que cabem sem se sobrepor; no 14, todos; no 12, nenhum
+  const vistaAntes = await page.evaluate(() => {
+    const m = window.App.map;
+    return { centro: [m.getCenter().lat, m.getCenter().lng], zoom: m.getZoom() };
+  });
+  const nomesDosBairros = async (zoom) => {
+    await page.evaluate((z) => {
+      const m = window.App.map;
+      m.setView(window.App.layers.bairros.getBounds().getCenter(), z, { animate: false });
+    }, zoom);
+    await page.waitForTimeout(600);
+    return page.evaluate(() => {
+      const todos = Array.from(document.querySelectorAll(".leaflet-tooltip.rotulo-bairro"));
+      const marcados = todos.filter((el) => !el.classList.contains("rotulo-bairro-oculto"));
+      const caixas = marcados.filter((el) => getComputedStyle(el).visibility !== "hidden").map((el) => el.getBoundingClientRect());
+      let sobrepostos = 0;
+      for (let i = 0; i < caixas.length; i++) {
+        for (let j = i + 1; j < caixas.length; j++) {
+          const a = caixas[i];
+          const b = caixas[j];
+          if (a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top) sobrepostos += 1;
+        }
+      }
+      return { total: todos.length, marcadosVisiveis: marcados.length, desenhados: caixas.length, sobrepostos };
+    });
+  };
+  const nomesZoom13 = await nomesDosBairros(13);
+  const nomesZoom14 = await nomesDosBairros(14);
+  const nomesZoom12 = await nomesDosBairros(12);
+  checks.nomesBairrosZoom13SemSobrepor = nomesZoom13.desenhados >= 1 && nomesZoom13.sobrepostos === 0;
+  checks.nomesBairrosZoom14Todos = nomesZoom14.total === 26 && nomesZoom14.marcadosVisiveis === 26;
+  checks.nomesBairrosZoom12Nenhum = nomesZoom12.total === 26 && nomesZoom12.desenhados === 0;
+  await page.evaluate((v) => window.App.map.setView(v.centro, v.zoom, { animate: false }), vistaAntes);
+  await page.waitForTimeout(300);
+
+  if (elementoCaixaBairros) await elementoCaixaBairros.click();
+  checks.camadaBairrosDesliga = !!elementoCaixaBairros && !(await bairrosNoMapa());
 
   // liga as 6 camadas novas do grupo "Meio físico" (desligadas por padrão) e
   // confirma que cada uma soma pelo menos 1 layer ativo no mapa Leaflet —

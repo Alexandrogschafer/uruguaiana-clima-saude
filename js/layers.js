@@ -115,6 +115,14 @@ const CAMPOS_LEGIVEIS = {
     pct_populacao_60_anos_ou_mais: "% população 60+ anos (Censo)",
     estimativa_idosos_60_mais: "Idosos 60+ anos (estimativa)",
   },
+  bairros: {
+    NM_BAIRRO: "Bairro",
+    populacao_2022: "População (Censo 2022)",
+    area_km2: "Área (km²)",
+    densidade_hab_km2: "Densidade populacional (hab/km²)",
+    setores_2022: "Setores censitários",
+    enderecos_domicilio_particular: "Endereços de domicílio particular",
+  },
   cotasInundacao: {
     cota_cm: "Cota de inundação (cm)",
     tr_anos: "Período de retorno (anos)",
@@ -295,6 +303,7 @@ const CAMPO_TITULO = {
   densidadePopulacional2000: (p) => `Setor ${p.cd_setor ?? ""}`.trim(),
   criancas0a4: (p) => `Setor ${p.CD_SETOR ?? ""}`.trim(),
   idosos60Mais: (p) => `Setor ${p.CD_SETOR ?? ""}`.trim(),
+  bairros: (p) => `Bairro ${p.NM_BAIRRO ?? ""}`.trim(),
   cotasInundacao: (p) => `Mancha de inundação — cota ${p.cota_cm ?? "?"} cm`,
   unidadesSaude: (p) => p.nome || "Unidade de saúde (ESF/UBS)",
   estacoesClima: (p) => p.nome_estacao || "Estação climatológica",
@@ -338,6 +347,9 @@ const NOTAS_POPUP = {
     p.sem_dado
       ? "Sem dado disponível para este setor (sigilo censitário)."
       : "Valor absoluto estimado a partir do percentual do Censo (não é contagem direta).",
+  bairros: () =>
+    "Bairro do Censo 2022 (IBGE). População: soma dos setores censitários do bairro; " +
+    "endereços: CNEFE 2022. Só a sede tem bairros.",
   // só o trecho BR-377 coincidente com a BR-290 recebe nota — os demais 17
   // trechos ficam sem nota (ver ajuste em construirPopup pra função que
   // retorna null/vazio não sair como "<p>null</p>" no popup)
@@ -558,6 +570,108 @@ function atualizarLegendaDemografia() {
   container.innerHTML = ativos.map(construirLegendaHtml).join("");
 }
 
+// ---------- bairros (malha do Censo 2022, IBGE) ----------
+//
+// Só o contorno, sem preenchimento: o interior não recebe clique, então o
+// popup do setor censitário que estiver por baixo continua abrindo. Os dados
+// do bairro abrem pelo contorno ou pelo rótulo com o nome. A camada tem pane
+// próprio, acima do overlayPane, para o contorno não ficar por baixo de um
+// coropleto ligado depois dela.
+//
+// Nome do bairro: fica no ponto rotulo_lon/rotulo_lat do GeoJSON (parte
+// habitada do bairro — ver scripts/geoportal/converter_bairros.py), quebrado
+// em duas linhas quando longo. Visibilidade por zoom:
+//   abaixo de ZOOM_ROTULOS_SEM_SOBREPOR  nenhum nome
+//   em ZOOM_ROTULOS_SEM_SOBREPOR         só os que cabem sem se sobrepor,
+//                                        do maior bairro (em área) para o menor
+//   de ZOOM_ROTULOS_TODOS em diante      todos
+// O contorno aparece em qualquer zoom.
+const ZOOM_ROTULOS_SEM_SOBREPOR = 13;
+const ZOOM_ROTULOS_TODOS = 14;
+const FOLGA_ROTULO_PX = 2;
+const CLASSE_ROTULO_OCULTO = "rotulo-bairro-oculto";
+
+// duas linhas, quebrando no espaço mais próximo do meio, quando o nome tem
+// três palavras ou mais, ou mais de 14 letras
+function quebrarNomeBairro(nome) {
+  const palavras = nome.split(" ");
+  const letras = nome.replace(/ /g, "").length;
+  if (palavras.length < 2 || (palavras.length < 3 && letras <= 14)) return nome;
+  let melhor = -1;
+  for (let i = nome.indexOf(" "); i !== -1; i = nome.indexOf(" ", i + 1)) {
+    if (melhor === -1 || Math.abs(i - nome.length / 2) < Math.abs(melhor - nome.length / 2)) melhor = i;
+  }
+  return `${nome.slice(0, melhor)}<br>${nome.slice(melhor + 1)}`;
+}
+
+function atualizarRotulosBairros(camada) {
+  const mapa = window.App.map;
+  if (!mapa.hasLayer(camada)) return;
+  const zoom = mapa.getZoom();
+  const rotulos = camada
+    .getLayers()
+    .map((l) => ({ el: l.getTooltip() && l.getTooltip().getElement(), area: l.feature.properties.area_km2 || 0 }))
+    .filter((r) => r.el);
+
+  if (zoom < ZOOM_ROTULOS_SEM_SOBREPOR || zoom >= ZOOM_ROTULOS_TODOS) {
+    rotulos.forEach((r) => r.el.classList.toggle(CLASSE_ROTULO_OCULTO, zoom < ZOOM_ROTULOS_SEM_SOBREPOR));
+    return;
+  }
+  // zoom intermediário: a caixa de cada nome se mede mesmo com ele escondido (a classe usa
+  // visibility); começa com todos à mostra e esconde os que não cabem
+  rotulos.forEach((r) => r.el.classList.remove(CLASSE_ROTULO_OCULTO));
+  const aceitas = [];
+  rotulos
+    .sort((a, b) => b.area - a.area)
+    .forEach((r) => {
+      const c = r.el.getBoundingClientRect();
+      const caixa = {
+        esq: c.left - FOLGA_ROTULO_PX,
+        dir: c.right + FOLGA_ROTULO_PX,
+        topo: c.top - FOLGA_ROTULO_PX,
+        base: c.bottom + FOLGA_ROTULO_PX,
+      };
+      const toca = aceitas.some((a) => caixa.esq <= a.dir && caixa.dir >= a.esq && caixa.topo <= a.base && caixa.base >= a.topo);
+      if (toca) r.el.classList.add(CLASSE_ROTULO_OCULTO);
+      else aceitas.push({ esq: c.left, dir: c.right, topo: c.top, base: c.bottom });
+    });
+}
+
+function construirCamadaBairros(geojson) {
+  const mapa = window.App.map;
+  if (!mapa.getPane("bairros")) {
+    mapa.createPane("bairros").style.zIndex = 450; // overlayPane = 400; markerPane = 600
+  }
+
+  const camada = L.geoJSON(geojson, {
+    pane: "bairros",
+    style: { color: "#4a1486", weight: 2, fill: false },
+    onEachFeature: (feature, layer) => {
+      onEachFeatureComPopup("bairros")(feature, layer);
+      const p = feature.properties;
+      // o Leaflet põe o tooltip permanente em getCenter(); aqui o centro passa a ser o ponto do nome
+      if (typeof p.rotulo_lat === "number" && typeof p.rotulo_lon === "number") {
+        const pontoDoNome = L.latLng(p.rotulo_lat, p.rotulo_lon);
+        layer.getCenter = () => pontoDoNome;
+      }
+      layer.bindTooltip(quebrarNomeBairro(p.NM_BAIRRO || ""), {
+        permanent: true,
+        direction: "center",
+        className: "rotulo-bairro",
+        interactive: true, // o clique no nome abre o popup do bairro
+        pane: "bairros",
+      });
+    },
+  });
+
+  // recalcula quando o zoom muda e quando a camada é ligada (os tooltips só existem
+  // no DOM, já posicionados, depois que o Leaflet termina o evento)
+  const recalcular = () => window.requestAnimationFrame(() => atualizarRotulosBairros(camada));
+  mapa.on("zoomend", recalcular);
+  camada.on("add", recalcular);
+  return camada;
+}
+
 async function buscarGeoJSON(nomeArquivo) {
   const resposta = await fetch(`${DIR_DADOS}/${nomeArquivo}`);
   if (!resposta.ok) {
@@ -648,6 +762,7 @@ async function iniciarCamadas() {
       densidadePopulacional2000GeoJSON,
       criancas0a4GeoJSON,
       idosos60MaisGeoJSON,
+      bairrosGeoJSON,
       cotasInundacaoGeoJSON,
       unidadesSaudeGeoJSON,
       estacoesClimaGeoJSON,
@@ -663,6 +778,7 @@ async function iniciarCamadas() {
       buscarGeoJSON("densidade-populacional-2000.geojson"),
       buscarGeoJSON("criancas-0-4.geojson"),
       buscarGeoJSON("idosos-60-mais.geojson"),
+      buscarGeoJSON("bairros.geojson"),
       buscarGeoJSON("cotas-inundacao.geojson"),
       buscarGeoJSON("unidades-saude-esf-ubs.geojson"),
       buscarGeoJSON("estacoes-clima.geojson"),
@@ -693,6 +809,7 @@ async function iniciarCamadas() {
     const densidadePopulacional2000 = construirCamadaChoropleth("densidadePopulacional2000", densidadePopulacional2000GeoJSON);
     const criancas0a4 = construirCamadaChoropleth("criancas0a4", criancas0a4GeoJSON);
     const idosos60Mais = construirCamadaChoropleth("idosos60Mais", idosos60MaisGeoJSON);
+    const bairros = construirCamadaBairros(bairrosGeoJSON);
 
     const cotasInundacao = L.geoJSON(cotasInundacaoGeoJSON, {
       style: { color: "#1d4ed8", weight: 1, fillColor: "#2563eb", fillOpacity: 0.3 },
@@ -785,6 +902,7 @@ async function iniciarCamadas() {
       densidadePopulacional2000,
       criancas0a4,
       idosos60Mais,
+      bairros,
       cotasInundacao,
       unidadesSaude,
       estacoesClima,
@@ -803,6 +921,7 @@ async function iniciarCamadas() {
     montarTogglesCamadas("container-camadas-demografia", [
       { layer: criancas0a4, rotulo: "Crianças (0-4 anos) — 2022", ligado: false, aoAlternar: atualizarLegendaDemografia },
       { layer: idosos60Mais, rotulo: "Idosos (60+ anos) — 2022", ligado: false, aoAlternar: atualizarLegendaDemografia },
+      { layer: bairros, rotulo: "Bairros (IBGE, Censo 2022)", ligado: false },
     ]);
     montarControleDensidadeHistorica({
       2022: densidadePopulacional,
