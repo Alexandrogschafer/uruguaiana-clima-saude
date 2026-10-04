@@ -31,7 +31,8 @@ revisão visual):
   setores diferentes entre si e não comparáveis geometricamente);
   concentração de crianças (0-4 anos) e de idosos (60+ anos) por setor,
   só para 2022 (a fonte de 2000/2010 não traz distribuição etária por
-  setor).
+  setor); bairros do Censo 2022 (IBGE), só na sede, com população, área,
+  densidade, setores e endereços por bairro.
 - **Inundação:** cotas históricas de inundação registradas pelo Serviço
   Geológico do Brasil, com a mancha e as unidades de saúde (ESF/UBS)
   dentro dela em cada cenário.

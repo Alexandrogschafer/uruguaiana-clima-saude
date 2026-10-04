@@ -1,0 +1,32 @@
+{
+  "descricao": "Bairros do Censo Demográfico 2022 (IBGE) no município de referência, com população, área, densidade, número de setores censitários e endereços de domicílio particular; rotulo_lon e rotulo_lat dão o ponto onde o portal escreve o nome.",
+  "fonte": {
+    "caminho_origem": "data/processed/bairros/bairros_ibge_2022_vetorial.gpkg",
+    "malha": "IBGE — Malha de Bairros do Censo Demográfico 2022",
+    "populacao": "soma dos setores censitários de 2022 com o código do bairro (Censo 2022)",
+    "enderecos": "IBGE — CNEFE do Censo 2022, endereços de domicílio particular dentro do bairro",
+    "setores_para_o_ponto_do_nome": "data/processed/dinamica_populacional/populacao-setores_ibge-censo_2022_setor.gpkg"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "densidade_hab_km2 = populacao_2022 / area_km2 (arredondado a 1 casa); rotulo_lon/rotulo_lat = média, ponderada pela população de 2022, dos pontos interiores dos setores do bairro (ou o ponto interior do setor mais populoso, se a média cair fora do bairro), calculada em EPSG:31981 e gravada em graus com 6 casas; sem simplificação de geometria; reprojeção EPSG:31981 -> EPSG:4326",
+  "n_features": 26,
+  "colunas": [
+    "CD_BAIRRO",
+    "NM_BAIRRO",
+    "populacao_2022",
+    "area_km2",
+    "densidade_hab_km2",
+    "setores_2022",
+    "enderecos_domicilio_particular",
+    "rotulo_lon",
+    "rotulo_lat"
+  ],
+  "data_processamento": "2026-10-04T22:05:32.121684+00:00",
+  "licenca": "dados abertos (IBGE)",
+  "nota": "Só a sede tem bairros na malha do IBGE: 34 setores, com 8.182 habitantes, ficam fora de bairro.",
+  "ponto_do_nome": {
+    "campos": "rotulo_lon e rotulo_lat (EPSG:4326, 6 casas); não são atributo do bairro, só posição do nome no mapa",
+    "bairros_pela_media_ponderada": 26,
+    "bairros_pelo_setor_mais_populoso": 0
+  }
+}
