@@ -1,0 +1,17 @@
+{
+  "produto": "domicilios_ibge-censo_1970-2022_municipal.csv",
+  "data_processamento": "2026-10-03T14:18:22+00:00",
+  "descricao": "Domicílios particulares permanentes, moradores e moradores por domicílio; 1970 e 1980: só o número de domicílios (sem tabela municipal de moradores na API); um morador: só 1991–2010 (SIDRA 185); 2022 fica na tabela de 2000–2022; séries: 'publicado' = município com o território de cada Censo; 'constante' = município somado aos desmembrados nos Censos em que estes aparecem separados (coluna desmembrados_somados); nos demais as duas séries coincidem",
+  "fonte": "SIDRA 206 (1970, 1980), 185 e 207 (1991, 2000), 185 e 3451 (2010), 4712 (2022)",
+  "codigo_ibge": "4322400",
+  "codigos_desmembrados": [
+    "4301875"
+  ],
+  "script": "scripts/processamento/dinamica_populacional_serie_longa.py",
+  "status": "pendente de conferência",
+  "municipio": "Uruguaiana (RS)",
+  "desmembrados": [
+    "Barra do Quaraí (RS)"
+  ],
+  "transformacao": "seleção das categorias da tabela, soma e razões; indisponível = ausente, nunca zero; valores sem arredondar (6 casas): toda exibição arredonda a partir deles"
+}

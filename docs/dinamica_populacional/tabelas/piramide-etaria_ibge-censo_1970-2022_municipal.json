@@ -1,0 +1,17 @@
+{
+  "produto": "piramide-etaria_ibge-censo_1970-2022_municipal.csv",
+  "data_processamento": "2026-10-03T14:18:22+00:00",
+  "descricao": "População por sexo e grupo quinquenal, em número e % da população (com idade declarada) do ano, nas duas séries; grupos quinquenais comuns a todos os Censos, grupo aberto 80+; 1970–1991: SIDRA 200 (idade ignorada fora dos percentuais); de 2000 em diante: universo em idade simples (SIDRA 1552 e 9514), agrupado",
+  "fonte": "SIDRA 200 (1970–1991), 1552 (2000, 2010) e 9514 (2022)",
+  "codigo_ibge": "4322400",
+  "codigos_desmembrados": [
+    "4301875"
+  ],
+  "script": "scripts/processamento/dinamica_populacional_serie_longa.py",
+  "status": "pendente de conferência",
+  "municipio": "Uruguaiana (RS)",
+  "desmembrados": [
+    "Barra do Quaraí (RS)"
+  ],
+  "transformacao": "seleção das categorias da tabela, soma e razões; indisponível = ausente, nunca zero; valores sem arredondar (6 casas): toda exibição arredonda a partir deles"
+}

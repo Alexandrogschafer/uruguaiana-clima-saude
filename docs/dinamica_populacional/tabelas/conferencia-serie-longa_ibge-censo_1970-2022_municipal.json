@@ -1,0 +1,17 @@
+{
+  "produto": "conferencia-serie-longa_ibge-censo_1970-2022_municipal.csv",
+  "data_processamento": "2026-10-03T14:18:22+00:00",
+  "descricao": "Conferências: tabela 200 × universo por grupo de idade (2000, 2010); soma das idades, dos sexos e das situações × total; série longa × tabelas atuais de 2000–2022",
+  "fonte": "SIDRA e tabelas atuais do estudo",
+  "codigo_ibge": "4322400",
+  "codigos_desmembrados": [
+    "4301875"
+  ],
+  "script": "scripts/processamento/dinamica_populacional_serie_longa.py",
+  "status": "pendente de conferência",
+  "municipio": "Uruguaiana (RS)",
+  "desmembrados": [
+    "Barra do Quaraí (RS)"
+  ],
+  "transformacao": "seleção das categorias da tabela, soma e razões; indisponível = ausente, nunca zero; valores sem arredondar (6 casas): toda exibição arredonda a partir deles"
+}
