@@ -1,0 +1,135 @@
+{
+  "nome_saida": "zoneamento-risco-inundacao_righi-ufrgs_2016_extraido-de-figura",
+  "documento": {
+    "arquivo": "tese_righi-ufrgs_2016.pdf",
+    "titulo": "RIGHI, E. Metodologia para zoneamento de risco a inundações graduais. Tese (Doutorado em Geografia) — UFRGS, 2016. Figura 7.1 — Mapa de risco a inundações (área urbana de Uruguaiana)",
+    "pagina": 162,
+    "origem": "imagem_embutida",
+    "indice_imagem": 0,
+    "dimensao_px": [
+      1486,
+      2103
+    ],
+    "rotacao_horaria_graus": 90,
+    "tipo_de_figura": "imagem com grade de coordenadas (mapa deitado na página)",
+    "sha256": "9a157cf69cbf625ee5dcdbb214af833980f4826b53bf5f6d9659cee2913ee477"
+  },
+  "epsg": 31981,
+  "moldura_px": {
+    "x0": 182,
+    "x1": 1758,
+    "y0": 51,
+    "y1": 1084
+  },
+  "marcas_e": [
+    [
+      465.5,
+      49.5,
+      490000
+    ],
+    [
+      999.0,
+      49.5,
+      492000
+    ],
+    [
+      1533.0,
+      49.5,
+      494000
+    ],
+    [
+      465.5,
+      1084.5,
+      490000
+    ],
+    [
+      999.0,
+      1084.5,
+      492000
+    ],
+    [
+      1533.0,
+      1084.5,
+      494000
+    ]
+  ],
+  "marcas_n": [
+    [
+      180.5,
+      517.5,
+      6708000
+    ],
+    [
+      180.5,
+      1051.5,
+      6706000
+    ],
+    [
+      1758.5,
+      517.5,
+      6708000
+    ],
+    [
+      1758.5,
+      1051.5,
+      6706000
+    ]
+  ],
+  "modo": "cumulativo",
+  "atributo_classe": "classe",
+  "classes": [
+    {
+      "valor": "leito",
+      "cor": [
+        0,
+        113,
+        254
+      ],
+      "descricao": "leito do rio e arroios no mapa de origem (não é classe de risco)"
+    },
+    {
+      "valor": "risco alto",
+      "cor": [
+        254,
+        127,
+        126
+      ],
+      "descricao": "leito + zona de risco alto"
+    },
+    {
+      "valor": "risco médio",
+      "cor": [
+        253,
+        211,
+        130
+      ],
+      "descricao": "leito + zonas de risco alto e médio"
+    },
+    {
+      "valor": "risco baixo",
+      "cor": [
+        167,
+        252,
+        124
+      ],
+      "descricao": "leito + todas as zonas de risco: envoltória da área mapeada como de risco"
+    }
+  ],
+  "tolerancia_cor": 30,
+  "limpeza": {
+    "fechamento_iteracoes": 3,
+    "buraco_min_m2": 8000,
+    "ilha_min_m2": 1000,
+    "simplificacao_m": 2.0
+  },
+  "camadas": {
+    "principal": "zonas_cumulativas",
+    "faixas": "zonas_de_risco",
+    "quadro": "quadro_do_mapa"
+  },
+  "atributos": {
+    "fonte": "Righi (2016), tese de doutorado em Geografia, UFRGS — Figura 7.1, mapa de risco a inundações (zoneamento de risco alto, médio e baixo; perigo pelas cotas de 49,26 m, 51,76 m e 53,91 m, TR de 10, 20 e 100 anos)",
+    "metodo": "extraído da figura do PDF: classificação por cor, georreferenciamento pela grade UTM do mapa",
+    "status": "NÃO OFICIAL — derivado de figura; pendente de conferência; não publicar sem autorização"
+  }
+}
