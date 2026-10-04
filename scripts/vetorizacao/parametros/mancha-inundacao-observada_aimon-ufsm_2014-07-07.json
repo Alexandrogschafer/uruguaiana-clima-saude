@@ -1,0 +1,252 @@
+{
+  "nome_saida": "mancha-inundacao-observada_aimon-ufsm_2014-07-07_extraido-de-figura",
+  "documento": {
+    "arquivo": "dissertacao_aimon-ufsm_2017.pdf",
+    "titulo": "AIMON, J. G. S. Análise espaço-temporal do risco à inundação na área urbana do município de Uruguaiana/RS. Dissertação (Mestrado em Geografia) — UFSM, 2017. Figura 25 — Mapa da mancha de inundação (legenda do mapa: inundação de 7/7/2014, vetorizada sobre imagem do Google Earth)",
+    "pagina": 69,
+    "origem": "imagem_embutida",
+    "indice_imagem": 0,
+    "dimensao_px": [
+      1678,
+      1197
+    ],
+    "escala_do_mapa": "1:10.000 (declarada no mapa)",
+    "tipo_de_figura": "imagem com grade de coordenadas; classe em hachura",
+    "sha256": "a5992303ffdfd2f3c6eec0e9cb6df087efd5d4756041930b100c04668d26bdba"
+  },
+  "epsg": 31981,
+  "moldura_px": {
+    "x0": 14,
+    "x1": 1664,
+    "y0": 16,
+    "y1": 1182
+  },
+  "excluir_px": [
+    [
+      13,
+      15,
+      400,
+      335
+    ]
+  ],
+  "marcas_e": [
+    [
+      177.0,
+      15,
+      487844
+    ],
+    [
+      339.0,
+      15,
+      488844
+    ],
+    [
+      502.0,
+      15,
+      489844
+    ],
+    [
+      664.0,
+      15,
+      490844
+    ],
+    [
+      827.0,
+      15,
+      491844
+    ],
+    [
+      989.0,
+      15,
+      492844
+    ],
+    [
+      1152.0,
+      15,
+      493844
+    ],
+    [
+      1314.0,
+      15,
+      494844
+    ],
+    [
+      1477.0,
+      15,
+      495844
+    ],
+    [
+      1639.0,
+      15,
+      496844
+    ],
+    [
+      175.5,
+      1182,
+      487844
+    ],
+    [
+      338.0,
+      1182,
+      488844
+    ],
+    [
+      501.0,
+      1182,
+      489844
+    ],
+    [
+      663.0,
+      1182,
+      490844
+    ],
+    [
+      826.0,
+      1182,
+      491844
+    ],
+    [
+      988.5,
+      1182,
+      492844
+    ],
+    [
+      1151.0,
+      1182,
+      493844
+    ],
+    [
+      1314.0,
+      1182,
+      494844
+    ],
+    [
+      1476.0,
+      1182,
+      495844
+    ],
+    [
+      1639.0,
+      1182,
+      496844
+    ]
+  ],
+  "marcas_n": [
+    [
+      13,
+      29.0,
+      6710143
+    ],
+    [
+      13,
+      194.0,
+      6709143
+    ],
+    [
+      13,
+      359.0,
+      6708143
+    ],
+    [
+      13,
+      523.0,
+      6707143
+    ],
+    [
+      13,
+      688.0,
+      6706143
+    ],
+    [
+      13,
+      853.0,
+      6705143
+    ],
+    [
+      13,
+      1018.0,
+      6704143
+    ],
+    [
+      1664,
+      31.0,
+      6710143
+    ],
+    [
+      1664,
+      195.0,
+      6709143
+    ],
+    [
+      1664,
+      360.0,
+      6708143
+    ],
+    [
+      1664,
+      525.0,
+      6707143
+    ],
+    [
+      1664,
+      689.0,
+      6706143
+    ],
+    [
+      1664,
+      854.0,
+      6705143
+    ],
+    [
+      1664,
+      1019.0,
+      6704143
+    ]
+  ],
+  "modo": "cumulativo",
+  "atributo_classe": "classe",
+  "classes": [
+    {
+      "valor": "leito",
+      "cor": [
+        151,
+        219,
+        242
+      ],
+      "descricao": "leito do rio e corpos d'água no mapa de origem"
+    },
+    {
+      "valor": "cheia de 07/07/2014",
+      "regra": {
+        "canais": [
+          2,
+          0
+        ],
+        "min": 4.0,
+        "max": 60.0,
+        "suavizacao_px": 9,
+        "abertura_iteracoes": 6,
+        "erosao_px": 3,
+        "fechamento_px": 7
+      },
+      "descricao": "área inundada na cheia de 07/07/2014, com o leito do rio"
+    }
+  ],
+  "tolerancia_cor": 14,
+  "limpeza": {
+    "fechamento_iteracoes": 4,
+    "buraco_min_m2": 30000,
+    "ilha_min_m2": 40000,
+    "simplificacao_m": 3.0
+  },
+  "camadas": {
+    "principal": "manchas_cumulativas",
+    "faixas": "faixas",
+    "quadro": "quadro_do_mapa"
+  },
+  "atributos": {
+    "fonte": "Aimon (2017), dissertação de mestrado em Geografia, UFSM — Figura 25, mancha da inundação de 7/7/2014 (vetorizada pelo autor sobre imagem do Google Earth)",
+    "metodo": "extraído da figura do PDF: hachura separada do fundo pela diferença azul–vermelho da imagem suavizada; georreferenciamento pela grade UTM do mapa",
+    "status": "NÃO OFICIAL — derivado de figura; pendente de conferência; não publicar sem autorização"
+  }
+}

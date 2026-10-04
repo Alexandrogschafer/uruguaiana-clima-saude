@@ -1,0 +1,249 @@
+{
+  "nome_saida": "suscetibilidade-inundacao_aimon-ufsm_2017_cota-53-02m_extraido-de-figura",
+  "documento": {
+    "arquivo": "dissertacao_aimon-ufsm_2017.pdf",
+    "titulo": "AIMON, J. G. S. Análise espaço-temporal do risco à inundação na área urbana do município de Uruguaiana/RS. Dissertação (Mestrado em Geografia) — UFSM, 2017. Figura 26 — Mapa de suscetibilidade à inundação (área até a cota de 53,02 m, registrada em 19/07/1983)",
+    "pagina": 71,
+    "origem": "imagem_embutida",
+    "indice_imagem": 0,
+    "dimensao_px": [
+      1700,
+      1200
+    ],
+    "escala_do_mapa": "1:10.000 (declarada no mapa)",
+    "tipo_de_figura": "imagem com grade de coordenadas",
+    "sha256": "a5992303ffdfd2f3c6eec0e9cb6df087efd5d4756041930b100c04668d26bdba"
+  },
+  "epsg": 31981,
+  "moldura_px": {
+    "x0": 14,
+    "x1": 1686,
+    "y0": 16,
+    "y1": 1185
+  },
+  "excluir_px": [
+    [
+      13,
+      15,
+      506,
+      392
+    ]
+  ],
+  "marcas_e": [
+    [
+      179.0,
+      15,
+      487844
+    ],
+    [
+      344.0,
+      15,
+      488844
+    ],
+    [
+      509.0,
+      15,
+      489844
+    ],
+    [
+      673.0,
+      15,
+      490844
+    ],
+    [
+      838.0,
+      15,
+      491844
+    ],
+    [
+      1002.0,
+      15,
+      492844
+    ],
+    [
+      1167.0,
+      15,
+      493844
+    ],
+    [
+      1332.0,
+      15,
+      494844
+    ],
+    [
+      1496.0,
+      15,
+      495844
+    ],
+    [
+      1661.0,
+      15,
+      496844
+    ],
+    [
+      177.64,
+      1185,
+      487844
+    ],
+    [
+      342.58,
+      1185,
+      488844
+    ],
+    [
+      507.59,
+      1185,
+      489844
+    ],
+    [
+      672.0,
+      1185,
+      490844
+    ],
+    [
+      837.0,
+      1185,
+      491844
+    ],
+    [
+      1001.52,
+      1185,
+      492844
+    ],
+    [
+      1166.0,
+      1185,
+      493844
+    ],
+    [
+      1331.0,
+      1185,
+      494844
+    ],
+    [
+      1495.46,
+      1185,
+      495844
+    ],
+    [
+      1660.47,
+      1185,
+      496844
+    ]
+  ],
+  "marcas_n": [
+    [
+      13,
+      29.57,
+      6710143
+    ],
+    [
+      13,
+      194.54,
+      6709143
+    ],
+    [
+      13,
+      359.51,
+      6708143
+    ],
+    [
+      13,
+      525.0,
+      6707143
+    ],
+    [
+      13,
+      689.53,
+      6706143
+    ],
+    [
+      13,
+      855.0,
+      6705143
+    ],
+    [
+      13,
+      1020.0,
+      6704143
+    ],
+    [
+      1686,
+      31.0,
+      6710143
+    ],
+    [
+      1686,
+      196.0,
+      6709143
+    ],
+    [
+      1686,
+      361.0,
+      6708143
+    ],
+    [
+      1686,
+      526.0,
+      6707143
+    ],
+    [
+      1686,
+      691.0,
+      6706143
+    ],
+    [
+      1686,
+      856.0,
+      6705143
+    ]
+  ],
+  "modo": "cumulativo",
+  "atributo_classe": "classe",
+  "classes": [
+    {
+      "valor": "leito",
+      "cor": [
+        151,
+        219,
+        242
+      ],
+      "descricao": "leito do rio e corpos d'água no mapa de origem"
+    },
+    {
+      "valor": "suscetível (até 53,02 m)",
+      "cor": [
+        153,
+        171,
+        201
+      ],
+      "descricao": "leito + área suscetível à inundação: terreno até a cota de 53,02 m, nível da cheia de 19/07/1983"
+    },
+    {
+      "valor": "não suscetível (acima de 53,02 m)",
+      "cor": [
+        254,
+        254,
+        202
+      ],
+      "descricao": "leito + área suscetível + área não suscetível: toda a área coberta pelo modelo de terreno do estudo (domínio do mapeamento)"
+    }
+  ],
+  "tolerancia_cor": 16,
+  "limpeza": {
+    "fechamento_iteracoes": 3,
+    "buraco_min_m2": 30000,
+    "ilha_min_m2": 1000,
+    "simplificacao_m": 3.0
+  },
+  "camadas": {
+    "principal": "manchas_cumulativas",
+    "faixas": "faixas",
+    "quadro": "quadro_do_mapa"
+  },
+  "atributos": {
+    "fonte": "Aimon (2017), dissertação de mestrado em Geografia, UFSM — Figura 26, mapa de suscetibilidade à inundação (área até a cota de 53,02 m, da cheia de 19/07/1983, sobre modelo de terreno das curvas de nível 1:2.000 do Plano Diretor)",
+    "metodo": "extraído da figura do PDF: classificação por cor, georreferenciamento pela grade UTM do mapa",
+    "status": "NÃO OFICIAL — derivado de figura; pendente de conferência; não publicar sem autorização"
+  }
+}

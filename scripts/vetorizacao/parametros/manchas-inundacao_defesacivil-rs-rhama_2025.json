@@ -1,0 +1,174 @@
+{
+  "nome_saida": "manchas-inundacao_defesacivil-rs-rhama_2025_tr2-1000_extraido-de-figura",
+  "documento": {
+    "arquivo": "manchas-inundacao_defesacivil-rs-rhama_2025.pdf",
+    "titulo": "Manchas de inundação — Município de Uruguaiana — Rio Uruguai",
+    "origem": "https://www.defesacivil.rs.gov.br/manchas-de-inundacao",
+    "sha256": "a8b19bf73ac5901c18d8326307304bb502a52318afc97cdfbfb147b8133abaac",
+    "pagina": 4,
+    "dpi": 300,
+    "dimensao_px": [
+      4960,
+      3510
+    ],
+    "escala_do_mapa": "1:23.000",
+    "tipo_de_figura": "imagem com grade de coordenadas"
+  },
+  "epsg": 31981,
+  "moldura_px": {
+    "x0": 244,
+    "x1": 3762,
+    "y0": 138,
+    "y1": 3346
+  },
+  "marcas_e": [
+    [
+      526.0,
+      137.0,
+      489000
+    ],
+    [
+      1707.5,
+      137.0,
+      492000
+    ],
+    [
+      2889.0,
+      137.0,
+      495000
+    ],
+    [
+      522.0,
+      3346.5,
+      489000
+    ],
+    [
+      1705.0,
+      3346.5,
+      492000
+    ],
+    [
+      2887.5,
+      3346.5,
+      495000
+    ]
+  ],
+  "marcas_n": [
+    [
+      243.5,
+      886.5,
+      6709000
+    ],
+    [
+      243.5,
+      1918.5,
+      6706000
+    ],
+    [
+      243.5,
+      2949.5,
+      6703000
+    ],
+    [
+      3763.0,
+      889.0,
+      6709000
+    ],
+    [
+      3763.0,
+      1920.0,
+      6706000
+    ],
+    [
+      3763.0,
+      2952.0,
+      6703000
+    ]
+  ],
+  "modo": "cumulativo",
+  "atributo_classe": "tr_anos",
+  "classes": [
+    {
+      "valor": 2,
+      "cor": [
+        0,
+        236,
+        255
+      ]
+    },
+    {
+      "valor": 5,
+      "cor": [
+        0,
+        205,
+        255
+      ]
+    },
+    {
+      "valor": 10,
+      "cor": [
+        24,
+        168,
+        255
+      ]
+    },
+    {
+      "valor": 50,
+      "cor": [
+        64,
+        127,
+        255
+      ]
+    },
+    {
+      "valor": 100,
+      "cor": [
+        64,
+        88,
+        255
+      ]
+    },
+    {
+      "valor": 200,
+      "cor": [
+        32,
+        32,
+        255
+      ]
+    },
+    {
+      "valor": 500,
+      "cor": [
+        0,
+        0,
+        208
+      ]
+    },
+    {
+      "valor": 1000,
+      "cor": [
+        0,
+        0,
+        128
+      ]
+    }
+  ],
+  "tolerancia_cor": 26,
+  "limpeza": {
+    "fechamento_iteracoes": 3,
+    "buraco_min_m2": 2500,
+    "ilha_min_m2": 1000,
+    "simplificacao_m": 1.5
+  },
+  "camadas": {
+    "principal": "manchas_cumulativas",
+    "faixas": "faixas_por_tr",
+    "quadro": "quadro_do_mapa"
+  },
+  "descricao_modelo": "área inundável para TR de até {valor} anos (cumulativa)",
+  "atributos": {
+    "fonte": "Defesa Civil do RS — Previsão de eventos hidrológicos críticos; Rhama Analysis e Simepar (mapa de nov/2025, escala 1:23.000)",
+    "metodo": "extraído da figura do PDF: classificação por cor, georreferenciamento pela grade UTM do mapa",
+    "status": "NÃO OFICIAL — derivado de figura; conferido pelo responsável em 2026-10-03; não publicar sem autorização"
+  }
+}
