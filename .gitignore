@@ -9,3 +9,5 @@ data/auditoria_cnes/
 
 node_modules/
 scripts/geoportal/geoportal-headless.png
+# cache de consultas ao OpenStreetMap (API Overpass), gerado pela biblioteca de consulta
+cache/
