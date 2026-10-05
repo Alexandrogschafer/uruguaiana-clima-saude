@@ -860,7 +860,7 @@
   {
    "tipo": "vetor",
    "nome_saida": "toponimia_plano-diretor-uruguaiana_2013_vetorial_extraido-de-pdf",
-   "observacoes": "Nomes escritos na planta, como pontos. O Plano Diretor NÃO desenha limite de bairro: só o nome. O campo tipo é leitura nossa (a planta não distingue bairro de vila ou de referência); 'bairro ou vila' foi conferido contra os nomes de bairro da malha do Censo 2022 (BOA VISTA não é bairro nessa malha). Nomes de rua: o ponto é a origem do texto, com o ângulo de escrita. A grafia é a da planta; os nomes de rio e de arroio, escritos com as letras espaçadas, foram juntados.",
+   "observacoes": "Nomes escritos na planta, como pontos. O Plano Diretor NÃO desenha limite de bairro: só o nome. O campo tipo é leitura nossa (a planta não distingue bairro de vila ou de referência). 'bairro' = o nome está entre os 26 bairros da Lei municipal nº 2.889/1999 e da malha de bairros do Censo 2022, que têm os mesmos nomes; a planta escreve 24 deles (faltam Aeroporto e Emílio Brandi). 'vila ou localidade' = BOA VISTA, que a planta escreve com a mesma letra dos bairros mas não é bairro na lei nem no Censo: fica dentro do bairro Bela Vista, a 840 m do nome BELA VISTA. Grafia: a planta e a lei escrevem Cabo Luís Quevedo; o Censo, Cabo Luiz Quevedo. Nomes de rua: o ponto é a origem do texto, com o ângulo de escrita. A grafia é a da planta; os nomes de rio e de arroio, escritos com as letras espaçadas, foram juntados.",
    "resumir_por": {
     "nomes_de_lugares": [
      "tipo"
@@ -873,9 +873,21 @@
      "geometria": "texto",
      "altura_min_pt": 10.0,
      "altura_max_pt": 10.4,
-     "excluir_regex": "^(A R R O I O|R I O)",
+     "excluir_regex": "^(A R R O I O|R I O|BOA VISTA$)",
      "atributos": {
-      "tipo": "bairro ou vila",
+      "tipo": "bairro",
+      "origem": "texto do PDF"
+     }
+    },
+    {
+     "nome": "nomes_de_lugares",
+     "camada_cad": "BAIRROS",
+     "geometria": "texto",
+     "altura_min_pt": 10.0,
+     "altura_max_pt": 10.4,
+     "regex": "^BOA VISTA$",
+     "atributos": {
+      "tipo": "vila ou localidade",
       "origem": "texto do PDF"
      }
     },
@@ -885,7 +897,7 @@
      "geometria": "texto",
      "regex": "^(VILA JÚLIA|RUI RAMOS)$",
      "atributos": {
-      "tipo": "bairro ou vila",
+      "tipo": "bairro",
       "origem": "texto do PDF"
      }
     },
@@ -926,7 +938,7 @@
       ]
      ],
      "atributos": {
-      "tipo": "bairro ou vila",
+      "tipo": "bairro",
       "origem": "rótulo lido na planta"
      }
     },
