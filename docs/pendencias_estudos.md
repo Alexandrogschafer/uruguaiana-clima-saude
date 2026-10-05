@@ -27,7 +27,7 @@
   nos `.json` e precisam da conferência do responsável. Os indicadores novos ainda não
   foram publicados no portal. Material: `docs/dinamica_populacional/`,
   `docs/exposicao_inundacao/` e `docs/acessibilidade_inundacao/`.
-- **Limpeza.** A pasta `cache/` continua versionada (13 arquivos). Os scripts do cálculo
+- **Limpeza.** A pasta `cache/` saiu do git em 2026-10-04 e é ignorada. Os scripts do cálculo
   preliminar de população exposta continuam ativos:
   `scripts/processamento/vulnerabilidade_inundacao.py` e
   `scripts/processamento/mapa_consolidado.py`.
