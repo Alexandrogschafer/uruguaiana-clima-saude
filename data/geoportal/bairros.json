@@ -21,9 +21,10 @@
     "rotulo_lon",
     "rotulo_lat"
   ],
-  "data_processamento": "2026-10-04T22:05:32.121684+00:00",
+  "data_processamento": "2026-10-05T00:43:48.515374+00:00",
   "licenca": "dados abertos (IBGE)",
   "nota": "Só a sede tem bairros na malha do IBGE: 34 setores, com 8.182 habitantes, ficam fora de bairro.",
+  "nota_nomes": "Os 26 nomes são os da Lei municipal nº 2.889/1999; os limites são os da malha do IBGE e não foram conferidos contra a descrição da lei.",
   "ponto_do_nome": {
     "campos": "rotulo_lon e rotulo_lat (EPSG:4326, 6 casas); não são atributo do bairro, só posição do nome no mapa",
     "bairros_pela_media_ponderada": 26,
