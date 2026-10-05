@@ -19,11 +19,15 @@ parte dos da sede, não pertencem a bairro nenhum.
 Ponto do nome
 -------------
 O nome fica na parte habitada do bairro, e não no centro geométrico (vários
-bairros da margem incluem um trecho largo do rio): média, ponderada pela
-população de 2022, dos pontos interiores dos setores censitários do bairro.
-Se a média cair fora do bairro, vale o ponto interior do setor mais populoso
-dele. O cálculo é feito em EPSG:31981; o ponto vai para o GeoJSON em graus,
-com 6 casas.
+bairros da margem incluem um trecho largo do rio), e longe da divisa, para o
+texto não ficar em cima do contorno. É o primeiro destes candidatos que fica
+dentro do bairro e a DIST_MIN_BORDA_M ou mais da borda dele:
+  1. a média, ponderada pela população de 2022, dos pontos interiores dos
+     setores censitários do bairro;
+  2. o ponto interior de cada setor do bairro, do mais populoso para o menos.
+Se nenhum chegar a essa distância, vale o candidato mais afastado da borda.
+O cálculo é feito em EPSG:31981; o ponto vai para o GeoJSON em graus, com
+6 casas.
 
 Uso:
   python scripts/geoportal/converter_bairros.py            (não regrava se já existe)
@@ -58,9 +62,11 @@ COLUNAS = [
 ]
 LICENCA = "dados abertos (IBGE)"
 NOTA_NOMES = (
-    "Os 26 nomes são os da Lei municipal nº 2.889/1999; os limites são os da malha do IBGE "
-    "e não foram conferidos contra a descrição da lei."
+    "Os 26 bairros são os da Lei municipal nº 2.889/1999, na grafia do IBGE (a lei escreve "
+    "Cabo Luís Quevedo e Francisca Tarragó); os limites são os da malha do IBGE e não foram "
+    "conferidos contra a descrição da lei."
 )
+DIST_MIN_BORDA_M = 50.0  # distância mínima do ponto do nome à borda do bairro
 
 
 def nota_fora_de_bairro() -> str:
@@ -80,21 +86,23 @@ def pontos_do_nome(bairros: gpd.GeoDataFrame) -> tuple[gpd.GeoSeries, dict]:
     setores = setores[setores["CD_BAIRRO"].notna()].copy()
     setores["CD_BAIRRO"] = setores["CD_BAIRRO"].astype(str)
     setores["interior"] = setores.geometry.representative_point()  # sempre dentro do setor
-    pontos, regras = [], {"media_ponderada": 0, "setor_mais_populoso": 0}
+    pontos, regras = [], {"media_ponderada": 0, "interior_de_setor": 0, "mais_afastado_da_borda": 0}
     for _, bairro in bairros.iterrows():
         s = setores[setores["CD_BAIRRO"] == str(bairro["CD_BAIRRO"])]
         if s.empty:
             raise ValueError(f"bairro {bairro['NM_BAIRRO']} sem setor em {CAMINHO_SETORES.name}")
         peso = s["pop"].fillna(0)
-        ponto = None
+        candidatos = []  # (regra, ponto), na ordem de preferência
         if peso.sum() > 0:
-            ponto = Point((s["interior"].x * peso).sum() / peso.sum(), (s["interior"].y * peso).sum() / peso.sum())
-        if ponto is None or not ponto.within(bairro.geometry):
-            ponto = s.loc[peso.idxmax(), "interior"]
-            regras["setor_mais_populoso"] += 1
-        else:
-            regras["media_ponderada"] += 1
-        pontos.append(ponto)
+            media = Point((s["interior"].x * peso).sum() / peso.sum(), (s["interior"].y * peso).sum() / peso.sum())
+            candidatos.append(("media_ponderada", media))
+        candidatos += [("interior_de_setor", p) for p in s.loc[peso.sort_values(ascending=False, kind="stable").index, "interior"]]
+        dentro = [(regra, p, p.distance(bairro.geometry.boundary)) for regra, p in candidatos if p.within(bairro.geometry)]
+        escolhido = next(((regra, p) for regra, p, d in dentro if d >= DIST_MIN_BORDA_M), None)
+        if escolhido is None:  # nenhum chega à distância mínima: o mais afastado da borda
+            escolhido = ("mais_afastado_da_borda", max(dentro, key=lambda c: c[2])[1])
+        regras[escolhido[0]] += 1
+        pontos.append(escolhido[1])
     return gpd.GeoSeries(pontos, index=bairros.index, crs=bairros.crs), regras
 
 
@@ -140,9 +148,11 @@ def main() -> None:
         },
         transformacao=(
             "densidade_hab_km2 = populacao_2022 / area_km2 (arredondado a 1 casa); "
-            "rotulo_lon/rotulo_lat = média, ponderada pela população de 2022, dos pontos interiores dos "
-            "setores do bairro (ou o ponto interior do setor mais populoso, se a média cair fora do bairro), "
-            f"calculada em {gdf.crs} e gravada em graus com 6 casas; "
+            "rotulo_lon/rotulo_lat = primeiro candidato dentro do bairro e a "
+            f"{DIST_MIN_BORDA_M:.0f} m ou mais da borda: a média, ponderada pela população de 2022, dos pontos "
+            "interiores dos setores do bairro; depois o ponto interior de cada setor, do mais populoso para o "
+            "menos; se nenhum chegar a essa distância, o candidato mais afastado da borda; "
+            f"calculado em {gdf.crs} e gravado em graus com 6 casas; "
             f"sem simplificação de geometria; reprojeção {gdf.crs} -> EPSG:4326"
         ),
         forcar=args.forcar,
@@ -158,8 +168,10 @@ def main() -> None:
     meta["nota_nomes"] = NOTA_NOMES
     meta["ponto_do_nome"] = {
         "campos": "rotulo_lon e rotulo_lat (EPSG:4326, 6 casas); não são atributo do bairro, só posição do nome no mapa",
+        "distancia_minima_da_borda_m": DIST_MIN_BORDA_M,
         "bairros_pela_media_ponderada": regras["media_ponderada"],
-        "bairros_pelo_setor_mais_populoso": regras["setor_mais_populoso"],
+        "bairros_pelo_ponto_interior_de_um_setor": regras["interior_de_setor"],
+        "bairros_pelo_candidato_mais_afastado_da_borda": regras["mais_afastado_da_borda"],
     }
     caminho_meta.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     logger.info("metadado completado (licença e nota): %s", caminho_meta.relative_to(RAIZ_PROJETO))

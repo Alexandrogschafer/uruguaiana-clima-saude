@@ -8,7 +8,7 @@
     "setores_para_o_ponto_do_nome": "data/processed/dinamica_populacional/populacao-setores_ibge-censo_2022_setor.gpkg"
   },
   "crs_saida": "EPSG:4326",
-  "transformacao_aplicada": "densidade_hab_km2 = populacao_2022 / area_km2 (arredondado a 1 casa); rotulo_lon/rotulo_lat = média, ponderada pela população de 2022, dos pontos interiores dos setores do bairro (ou o ponto interior do setor mais populoso, se a média cair fora do bairro), calculada em EPSG:31981 e gravada em graus com 6 casas; sem simplificação de geometria; reprojeção EPSG:31981 -> EPSG:4326",
+  "transformacao_aplicada": "densidade_hab_km2 = populacao_2022 / area_km2 (arredondado a 1 casa); rotulo_lon/rotulo_lat = primeiro candidato dentro do bairro e a 50 m ou mais da borda: a média, ponderada pela população de 2022, dos pontos interiores dos setores do bairro; depois o ponto interior de cada setor, do mais populoso para o menos; se nenhum chegar a essa distância, o candidato mais afastado da borda; calculado em EPSG:31981 e gravado em graus com 6 casas; sem simplificação de geometria; reprojeção EPSG:31981 -> EPSG:4326",
   "n_features": 26,
   "colunas": [
     "CD_BAIRRO",
@@ -21,13 +21,15 @@
     "rotulo_lon",
     "rotulo_lat"
   ],
-  "data_processamento": "2026-10-05T00:43:48.515374+00:00",
+  "data_processamento": "2026-10-05T01:07:33.674297+00:00",
   "licenca": "dados abertos (IBGE)",
   "nota": "Só a sede tem bairros na malha do IBGE: 34 setores, com 8.182 habitantes, ficam fora de bairro.",
-  "nota_nomes": "Os 26 nomes são os da Lei municipal nº 2.889/1999; os limites são os da malha do IBGE e não foram conferidos contra a descrição da lei.",
+  "nota_nomes": "Os 26 bairros são os da Lei municipal nº 2.889/1999, na grafia do IBGE (a lei escreve Cabo Luís Quevedo e Francisca Tarragó); os limites são os da malha do IBGE e não foram conferidos contra a descrição da lei.",
   "ponto_do_nome": {
     "campos": "rotulo_lon e rotulo_lat (EPSG:4326, 6 casas); não são atributo do bairro, só posição do nome no mapa",
-    "bairros_pela_media_ponderada": 26,
-    "bairros_pelo_setor_mais_populoso": 0
+    "distancia_minima_da_borda_m": 50.0,
+    "bairros_pela_media_ponderada": 25,
+    "bairros_pelo_ponto_interior_de_um_setor": 1,
+    "bairros_pelo_candidato_mais_afastado_da_borda": 0
   }
 }
