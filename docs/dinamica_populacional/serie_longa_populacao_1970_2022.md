@@ -45,6 +45,12 @@ Tabelas: [`populacao-sexo-situacao`](tabelas/populacao-sexo-situacao_ibge-censo_
 
 ![Índice de envelhecimento e idade mediana](figuras/envelhecimento-idade-mediana_ibge-censo_1970-2022_municipal.png)
 
+## Escolhas adotadas
+
+- **Idade de 1970, 1980 e 1991.** Vem da tabela 200 do SIDRA, que o IBGE rotula como amostra, e foi aceita como está: para 1970 e 1980 é a única tabela municipal de idade encontrada na API; em 1991 coincide, nos 17 grupos de idade, com a tabela 205.
+- **Figuras de idade.** Usam a série publicada (o município como era em cada Censo). A série de território constante fica nas tabelas [`piramide-etaria`](tabelas/piramide-etaria_ibge-censo_1970-2022_municipal.csv) e [`indicadores-etarios`](tabelas/indicadores-etarios_ibge-censo_1970-2022_municipal.csv), na coluna `serie`.
+- **Contagem da População de 1996.** Não entra: a série usa só os Censos.
+
 ## Limites
 
 - **Território.** O distrito de Barra do Quaraí foi desmembrado de Uruguaiana pela Lei Estadual nº 10.655, de 28/12/1995, e instalado como município em 1º/01/1997 (IBGE, histórico dos municípios); não há registro de outro desde 1970. A série "como publicado" tem uma quebra entre 1991 e 2000; a "território constante" soma os dois municípios de 2000 em diante. As figuras de idade usam a série publicada.
