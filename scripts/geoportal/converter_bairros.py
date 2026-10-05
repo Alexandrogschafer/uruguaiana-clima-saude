@@ -57,6 +57,10 @@ COLUNAS = [
     "geometry",
 ]
 LICENCA = "dados abertos (IBGE)"
+NOTA_NOMES = (
+    "Os 26 nomes são os da Lei municipal nº 2.889/1999; os limites são os da malha do IBGE "
+    "e não foram conferidos contra a descrição da lei."
+)
 
 
 def nota_fora_de_bairro() -> str:
@@ -151,6 +155,7 @@ def main() -> None:
     meta = json.loads(caminho_meta.read_text(encoding="utf-8"))
     meta["licenca"] = LICENCA
     meta["nota"] = nota_fora_de_bairro()
+    meta["nota_nomes"] = NOTA_NOMES
     meta["ponto_do_nome"] = {
         "campos": "rotulo_lon e rotulo_lat (EPSG:4326, 6 casas); não são atributo do bairro, só posição do nome no mapa",
         "bairros_pela_media_ponderada": regras["media_ponderada"],
