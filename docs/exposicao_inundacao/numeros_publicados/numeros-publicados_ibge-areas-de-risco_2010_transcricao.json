@@ -1,0 +1,12 @@
+{
+  "produto": "numeros-publicados_ibge-areas-de-risco_2010_transcricao.csv",
+  "data_processamento": "2026-10-06",
+  "fonte": "IBGE (2018). População em áreas de risco no Brasil — Apêndice 3, Municípios analisados no estudo",
+  "documento": "data/raw/documentos/publicacao_populacao-areas-de-risco_ibge_2018.pdf",
+  "pagina": "página impressa 90 (93 do arquivo PDF)",
+  "transformacao": "transcrição da linha do município de estudo: domicílios em risco, população em risco; a publicação traz só o total do município (3 áreas), não o número de cada área",
+  "linha_lida": "DOMICILIO EM RISCO 3354; POPULAÇÃO EM RISCO 12005; POPULAÇÃO 2010 125435; BATER 3",
+  "uso": "entrada padrão de scripts/processamento/exposicao_inundacao_estimativas_oficiais.py (todos os .csv desta pasta)",
+  "status": "pendente de conferência",
+  "observacao": "transcrição manual; cada linha traz o documento e a página de origem; o documento fica em data/raw/ (fora do git)"
+}
