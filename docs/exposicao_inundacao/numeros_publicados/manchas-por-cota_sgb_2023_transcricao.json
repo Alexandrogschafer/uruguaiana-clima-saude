@@ -1,0 +1,14 @@
+{
+  "produto": "manchas-por-cota_sgb_2023_transcricao.csv",
+  "data_processamento": "2026-10-07",
+  "fonte": "SGB (2023). Mapeamento de manchas de inundação — Tabela 2 e anexos (um mapa por cota)",
+  "documento": "data/raw/documentos/relatorio-manchas-inundacao_sgb_2023.pdf",
+  "pagina": "Tabela 2, página impressa 16 (15 do arquivo PDF); período das cenas, páginas impressas 14 e 16 (13 e 15 do PDF); anexos I, II, IV e V, páginas impressas 22, 23, 25 e 26 (21, 22, 24 e 25 do PDF)",
+  "transformacao": "transcrição, por cota, do que o documento diz das manchas de inundação: tempo de retorno (anos), período das cenas e página; sem arredondar",
+  "linha_lida": "Tabela 2: 13,4 anos (1252 cm); 9,2 (1205 cm); 3,2 (1053 cm); 1,9 (952 cm); 1,3 (833 cm), repetidos na legenda de cada anexo; cenas orbitais próximas a datas de inundações entre 2015 e 2023, sem a data nem o ano da cena de cada cota; emissão dos mapas dos anexos: 21/09/2023",
+  "cota_sem_camada": "o documento mapeia também a cota de 1053 cm (Anexo III), que não está na camada vetorial do repositório; por isso não tem linha na transcrição",
+  "lido_em": "2026-10-06",
+  "uso": "entrada padrão de scripts/processamento/exposicao_inundacao_sintese.py (--manchas-documento): período de referência e tempo de retorno do documento na tabela das delimitações; tempo de retorno da legenda do mapa das cheias por cota",
+  "status": "pendente de conferência",
+  "observacao": "transcrição manual; cada linha traz o documento e a página de origem; o documento fica em data/raw/ (fora do git). Não é entrada de números publicados de população: os scripts que leem esta pasta para isso usam só os arquivos numeros-publicados_*.csv"
+}
