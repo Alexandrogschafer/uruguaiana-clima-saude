@@ -62,6 +62,8 @@ GAP_H = 0.12  # entre quadros lado a lado
 GAP_LINHA = 0.10  # entre linhas de quadros
 GAP_BLOCO = 0.07  # entre blocos (título, mapa, legenda, notas, rodapé)
 TOPO, BASE = 0.04, 0.03
+# título e rodapé (fonte, método) dentro da imagem; False: a imagem sai sem eles e os textos vão para o .json irmão
+TITULO_E_FONTE_NA_IMAGEM = True
 
 # pastas da edição A4 (mesmo nome de arquivo do mapa de origem)
 PASTAS_A4 = {
@@ -230,14 +232,17 @@ def escolher_legenda(lay: LayoutA4, handles: list, titulo: str, renderer):
 
 def finalizar_a4(lay: LayoutA4, titulo: str, handles: list, legenda_titulo: str, fonte: str, caminho: Path, origem: Path,
                  metodo: str | None = None, notas: str | None = None, notas_lista: list[str] | None = None, notas_colunas: int = 1,
-                 meta_extra: dict | None = None, texto_retirado: str | None = None) -> dict:
+                 meta_extra: dict | None = None, texto_retirado: str | None = None, texto_na_imagem: bool | None = None) -> dict:
     """Monta a página A4 (título, quadros, legenda, notas, rodapé), grava o PNG e o .json irmão.
 
     fonte: texto da fonte (rodapé); metodo: uma linha de método (opcional).
     notas: texto do quadro de notas; notas_lista: itens que podem ser distribuídos em notas_colunas.
     origem: PNG do mapa de origem (modo lateral); o .json dele é a base do .json da edição A4.
     texto_retirado: texto do rodapé lateral que saiu da imagem (fica no .json).
+    texto_na_imagem: False grava a imagem sem título e sem rodapé; título, fonte e método vão para o .json
+    (campos "titulo", "fonte" e "metodo") e para o dicionário devolvido. Padrão: TITULO_E_FONTE_NA_IMAGEM.
     """
+    na_imagem = TITULO_E_FONTE_NA_IMAGEM if texto_na_imagem is None else texto_na_imagem
     fig = lay.fig
     fig.canvas.draw()
     rend = fig.canvas.get_renderer()
@@ -245,7 +250,7 @@ def finalizar_a4(lay: LayoutA4, titulo: str, handles: list, legenda_titulo: str,
     util_pt = (W - 2 * MARGEM) * 72
 
     # título: até 2 linhas, cada uma dentro da largura do mapa
-    lin_tit = titulo.split("\n")
+    lin_tit = titulo.split("\n") if na_imagem else []
     if len(lin_tit) > 2:
         raise ValueError(f"título com mais de 2 linhas: {titulo!r}")
     for x in lin_tit:
@@ -285,9 +290,9 @@ def finalizar_a4(lay: LayoutA4, titulo: str, handles: list, legenda_titulo: str,
         blocos_notas = (cab, cols)
 
     # rodapé: fonte (+ método), até 3 linhas
-    lin_rod = quebrar(fig, rend, fonte, util_pt, FS_RODAPE)
+    lin_rod = quebrar(fig, rend, fonte, util_pt, FS_RODAPE) if na_imagem else []
     metodo_fora = None
-    if metodo:
+    if metodo and na_imagem:
         lm = quebrar(fig, rend, metodo, util_pt, FS_RODAPE)
         if len(lin_rod) + len(lm) <= MAX_LINHAS_RODAPE:
             lin_rod += lm
@@ -300,15 +305,17 @@ def finalizar_a4(lay: LayoutA4, titulo: str, handles: list, legenda_titulo: str,
 
     # altura total
     h_quadros = sum(h_tq[i] + max(h for *_, h in itens) for i, itens in enumerate(lay.linhas)) + GAP_LINHA * (len(lay.linhas) - 1)
-    H = TOPO + h_tit + GAP_BLOCO + h_quadros + GAP_BLOCO + h_leg + (GAP_BLOCO + h_notas if h_notas else 0) + GAP_BLOCO + h_rod + BASE
+    gap_tit, gap_rod = (GAP_BLOCO, GAP_BLOCO) if na_imagem else (0, 0)  # sem título e sem rodapé, os blocos e os seus espaços somem
+    H = TOPO + h_tit + gap_tit + h_quadros + GAP_BLOCO + h_leg + (GAP_BLOCO + h_notas if h_notas else 0) + gap_rod + h_rod + BASE
     if H > A4_ALTURA_MAX_CM * CM + 1e-6:
         raise ValueError(f"altura {H / CM:.1f} cm passa de {A4_ALTURA_MAX_CM} cm: {caminho.name}")
     fig.set_size_inches(W, H)
     tr = fig.dpi_scale_trans  # coordenadas em polegadas a partir do canto inferior esquerdo
 
     y = H - TOPO
-    fig.text(MARGEM, y, titulo, transform=tr, ha="left", va="top", fontsize=FS_TITULO, color=INK, linespacing=1.25)
-    y -= h_tit + GAP_BLOCO
+    if na_imagem:
+        fig.text(MARGEM, y, titulo, transform=tr, ha="left", va="top", fontsize=FS_TITULO, color=INK, linespacing=1.25)
+    y -= h_tit + gap_tit
     for i, itens in enumerate(lay.linhas):
         for ax, x, w, h in itens:
             if ax in tit_q:
@@ -334,8 +341,9 @@ def finalizar_a4(lay: LayoutA4, titulo: str, handles: list, legenda_titulo: str,
                 fig.text(MARGEM + pad + i * (larg_col_in + 10 / 72), yt, "\n".join(col), transform=tr, ha="left", va="top",
                          fontsize=FS_NOTAS_LISTA, color=INK, linespacing=1.2)
         y -= h_notas
-    y -= GAP_BLOCO
-    fig.text(MARGEM, y, "\n".join(lin_rod), transform=tr, ha="left", va="top", fontsize=FS_RODAPE, color=MUTED, linespacing=1.25)
+    y -= gap_rod
+    if na_imagem:
+        fig.text(MARGEM, y, "\n".join(lin_rod), transform=tr, ha="left", va="top", fontsize=FS_RODAPE, color=MUTED, linespacing=1.25)
 
     # rótulos dentro do mapa que passariam da borda direita/esquerda da figura: espelhados para o outro lado do ponto
     fig.canvas.draw()
@@ -368,6 +376,8 @@ def finalizar_a4(lay: LayoutA4, titulo: str, handles: list, legenda_titulo: str,
     fig.savefig(caminho, dpi=A4_DPI, facecolor=FUNDO)
     plt.close(fig)
     info = {"layout": "a4", "largura_cm": A4_LARGURA_CM, "altura_cm": round(H / CM, 2), "dpi": A4_DPI, "legenda_colunas": ncol}
+    if not na_imagem:
+        info.update(titulo=titulo.replace("\n", " — "), fonte=fonte, **({"metodo": metodo} if metodo else {}))
     extra = dict(meta_extra or {})
     if metodo_fora:
         extra["metodo_fora_do_rodape"] = metodo_fora
