@@ -126,6 +126,41 @@ def meta(caminho, **kw):
                          ligado_ao_portal=False, script=SCRIPT, fontes=FONTES_META, **kw)
 
 
+def _wmean(v, w):
+    ok = v.notna() & (w > 0)
+    return float((v[ok] * w[ok]).sum() / w[ok].sum()) if ok.any() else np.nan
+
+
+def anexar_perfil_do_setor(pts, s):
+    """Porcentagens do setor de cada endereço (s = setores de 2022 indexados pelo código)."""
+    pts["pct60"] = pts.setor_2022.map(s.pct_60_mais)
+    pts["pct014"] = pts.setor_2022.map(s.pct_0_14)
+    pts["pctdom1"] = pts.setor_2022.map(s.pct_dom_1_morador)
+    return pts
+
+
+def perfil_dos_expostos(e, casas: int | None = 1) -> dict:
+    """Perfil de um conjunto de endereços (com as colunas de anexar_perfil_do_setor): porcentagens do setor ponderadas
+    pela população estimada; setores sob sigilo ficam fora da média e são contados. casas=None devolve sem arredondar."""
+    arr = (lambda v: round(v, casas)) if casas is not None else float
+    sig60 = e[e.pct60.isna()]
+    sig014 = e[e.pct014.isna()]
+    sigd = e[e.pctdom1.isna()]
+    return {"pop_estimada": arr(float(e.pop_est_setor.sum())),
+            "pct_60_mais": arr(_wmean(e.pct60, e.pop_est_setor)), "pct_0_14": arr(_wmean(e.pct014, e.pop_est_setor)),
+            "pct_dom_1_morador": arr(_wmean(e.pctdom1, pd.Series(1.0, index=e.index))),
+            "setores_sigilo_60": int(sig60.setor_2022.nunique()), "pop_est_sigilo_60": arr(float(sig60.pop_est_setor.sum())),
+            "setores_sigilo_0_14": int(sig014.setor_2022.nunique()), "pop_est_sigilo_0_14": arr(float(sig014.pop_est_setor.sum())),
+            "setores_sigilo_dom1": int(sigd.setor_2022.nunique()), "enderecos_sigilo_dom1": len(sigd)}
+
+
+def perfil_do_municipio(s, pts, casas: int | None = 1) -> dict:
+    """Referência do município: idade pela soma dos setores; domicílios com um morador pela média dos endereços."""
+    arr = (lambda v: round(v, casas)) if casas is not None else float
+    return {"pct_60_mais": arr(100 * s.pop_60_mais.sum() / s["pop"].sum()), "pct_0_14": arr(100 * s.pop_0_14.sum() / s["pop"].sum()),
+            "pct_dom_1_morador_media_enderecos": arr(_wmean(pts.pctdom1, pd.Series(1.0, index=pts.index)))}
+
+
 def carregar_cotas() -> tuple[gpd.GeoDataFrame, dict]:
     g = gpd.read_file(ARQ_COTAS).to_crs(c.CRS_PADRAO)
     inval = int((~g.geometry.is_valid).sum())
@@ -232,33 +267,17 @@ def main() -> None:
     print(t1.to_string(index=False)); print(json.dumps({"setor": fech_setor, "grade": fech_grade, "fora_maior": fora_maior}, ensure_ascii=False))
 
     # ---------------- B4: perfil e bairros
-    pts["pct60"] = pts.setor_2022.map(s.pct_60_mais)
-    pts["pct014"] = pts.setor_2022.map(s.pct_0_14)
-    pts["pctdom1"] = pts.setor_2022.map(s.pct_dom_1_morador)
+    anexar_perfil_do_setor(pts, s)
     perfil, bairros = [], []
-
-    def wmean(v, w):
-        ok = v.notna() & (w > 0)
-        return float((v[ok] * w[ok]).sum() / w[ok].sum()) if ok.any() else np.nan
-
     for k in K:
         e = pts[pts[f"exp_cum_{k}"]]
-        sig60 = e[e.pct60.isna()]
-        sig014 = e[e.pct014.isna()]
-        sigd = e[e.pctdom1.isna()]
-        perfil.append({"cota_cm": k, "pop_estimada": round(float(e.pop_est_setor.sum()), 1),
-                       "pct_60_mais": round(wmean(e.pct60, e.pop_est_setor), 1), "pct_0_14": round(wmean(e.pct014, e.pop_est_setor), 1),
-                       "pct_dom_1_morador": round(wmean(e.pctdom1, pd.Series(1.0, index=e.index)), 1),
-                       "setores_sigilo_60": int(sig60.setor_2022.nunique()), "pop_est_sigilo_60": round(float(sig60.pop_est_setor.sum()), 1),
-                       "setores_sigilo_0_14": int(sig014.setor_2022.nunique()), "pop_est_sigilo_0_14": round(float(sig014.pop_est_setor.sum()), 1),
-                       "setores_sigilo_dom1": int(sigd.setor_2022.nunique()), "enderecos_sigilo_dom1": len(sigd)})
+        perfil.append({"cota_cm": k, **perfil_dos_expostos(e)})
         b = e.groupby("bairro").agg(enderecos=("pop_est_setor", "size"), pop_estimada=("pop_est_setor", "sum")).sort_values("enderecos", ascending=False)
         b["pct_dos_enderecos_expostos"] = 100 * b.enderecos / len(e)
         b["enderecos_do_bairro"] = b.index.map(pts.groupby("bairro").size())
         b["pct_do_bairro_exposto"] = 100 * b.enderecos / b.enderecos_do_bairro
         bairros.append(b.reset_index().assign(cota_cm=k, posicao=range(1, len(b) + 1)))
-    ref = {"municipio": {"pct_60_mais": round(100 * s.pop_60_mais.sum() / s["pop"].sum(), 1), "pct_0_14": round(100 * s.pop_0_14.sum() / s["pop"].sum(), 1),
-                         "pct_dom_1_morador_media_enderecos": round(wmean(pts.pctdom1, pd.Series(1.0, index=pts.index)), 1)}}
+    ref = {"municipio": perfil_do_municipio(s, pts)}
     tp = pd.DataFrame(perfil)
     arq = TAB / "perfil-expostos-por-cota_sgb-ibge_2022_municipal.csv"
     tp.to_csv(arq, index=False)
