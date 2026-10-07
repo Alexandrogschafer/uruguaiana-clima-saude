@@ -25,8 +25,8 @@ código do município lido de config/area_estudo.geojson:
 "Total" de uma fonte = união dos seus polígonos (o que se sobrepõe conta uma vez).
 
 Número publicado que não é atributo da geometria (lido em publicação) vem dos
-CSV de docs/exposicao_inundacao/numeros_publicados/ (ou dos dados em
---publicado), com as colunas: fonte, delimitacao, edificacoes, domicilios,
+CSV numeros-publicados_*.csv de docs/exposicao_inundacao/numeros_publicados/
+(ou dos dados em --publicado), com as colunas: fonte, delimitacao, edificacoes, domicilios,
 pessoas, o_que_conta, documento, pagina.
 
 Efeito do ano e efeito do setor inteiro (rodada 34): quando o número de uma
@@ -90,6 +90,7 @@ CONFERENCIA = c.RAIZ / "data" / "processed" / "conferencia_fontes_inundacao"
 ARQ_SETORES_2010 = c.RAW / "vetor" / "setores-censitarios_ibge_2010_vetorial.gpkg"
 ARQ_POP_MUNICIPIO = c.RAIZ / "data" / "processed" / "populacao-serie-temporal_ibge-sidra_1970-2025_municipal.csv"
 PUBLICADOS = c.RAIZ / "docs" / "exposicao_inundacao" / "numeros_publicados"  # transcrições versionadas (entrada padrão)
+PADRAO_PUBLICADOS = "numeros-publicados_*.csv"  # a pasta guarda também transcrições de outro assunto, com outras colunas
 ARQ_URBANIZADAS = c.RAW / "vetor" / "areas-urbanizadas_ibge_2019_recorte-municipio.gpkg"
 ARQ_SITUACAO = c.RAW / "situacao-domicilio_ibge-sidra-tabela9923_2022_municipal.csv"  # população urbana do município, Censo 2022
 CLASSES_URBANIZADAS = ("Tipo", "Densidade")  # atributos de classe da camada de áreas urbanizadas
@@ -511,8 +512,10 @@ def figura_so_uma_cobre(d: gpd.GeoDataFrame, maior: str) -> dict:
 
 
 # ---------------------------------------------------------------- figura
-def figura(d: gpd.GeoDataFrame, maior: str) -> dict:
-    """Edição A4 (16 cm, 300 dpi, legenda abaixo), recorte urbano: só contornos, sem pontos de endereço."""
+def figura(d: gpd.GeoDataFrame, maior: str, cota_no_rotulo: str | None = None) -> dict:
+    """Edição A4 (16 cm, 300 dpi, legenda abaixo), recorte urbano: só contornos, sem pontos de endereço.
+
+    cota_no_rotulo: a cota como aparece no rótulo da legenda (leitura do mapa); padrão: como está em `maior`."""
     base = Base(ARGS.codigo_ibge, agua=True, nome_rio=ARGS.nome_rio, modo_agua="enderecos")
     fundo = Fundo(base)
     ext = base.ext_urb
@@ -530,7 +533,7 @@ def figura(d: gpd.GeoDataFrame, maior: str) -> dict:
     # mancha recortada no limite municipal só para exibição (o dado cobre também a outra margem do rio), como nos mapas do estudo
     mancha = d[(d.fonte == CHEIAS) & (d.delimitacao == maior)].geometry.intersection(base.limite.union_all())
     mancha.boundary.plot(ax=ax, color=COR_MANCHA, linewidth=0.8, zorder=5)
-    hand.append(Line2D([], [], color=COR_MANCHA, lw=0.8, label=f"SGB — borda da mancha da cota de {maior} cm"))
+    hand.append(Line2D([], [], color=COR_MANCHA, lw=0.8, label=f"SGB — borda da mancha da cota de {cota_no_rotulo or maior} cm"))
     fundo.desenhar(ax, ext, "urbano", 1000, modo_agua="enderecos", escala_pos=ESCALA_POS)
     # rótulos sem sobreposição entre si (áreas de fontes diferentes podem coincidir)
     pos = lm.posicionar_rotulos(ax, [(x, y, t) for x, y, t, _ in itens], lm.FS_ROTULO_MIN)
@@ -680,5 +683,5 @@ if __name__ == "__main__":
     ARGS = _p.parse_args()
     ARGS.codigo_ibge = ARGS.codigo_ibge or codigo_da_area_de_estudo()
     if ARGS.publicado is None:
-        ARGS.publicado = sorted(PUBLICADOS.glob("*.csv"))
+        ARGS.publicado = sorted(PUBLICADOS.glob(PADRAO_PUBLICADOS))
     main()

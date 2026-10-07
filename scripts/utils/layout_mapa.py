@@ -64,6 +64,9 @@ GAP_BLOCO = 0.07  # entre blocos (título, mapa, legenda, notas, rodapé)
 TOPO, BASE = 0.04, 0.03
 # título e rodapé (fonte, método) dentro da imagem; False: a imagem sai sem eles e os textos vão para o .json irmão
 TITULO_E_FONTE_NA_IMAGEM = True
+ESPACO_ITENS_LEGENDA = 0.3  # entre os itens da legenda, em frações da altura da letra
+# uma linha de texto logo abaixo dos itens da legenda, com a letra deles (ex.: a projeção do mapa); None: sem a linha
+LINHA_APOS_LEGENDA: str | None = None
 
 # pastas da edição A4 (mesmo nome de arquivo do mapa de origem)
 PASTAS_A4 = {
@@ -183,20 +186,37 @@ def _altura_linhas_in(n: int, fs: float, entrelinha: float = 1.2) -> float:
 def _legenda(fig, handles, rotulos, titulo, ncol):
     return fig.legend(handles=handles, labels=rotulos, title=titulo, loc="upper left", ncol=ncol, frameon=False,
                       fontsize=FS_LEGENDA, title_fontsize=FS_LEGENDA_TITULO, alignment="left", borderpad=0, borderaxespad=0,
-                      columnspacing=1.2, handlelength=1.8, handletextpad=0.6, labelspacing=0.3)
+                      columnspacing=1.2, handlelength=1.8, handletextpad=0.6, labelspacing=ESPACO_ITENS_LEGENDA)
 
 
-def escolher_legenda(lay: LayoutA4, handles: list, titulo: str, renderer):
+def texto_da_projecao(crs) -> str:
+    """Linha curta com a projeção, o datum e o código do sistema de referência, lidos do próprio CRS (pyproj)."""
+    from pyproj import CRS
+
+    crs = CRS.from_user_input(crs)
+    aut = crs.to_authority()
+    codigo = f" ({aut[0]}:{aut[1]})" if aut else ""
+    datum = f"datum {crs.geodetic_crs.name if crs.geodetic_crs else crs.datum.name}"
+    if not crs.is_projected:
+        return f"Coordenadas geográficas; {datum}{codigo}"
+    if crs.utm_zone:  # "21S": fuso e hemisfério
+        return f"Projeção UTM, fuso {crs.utm_zone[:-1]} {crs.utm_zone[-1]}; {datum}{codigo}"
+    return f"Projeção {crs.coordinate_operation.method_name}; {datum}{codigo}"
+
+
+def escolher_legenda(lay: LayoutA4, handles: list, titulo: str, renderer, titulo_em_linhas: bool = False):
     """Testa 2, 3 e 4 colunas; fica com a legenda mais baixa que cabe na largura do mapa.
 
     Rótulo longo quebra em até 2 linhas (ou nas quebras que já tinha, se forem mais);
     a ordem dos itens é a da lista, lida por coluna (preenchimento por coluna do matplotlib).
+    titulo_em_linhas: True mantém as quebras de linha do título da legenda (padrão: uma linha só).
     """
     fig = lay.fig
     larg_pt = (lay.W - 2 * MARGEM) * 72
-    tit = titulo.replace("\n", " ")
-    if _largura_pt(fig, renderer, tit, FS_LEGENDA_TITULO) > larg_pt:
-        raise ValueError(f"título da legenda não cabe em uma linha: {tit!r}")
+    tit = titulo if titulo_em_linhas else titulo.replace("\n", " ")
+    for x in tit.split("\n"):
+        if _largura_pt(fig, renderer, x, FS_LEGENDA_TITULO) > larg_pt:
+            raise ValueError(f"título da legenda não cabe em uma linha: {x!r}")
     rot_orig = [h.get_label() for h in handles]
     candidatos = []
     for ncol in (2, 3, 4):
@@ -232,7 +252,8 @@ def escolher_legenda(lay: LayoutA4, handles: list, titulo: str, renderer):
 
 def finalizar_a4(lay: LayoutA4, titulo: str, handles: list, legenda_titulo: str, fonte: str, caminho: Path, origem: Path,
                  metodo: str | None = None, notas: str | None = None, notas_lista: list[str] | None = None, notas_colunas: int = 1,
-                 meta_extra: dict | None = None, texto_retirado: str | None = None, texto_na_imagem: bool | None = None) -> dict:
+                 meta_extra: dict | None = None, texto_retirado: str | None = None, texto_na_imagem: bool | None = None,
+                 legenda_titulo_em_linhas: bool = False, linha_apos_legenda: str | None = None) -> dict:
     """Monta a página A4 (título, quadros, legenda, notas, rodapé), grava o PNG e o .json irmão.
 
     fonte: texto da fonte (rodapé); metodo: uma linha de método (opcional).
@@ -241,6 +262,9 @@ def finalizar_a4(lay: LayoutA4, titulo: str, handles: list, legenda_titulo: str,
     texto_retirado: texto do rodapé lateral que saiu da imagem (fica no .json).
     texto_na_imagem: False grava a imagem sem título e sem rodapé; título, fonte e método vão para o .json
     (campos "titulo", "fonte" e "metodo") e para o dicionário devolvido. Padrão: TITULO_E_FONTE_NA_IMAGEM.
+    legenda_titulo_em_linhas: True mantém as quebras de linha do título da legenda.
+    linha_apos_legenda: uma linha de texto logo abaixo dos itens da legenda, com a letra deles; o texto vai também
+    para o .json (campo "linha_apos_legenda"). Padrão: LINHA_APOS_LEGENDA (sem a linha).
     """
     na_imagem = TITULO_E_FONTE_NA_IMAGEM if texto_na_imagem is None else texto_na_imagem
     fig = lay.fig
@@ -269,7 +293,13 @@ def finalizar_a4(lay: LayoutA4, titulo: str, handles: list, legenda_titulo: str,
     h_tq = [max([_altura_linhas_in(len(tit_q[ax]), FS_QUADRO) + 0.03 for ax, *_ in itens if ax in tit_q] or [0]) for itens in lay.linhas]
 
     # legenda
-    ncol, rot, tit_leg, h_leg = escolher_legenda(lay, handles, legenda_titulo, rend)
+    ncol, rot, tit_leg, h_leg = escolher_legenda(lay, handles, legenda_titulo, rend, legenda_titulo_em_linhas)
+    apos = LINHA_APOS_LEGENDA if linha_apos_legenda is None else linha_apos_legenda
+    h_apos = 0
+    if apos:
+        if "\n" in apos or _largura_pt(fig, rend, apos, FS_LEGENDA) > util_pt:
+            raise ValueError(f"linha depois da legenda não cabe em uma linha: {apos!r}")
+        h_apos = ESPACO_ITENS_LEGENDA * FS_LEGENDA / 72 + _altura_linhas_in(1, FS_LEGENDA)  # como mais um item da legenda
 
     # notas
     pad = 0.05
@@ -306,7 +336,7 @@ def finalizar_a4(lay: LayoutA4, titulo: str, handles: list, legenda_titulo: str,
     # altura total
     h_quadros = sum(h_tq[i] + max(h for *_, h in itens) for i, itens in enumerate(lay.linhas)) + GAP_LINHA * (len(lay.linhas) - 1)
     gap_tit, gap_rod = (GAP_BLOCO, GAP_BLOCO) if na_imagem else (0, 0)  # sem título e sem rodapé, os blocos e os seus espaços somem
-    H = TOPO + h_tit + gap_tit + h_quadros + GAP_BLOCO + h_leg + (GAP_BLOCO + h_notas if h_notas else 0) + gap_rod + h_rod + BASE
+    H = TOPO + h_tit + gap_tit + h_quadros + GAP_BLOCO + h_leg + h_apos + (GAP_BLOCO + h_notas if h_notas else 0) + gap_rod + h_rod + BASE
     if H > A4_ALTURA_MAX_CM * CM + 1e-6:
         raise ValueError(f"altura {H / CM:.1f} cm passa de {A4_ALTURA_MAX_CM} cm: {caminho.name}")
     fig.set_size_inches(W, H)
@@ -326,6 +356,9 @@ def finalizar_a4(lay: LayoutA4, titulo: str, handles: list, legenda_titulo: str,
     leg = _legenda(fig, handles, rot, tit_leg, ncol)
     leg.set_bbox_to_anchor((MARGEM, y), transform=tr)
     y -= h_leg
+    if apos:
+        fig.text(MARGEM, y - ESPACO_ITENS_LEGENDA * FS_LEGENDA / 72, apos, transform=tr, ha="left", va="top", fontsize=FS_LEGENDA, color=INK)
+        y -= h_apos
     if h_notas:
         y -= GAP_BLOCO
         cab, cols = blocos_notas
@@ -378,6 +411,8 @@ def finalizar_a4(lay: LayoutA4, titulo: str, handles: list, legenda_titulo: str,
     info = {"layout": "a4", "largura_cm": A4_LARGURA_CM, "altura_cm": round(H / CM, 2), "dpi": A4_DPI, "legenda_colunas": ncol}
     if not na_imagem:
         info.update(titulo=titulo.replace("\n", " — "), fonte=fonte, **({"metodo": metodo} if metodo else {}))
+    if apos:
+        info["linha_apos_legenda"] = apos
     extra = dict(meta_extra or {})
     if metodo_fora:
         extra["metodo_fora_do_rodape"] = metodo_fora

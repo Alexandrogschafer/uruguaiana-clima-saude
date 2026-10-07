@@ -31,10 +31,15 @@ cada uma com o .json irmão. Tabelas de síntese: CSV sem arredondar e .md para
 leitura (arredondado a partir do valor não arredondado). Figuras: edição A4
 (16 cm, 300 dpi, legenda abaixo), SEM título e SEM fonte dentro da imagem — os
 dois ficam no .json (campos "titulo" e "fonte"). Nenhuma figura mostra ponto
-de endereço. O ano de referência e o tempo de retorno que o documento da fonte
-dá para as manchas por cota vêm de uma transcrição (--manchas-documento:
-cota_cm, tr_anos_documento, periodo_de_referencia, evento, documento, pagina);
-sem ela, o campo fica vazio. A figura da régua usa a série histórica diária em
+de endereço. Os dois mapas trazem, como última linha da legenda, a projeção
+cartográfica, lida do CRS do projeto. Nos rótulos das figuras a cota leva ponto
+de milhar (leitura do mapa); nomes de arquivo, chaves e tabelas não mudam. O ano
+de referência e o tempo de retorno que o documento da fonte dá para as manchas
+por cota vêm de uma transcrição versionada (--manchas-documento: cota_cm,
+tr_anos_documento, periodo_de_referencia, evento, documento, pagina); sem ela,
+o campo fica vazio. Na legenda do mapa das cheias o tempo de retorno é o do
+documento quando a cota está na transcrição e o atributo do serviço da fonte
+quando não está; o .json da figura traz a regra e os dois valores. A figura da régua usa a série histórica diária em
 todos os anos; as tabelas trazem a máxima da telemetria no evento datado. Antes de terminar, os números são conferidos com as tabelas dos
 estudos de origem; se algum diferir, nada é copiado.
 
@@ -80,7 +85,11 @@ TAB_ESTUDO = ee.TAB  # tabelas publicadas do estudo por endereços (conferência
 ARQ_ESTACAO = c.RAW / "nivel-rio_ana_exemplo-consulta.json"  # inventário da estação: coordenadas da régua
 PADRAO_SERIE = "nivel-rio_ana-serie-historica-*_diario.csv"
 PADRAO_TELEMETRIA = "nivel-rio_ana-telemetria-*_15min.csv"
-PADRAO_MANCHAS_DOC = "manchas-por-cota_*_transcricao.csv"  # em eo.CONFERENCIA; transcrição do documento da fonte das manchas
+PADRAO_MANCHAS_DOC = "manchas-por-cota_*_transcricao.csv"  # em eo.PUBLICADOS (versionada); transcrição do documento da fonte das manchas
+# de onde vem o tempo de retorno da legenda do mapa das cheias: (rótulo no .json, texto no título da legenda)
+TR_DO_DOCUMENTO = ("documento", "tempo de retorno segundo o relatório da fonte")
+TR_DO_SERVICO = ("serviço", "tempo de retorno segundo o atributo do serviço da fonte")
+TR_MISTO = "tempo de retorno segundo o relatório da fonte; * = atributo do serviço da fonte"
 NIVEIS_PRECISOS = ("1", "2")
 PARTES = ("cidade", "sede urbana de outro distrito", "rural")
 MUNICIPIO = "município"
@@ -124,6 +133,11 @@ def fmt(v, casas=0) -> str:
     if casas == "auto":  # inteiro como inteiro; o resto com duas casas
         casas = 0 if float(v).is_integer() else 2
     return num(float(v), casas)
+
+
+def cota_no_rotulo(cota) -> str:
+    """Cota para rótulo de figura: com ponto de milhar (cotas de três dígitos não mudam). Só leitura do mapa."""
+    return num(float(cota))
 
 
 def gravar_sintese(t: pd.DataFrame, nome: str, titulo: str, colunas: dict, nota: str, descricao: str, leitura: dict | None = None, **kw) -> Path:
@@ -254,13 +268,25 @@ def verificar_maxima(caminho: Path, ano: int, vizinhos: int = 3) -> dict:
 
 def manchas_no_documento() -> pd.DataFrame | None:
     """Transcrição do que o documento da fonte diz de cada mancha por cota (período, tempo de retorno, página); None se faltar."""
-    arq = ARGS.manchas_documento or next(iter(sorted(eo.CONFERENCIA.glob(PADRAO_MANCHAS_DOC))), None)
+    arq = ARGS.manchas_documento or next(iter(sorted(eo.PUBLICADOS.glob(PADRAO_MANCHAS_DOC))), None)
     if arq is None or not Path(arq).exists():
         logger.warning("transcrição do documento das manchas por cota ausente: ano de referência e tempo de retorno do documento ficam vazios")
         return None
     t = pd.read_csv(arq, dtype={"cota_cm": str}).set_index("cota_cm")
     t.attrs["arquivo"] = str(Path(arq).resolve().relative_to(c.RAIZ))
     return t
+
+
+def tempo_de_retorno_da_legenda(cotas: list[str], tr: pd.Series, doc: pd.DataFrame | None) -> dict:
+    """Tempo de retorno de cada cota para a legenda: o do documento da fonte quando a cota está na transcrição;
+    o atributo do serviço só quando não está. Devolve, por cota, os dois valores, o usado e a origem."""
+    out = {}
+    for k in cotas:
+        servico = float(f"{float(tr[int(k)]):.6g}")  # o atributo vem em precisão simples (1,29999995 por 1,3)
+        documento = float(doc.loc[k, "tr_anos_documento"]) if doc is not None and k in doc.index and pd.notna(doc.loc[k, "tr_anos_documento"]) else None
+        out[k] = {"documento": documento, "servico": servico, "na_legenda": servico if documento is None else documento,
+                  "origem": (TR_DO_SERVICO if documento is None else TR_DO_DOCUMENTO)[0]}
+    return out
 
 
 def posicao_da_regua() -> tuple[float, float] | None:
@@ -284,7 +310,7 @@ def meta_figura(caminho: Path, info: dict, descricao: str, **kw) -> dict:
     return {"arquivo": caminho, **info}
 
 
-def figura_cheias(cont: gpd.GeoDataFrame, tr: pd.Series, st: gpd.GeoDataFrame) -> dict:
+def figura_cheias(cont: gpd.GeoDataFrame, tr: pd.Series, st: gpd.GeoDataFrame, doc: pd.DataFrame | None) -> dict:
     """Mapa das cheias cumulativas no recorte urbano: uma cor por cota, bairros, régua, encarte de localização."""
     base = Base(ARGS.codigo_ibge, agua=True, nome_rio=ARGS.nome_rio, modo_agua="enderecos")
     fundo = Fundo(base)
@@ -297,8 +323,14 @@ def figura_cheias(cont: gpd.GeoDataFrame, tr: pd.Series, st: gpd.GeoDataFrame) -
     for i, r in reversed(list(enumerate(cheias.itertuples()))):  # a maior primeiro; as menores por cima
         # mancha recortada no limite municipal só para exibição, como nos mapas do estudo
         gpd.GeoSeries([r.geometry.intersection(lim)], crs=c.CRS_PADRAO).plot(ax=ax, color=COR_CHEIAS[i], edgecolor="none", zorder=1.5 + 0.1 * (len(cheias) - i))
+    tr_leg = tempo_de_retorno_da_legenda(list(cheias.delimitacao), tr, doc)
+    origens = {v["origem"] for v in tr_leg.values()}
+    misto = len(origens) > 1  # só então o item diz de onde vem o seu valor
+    tr_titulo = TR_MISTO if misto else next(t for o, t in (TR_DO_DOCUMENTO, TR_DO_SERVICO) if o in origens)
     for i, r in enumerate(cheias.itertuples()):
-        hand.append(Patch(facecolor=COR_CHEIAS[i], edgecolor="none", label=f"até {r.delimitacao} cm (tempo de retorno de {num(float(tr[int(r.delimitacao)]), 1)} anos)"))
+        x = tr_leg[r.delimitacao]
+        marca = "*" if misto and x["origem"] == TR_DO_SERVICO[0] else ""
+        hand.append(Patch(facecolor=COR_CHEIAS[i], edgecolor="none", label=f"até {cota_no_rotulo(r.delimitacao)} cm (tempo de retorno de {num(x['na_legenda'], 1)}{marca} anos)"))
     bairros = gpd.read_file(eo.ARQ_BAIRROS).to_crs(c.CRS_PADRAO)
     bairros.boundary.plot(ax=ax, color=COR_BAIRRO, linewidth=0.45, zorder=5.5)
     hand.append(Line2D([], [], color=COR_BAIRRO, lw=0.45, label=f"bairro (nome: os {N_BAIRROS_ROTULADOS} com mais endereços expostos na maior cota)"))
@@ -334,29 +366,36 @@ def figura_cheias(cont: gpd.GeoDataFrame, tr: pd.Series, st: gpd.GeoDataFrame) -
     maior = cheias.delimitacao.iloc[-1]
     caminho = SAIDA / "sintese-cheias-por-cota_sgb_atual_manchas_urbano.png"
     info = lm.finalizar_a4(lay, "Manchas de inundação por cota do rio na área urbana da sede", fundo.comum(hand),
-                           "mancha de inundação por cota (SGB), cumulativa; escura = cheia mais frequente",
+                           "mancha de inundação por cota (SGB), cumulativa; escura = cheia mais frequente\n" + tr_titulo,
                            "Fontes: SGB (manchas de inundação por cota); IBGE (malha de bairros, Censo 2022); ANA (estação fluviométrica e hidrografia); OpenStreetMap (água, vias).",
-                           caminho, origem=caminho, metodo="Manchas cumulativas (união das cotas ≤ a indicada), recortadas no limite municipal só para exibição.", texto_na_imagem=False)
+                           caminho, origem=caminho, metodo="Manchas cumulativas (união das cotas ≤ a indicada), recortadas no limite municipal só para exibição.", texto_na_imagem=False,
+                           legenda_titulo_em_linhas=True, linha_apos_legenda=lm.texto_da_projecao(c.CRS_PADRAO))
     return meta_figura(caminho, info, "as cheias por cota, cumulativas, no recorte urbano, com os bairros, a régua e um encarte de localização; sem pontos de endereço",
                        recorte="área urbana da sede", janela_m=[round(v) for v in ext], bairros_rotulados=tb.bairro.tolist(), criterio_dos_bairros=f"mais endereços expostos na cota de {maior} cm",
-                       cores={r.delimitacao: COR_CHEIAS[i] for i, r in enumerate(cheias.itertuples())}, manchas_exibicao=ee.NOTA_RECORTE)
+                       cores={r.delimitacao: COR_CHEIAS[i] for i, r in enumerate(cheias.itertuples())}, manchas_exibicao=ee.NOTA_RECORTE,
+                       projecao_na_imagem="última linha da legenda; texto montado a partir do CRS do projeto (pyproj), campo 'linha_apos_legenda'",
+                       cotas_nos_rotulos="com ponto de milhar, para leitura do mapa; nas chaves e nos nomes de arquivo, sem ponto",
+                       tempo_de_retorno_na_legenda={"regra": "o valor do documento da fonte quando a cota está na transcrição do documento; o atributo do serviço da fonte só quando não está",
+                                                    "transcricao": doc.attrs["arquivo"] if doc is not None else "ausente", "texto_no_titulo_da_legenda": tr_titulo, "anos_por_cota": tr_leg})
 
 
 def figura_contornos(cont: gpd.GeoDataFrame, maior: str) -> dict:
     """A figura dos contornos do estudo das delimitações oficiais, pela mesma função, sem título e sem fonte na imagem."""
-    padrao = lm.TITULO_E_FONTE_NA_IMAGEM
-    lm.TITULO_E_FONTE_NA_IMAGEM = False
+    padrao = lm.TITULO_E_FONTE_NA_IMAGEM, lm.LINHA_APOS_LEGENDA
+    lm.TITULO_E_FONTE_NA_IMAGEM, lm.LINHA_APOS_LEGENDA = False, lm.texto_da_projecao(c.CRS_PADRAO)
     try:
-        info = eo.figura(cont, maior)  # grava em eo.SAIDA, que nesta execução é a pasta da síntese
+        info = eo.figura(cont, maior, cota_no_rotulo=cota_no_rotulo(maior))  # grava em eo.SAIDA, que nesta execução é a pasta da síntese
     finally:
-        lm.TITULO_E_FONTE_NA_IMAGEM = padrao
+        lm.TITULO_E_FONTE_NA_IMAGEM, lm.LINHA_APOS_LEGENDA = padrao
     feito = info.pop("arquivo")
     caminho = feito.with_name("sintese-" + feito.name)
     feito.replace(caminho)
     feito.with_suffix(".json").unlink()
     return meta_figura(caminho, info, "contornos das delimitações oficiais e borda da maior mancha por cota, sobre a malha viária; sem pontos de endereço",
-                       recorte="área urbana da sede", desenho="o mesmo da figura dos contornos do estudo das delimitações oficiais (mesma função); só o título e a fonte saíram da imagem",
-                       manchas_exibicao=ee.NOTA_RECORTE)
+                       recorte="área urbana da sede", desenho="o mesmo da figura dos contornos do estudo das delimitações oficiais (mesma função); o título e a fonte saíram da imagem, "
+                               "a legenda ganhou a linha da projeção e a cota do rótulo leva ponto de milhar",
+                       projecao_na_imagem="última linha da legenda; texto montado a partir do CRS do projeto (pyproj), campo 'linha_apos_legenda'",
+                       cotas_nos_rotulos="com ponto de milhar, para leitura do mapa; no título e no nome do arquivo, sem ponto", manchas_exibicao=ee.NOTA_RECORTE)
 
 
 def pagina_grafico(montar, handles: list, caminho: Path, ncol: int) -> dict:
@@ -409,13 +448,15 @@ def _eixo(fig, H, esq, dirt, alt, topo=lm.TOPO):
 
 def figura_razoes(b2: pd.DataFrame, b3: pd.DataFrame) -> dict:
     """Razão entre cada estimativa e a contagem por endereços, por delimitação: um eixo logarítmico, uma linha por delimitação."""
-    t = b2[["linha", "fonte", "chave", *list(SERIES)[:2]]].merge(b3.loc[b3.chave.notna(), ["chave", "razao"]].rename(columns={"razao": list(SERIES)[2]}), on="chave", how="left")
+    t = b2[["linha", "fonte", "chave", "fonte_id", "delimitacao", *list(SERIES)[:2]]].merge(b3.loc[b3.chave.notna(), ["chave", "razao"]].rename(columns={"razao": list(SERIES)[2]}), on="chave", how="left")
     desvio = dict(zip(SERIES, (-0.27, 0.0, 0.27)))  # cada série na sua faixa dentro da linha: marcadores próximos não se cobrem
     quem = b3[b3.chave.notna()].set_index("chave").fonte  # quem publica o número de cada linha (pode não ser a instituição da delimitação)
     siglas = list(dict.fromkeys(quem))
     de_quem = f" ({', '.join(siglas[:-1])} ou {siglas[-1]})" if len(siglas) > 1 else f" ({siglas[0]})"
     rotulos = {col: rot + (de_quem if col == list(SERIES)[2] else "") for col, (_, _, rot) in SERIES.items()}
     handles = [Line2D([], [], marker=m, ms=8.5, mfc=cor, mec=lm.FUNDO, mew=0.8, ls="", label=rotulos[col]) for col, (m, cor, _) in SERIES.items()]
+    # rótulo de cada linha no eixo: o da tabela, com a cota das cheias com ponto de milhar (só na figura)
+    t["rotulo_da_linha"] = [r.linha.replace(r.delimitacao, cota_no_rotulo(r.delimitacao)) if r.fonte_id == eo.CHEIAS else r.linha for r in t.itertuples()]
     fora = []
 
     def rotulo(v):
@@ -446,7 +487,7 @@ def figura_razoes(b2: pd.DataFrame, b3: pd.DataFrame) -> dict:
         ax.tick_params(axis="x", which="minor", labelsize=lm.FS_LEGENDA, length=2.5, pad=2, colors=INK2)
         ax.grid(axis="x", which="major", color=GRADE, lw=0.5)  # grade só nas potências de 10
         ax.set_axisbelow(True)
-        ax.set_yticks(range(len(t)), ["\n".join(y for x in f"{r.linha} — {r.fonte}".replace("), ", "),\n").split("\n") for y in textwrap.wrap(x, 44)) for r in t.itertuples()])
+        ax.set_yticks(range(len(t)), ["\n".join(y for x in f"{r.rotulo_da_linha} — {r.fonte}".replace("), ", "),\n").split("\n") for y in textwrap.wrap(x, 44)) for r in t.itertuples()])
         ax.tick_params(axis="y", length=0)
         ax.spines["left"].set_visible(False)
         ax.set_xlabel("razão estimativa / contagem por endereços (escala logarítmica)", fontsize=lm.FS_LEGENDA, color=INK2, labelpad=3)
@@ -460,7 +501,9 @@ def figura_razoes(b2: pd.DataFrame, b3: pd.DataFrame) -> dict:
                        series={col: {"marcador": m, "cor": cor, "rotulo": rotulos[col]} for col, (m, cor, _) in SERIES.items()}, eixo_horizontal=list(LIM_RAZAO),
                        numero_publicado_de_quem={r.linha: (f"{quem[r.chave]}" + ("" if quem[r.chave] == r.fonte else f" — estimativa sobre a delimitação da {r.fonte}") if r.chave in quem.index
                                                            else "sem número publicado para esta linha") for r in t.itertuples()},
-                       valores_fora_do_eixo=fora, tabelas=["sintese-tres-metodos", "sintese-publicado-x-contagem"])
+                       valores_fora_do_eixo=fora, tabelas=["sintese-tres-metodos", "sintese-publicado-x-contagem"],
+                       rotulos_das_linhas={r.linha: f"{r.rotulo_da_linha} — {r.fonte}" for r in t.itertuples()},
+                       cotas_nos_rotulos="com ponto de milhar, para leitura da figura; nas tabelas e nas chaves, sem ponto")
 
 
 def figura_regua(anual: pd.DataFrame, info_serie: dict, cotas: list[int], destaque: list[int], verificacao: dict) -> dict:
@@ -790,7 +833,7 @@ def main() -> None:
     logger.info("Conferência com os estudos de origem: %d itens, %d não conferem", len(conf), int((~conf.confere).sum()))
 
     # ---- figuras
-    figs = [figura_cheias(cont, tr, st), figura_contornos(cont, K[-1]), figura_razoes(b2, b3)]
+    figs = [figura_cheias(cont, tr, st, doc), figura_contornos(cont, K[-1]), figura_razoes(b2, b3)]
     gravar(anual, f"apoio-maxima-anual-da-regua_ana_{info_serie['primeiro_ano']}-{info_serie['ultimo_ano_completo']}_anual", "máxima anual da régua e dias com cota em cada ano", **info_serie)
     figs.append(figura_regua(anual, info_serie, [int(k) for k in K], destaque, verificacao))
 
@@ -820,7 +863,7 @@ if __name__ == "__main__":
     _p.add_argument("--serie-nivel", type=Path, help="CSV da série histórica diária do nível do rio (padrão: a que estiver em data/raw/)")
     _p.add_argument("--estacao", type=Path, default=ARQ_ESTACAO, help=".json com as coordenadas da estação fluviométrica (campo estacao_selecionada)")
     _p.add_argument("--dias-minimos", type=int, default=330, help="na figura da régua, ano com cota em menos dias que isto ganha um círculo vazado no topo da haste")
-    _p.add_argument("--manchas-documento", type=Path, help="CSV com a transcrição do documento da fonte das manchas por cota (padrão: o que estiver na pasta das entradas de conferência)")
+    _p.add_argument("--manchas-documento", type=Path, help="CSV com a transcrição do documento da fonte das manchas por cota (padrão: a transcrição versionada, na pasta dos números publicados)")
     _p.add_argument("--anos-destaque", type=int, nargs="*", help="anos em destaque na figura da régua (padrão: o da maior cota da série e o do evento datado)")
     _p.add_argument("--escala-pos", type=float, nargs=2, default=(0.56, 0.05), help="posição da barra de escala no mapa das cheias (fração do quadro)")
     _p.add_argument("--encarte", type=float, nargs=3, default=(0.775, 0.02, 0.215), help="encarte de localização no mapa das cheias: x, y e largura (fração do quadro)")
@@ -830,5 +873,5 @@ if __name__ == "__main__":
     ARGS.codigo_ibge = ARGS.codigo_ibge or eo.codigo_da_area_de_estudo()
     ARGS.nivel_rio = None
     if ARGS.publicado is None:
-        ARGS.publicado = sorted(eo.PUBLICADOS.glob("*.csv"))
+        ARGS.publicado = sorted(eo.PUBLICADOS.glob(eo.PADRAO_PUBLICADOS))
     main()
