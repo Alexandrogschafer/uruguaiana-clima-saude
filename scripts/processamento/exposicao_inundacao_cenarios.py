@@ -96,9 +96,12 @@ def cenarios_da_fonte(f: dict) -> gpd.GeoDataFrame:
 
 
 # ---------------------------------------------------------------- exposição de uma fonte
-def expor(cen: gpd.GeoDataFrame, fonte: str, dominio=None, origem: dict | None = None, marca: str = "") -> tuple[pd.DataFrame, gpd.GeoDataFrame]:
-    """Tabela por cenário e camada de pontos (uma coluna por cenário) de uma fonte; grava as duas."""
-    SAIDA.mkdir(parents=True, exist_ok=True)
+def expor(cen: gpd.GeoDataFrame, fonte: str, dominio=None, origem: dict | None = None, marca: str = "", gravar: bool = True) -> tuple[pd.DataFrame, gpd.GeoDataFrame]:
+    """Tabela por cenário e camada de pontos (uma coluna por cenário) de uma fonte; grava as duas.
+
+    gravar=False só devolve a tabela e os pontos, sem gravar nada (nenhuma camada de pontos vai para o disco)."""
+    if gravar:
+        SAIDA.mkdir(parents=True, exist_ok=True)
     if not ARQ_PONTOS.exists():
         raise FileNotFoundError(f"{ARQ_PONTOS} ausente — rode scripts/processamento/exposicao_inundacao_enderecos.py")
     pts = gpd.read_file(ARQ_PONTOS, columns=["COD_UNICO_ENDERECO", "setor_2022", "bairro", "situacao", "pop_est_setor", "pop_est_grade"]).to_crs(c.CRS_PADRAO)
@@ -127,6 +130,8 @@ def expor(cen: gpd.GeoDataFrame, fonte: str, dominio=None, origem: dict | None =
                        "unidades_saude_na_mancha": len(u), "unidades_saude_nomes": "; ".join(f"{x.rotulo} {x.nome}" for x in u.itertuples()) or "nenhuma",
                        "marca": marca})
     t = pd.DataFrame(linhas)
+    if not gravar:
+        return t, pts
     base = dict(codigo_ibge=ARGS.codigo_ibge, crs=c.CRS_PADRAO, status=c.STATUS_CONFERENCIA, ligado_ao_portal=False, script=SCRIPT, fonte_das_manchas=origem or fonte,
                 marca=marca or None, enderecos_do_municipio=n_mun, fora_do_git="data/processed/ é ignorado; deriva de camada não oficial — não publicar",
                 metodo="B1 cumulativo (ponto dentro da união das manchas dos cenários até X); B2 população do setor 2022 repartida entre os endereços do setor "

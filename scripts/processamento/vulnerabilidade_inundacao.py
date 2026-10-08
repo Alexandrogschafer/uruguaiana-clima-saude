@@ -404,8 +404,15 @@ def carregar_cnes() -> gpd.GeoDataFrame:
     return gdf
 
 
-def calcular_exposicao_por_setor(gdf_setores: gpd.GeoDataFrame, gdf_cotas: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
-    """Overlay (interseção) setor x cota e as duas estimativas de população exposta (área-proporcional e ponderada por uso do solo)."""
+def calcular_exposicao_por_setor(
+    gdf_setores: gpd.GeoDataFrame, gdf_cotas: gpd.GeoDataFrame,
+    limiar_pct_area_urbanizada: float = LIMIAR_PCT_AREA_URBANIZADA_SETOR,
+) -> gpd.GeoDataFrame:
+    """Overlay (interseção) setor x cota e as duas estimativas de população exposta (área-proporcional e ponderada por uso do solo).
+
+    limiar_pct_area_urbanizada: fração de área urbanizada do setor abaixo da qual o método por uso do solo
+    recai no método por área; o padrão é a constante do módulo.
+    """
     colunas_setor = [
         "CD_SETOR", "SITUACAO", "area_setor_m2", "area_urbanizada_setor_km2", "pct_area_urbanizada_setor",
         "populacao_total", "pct_populacao_0_a_4_anos", "pct_populacao_60_anos_ou_mais",
@@ -434,7 +441,7 @@ def calcular_exposicao_por_setor(gdf_setores: gpd.GeoDataFrame, gdf_cotas: gpd.G
         np.nan,
     )
     intersecao["metodo_estimativa_uso_solo"] = np.where(
-        intersecao["pct_area_urbanizada_setor"] >= LIMIAR_PCT_AREA_URBANIZADA_SETOR,
+        intersecao["pct_area_urbanizada_setor"] >= limiar_pct_area_urbanizada,
         "uso_solo_urbanizado", "area_proporcional_fallback",
     )
     intersecao["populacao_estimada_ponderada_uso-solo"] = np.where(

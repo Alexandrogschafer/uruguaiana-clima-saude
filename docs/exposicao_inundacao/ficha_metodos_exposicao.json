@@ -1,0 +1,214 @@
+{
+  "produto": "ficha_metodos_exposicao.md",
+  "data_processamento": "2026-10-08T20:31:02+00:00",
+  "codigo_ibge": "4322400",
+  "crs": "EPSG:31981",
+  "status": "pendente de conferência",
+  "script": "scripts/processamento/exposicao_inundacao_robustez.py",
+  "motivo": "auditoria de robustez das estimativas de exposição",
+  "descricao": "ficha de métodos dos estimadores de exposição: fórmulas, predicado espacial e versões",
+  "fatos": {
+    "enderecos_no_arquivo_do_cnefe": 56323,
+    "enderecos_sem_coordenada": 0,
+    "enderecos_de_domicilio_particular": 47193,
+    "origem_do_setor_do_endereco": {
+      "codigo_oficial": 42225,
+      "divisao_ponto_no_poligono": 4876,
+      "divisao_parte_mais_proxima": 92
+    },
+    "enderecos_em_coordenada_repetida": 9418,
+    "celulas_da_grade_por_resolucao": {
+      "1 km": 5586,
+      "200 m": 2718
+    },
+    "enderecos_fora_de_celula_da_grade": "não medido aqui; está no .json da tabela enderecos-populacao-por-cota do estudo por endereços (fechamento_grade)",
+    "populacao_do_municipio": 117210.0,
+    "populacao_alocada_aos_enderecos": 116784.0,
+    "regra_do_limiar": {
+      "arquivo": "scripts/processamento/vulnerabilidade_inundacao.py",
+      "constante": "LIMIAR_PCT_AREA_URBANIZADA_SETOR",
+      "valor": 0.05,
+      "linha_da_constante": 155,
+      "funcao_que_aplica": "calcular_exposicao_por_setor",
+      "linha_da_regra": 444,
+      "o_que_faz": "em cada setor, pct_area_urbanizada_setor = área dos pixels de área urbanizada dentro do setor / área do setor; se for menor que o limiar, a população do método por uso do solo nesse setor passa a ser a do método por área (população × fração da área do setor dentro do polígono)",
+      "classe": 24,
+      "raster": "data/raw/raster/uso-solo_mapbiomas_2024_30m.tif",
+      "pixel_area_m2": 746.1197176377186,
+      "metadado_do_raster": {
+        "fonte": "MapBiomas Brasil — Coleção 10 (Land Use and Land Cover, produto 'coverage')",
+        "colecao": "collection_10 (chamada de 'Coleção 10.1' no site oficial; série 1985-2024)",
+        "ano": 2024,
+        "resolucao_espacial_nativa": "30m (raster original em WGS84 geográfico, EPSG:4326)",
+        "crs_processado": "EPSG:31981"
+      },
+      "limiar_zero": "com limiar 0 todo setor usa o uso do solo; em setor sem pixel de área urbanizada a fração fica indefinida (0/0) e o código a troca por 0 (np.where(area_urbanizada_setor > 0, …, nan) seguido de fillna(0)): o setor contribui com 0 pessoas, sem erro de divisão"
+    },
+    "uniao_cumulativa": {
+      "funcao": "carregar_cenarios",
+      "arquivo": "scripts/processamento/exposicao_inundacao_cenarios.py",
+      "chamada_por": "carregar_delimitacoes, em scripts/processamento/exposicao_inundacao_estimativas_oficiais.py",
+      "o_que_faz": "corrige a geometria com buffer(0), dissolve as feições pela cota e, em ordem crescente de cota, acumula a união: a geometria da cota X é a união das manchas de cota menor ou igual a X; a mancha da cota sozinha fica na coluna geom_propria"
+    }
+  },
+  "versoes": {
+    "python": "3.14.4",
+    "geopandas": "1.1.4",
+    "shapely": "2.1.2",
+    "pyproj": "3.7.2",
+    "pandas": "3.0.5",
+    "numpy": "2.5.1",
+    "rasterio": "1.5.0",
+    "rasterstats": "0.21.0",
+    "matplotlib": "3.11.1",
+    "pyogrio": "0.13.0",
+    "networkx": "3.6.1",
+    "openpyxl": "3.1.5",
+    "xlrd": "2.0.2"
+  },
+  "bases_no_catalogo": [
+    {
+      "tema": "cnefe_2022",
+      "fonte": "IBGE — CNEFE (Cadastro Nacional de Endereços para Fins Estatísticos) do Censo 2022",
+      "resolucao_espacial": "endereço (coordenada)",
+      "resolucao_temporal": "estático (Censo 2022)",
+      "data_de_acesso": "2026-10-01"
+    },
+    {
+      "tema": "agregados_setores_2022_temas",
+      "fonte": "IBGE — Censo 2022, Agregados por Setores Censitários (temas básico, demografia e características do domicílio 1) + dicionário de dados",
+      "resolucao_espacial": "setor censitário",
+      "resolucao_temporal": "estático (Censo 2022)",
+      "data_de_acesso": "2026-10-01"
+    },
+    {
+      "tema": "setores_censitarios",
+      "fonte": "IBGE (Malha de Setores Censitários — Divisões Intramunicipais)",
+      "resolucao_espacial": "setor censitário",
+      "resolucao_temporal": "estático (Censo 2022)",
+      "data_de_acesso": "2026-07-27"
+    },
+    {
+      "tema": "vulnerabilidade_censo",
+      "fonte": "IBGE (Censo 2022: Agregados por Setores Censitários + API de Agregados/SIDRA)",
+      "resolucao_espacial": "setor censitário (renda/água/esgoto aproximados por município)",
+      "resolucao_temporal": "estático (Censo 2022)",
+      "data_de_acesso": "2026-07-27"
+    },
+    {
+      "tema": "setores_historico_formacao_2010_2022",
+      "fonte": "IBGE — Histórico de formação dos Setores Censitários 2010–2022 + leia-me de comparabilidade 2010–2022",
+      "resolucao_espacial": "setor censitário",
+      "resolucao_temporal": "2010, malhas intermediárias 2011–2021, 2022 (preliminar, intermediária e divulgação)",
+      "data_de_acesso": "2026-10-01"
+    },
+    {
+      "tema": "grade_estatistica_2022",
+      "fonte": "IBGE — Grade Estatística do Censo 2022",
+      "resolucao_espacial": "200 m (urbano) e 1 km (rural)",
+      "resolucao_temporal": "estático (Censo 2022)",
+      "data_de_acesso": "2026-10-01"
+    },
+    {
+      "tema": "uso_cobertura_solo",
+      "fonte": "MapBiomas",
+      "resolucao_espacial": "30m (nativa; ~27m após reprojeção UTM)",
+      "resolucao_temporal": "série temporal a cada 5 anos (1985-2020) + ano mais recente (2024)",
+      "data_de_acesso": "2026-07-28"
+    },
+    {
+      "tema": "cotas_inundacao",
+      "fonte": "SGB (Serviço Geológico do Brasil)",
+      "resolucao_espacial": "seção/estação Uruguaiana",
+      "resolucao_temporal": "estático",
+      "data_de_acesso": "2026-07-27"
+    },
+    {
+      "tema": "manchas_inundacao_sgb_servicos",
+      "fonte": "SGB — serviços de manchas de inundação da pasta hidrologia (MapServer)",
+      "resolucao_espacial": "mancha por cota",
+      "resolucao_temporal": "estático (snapshot no acesso)",
+      "data_de_acesso": "2026-10-03"
+    },
+    {
+      "tema": "setorizacao_risco_sgb",
+      "fonte": "SGB — setorização de risco (MapServer gestaoterritorial/risco, camada 0)",
+      "resolucao_espacial": "setor de risco (mapeamento de campo)",
+      "resolucao_temporal": "estático (data de cada setor no atributo data_setor)",
+      "data_de_acesso": "2026-10-03"
+    },
+    {
+      "tema": "populacao_areas_de_risco_ibge",
+      "fonte": "IBGE — População em áreas de risco no Brasil (2018), base territorial estatística de áreas de risco (BATER)",
+      "resolucao_espacial": "área de risco (BATER); população do Censo 2010",
+      "resolucao_temporal": "estático (publicação de 2018)",
+      "data_de_acesso": "2026-10-03"
+    },
+    {
+      "tema": "area_diretamente_atingida_maio_2024",
+      "fonte": "FEPAM-RS — arquivos geoespaciais dos eventos climáticos de maio de 2024: área diretamente atingida",
+      "resolucao_espacial": "por município (482 feições no estado)",
+      "resolucao_temporal": "estático (evento de maio de 2024; arquivo publicado em 2025)",
+      "data_de_acesso": "2026-10-03"
+    },
+    {
+      "tema": "areas_urbanizadas_ibge",
+      "fonte": "IBGE — Áreas Urbanizadas do Brasil 2019",
+      "resolucao_espacial": "polígono de área urbanizada",
+      "resolucao_temporal": "estático (referência 2019)",
+      "data_de_acesso": "2026-10-06"
+    },
+    {
+      "tema": "limite_municipal",
+      "fonte": "IBGE (malhas territoriais)",
+      "resolucao_espacial": "municipal",
+      "resolucao_temporal": "estático (ano de referência)",
+      "data_de_acesso": "não registrado"
+    }
+  ],
+  "bases_nos_metadados": {
+    "CNEFE 2022 (arquivo do município)": {
+      "metadado": "data/raw/cache_dinamica_populacional/cnefe_2022/4322400_URUGUAIANA.zip.json",
+      "data_acesso": "2026-10-02T01:45:43+00:00",
+      "last_modified_origem": "não registrado",
+      "url": "https://ftp.ibge.gov.br/Cadastro_Nacional_de_Enderecos_para_Fins_Estatisticos/Censo_Demografico_2022/Arquivos_CNEFE/CSV/Municipio/43_RS/4322400_URUGUAIANA.zip"
+    },
+    "agregados por setor 2022, básico": {
+      "metadado": "data/raw/cache_dinamica_populacional/agregados_2022/Agregados_por_setores_basico_BR_20260520.zip.json",
+      "data_acesso": "2026-10-02T01:45:41+00:00",
+      "last_modified_origem": "Wed, 20 May 2026 13:37:23 GMT",
+      "url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios/Agregados_por_Setor_csv/Agregados_por_setores_basico_BR_20260520.zip"
+    },
+    "manchas por cota (SGB)": {
+      "metadado": "data/raw/vetor/cotas-inundacao_sgb_atual_vetorial.json",
+      "data_processamento": "2026-07-27T16:25:32.723188+00:00"
+    },
+    "uso do solo (MapBiomas)": {
+      "metadado": "data/raw/raster/uso-solo_mapbiomas_2024_30m.json",
+      "data_processamento": "2026-07-28T00:27:05.645068+00:00",
+      "colecao": "collection_10 (chamada de 'Coleção 10.1' no site oficial; série 1985-2024)",
+      "ano": 2024
+    },
+    "SGB — setorização de risco": {
+      "metadado": "data/raw/vetor/setorizacao-risco_sgb_atual_vetorial.json",
+      "data_acesso": "2026-10-03T21:49:29+00:00"
+    },
+    "IBGE — áreas de risco (2018)": {
+      "metadado": "data/processed/conferencia_fontes_inundacao/populacao-areas-de-risco_ibge_2018_recorte-municipio.json",
+      "data_processamento": "2026-10-04T00:22:25+00:00"
+    },
+    "FEPAM — área diretamente atingida (maio de 2024)": {
+      "metadado": "data/processed/conferencia_fontes_inundacao/area-diretamente-atingida_fepam_2024-05_recorte-municipio-e-vizinhos.json",
+      "data_processamento": "2026-10-04T00:22:25+00:00"
+    },
+    "setores 2022 com população": {
+      "metadado": "data/processed/dinamica_populacional/populacao-setores_ibge-censo_2022_setor.json",
+      "data_processamento": "2026-10-02T01:57:26+00:00"
+    },
+    "grade estatística 2022": {
+      "metadado": "data/processed/dinamica_populacional/populacao-grade_ibge-censo_2022_200m-1km.json",
+      "data_processamento": "2026-10-02T01:57:27+00:00",
+      "url": "https://geoftp.ibge.gov.br/recortes_para_fins_estatisticos/grade_estatistica/censo_2022/grade_estatistica/grade_id13.zip"
+    }
+  }
+}
