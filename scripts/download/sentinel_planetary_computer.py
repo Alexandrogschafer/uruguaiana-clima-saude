@@ -29,9 +29,19 @@ sha256 no .json irmão, não é lido de novo.
 Saídas (fora do git): data/raw/sentinel/<sensor>/*.tif (+ .json) e a tabela
 data/raw/sentinel/cenas_planetary-computer_<anos>_cena.csv (+ .json).
 
+Passagens de radar em fatias (--fatias): o catálogo entrega algumas passagens em
+duas fatias vizinhas, cada uma cobrindo só parte da área de estudo; sem essa
+opção elas não são lidas. Com ela, o roteiro trata SÓ essas passagens: lê a
+janela de um retângulo menor (--retangulo-geografico, com --margem-m) numa
+fatia só, se ela bastar, ou nas duas, e junta (onde as duas têm valor, a média).
+Um arquivo por passagem e por polarização, no mesmo padrão de nome, com a
+lista das fatias no .json; a tabela das passagens fica em
+data/raw/sentinel/passagens-em-fatias_planetary-computer_<anos>_passagem.csv.
+
 Uso:
   python scripts/download/sentinel_planetary_computer.py
   python scripts/download/sentinel_planetary_computer.py --janelas J1=2019-01-05/2019-01-31
+  python scripts/download/sentinel_planetary_computer.py --fatias --retangulo-geografico -29.8 -29.7333 -57.1333 -57.0333 --margem-m 500
 """
 
 from __future__ import annotations
@@ -52,7 +62,7 @@ import numpy as np
 import pandas as pd
 import rasterio
 import requests
-from rasterio.warp import transform_bounds
+from rasterio.warp import Resampling, reproject, transform_bounds
 from rasterio.windows import Window, from_bounds
 from shapely.geometry import box, shape
 
@@ -81,6 +91,8 @@ JANELAS_PADRAO = {
     "J5": ["2015-07-05/2015-08-10", "2015-12-05/2016-01-15"], "J0": ["2020-03-01/2020-06-30"],
 }
 MAX_CENAS_POR_JANELA = 50
+MARGEM_PADRAO_M = 3000.0  # margem da área de estudo inteira (o retângulo das manchas)
+CRS_GEOGRAFICO = "EPSG:4674"  # SIRGAS 2000, o das coordenadas de --retangulo-geografico
 _TOKENS: dict[str, tuple[str, float]] = {}
 
 
@@ -222,8 +234,145 @@ def cobertura_e_nuvem(sensor: str, registro: dict) -> tuple[float, float | None]
     return float(100 * valido.mean()), None
 
 
+def retangulo_geografico(lat_sul: float, lat_norte: float, lon_oeste: float, lon_leste: float, margem_m: float) -> tuple[float, float, float, float]:
+    """Retângulo dado em graus (SIRGAS 2000) -> limites no CRS do projeto, com margem em metros."""
+    x0, y0, x1, y1 = transform_bounds(CRS_GEOGRAFICO, CRS_PADRAO, lon_oeste, lat_sul, lon_leste, lat_norte, densify_pts=21)
+    return (x0 - margem_m, y0 - margem_m, x1 + margem_m, y1 + margem_m)
+
+
+def ler_janela_cheia(href: str, colecao: str, ret: tuple) -> tuple[np.ndarray, dict]:
+    """Como ler_janela, mas devolve a janela INTEIRA do retângulo: o que cai fora da fatia vem como sem dado."""
+    for tentativa in range(3):
+        try:
+            with rasterio.Env(GDAL_DISABLE_READDIR_ON_OPEN="EMPTY_DIR", GDAL_HTTP_MAX_RETRY="3", GDAL_HTTP_RETRY_DELAY="2"):
+                with rasterio.open(f"{href}?{token(colecao)}") as src:
+                    lim = transform_bounds(CRS_PADRAO, src.crs, *ret)
+                    jan = from_bounds(*lim, transform=src.transform).round_offsets().round_lengths()
+                    dados = src.read(1, window=jan, boundless=True, fill_value=src.nodata)
+                    perfil = {"driver": "GTiff", "dtype": src.dtypes[0], "count": 1, "crs": src.crs, "transform": src.window_transform(jan),
+                              "width": int(jan.width), "height": int(jan.height), "nodata": src.nodata, "compress": "deflate", "tiled": True,
+                              "blockxsize": 256, "blockysize": 256, "predictor": 3}
+                    return dados, perfil
+        except Exception as e:
+            if tentativa == 2:
+                raise RuntimeError(sem_token(e)) from None
+            time.sleep(5 * (tentativa + 1))
+    raise RuntimeError("leitura não concluída")
+
+
+def juntar(partes: list[tuple[np.ndarray, dict]]) -> tuple[np.ndarray, dict, dict]:
+    """Junta as janelas das fatias de uma passagem: onde mais de uma tem valor, a média."""
+    base, perfil = partes[0]
+    sem = perfil["nodata"]
+    pilha = []
+    for dados, p in partes:
+        if p["transform"] != perfil["transform"] or dados.shape != base.shape:  # grades diferentes: a fatia vai para a grade da primeira
+            dest = np.full(base.shape, sem, dtype=base.dtype)
+            reproject(dados, dest, src_transform=p["transform"], src_crs=p["crs"], src_nodata=sem, dst_transform=perfil["transform"], dst_crs=perfil["crs"], dst_nodata=sem, resampling=Resampling.nearest)
+            dados = dest
+        pilha.append(np.where(np.isfinite(dados) & (dados != sem) & (dados > 0), dados, np.nan))
+    pilha = np.stack(pilha)
+    n = np.isfinite(pilha).sum(axis=0)
+    with np.errstate(invalid="ignore"):
+        junto = np.where(n > 0, np.nansum(pilha, axis=0) / np.maximum(n, 1), sem).astype(base.dtype)
+    info = {"cobertura_de_cada_fatia_pct": [float(100 * np.isfinite(x).mean()) for x in pilha], "cobertura_da_juncao_pct": float(100 * (n > 0).mean()),
+            "pixels_com_mais_de_uma_fatia_pct": float(100 * (n > 1).mean())}
+    return junto, perfil, info
+
+
+def fatias_de_radar() -> None:
+    """Só as passagens de radar que vêm em fatias (nenhuma fatia contém a área de estudo inteira): janela do retângulo pedido, fatias unidas."""
+    sensor = "sentinel1-rtc"
+    colecao, ativos = SENSORES[sensor]["colecao"], SENSORES[sensor]["ativos"]
+    inteira = area_de_estudo(ARGS.manchas, MARGEM_PADRAO_M)
+    ret = retangulo_geografico(*ARGS.retangulo_geografico, ARGS.margem_m) if ARGS.retangulo_geografico else area_de_estudo(ARGS.manchas, ARGS.margem_m)
+    alvo_inteira, alvo = box(*transform_bounds(CRS_PADRAO, "EPSG:4326", *inteira)), box(*transform_bounds(CRS_PADRAO, "EPSG:4326", *ret))
+    lic = licenca(colecao)
+    token(colecao)
+    passagens: dict[tuple, dict] = {}
+    for janela, periodos in ARGS.janelas.items():
+        itens = {i["id"]: i for p in periodos for i in buscar(colecao, p, alvo_inteira.bounds)}
+        for i in sorted(itens.values(), key=lambda i: i["properties"]["datetime"]):
+            if shape(i["geometry"]).contains(alvo_inteira):
+                continue  # cena inteira: é do modo padrão
+            chave = (i["properties"].get("platform"), i["properties"].get("sat:absolute_orbit"))
+            passagens.setdefault(chave, {"janela": janela, "itens": []})["itens"].append(i)
+    def ordem(p):  # prioridade das leituras, quando o teto de arquivos aperta
+        d = p["itens"][0]["properties"]["datetime"][:10]
+        return (0 if d in ARGS.primeiro else 1, {"J2": 0, "J3": 1, "J4": 2}.get(p["janela"], 3), d)
+    linhas, novos = [], 0
+    for p in sorted(passagens.values(), key=ordem):
+        itens = p["itens"]
+        prop = itens[0]["properties"]
+        quando = datetime.fromisoformat(prop["datetime"].replace("Z", "+00:00"))
+        toca = [i for i in itens if shape(i["geometry"]).intersects(alvo)]
+        sozinha = [i for i in toca if shape(i["geometry"]).contains(alvo)]
+        usar = sozinha[:1] or toca
+        linha = {"janela": p["janela"], "data_hora_utc": quando.strftime("%Y-%m-%d %H:%M:%S"), "data_hora_local": quando.astimezone(FUSO_LOCAL).strftime("%Y-%m-%d %H:%M:%S"),
+                 "plataforma": prop.get("platform"), "orbita_absoluta": prop.get("sat:absolute_orbit"), "orbita_relativa": prop.get("sat:relative_orbit"), "direcao": prop.get("sat:orbit_state"),
+                 "polarizacoes": "+".join(prop.get("sar:polarizations", [])), "fatias_no_catalogo": len(itens), "identificadores": "; ".join(i["id"] for i in itens),
+                 "fatias_lidas": len(usar), "uma_fatia_basta": bool(sozinha), "cobertura_do_retangulo_pct": np.nan, "pixels_com_duas_fatias_pct": np.nan, "situacao": "", "arquivos": ""}
+        if not usar:
+            linha["situacao"] = "não lida: nenhuma fatia toca o retângulo"
+        elif novos + len(ativos) > ARGS.max_arquivos:
+            linha["situacao"] = f"não lida: teto de {ARGS.max_arquivos} arquivos novos"
+        else:
+            try:
+                feitos = []
+                for ativo in ativos:
+                    arq = nome_do_arquivo(sensor, ativo, quando, 10)
+                    meta = arq.with_suffix(".json")
+                    if arq.exists() and meta.exists() and (m := json.loads(meta.read_text(encoding="utf-8"))).get("identificadores_das_cenas") == [i["id"] for i in usar] and m.get("sha256") == sha256(arq):
+                        feitos.append({**m, "situacao": "já existia"})
+                        continue
+                    with ThreadPoolExecutor(max_workers=len(usar)) as pool:
+                        partes = list(pool.map(lambda i: ler_janela_cheia(i["assets"][ativo]["href"], colecao, ret), usar))
+                    dados, perfil, info = juntar(partes)
+                    arq.parent.mkdir(parents=True, exist_ok=True)
+                    with rasterio.open(arq, "w", **perfil) as dst:
+                        dst.write(dados, 1)
+                    m = {"arquivo": arq.name, "fonte": f"Microsoft Planetary Computer — coleção {colecao}", "colecao": colecao, "identificadores_das_cenas": [i["id"] for i in usar], "ativo": ativo,
+                         "enderecos_dos_arquivos": [sem_token(i["assets"][ativo]["href"]).replace("?<removido>", "") for i in usar], "fatias_unidas": len(usar) > 1,
+                         "regra_da_juncao": "onde mais de uma fatia tem valor, a média; onde só uma tem, o valor dela" if len(usar) > 1 else "uma fatia cobre o retângulo inteiro",
+                         **info, "data_hora_da_cena_utc": quando.isoformat(), "data_hora_local": quando.astimezone(FUSO_LOCAL).isoformat(),
+                         "data_do_download": datetime.now(timezone.utc).isoformat(timespec="seconds"), "tamanho_bytes": arq.stat().st_size, "sha256": sha256(arq), "crs": str(perfil["crs"]),
+                         "resolucao_m": abs(perfil["transform"].a), "largura": perfil["width"], "altura": perfil["height"], "sem_dado": perfil["nodata"], "licenca": lic.get("licenca"),
+                         "endereco_da_licenca": lic.get("endereco_da_licenca"), "script": SCRIPT, "motivo": MOTIVO, "retangulo_lido": {"crs": CRS_PADRAO, "limites": list(ret)},
+                         "transformacao": "janela do retângulo na grade e no CRS originais da cena; sem reamostragem quando as fatias estão na mesma grade"}
+                    meta.write_text(json.dumps(m, ensure_ascii=False, indent=2), encoding="utf-8")
+                    feitos.append({**m, "situacao": "lida"})
+                    novos += 1
+                linha.update(cobertura_do_retangulo_pct=feitos[0]["cobertura_da_juncao_pct"], pixels_com_duas_fatias_pct=feitos[0]["pixels_com_mais_de_uma_fatia_pct"],
+                             situacao="lida" if any(f["situacao"] == "lida" for f in feitos) else "já existia", arquivos="; ".join(f["arquivo"] for f in feitos),
+                             _bytes=sum(f["tamanho_bytes"] for f in feitos))
+            except Exception as e:
+                linha["situacao"] = f"erro: {sem_token(e)[:200]}"
+        logger.info("%s %s (órbita %s, %d fatia(s)): %s", linha["janela"], linha["data_hora_utc"], linha["orbita_relativa"], len(itens), linha["situacao"])
+        linhas.append(linha)
+    t = pd.DataFrame(linhas).sort_values("data_hora_utc").reset_index(drop=True)
+    total = int(t.get("_bytes", pd.Series(dtype=float)).fillna(0).sum())
+    t = t.drop(columns=[x for x in ("_bytes",) if x in t])
+    anos = sorted({int(x) for ps in ARGS.janelas.values() for p in ps for x in (p[:4], p.split("/")[1][:4])})
+    arq = BRUTO / f"passagens-em-fatias_planetary-computer_{anos[0]}-{anos[-1]}_passagem.csv"
+    t.to_csv(arq, index=False)
+    arq.with_suffix(".json").write_text(json.dumps({
+        "arquivo": arq.name, "fonte": "Microsoft Planetary Computer — catálogo STAC, acesso anônimo", "script": SCRIPT, "motivo": MOTIVO, "data_acesso": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "colecao": lic, "retangulo_lido": {"crs": CRS_PADRAO, "limites": list(ret), "retangulo_geografico": ARGS.retangulo_geografico, "crs_do_retangulo_geografico": CRS_GEOGRAFICO, "margem_m": ARGS.margem_m},
+        "area_de_estudo_inteira": {"crs": CRS_PADRAO, "limites": list(inteira)}, "janelas": ARGS.janelas, "teto_de_arquivos_novos": ARGS.max_arquivos, "arquivos_novos": novos, "bytes_dos_arquivos": total,
+        "o_que_e_passagem_em_fatias": "itens da mesma plataforma e da mesma órbita absoluta em que nenhuma pegada contém a área de estudo inteira",
+        "campos": {"janela": "período de busca", "data_hora_utc": "início da primeira fatia, UTC", "data_hora_local": "o mesmo, em UTC−3", "plataforma": "satélite", "orbita_absoluta": "órbita absoluta",
+                   "orbita_relativa": "órbita relativa", "direcao": "direção da órbita", "polarizacoes": "polarizações", "fatias_no_catalogo": "itens da passagem no catálogo",
+                   "identificadores": "identificadores das fatias", "fatias_lidas": "fatias lidas", "uma_fatia_basta": "a pegada de uma fatia contém o retângulo inteiro",
+                   "cobertura_do_retangulo_pct": "% do retângulo com dado depois da junção", "pixels_com_duas_fatias_pct": "% do retângulo em que duas fatias têm valor (média)",
+                   "situacao": "o que foi feito", "arquivos": "arquivos gravados"}}, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+    logger.info("Passagens em fatias: %s (%d passagens; %d arquivos novos; %.1f MB)", arq.relative_to(RAIZ), len(t), novos, total / 1e6)
+
+
 def main() -> None:
     BRUTO.mkdir(parents=True, exist_ok=True)
+    if ARGS.fatias:
+        fatias_de_radar()
+        return
     ret = area_de_estudo(ARGS.manchas, ARGS.margem_m)
     bbox_ll = transform_bounds(CRS_PADRAO, "EPSG:4326", *ret)  # o catálogo é consultado em coordenadas geográficas
     alvo = box(*bbox_ll)
@@ -334,11 +483,16 @@ if __name__ == "__main__":
     logging.getLogger("rasterio").setLevel(logging.ERROR)
     _p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     _p.add_argument("--manchas", type=Path, default=ARQ_MANCHAS, help="camada das manchas por cota que define a área de estudo")
-    _p.add_argument("--margem-m", type=float, default=3000.0, help="margem em torno do retângulo das manchas (m)")
+    _p.add_argument("--margem-m", type=float, default=MARGEM_PADRAO_M, help="margem em torno do retângulo das manchas (m); com --fatias, margem do retângulo lido")
     _p.add_argument("--janelas", nargs="*", help="períodos NOME=AAAA-MM-DD/AAAA-MM-DD (o nome pode se repetir); padrão: os períodos de cheia e de rio baixo do roteiro")
     _p.add_argument("--sensores", nargs="+", default=list(SENSORES), choices=list(SENSORES))
     _p.add_argument("--nuvem-max", type=float, default=30.0, help="o óptico só é lido inteiro com nuvem abaixo disto (%% da área, pela SCL)")
     _p.add_argument("--paralelo", type=int, default=4, help="cenas lidas ao mesmo tempo")
+    _p.add_argument("--fatias", action="store_true", help="trata só as passagens de radar entregues em fatias (ver o texto no topo); sem esta opção nada muda")
+    _p.add_argument("--retangulo-geografico", type=float, nargs=4, metavar=("LAT_SUL", "LAT_NORTE", "LON_OESTE", "LON_LESTE"),
+                    help="com --fatias: retângulo a ler, em graus decimais (SIRGAS 2000); padrão: o retângulo das manchas")
+    _p.add_argument("--max-arquivos", type=int, default=120, help="com --fatias: teto de arquivos novos")
+    _p.add_argument("--primeiro", nargs="*", default=[], help="com --fatias: datas (AAAA-MM-DD, UTC) lidas antes das outras")
     ARGS = _p.parse_args()
     ARGS.janelas = _janelas(ARGS.janelas)
     main()
