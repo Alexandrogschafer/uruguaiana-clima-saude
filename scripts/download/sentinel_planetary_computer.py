@@ -38,6 +38,11 @@ Um arquivo por passagem e por polarização, no mesmo padrão de nome, com a
 lista das fatias no .json; a tabela das passagens fica em
 data/raw/sentinel/passagens-em-fatias_planetary-computer_<anos>_passagem.csv.
 
+Bandas a mais do óptico (--bandas-extras, com --identificadores): lê SÓ os ativos
+pedidos (por exemplo B02 e B04, para cor natural) das cenas pedidas, na janela do
+retângulo (--retangulo-geografico com --margem-m, ou o das manchas), no mesmo
+padrão de nome e de .json. Não refaz a busca nem toca na tabela de cenas.
+
 Uso:
   python scripts/download/sentinel_planetary_computer.py
   python scripts/download/sentinel_planetary_computer.py --janelas J1=2019-01-05/2019-01-31
@@ -368,8 +373,42 @@ def fatias_de_radar() -> None:
     logger.info("Passagens em fatias: %s (%d passagens; %d arquivos novos; %.1f MB)", arq.relative_to(RAIZ), len(t), novos, total / 1e6)
 
 
+def bandas_extras() -> None:
+    """Só os ativos pedidos das cenas ópticas pedidas pelo identificador; a busca não é refeita e a tabela de cenas não é tocada."""
+    sensor = "sentinel2-l2a"
+    colecao = SENSORES[sensor]["colecao"]
+    ret = retangulo_geografico(*ARGS.retangulo_geografico, ARGS.margem_m) if ARGS.retangulo_geografico else area_de_estudo(ARGS.manchas, ARGS.margem_m)
+    lic = licenca(colecao)
+    token(colecao)
+    novos = lidos = 0
+    for ident in ARGS.identificadores:
+        r = pedir("GET", f"{STAC}/collections/{colecao}/items/{ident}", timeout=60)
+        if r.status_code != 200:
+            logger.error("%s: cena não encontrada no catálogo (HTTP %d)", ident, r.status_code)
+            continue
+        item = r.json()
+        for ativo in ARGS.bandas_extras:
+            if ativo not in item.get("assets", {}):
+                logger.error("%s: a cena não tem o ativo %s", ident, ativo)
+            elif novos >= ARGS.max_arquivos:
+                logger.warning("%s %s: não lido: teto de %d arquivos novos", ident, ativo, ARGS.max_arquivos)
+            else:
+                try:
+                    m = baixar_ativo(sensor, item, ativo, ret, lic)
+                except Exception as e:
+                    logger.error("%s %s: %s", ident, ativo, sem_token(e)[:300])
+                    continue
+                if m["situacao"] == "lida":
+                    novos, lidos = novos + 1, lidos + m["tamanho_bytes"]
+                logger.info("%s %s: %s (%s)", ident, ativo, m["situacao"], m["arquivo"])
+    logger.info("Bandas a mais: %d arquivos novos; %.1f MB", novos, lidos / 1e6)
+
+
 def main() -> None:
     BRUTO.mkdir(parents=True, exist_ok=True)
+    if ARGS.bandas_extras:
+        bandas_extras()
+        return
     if ARGS.fatias:
         fatias_de_radar()
         return
@@ -491,8 +530,12 @@ if __name__ == "__main__":
     _p.add_argument("--fatias", action="store_true", help="trata só as passagens de radar entregues em fatias (ver o texto no topo); sem esta opção nada muda")
     _p.add_argument("--retangulo-geografico", type=float, nargs=4, metavar=("LAT_SUL", "LAT_NORTE", "LON_OESTE", "LON_LESTE"),
                     help="com --fatias: retângulo a ler, em graus decimais (SIRGAS 2000); padrão: o retângulo das manchas")
-    _p.add_argument("--max-arquivos", type=int, default=120, help="com --fatias: teto de arquivos novos")
+    _p.add_argument("--max-arquivos", type=int, default=120, help="com --fatias ou --bandas-extras: teto de arquivos novos")
     _p.add_argument("--primeiro", nargs="*", default=[], help="com --fatias: datas (AAAA-MM-DD, UTC) lidas antes das outras")
+    _p.add_argument("--bandas-extras", nargs="+", metavar="ATIVO", help="lê só estes ativos do óptico (ex.: B02 B04) das cenas de --identificadores; sem esta opção nada muda")
+    _p.add_argument("--identificadores", nargs="+", default=[], metavar="CENA", help="com --bandas-extras: identificadores das cenas no catálogo")
     ARGS = _p.parse_args()
+    if ARGS.bandas_extras and not ARGS.identificadores:
+        _p.error("--bandas-extras pede --identificadores")
     ARGS.janelas = _janelas(ARGS.janelas)
     main()
