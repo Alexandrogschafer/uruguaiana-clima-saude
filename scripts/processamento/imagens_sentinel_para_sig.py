@@ -13,18 +13,28 @@ de 10 m (as margens são múltiplos do pixel).
   óptico  falsa cor B11, B08, B03 (vermelho, verde, azul) e, se as bandas B02 e
           B04 tiverem sido lidas (scripts/download/sentinel_planetary_computer.py
           --bandas-extras B02 B04), cor natural B04, B03, B02; uint8, 0 = sem dado;
-          cortes fixos, iguais para todas as cenas: os percentis --percentis da
-          cena de referência (a cena boa de menor nível da régua com nuvem ou
-          sombra abaixo de --nuvem-max-referencia %), banda a banda.
+          cortes fixos, iguais para todas as cenas: os percentis --percentis,
+          banda a banda, da cena de referência (a cena boa de menor nível da
+          régua com nuvem ou sombra abaixo de --nuvem-max-referencia %) ou, nas
+          composições de --cortes-da-uniao, da união dos pixels válidos de todas
+          as cenas ópticas boas.
 
 GeoTIFF com compressão DEFLATE, blocos internos e pirâmides internas; .json irmão.
 As imagens vão só para --saida e as figuras de controle para --figuras, as duas
 fora do repositório. Só cenas boas daquele roteiro; data pedida que não for cena
-boa do sensor é avisada e fica de fora, sem substituição.
+boa do sensor é avisada e fica de fora, sem substituição. Com --todas-as-boas
+entram todas. A referência de rio baixo leva "_referencia" no nome; a diferença
+só existe para órbita com referência de rio baixo.
+
+Imagem que já existe na pasta fica como está, salvo os tipos de --regravar. No
+fim, o índice indice_imagens_sentinel.csv (uma linha por imagem, com a régua, a
+fase da cheia e a água em terra da cena) é gravado de novo.
 
 Uso:
   python scripts/processamento/imagens_sentinel_para_sig.py --saida PASTA \
       --radar AAAA-MM-DD [...] --optico AAAA-MM-DD [...] [--figuras PASTA] [--sobrepor sensor:AAAA-MM-DD ...]
+  python scripts/processamento/imagens_sentinel_para_sig.py --saida PASTA --todas-as-boas \
+      [--regravar falsacor] [--cortes-da-uniao falsacor] [--antes PASTA] [--figuras PASTA]
 """
 
 from __future__ import annotations
@@ -56,6 +66,7 @@ logger = logging.getLogger(__name__)
 SCRIPT = "scripts/processamento/imagens_sentinel_para_sig.py"
 MOTIVO = "imagens de satélite das cheias recortadas na área urbana, para conferência visual em SIG"
 PROC44 = au.PROC
+PROC45 = c.RAIZ / "data" / "processed" / "agua_observada_sentinel_comparacao"
 RES, RADAR, OPTICO = au.RES, au.RADAR, au.OPTICO
 SEM_DADO_RADAR = -9999.0
 ATRIBUICAO = "contém dados Copernicus Sentinel modificados; uso livre com atribuição"
@@ -135,7 +146,7 @@ def conferir(arqs: list[Path], grade: dict) -> pd.DataFrame:
         with rasterio.open(arq) as src:
             dados = src.read(1, masked=True)
             linhas.append({"arquivo": arq.name, "crs": str(src.crs), "pixel_m": src.res[0], "largura": src.width, "altura": src.height, "mesma_grade": bool(src.transform == grade["transform"] and src.shape == (grade["height"], grade["width"])),
-                           "bandas": src.count, "tipo": src.dtypes[0], "sem_dado": src.nodata, "piramides": "/".join(str(x) for x in src.overviews(1)), "compressao": src.compression.value if src.compression else "",
+                           "bandas": src.count, "tipo_do_dado": src.dtypes[0], "sem_dado": src.nodata, "piramides": "/".join(str(x) for x in src.overviews(1)), "compressao": src.compression.value if src.compression else "",
                            "bloco": "×".join(str(x) for x in src.block_shapes[0]), "com_dado_pct": float(100 * (~np.ma.getmaskarray(dados)).mean()), "tamanho_mb": arq.stat().st_size / 1e6})
     return pd.DataFrame(linhas)
 
@@ -154,7 +165,7 @@ def miniatura(ax, arq: Path, ext) -> None:
     ax.set_facecolor("#ff00ff")  # sem dado aparece em magenta
 
 
-def figura_de_controle(arq: Path, itens: list[dict], ext) -> None:
+def figura_de_controle(arq: Path, itens: list[dict], ext, titulo: str = "Imagens recortadas na área urbana (controle)") -> None:
     colunas = 6
     linhas = int(np.ceil(len(itens) / colunas))
     fig, eixos = plt.subplots(linhas, colunas, figsize=(3.6 * colunas, 3.6 * linhas), squeeze=False)
@@ -164,7 +175,7 @@ def figura_de_controle(arq: Path, itens: list[dict], ext) -> None:
         ax.axis("on")
         miniatura(ax, it["arquivo"], ext)
         ax.set_title(f"{it['data']} — {it['tipo']}\n{it['sensor']} — régua {ao.fmt(float(it['nivel']), 0)} cm", fontsize=8, loc="left")
-    fig.suptitle("Imagens recortadas na área urbana (controle). Radar em dB de −25 (preto) a 0 (branco); diferença de −10 dB (vermelho) a +10 dB (azul); magenta = sem dado.", fontsize=9.5, x=0.01, ha="left")
+    fig.suptitle(titulo + ". Radar em dB de −25 (preto) a 0 (branco); diferença de −10 dB (vermelho) a +10 dB (azul); magenta = sem dado.", fontsize=9.5, x=0.01, ha="left")
     fig.tight_layout(rect=(0, 0, 1, 0.96), h_pad=2.2)
     fig.savefig(arq, dpi=150)
     plt.close(fig)
@@ -183,10 +194,26 @@ def figura_sobreposta(arq: Path, imagem: Path, agua_geom, urbano, ext, titulo: s
     plt.close(fig)
 
 
+def figura_antes_e_depois(arq: Path, pares: list[tuple[Path, Path, str]], ext) -> None:
+    fig, eixos = plt.subplots(2, len(pares), figsize=(4.4 * len(pares), 7.6), squeeze=False)
+    for k, (antes, depois, rotulo) in enumerate(pares):
+        for ax, a, quando in ((eixos[0][k], antes, "antes"), (eixos[1][k], depois, "depois")):
+            miniatura(ax, a, ext)
+            ax.set_title(f"{rotulo} — {quando}", fontsize=8.5, loc="left")
+    fig.suptitle("Falsa cor B11-B08-B03 regravada: cortes da cena de referência (antes) e da união das cenas ópticas boas (depois)", fontsize=10, x=0.01, ha="left")
+    fig.tight_layout(rect=(0, 0, 1, 0.96), h_pad=3.0)
+    fig.savefig(arq, dpi=150)
+    plt.close(fig)
+
+
+def pct_no_maximo(arq: Path, banda: int) -> float:
+    with rasterio.open(arq) as src:
+        v = src.read(banda)
+    return float(100 * (v[v > 0] == 255).mean())
+
+
 # ---------------------------------------------------------------- principal
 def main() -> None:
-    if ARGS.saida.exists() and any(ARGS.saida.iterdir()) and not ARGS.refazer:
-        raise SystemExit("a pasta de saída já tem arquivos (use --refazer para gerar de novo)")
     ARGS.saida.mkdir(parents=True, exist_ok=True)
     m_cenas = json.loads(next(iter(sorted(ao.BRUTO.glob("cenas_planetary-computer_*_cena.json")))).read_text(encoding="utf-8"))
     licencas = {s: {"colecao": v.get("colecao"), "licenca": v.get("licenca"), "endereco_da_licenca": v.get("endereco_da_licenca")} for s, v in m_cenas["colecoes"].items()}
@@ -200,66 +227,92 @@ def main() -> None:
     ext = (gx0, gx0 + grade["width"] * RES, gy1 - grade["height"] * RES, gy1)
     info_grade = {"limites": [ext[0], ext[2], ext[1], ext[3]], "largura": grade["width"], "altura": grade["height"], "margem_m": ARGS.margem_m}
 
-    # ---- cenas pedidas, entre as boas
+    # ---- cenas boas: todas (--todas-as-boas) ou as das datas pedidas
     cq = pd.read_csv(PROC44 / "controle-de-qualidade_sentinel_2017-2024_cena.csv")
-    boas = cq[cq.boa].assign(data=lambda t: t.data_hora_local.str[:10])
+    boas = cq[cq.boa].assign(data=lambda t: t.data_hora_local.str[:10]).sort_values("data_hora_local").reset_index(drop=True)
+    repetidas = set(map(tuple, boas[boas.duplicated(["sensor", "data"], keep=False)][["sensor", "data"]].to_numpy()))  # duas cenas do sensor no mesmo dia: a órbita entra no nome
     arqs, diaria, tel = tabela_de_arquivos(), ao.ler_serie_diaria(), ao.ler_telemetria()
     refs = pd.read_csv(PROC44 / "referencia-por-orbita_sentinel1-rtc_2017-2024_orbita.csv")
+    arq_fase = next(iter(sorted(PROC45.glob("fase-da-cheia-por-cena_*_cena.csv"))), None)  # a fase já calculada pela curva nível × área
+    fases = {} if arq_fase is None else {(r.sensor, r.identificador): r.fase for r in pd.read_csv(arq_fase).itertuples()}
+    if arq_fase is None:
+        AVISOS.append("tabela da fase da cheia ausente: a coluna fase do índice fica vazia")
 
-    def cena(sensor: str, data: str, papel: str = "cena") -> dict | None:
-        k = boas[(boas.sensor == sensor) & (boas.data == data)]
-        if k.empty or (sensor, k.identificador.iloc[0]) not in arqs:
-            AVISOS.append(f"{data}: não está entre as cenas boas de {sensor}; ficou de fora, sem substituição")
-            return None
-        r, info = k.iloc[0], arqs[(sensor, k.identificador.iloc[0])]
-        local = pd.Timestamp(r.data_hora_local)
-        return {"sensor": sensor, "papel": papel, "data": data, "identificador": r.identificador, "data_hora_utc": info["utc"], "data_hora_local": r.data_hora_local, "orbita_relativa": int(float(info["orbita"])),
-                "direcao": info["direcao"], **niveis(local, diaria, tel), "nuvem_ou_sombra_pct": r.nuvem_ou_sombra_pct, "versao": info["versao"], "caminhos": caminhos(sensor, info),
-                "arquivos_de_origem": [str(p.relative_to(c.RAIZ)) for p in caminhos(sensor, info).values()]}
+    def cena(r, papel: str = "cena") -> dict:
+        info = arqs[(r.sensor, r.identificador)]
+        orbita = int(float(info["orbita"]))
+        return {"sensor": r.sensor, "papel": papel, "data": r.data, "nome": r.data + (f"_o{orbita:03d}" if (r.sensor, r.data) in repetidas else ""), "identificador": r.identificador, "data_hora_utc": info["utc"],
+                "data_hora_local": r.data_hora_local, "orbita_relativa": orbita, "direcao": info["direcao"], **niveis(pd.Timestamp(r.data_hora_local), diaria, tel), "nuvem_ou_sombra_pct": r.nuvem_ou_sombra_pct,
+                "janela": r.janela, "agua_em_terra_km2": r.inundacao_em_terra_km2, "fase": fases.get((r.sensor, r.identificador), ""), "versao": info["versao"], "caminhos": caminhos(sensor=r.sensor, info=info),
+                "arquivos_de_origem": [str(p.relative_to(c.RAIZ)) for p in caminhos(r.sensor, info).values()]}
 
-    radar = [x for x in (cena(RADAR, d) for d in ARGS.radar) if x]
-    optico = [x for x in (cena(OPTICO, d) for d in ARGS.optico) if x]
+    def pedidas(sensor: str, datas: list[str]) -> list[dict]:
+        k = boas[boas.sensor == sensor]
+        if not ARGS.todas_as_boas:
+            for d in datas:
+                if d not in set(k.data):
+                    AVISOS.append(f"{d}: não está entre as cenas boas de {sensor}; ficou de fora, sem substituição")
+            k = k[k.data.isin(datas)]
+        return [cena(r) for r in k.itertuples() if (r.sensor, r.identificador) in arqs]
+
+    radar, optico = pedidas(RADAR, ARGS.radar), pedidas(OPTICO, ARGS.optico)
     ref_radar = {}
     for orb in sorted({x["orbita_relativa"] for x in radar}):
-        r = refs[refs.orbita_relativa == orb]
-        ref_radar[orb] = cena(RADAR, r.data_hora_local.iloc[0][:10], "referência de rio baixo da órbita") if len(r) else None
+        k = boas[boas.identificador.isin(refs[refs.orbita_relativa == orb].cena_de_referencia) & boas.janela.isin(ARGS.janelas_de_rio_baixo)]
+        ref_radar[orb] = cena(k.iloc[0], "referência de rio baixo da órbita") if len(k) else None
     cand = boas[(boas.sensor == OPTICO) & (boas.nuvem_ou_sombra_pct < ARGS.nuvem_max_referencia)].sort_values("nivel_regua_cm")
-    ref_optico = cena(OPTICO, cand.data.iloc[0], "referência de rio baixo") if len(cand) else None
-    comum = lambda x: {k: v for k, v in x.items() if k not in ("caminhos", "versao")}  # noqa: E731
-    produtos, resumo = [], []
+    ref_optico = cena(cand.iloc[0], "referência de rio baixo") if len(cand) else None
+    e_ref = {x["identificador"] for x in [*ref_radar.values(), ref_optico] if x}
+    radar, optico = [x for x in radar if x["identificador"] not in e_ref], [x for x in optico if x["identificador"] not in e_ref]
+    comum = lambda x: {k: v for k, v in x.items() if k not in ("caminhos", "versao", "nome")}  # noqa: E731
+    previstos = len(radar) * 2 + len([v for v in ref_radar.values() if v]) + (len(optico) + 1) * len(COMPOSICOES)
+    if previstos * ARGS.mb_por_imagem / 1000 > ARGS.limite_gb:
+        raise SystemExit(f"{previstos} imagens a gravar, cerca de {previstos * ARGS.mb_por_imagem / 1000:.1f} GB: acima do limite de {ARGS.limite_gb:g} GB; nada foi gravado")
+    produtos, feitos = [], {"gravadas": 0, "regravadas": 0, "mantidas": 0}
 
-    # ---- radar: VV em dB e diferença para a referência da órbita
+    def fazer(arq: Path, tipo: str) -> bool:
+        """Imagem que já existe fica como está, salvo se o tipo estiver em --regravar."""
+        if arq.exists() and tipo not in ARGS.regravar:
+            feitos["mantidas"] += 1
+            return False
+        feitos["regravadas" if arq.exists() else "gravadas"] += 1
+        return True
+
+    # ---- radar: VV em dB e diferença para a referência de rio baixo da órbita
     def vv_db(x: dict) -> np.ndarray:
         vv = ao.para_a_grade(x["caminhos"]["vv"], grade, Resampling.nearest, np.nan)
         return np.where(np.isfinite(vv) & (vv > 0), 10 * np.log10(np.where(vv > 0, vv, 1)), np.nan).astype("float32")
 
+    base_radar = {"fonte": f"Microsoft Planetary Computer — coleção {licencas[RADAR]['colecao']} (dados Copernicus Sentinel-1)", "licenca": licencas[RADAR], "grade_do_recorte": info_grade}
+    vv_meta = {"bandas": ["VV, retroespalhamento gama zero corrigido do terreno, em dB (10·log10)"], "cortes_de_esticamento": "nenhum: valores em dB; sugestão de exibição de −25 a 0 dB"}
     db_ref = {}
     for orb, x in ref_radar.items():
         if x is None:
             continue
         db_ref[orb] = vv_db(x)
-        arq = ARGS.saida / f"imagem-radar-vv-db_sentinel1-rtc_{x['data']}_referencia_10m.tif"
-        gravar_tif(arq, np.where(np.isfinite(db_ref[orb]), db_ref[orb], SEM_DADO_RADAR).astype("float32"), grade, SEM_DADO_RADAR, fonte=f"Microsoft Planetary Computer — coleção {licencas[RADAR]['colecao']} (dados Copernicus Sentinel-1)",
-                   licenca=licencas[RADAR], bandas=["VV, retroespalhamento gama zero corrigido do terreno, em dB (10·log10)"], cortes_de_esticamento="nenhum: valores em dB; sugestão de exibição de −25 a 0 dB", grade_do_recorte=info_grade, **comum(x))
-        produtos.append({**x, "arquivo": arq, "tipo": "VV em dB (referência)"})
+        arq = ARGS.saida / f"imagem-radar-vv-db_sentinel1-rtc_{x['nome']}_referencia_10m.tif"
+        if fazer(arq, "vv-db"):
+            gravar_tif(arq, np.where(np.isfinite(db_ref[orb]), db_ref[orb], SEM_DADO_RADAR).astype("float32"), grade, SEM_DADO_RADAR, **base_radar, **vv_meta, **comum(x))
+        produtos.append({**x, "arquivo": arq, "tipo": "vv-db", "referencia": True})
     for x in radar:
-        db = vv_db(x)
-        base = {"fonte": f"Microsoft Planetary Computer — coleção {licencas[RADAR]['colecao']} (dados Copernicus Sentinel-1)", "licenca": licencas[RADAR], "grade_do_recorte": info_grade, **comum(x)}
-        arq = ARGS.saida / f"imagem-radar-vv-db_sentinel1-rtc_{x['data']}_10m.tif"
-        gravar_tif(arq, np.where(np.isfinite(db), db, SEM_DADO_RADAR).astype("float32"), grade, SEM_DADO_RADAR, bandas=["VV, retroespalhamento gama zero corrigido do terreno, em dB (10·log10)"],
-                   cortes_de_esticamento="nenhum: valores em dB; sugestão de exibição de −25 a 0 dB", **base)
-        produtos.append({**x, "arquivo": arq, "tipo": "VV em dB"})
         ref = ref_radar.get(x["orbita_relativa"])
+        arq_vv, arq_dif = (ARGS.saida / f"imagem-radar-{t}_sentinel1-rtc_{x['nome']}_10m.tif" for t in ("vv-db", "diferenca-vv-db"))
+        f_vv, f_dif = fazer(arq_vv, "vv-db"), ref is not None and fazer(arq_dif, "diferenca-vv-db")
+        db = vv_db(x) if f_vv or f_dif else None
+        if f_vv:
+            gravar_tif(arq_vv, np.where(np.isfinite(db), db, SEM_DADO_RADAR).astype("float32"), grade, SEM_DADO_RADAR, **base_radar, **vv_meta, **comum(x))
+        produtos.append({**x, "arquivo": arq_vv, "tipo": "vv-db", "referencia": False})
         if ref is None:
-            AVISOS.append(f"{x['data']}: órbita {x['orbita_relativa']} sem referência; sem imagem de diferença")
+            AVISOS.append(f"{x['data']}: órbita {x['orbita_relativa']} sem referência de rio baixo; só o VV")
             continue
-        dif = db - db_ref[x["orbita_relativa"]]
-        arq = ARGS.saida / f"imagem-radar-diferenca-vv-db_sentinel1-rtc_{x['data']}_10m.tif"
-        gravar_tif(arq, np.where(np.isfinite(dif), dif, SEM_DADO_RADAR).astype("float32"), grade, SEM_DADO_RADAR, bandas=["VV da cena menos VV da referência da mesma órbita, em dB (negativo = escureceu)"],
-                   cortes_de_esticamento="nenhum: valores em dB; sugestão de exibição de −10 a +10 dB", referencia={k: ref[k] for k in ("identificador", "data_hora_local", "orbita_relativa", "nivel_media_diaria_cm")}, **base)
-        produtos.append({**x, "arquivo": arq, "tipo": "diferença de VV (dB)"})
+        if f_dif:
+            dif = db - db_ref[x["orbita_relativa"]]
+            gravar_tif(arq_dif, np.where(np.isfinite(dif), dif, SEM_DADO_RADAR).astype("float32"), grade, SEM_DADO_RADAR, bandas=["VV da cena menos VV da referência da mesma órbita, em dB (negativo = escureceu)"],
+                       cortes_de_esticamento="nenhum: valores em dB; sugestão de exibição de −10 a +10 dB", referencia={k: ref[k] for k in ("identificador", "data_hora_local", "orbita_relativa", "nivel_media_diaria_cm")},
+                       **base_radar, **comum(x))
+        produtos.append({**x, "arquivo": arq_dif, "tipo": "diferenca-vv-db", "referencia": False})
 
-    # ---- óptico: falsa cor e, havendo as bandas, cor natural; cortes da cena de referência
+    # ---- óptico: falsa cor e, havendo as bandas, cor natural; cortes da cena de referência ou da união das cenas boas
     def bandas(x: dict, nomes: tuple) -> list[np.ndarray] | None:
         cam = {**x["caminhos"], **{b: Path(str(x["caminhos"]["b03"]).replace("-b03_", f"-{b}_")) for b in nomes if b not in x["caminhos"]}}
         if not all(cam[b].exists() for b in nomes):
@@ -267,52 +320,97 @@ def main() -> None:
         desloc = float(x["versao"] if isinstance(x["versao"], str) and x["versao"] else 0) >= 4
         return [refletancia(cam[b], grade, desloc, Resampling.bilinear if b == "b11" else Resampling.nearest) for b in nomes]
 
-    cortes = {}
+    cortes, regra_dos_cortes = {}, {}
     for comp, nomes in COMPOSICOES.items():
-        b = bandas(ref_optico, nomes) if ref_optico else None
-        if b is None:
-            AVISOS.append(f"{comp}: a cena de referência não tem as bandas {', '.join(nomes)}; composição não gerada")
-            continue
-        valido = np.all([np.isfinite(v) for v in b], axis=0)
-        cortes[comp] = [tuple(float(q) for q in np.percentile(v[valido], ARGS.percentis)) for v in b]
-        for x in [*optico, ref_optico]:
-            b = bandas(x, nomes)
-            if b is None:
-                AVISOS.append(f"{x['data']}: sem as bandas {', '.join(nomes)}; {comp} não gerada")
+        tipo = comp.split("-")[0]
+        if tipo in ARGS.cortes_da_uniao:  # percentis da união dos pixels válidos de TODAS as cenas ópticas boas, e não só das pedidas
+            amostra, usadas = [[] for _ in nomes], 0
+            for r in boas[boas.sensor == OPTICO].itertuples():
+                b = bandas(cena(r), nomes) if (r.sensor, r.identificador) in arqs else None
+                if b is None:
+                    continue
+                valido = np.all([np.isfinite(v) for v in b], axis=0)
+                for k, v in enumerate(b):
+                    amostra[k].append(v[valido][::ARGS.passo_da_amostra])
+                usadas += 1
+            if not usadas:
+                AVISOS.append(f"{comp}: nenhuma cena com as bandas {', '.join(nomes)}; composição não gerada")
                 continue
-            e_ref = x is ref_optico
-            arq = ARGS.saida / f"imagem-{comp}_sentinel2-l2a_{x['data']}{'_referencia' if e_ref else ''}_10m.tif"
-            origem = sorted({*x["arquivos_de_origem"], *(str(Path(x["arquivos_de_origem"][0]).parent / Path(str(x["caminhos"]["b03"]).replace("-b03_", f"-{n}_")).name) for n in nomes)})
-            gravar_tif(arq, para_uint8(b, cortes[comp]), grade, 0, fonte=f"Microsoft Planetary Computer — coleção {licencas[OPTICO]['colecao']} (dados Copernicus Sentinel-2)", licenca=licencas[OPTICO],
-                       bandas=[f"{cor}: {n.upper()}" for cor, n in zip(("vermelho", "verde", "azul"), nomes)], grade_do_recorte=info_grade,
-                       cortes_de_esticamento={"regra": f"percentis {ARGS.percentis[0]:g} e {ARGS.percentis[1]:g} da cena de referência ({ref_optico['data']}), banda a banda; linear de 1 a 255; 0 = sem dado",
-                                              "refletancia": {n.upper(): {"minimo": lo, "maximo": hi} for n, (lo, hi) in zip(nomes, cortes[comp])}},
-                       **{**comum(x), "arquivos_de_origem": [o for o in origem if any(f"-{n}_" in o for n in nomes)]})
-            produtos.append({**x, "arquivo": arq, "tipo": ("falsa cor B11-B08-B03" if comp.startswith("falsa") else "cor natural B04-B03-B02") + (" (referência)" if e_ref else "")})
+            cortes[comp] = [tuple(float(q) for q in np.percentile(np.concatenate(a), ARGS.percentis)) for a in amostra]
+            regra_dos_cortes[comp] = {"regra": f"percentis {ARGS.percentis[0]:g} e {ARGS.percentis[1]:g}, banda a banda, da união dos pixels válidos das {usadas} cenas ópticas boas; linear de 1 a 255; 0 = sem dado",
+                                      "pixels_na_amostra": int(sum(len(a) for a in amostra[0])), "passo_da_amostra": ARGS.passo_da_amostra}
+        else:
+            b = bandas(ref_optico, nomes) if ref_optico else None
+            if b is None:
+                AVISOS.append(f"{comp}: a cena de referência não tem as bandas {', '.join(nomes)}; composição não gerada")
+                continue
+            valido = np.all([np.isfinite(v) for v in b], axis=0)
+            cortes[comp] = [tuple(float(q) for q in np.percentile(v[valido], ARGS.percentis)) for v in b]
+            regra_dos_cortes[comp] = {"regra": f"percentis {ARGS.percentis[0]:g} e {ARGS.percentis[1]:g} da cena de referência ({ref_optico['data']}), banda a banda; linear de 1 a 255; 0 = sem dado"}
+        for x in [*optico, *([ref_optico] if ref_optico else [])]:
+            ref = x is ref_optico
+            arq = ARGS.saida / f"imagem-{comp}_sentinel2-l2a_{x['nome']}{'_referencia' if ref else ''}_10m.tif"
+            if not arq.exists() or tipo in ARGS.regravar:
+                b = bandas(x, nomes)
+                if b is None:
+                    AVISOS.append(f"{x['data']}: sem as bandas {', '.join(nomes)}; {comp} não gerada")
+                    continue
+            if fazer(arq, tipo):
+                pasta = Path(x["arquivos_de_origem"][0]).parent
+                origem = [str(pasta / Path(str(x["caminhos"]["b03"]).replace("-b03_", f"-{n}_")).name) if n not in x["caminhos"] else str(x["caminhos"][n].relative_to(c.RAIZ)) for n in nomes]
+                gravar_tif(arq, para_uint8(b, cortes[comp]), grade, 0, fonte=f"Microsoft Planetary Computer — coleção {licencas[OPTICO]['colecao']} (dados Copernicus Sentinel-2)", licenca=licencas[OPTICO],
+                           bandas=[f"{cor}: {n.upper()}" for cor, n in zip(("vermelho", "verde", "azul"), nomes)], grade_do_recorte=info_grade,
+                           cortes_de_esticamento={**regra_dos_cortes[comp], "refletancia": {n.upper(): {"minimo": lo, "maximo": hi} for n, (lo, hi) in zip(nomes, cortes[comp])}},
+                           **{**comum(x), "arquivos_de_origem": origem})
+            produtos.append({**x, "arquivo": arq, "tipo": tipo, "referencia": ref})
 
-    # ---- tabela das cenas e conferência dos arquivos
-    for x in [*radar, *[v for v in ref_radar.values() if v], *optico, *([ref_optico] if ref_optico else [])]:
-        resumo.append({k: x[k] for k in ("sensor", "papel", "data", "data_hora_utc", "data_hora_local", "orbita_relativa", "direcao", "nivel_media_diaria_cm", "nivel_consistencia", "nivel_mais_proximo_da_hora_cm",
-                                         "origem_do_nivel_mais_proximo", "nuvem_ou_sombra_pct", "identificador")} | {"arquivos_de_origem": "; ".join(Path(o).name for o in x["arquivos_de_origem"])})
-    resumo = pd.DataFrame(resumo)
-    conf = conferir([p["arquivo"] for p in produtos], grade)
-    saida = {"cenas": resumo.to_dict("records"), "cortes_de_esticamento_refletancia": {k: {n.upper(): v for n, v in zip(COMPOSICOES[k], cs)} for k, cs in cortes.items()}, "grade": info_grade,
-             "conferencia": conf.to_dict("records"), "avisos": AVISOS}
+    # ---- índice: uma linha por imagem da pasta
+    hora = lambda x: x["data_hora_local"][11:16]  # noqa: E731
+    indice = pd.DataFrame([{"arquivo": p["arquivo"].name, "tipo": p["tipo"], "sensor": p["sensor"], "data_local": p["data"], "hora_local": hora(p), "orbita": p["orbita_relativa"], "janela": p["janela"],
+                            "regua_cm": p["nivel_media_diaria_cm"], "regua_cm_hora": p["nivel_mais_proximo_da_hora_cm"], "fase": p["fase"], "referencia": "sim" if p["referencia"] else "não",
+                            "agua_em_terra_km2": p["agua_em_terra_km2"], "nuvem_sombra_pct": p["nuvem_ou_sombra_pct"] if p["sensor"] == OPTICO else np.nan} for p in produtos if p["arquivo"].exists()])
+    indice = indice.sort_values(["sensor", "tipo", "data_local", "arquivo"]).reset_index(drop=True)
+    arq_indice = ARGS.saida / "indice_imagens_sentinel.csv"
+    indice.to_csv(arq_indice, index=False)
+    c.gravar_meta(arq_indice, status=c.STATUS_CONFERENCIA, ligado_ao_portal=False, script=SCRIPT, motivo=MOTIVO, atribuicao=ATRIBUICAO, descricao="uma linha por imagem da pasta", imagens=int(len(indice)), grade_do_recorte=info_grade,
+                  crs=c.CRS_PADRAO, cortes_de_esticamento={k: {**regra_dos_cortes[k], "refletancia": {n.upper(): v for n, v in zip(COMPOSICOES[k], cs)}} for k, cs in cortes.items()},
+                  argumentos={k: v for k, v in vars(ARGS).items() if k not in ("saida", "figuras", "antes")}, avisos=AVISOS or None,
+                  colunas={"arquivo": "nome do GeoTIFF", "tipo": "vv-db, diferenca-vv-db, falsacor ou cornatural", "sensor": "sensor e produto", "data_local": "dia local da cena", "hora_local": "hora local (UTC−3)",
+                           "orbita": "órbita relativa", "janela": "período de busca em que a cena foi lida", "regua_cm": "nível da régua: média diária", "regua_cm_hora": "nível da régua mais próximo da hora da cena (telemetria ou leitura das 7h ou 17h)",
+                           "fase": "subida, descida ou pico (da curva nível × área)", "referencia": "a cena é a referência de rio baixo (da órbita, no radar; dos cortes da cor natural, no óptico)",
+                           "agua_em_terra_km2": "água ligada ao rio, em terra, na área urbana (do controle de qualidade da área urbana)", "nuvem_sombra_pct": "óptico: % da área urbana com nuvem ou sombra"})
+    sobram = sorted({a.name for a in ARGS.saida.glob("*.tif")} - set(indice.arquivo))
+    if sobram:
+        AVISOS.append(f"imagens na pasta que não estão no índice: {', '.join(sobram)}")
+    conf = conferir(sorted(ARGS.saida.glob("*.tif")), grade)
+    saida = {"cenas": {"radar": len(radar), "referencias_de_radar": len(db_ref), "optico": len(optico), "referencia_optica": ref_optico["data"] if ref_optico else None}, "imagens": feitos,
+             "por_tipo": indice.groupby(["sensor", "tipo"]).size().rename("n").reset_index().to_dict("records"), "por_janela_sensor_tipo": indice.groupby(["janela", "sensor", "tipo"]).size().rename("n").reset_index().to_dict("records"),
+             "cortes": {k: {**regra_dos_cortes[k], "refletancia": {n.upper(): v for n, v in zip(COMPOSICOES[k], cs)}} for k, cs in cortes.items()}, "grade": info_grade, "tamanho_da_pasta_mb": float(sum(a.stat().st_size for a in ARGS.saida.iterdir()) / 1e6),
+             "conferencia_por_tipo": conf.assign(tipo=conf.arquivo.str.split("_").str[0]).groupby(["tipo", "crs", "pixel_m", "largura", "altura", "mesma_grade", "bandas", "tipo_do_dado", "sem_dado", "piramides", "compressao", "bloco"])
+             .agg(arquivos=("arquivo", "size"), com_borda_sem_dado=("com_dado_pct", lambda v: int((v < 100).sum())), menor_com_dado_pct=("com_dado_pct", "min"), mb=("tamanho_mb", "sum")).reset_index().to_dict("records")}
 
     # ---- figuras de controle (fora do repositório)
     if ARGS.figuras:
         ARGS.figuras.mkdir(parents=True, exist_ok=True)
-        resumo.to_csv(ARGS.figuras / "cenas-das-imagens_sentinel_cena.csv", index=False)
         conf.to_csv(ARGS.figuras / "conferencia-dos-geotiffs_sentinel_arquivo.csv", index=False)
-        ordem = sorted(produtos, key=lambda p: (p["sensor"], "referência" in p["tipo"], p["tipo"], p["data"]))
-        figura_de_controle(ARGS.figuras / "controle-miniaturas_imagens-sentinel.png", [{"arquivo": p["arquivo"], "data": p["data"], "tipo": p["tipo"], "sensor": "radar" if p["sensor"] == RADAR else "óptico", "nivel": p["nivel_media_diaria_cm"]}
-                                                                                         for p in ordem], ext)
+        existem = [p for p in produtos if p["arquivo"].exists()]
+        for janela in sorted({p["janela"] for p in existem}):
+            for tipo, rotulo in (("vv-db", "VV em dB"), ("falsacor", "falsa cor B11-B08-B03"), ("cornatural", "cor natural B04-B03-B02")):
+                k = sorted((p for p in existem if p["janela"] == janela and p["tipo"] == tipo), key=lambda p: p["data_hora_local"])
+                if k:
+                    figura_de_controle(ARGS.figuras / f"controle_{janela}_{tipo}.png", [{"arquivo": p["arquivo"], "data": p["data"], "tipo": rotulo + (" (referência)" if p["referencia"] else ""),
+                                                                                     "sensor": "radar" if p["sensor"] == RADAR else "óptico", "nivel": p["nivel_media_diaria_cm"]} for p in k], ext, f"Janela {janela} — {rotulo}")
+        if ARGS.antes:
+            pares = [(ARGS.antes / p["arquivo"].name, p["arquivo"], p["data"]) for p in existem if (ARGS.antes / p["arquivo"].name).exists()]
+            if pares:
+                figura_antes_e_depois(ARGS.figuras / "falsacor-antes-e-depois.png", pares, ext)
+                saida["antes_e_depois"] = [{"arquivo": d.name, **{f"pct_no_maximo_{cor}_{q}": pct_no_maximo(a, b) for b, cor in ((1, "vermelho"), (2, "verde"), (3, "azul")) for q, a in (("antes", a0), ("depois", d))}} for a0, d, _ in pares]
         forma = (grade["height"], grade["width"])
         sobre = []
         for item in ARGS.sobrepor:
             nome, data = item.split(":")
             sensor = RADAR if nome == "radar" else OPTICO
-            p = next((p for p in produtos if p["sensor"] == sensor and p["data"] == data and p["tipo"] in ("VV em dB", "falsa cor B11-B08-B03")), None)
+            p = next((p for p in existem if p["sensor"] == sensor and p["data"] == data and p["tipo"] in ("vv-db", "falsacor")), None)
             if p is None:
                 AVISOS.append(f"sobreposição {item}: imagem não gerada")
                 continue
@@ -328,8 +426,9 @@ def main() -> None:
             seco = dentro & ~com_agua & np.isfinite(v)
             sobre.append({"sensor": nome, "data": data, "banda": "VV (dB)" if sensor == RADAR else "B11 (valor de 1 a 255 na imagem)", "pixels_de_agua_em_terra": int(na_agua.sum()), "mediana_na_agua_em_terra": float(np.nanmedian(v[na_agua])),
                           "mediana_na_area_urbana_sem_agua": float(np.nanmedian(v[seco])), "pct_da_agua_mais_escura_que_a_mediana_sem_agua": float(100 * np.nanmean(v[na_agua] < np.nanmedian(v[seco])))})
-        saida["sobreposicao"] = sobre
-        pd.DataFrame(sobre).to_csv(ARGS.figuras / "sobreposicao-agua-em-terra_medidas.csv", index=False)
+        if sobre:
+            saida["sobreposicao"] = sobre
+            pd.DataFrame(sobre).to_csv(ARGS.figuras / "sobreposicao-agua-em-terra_medidas.csv", index=False)
     saida["avisos"] = AVISOS
     print(json.dumps(saida, ensure_ascii=False, indent=1, default=str))
 
@@ -337,16 +436,23 @@ def main() -> None:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s", force=True)
     _p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    _p.add_argument("--saida", type=Path, required=True, help="pasta (fora do repositório) que recebe as imagens e os .json")
+    _p.add_argument("--saida", type=Path, required=True, help="pasta (fora do repositório) que recebe as imagens, os .json e o índice")
+    _p.add_argument("--todas-as-boas", action="store_true", help="todas as cenas boas, em vez das datas de --radar e --optico")
     _p.add_argument("--radar", nargs="*", default=[], metavar="AAAA-MM-DD", help="datas locais das cenas de radar")
     _p.add_argument("--optico", nargs="*", default=[], metavar="AAAA-MM-DD", help="datas locais das cenas ópticas")
+    _p.add_argument("--regravar", nargs="*", default=[], choices=["vv-db", "diferenca-vv-db", "falsacor", "cornatural"], help="tipos de imagem gravados de novo mesmo se o arquivo já existir (os demais ficam como estão)")
+    _p.add_argument("--cortes-da-uniao", nargs="*", default=[], choices=["falsacor", "cornatural"], help="composições com cortes tirados da união das cenas ópticas boas, e não da cena de referência")
+    _p.add_argument("--passo-da-amostra", type=int, default=1, help="com --cortes-da-uniao: entra um pixel válido a cada tantos (1 = todos)")
+    _p.add_argument("--janelas-de-rio-baixo", nargs="*", default=["J0"], help="janelas de busca de onde sai a referência de rio baixo de cada órbita do radar")
     _p.add_argument("--margem-m", type=float, default=500.0, help="margem em volta do retângulo da área urbana (m; múltiplo do pixel)")
     _p.add_argument("--nuvem-max-referencia", type=float, default=5.0, help="a referência óptica é a cena boa de menor nível com nuvem ou sombra abaixo disto (%%)")
-    _p.add_argument("--percentis", type=float, nargs=2, default=[2.0, 98.0], help="percentis da cena de referência que viram os cortes do esticamento do óptico")
+    _p.add_argument("--percentis", type=float, nargs=2, default=[2.0, 98.0], help="percentis que viram os cortes do esticamento do óptico")
     _p.add_argument("--piramides", type=int, nargs="+", default=[2, 4, 8], help="fatores das pirâmides internas")
+    _p.add_argument("--mb-por-imagem", type=float, default=4.5, help="tamanho por imagem usado para estimar o total antes de gravar (MB)")
+    _p.add_argument("--limite-gb", type=float, default=1.5, help="acima deste total estimado nada é gravado (GB)")
     _p.add_argument("--sobrepor", nargs="*", default=[], metavar="SENSOR:AAAA-MM-DD", help="cenas (radar:DATA ou optico:DATA) com figura do contorno da água em terra sobre a imagem")
+    _p.add_argument("--antes", type=Path, help="pasta com as versões anteriores das imagens regravadas, para a figura de antes e depois")
     _p.add_argument("--figuras", type=Path, help="pasta (fora do repositório) das figuras e tabelas de controle")
-    _p.add_argument("--refazer", action="store_true", help="gera de novo mesmo se a pasta de saída já tiver arquivos")
     ARGS = _p.parse_args()
     AVISOS: list[str] = []
     for _pasta in (ARGS.saida, ARGS.figuras):
