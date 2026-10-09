@@ -38,10 +38,12 @@ Um arquivo por passagem e por polarização, no mesmo padrão de nome, com a
 lista das fatias no .json; a tabela das passagens fica em
 data/raw/sentinel/passagens-em-fatias_planetary-computer_<anos>_passagem.csv.
 
-Bandas a mais do óptico (--bandas-extras, com --identificadores): lê SÓ os ativos
-pedidos (por exemplo B02 e B04, para cor natural) das cenas pedidas, na janela do
+Cenas avulsas (--bandas-extras, com --identificadores): lê SÓ os ativos pedidos
+(por exemplo B02 e B04, para cor natural) das cenas pedidas, na janela do
 retângulo (--retangulo-geografico com --margem-m, ou o das manchas), no mesmo
-padrão de nome e de .json. Não refaz a busca nem toca na tabela de cenas.
+padrão de nome e de .json. Não refaz a busca nem toca nas tabelas de cenas. Com
+--sensor-das-extras sentinel1-rtc, vale para o radar: as fatias da mesma passagem
+são unidas num arquivo por ativo.
 
 Uso:
   python scripts/download/sentinel_planetary_computer.py
@@ -374,19 +376,70 @@ def fatias_de_radar() -> None:
 
 
 def bandas_extras() -> None:
-    """Só os ativos pedidos das cenas ópticas pedidas pelo identificador; a busca não é refeita e a tabela de cenas não é tocada."""
-    sensor = "sentinel2-l2a"
+    """Só os ativos pedidos das cenas pedidas pelo identificador; a busca não é refeita e as tabelas de cenas não são tocadas.
+
+    Óptico (padrão): um arquivo por cena e por ativo. Radar (--sensor-das-extras sentinel1-rtc): os identificadores da
+    mesma passagem (satélite e órbita absoluta) viram um arquivo por ativo, com as fatias unidas como no modo --fatias.
+    """
+    sensor = ARGS.sensor_das_extras
     colecao = SENSORES[sensor]["colecao"]
     ret = retangulo_geografico(*ARGS.retangulo_geografico, ARGS.margem_m) if ARGS.retangulo_geografico else area_de_estudo(ARGS.manchas, ARGS.margem_m)
     lic = licenca(colecao)
     token(colecao)
     novos = lidos = 0
+    itens = []
     for ident in ARGS.identificadores:
         r = pedir("GET", f"{STAC}/collections/{colecao}/items/{ident}", timeout=60)
         if r.status_code != 200:
             logger.error("%s: cena não encontrada no catálogo (HTTP %d)", ident, r.status_code)
             continue
-        item = r.json()
+        itens.append(r.json())
+    if sensor.startswith("sentinel1"):
+        passagens: dict[tuple, list[dict]] = {}
+        for i in itens:
+            passagens.setdefault((i["properties"].get("platform"), i["properties"].get("sat:absolute_orbit")), []).append(i)
+        for usar in passagens.values():
+            usar = sorted(usar, key=lambda i: i["properties"]["datetime"])
+            quando = datetime.fromisoformat(usar[0]["properties"]["datetime"].replace("Z", "+00:00"))
+            ids = [i["id"] for i in usar]
+            for ativo in ARGS.bandas_extras:
+                arq = nome_do_arquivo(sensor, ativo, quando, 10)
+                meta = arq.with_suffix(".json")
+                if arq.exists() and meta.exists() and (m := json.loads(meta.read_text(encoding="utf-8"))).get("identificadores_das_cenas") == ids and m.get("sha256") == sha256(arq):
+                    logger.info("%s %s: já existia (%s)", "; ".join(ids), ativo, arq.name)
+                    continue
+                if any(ativo not in i.get("assets", {}) for i in usar):
+                    logger.error("%s: a passagem não tem o ativo %s", "; ".join(ids), ativo)
+                    continue
+                if novos >= ARGS.max_arquivos:
+                    logger.warning("%s %s: não lido: teto de %d arquivos novos", "; ".join(ids), ativo, ARGS.max_arquivos)
+                    continue
+                try:
+                    with ThreadPoolExecutor(max_workers=len(usar)) as pool:
+                        partes = list(pool.map(lambda i: ler_janela_cheia(i["assets"][ativo]["href"], colecao, ret), usar))
+                except Exception as e:
+                    logger.error("%s %s: %s", "; ".join(ids), ativo, sem_token(e)[:300])
+                    continue
+                dados, perfil, info = juntar(partes)
+                arq.parent.mkdir(parents=True, exist_ok=True)
+                with rasterio.open(arq, "w", **perfil) as dst:
+                    dst.write(dados, 1)
+                prop = usar[0]["properties"]
+                m = {"arquivo": arq.name, "fonte": f"Microsoft Planetary Computer — coleção {colecao}", "colecao": colecao, "identificadores_das_cenas": ids, "ativo": ativo,
+                     "enderecos_dos_arquivos": [sem_token(i["assets"][ativo]["href"]).replace("?<removido>", "") for i in usar], "fatias_unidas": len(usar) > 1,
+                     "regra_da_juncao": "onde mais de uma fatia tem valor, a média; onde só uma tem, o valor dela" if len(usar) > 1 else "uma fatia só",
+                     **info, "data_hora_da_cena_utc": quando.isoformat(), "data_hora_local": quando.astimezone(FUSO_LOCAL).isoformat(), "plataforma": prop.get("platform"),
+                     "orbita_relativa": prop.get("sat:relative_orbit"), "direcao": prop.get("sat:orbit_state"), "data_do_download": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                     "tamanho_bytes": arq.stat().st_size, "sha256": sha256(arq), "crs": str(perfil["crs"]), "resolucao_m": abs(perfil["transform"].a), "largura": perfil["width"], "altura": perfil["height"],
+                     "sem_dado": perfil["nodata"], "licenca": lic.get("licenca"), "endereco_da_licenca": lic.get("endereco_da_licenca"), "script": SCRIPT, "motivo": MOTIVO,
+                     "retangulo_lido": {"crs": CRS_PADRAO, "limites": list(ret)}, "transformacao": "janela do retângulo na grade e no CRS originais da cena; sem reamostragem quando as fatias estão na mesma grade"}
+                meta.write_text(json.dumps(m, ensure_ascii=False, indent=2), encoding="utf-8")
+                novos, lidos = novos + 1, lidos + m["tamanho_bytes"]
+                logger.info("%s %s: lida (%s; cobertura %.1f %%)", "; ".join(ids), ativo, arq.name, info["cobertura_da_juncao_pct"])
+        logger.info("Bandas a mais: %d arquivos novos; %.1f MB", novos, lidos / 1e6)
+        return
+    for item in itens:
+        ident = item["id"]
         for ativo in ARGS.bandas_extras:
             if ativo not in item.get("assets", {}):
                 logger.error("%s: a cena não tem o ativo %s", ident, ativo)
@@ -400,6 +453,12 @@ def bandas_extras() -> None:
                     continue
                 if m["situacao"] == "lida":
                     novos, lidos = novos + 1, lidos + m["tamanho_bytes"]
+                    if ARGS.anotar_a_cena:  # dados da cena que o roteiro de processamento precisa e que, neste modo, não vão para a tabela de cenas
+                        meta = BRUTO / sensor / Path(m["arquivo"]).with_suffix(".json")
+                        j = json.loads(meta.read_text(encoding="utf-8"))
+                        j.update(plataforma=item["properties"].get("platform"), orbita_relativa=item["properties"].get("sat:relative_orbit"), direcao=item["properties"].get("sat:orbit_state"),
+                                 versao_do_processamento=item["properties"].get("s2:processing_baseline", ""), nuvem_no_catalogo_pct=item["properties"].get("eo:cloud_cover"))
+                        meta.write_text(json.dumps(j, ensure_ascii=False, indent=2), encoding="utf-8")
                 logger.info("%s %s: %s (%s)", ident, ativo, m["situacao"], m["arquivo"])
     logger.info("Bandas a mais: %d arquivos novos; %.1f MB", novos, lidos / 1e6)
 
@@ -534,6 +593,8 @@ if __name__ == "__main__":
     _p.add_argument("--primeiro", nargs="*", default=[], help="com --fatias: datas (AAAA-MM-DD, UTC) lidas antes das outras")
     _p.add_argument("--bandas-extras", nargs="+", metavar="ATIVO", help="lê só estes ativos do óptico (ex.: B02 B04) das cenas de --identificadores; sem esta opção nada muda")
     _p.add_argument("--identificadores", nargs="+", default=[], metavar="CENA", help="com --bandas-extras: identificadores das cenas no catálogo")
+    _p.add_argument("--sensor-das-extras", default="sentinel2-l2a", choices=list(SENSORES), help="com --bandas-extras: sensor das cenas pedidas; no radar, as fatias da mesma passagem são unidas")
+    _p.add_argument("--anotar-a-cena", action="store_true", help="com --bandas-extras no óptico: acrescenta ao .json de cada arquivo novo o satélite, a órbita e a versão do processamento")
     ARGS = _p.parse_args()
     if ARGS.bandas_extras and not ARGS.identificadores:
         _p.error("--bandas-extras pede --identificadores")
