@@ -24,7 +24,9 @@ As imagens vão só para --saida e as figuras de controle para --figuras, as dua
 fora do repositório. Só cenas boas daquele roteiro; data pedida que não for cena
 boa do sensor é avisada e fica de fora, sem substituição. Com --todas-as-boas
 entram todas. A referência de rio baixo leva "_referencia" no nome; a diferença
-só existe para órbita com referência de rio baixo.
+só existe para órbita com referência de rio baixo. --cenas-extras acrescenta as
+cenas boas de outra tabela (outros episódios de cheia), com o episódio no lugar
+da janela; elas não entram no cálculo dos cortes.
 
 Imagem que já existe na pasta fica como está, salvo os tipos de --regravar. No
 fim, o índice indice_imagens_sentinel.csv (uma linha por imagem, com a régua, a
@@ -126,7 +128,7 @@ def gravar_tif(arq: Path, dados: np.ndarray, grade: dict, sem_dado, **meta) -> N
     c.gravar_meta(arq, crs=c.CRS_PADRAO, resolucao_m=RES, status=c.STATUS_CONFERENCIA, ligado_ao_portal=False, script=SCRIPT, motivo=MOTIVO, atribuicao=ATRIBUICAO, sem_dado=sem_dado,
                   formato="GeoTIFF, compressão DEFLATE, blocos internos de 256, pirâmides internas " + ", ".join(str(x) for x in ARGS.piramides),
                   transformacao="recorte na área urbana com margem, reprojeção para o CRS do projeto na grade de 10 m e esticamento para visualização; nada é reclassificado",
-                  argumentos={k: v for k, v in vars(ARGS).items() if k not in ("saida", "figuras")}, **meta)
+                  argumentos={k: (v.name if isinstance(v, Path) else v) for k, v in vars(ARGS).items() if k not in ("saida", "figuras", "antes")}, **meta)
     logger.info("Imagem: %s", arq.name)
 
 
@@ -237,12 +239,23 @@ def main() -> None:
     fases = {} if arq_fase is None else {(r.sensor, r.identificador): r.fase for r in pd.read_csv(arq_fase).itertuples()}
     if arq_fase is None:
         AVISOS.append("tabela da fase da cheia ausente: a coluna fase do índice fica vazia")
+    boas_do_controle, niveis_das_extras = boas, {}
+    if ARGS.cenas_extras:  # cenas boas de fora do controle de qualidade da área urbana (outros episódios de cheia), com a tabela delas
+        ex = pd.read_csv(ARGS.cenas_extras, dtype={"versao_do_processamento": str}).fillna({"versao_do_processamento": "", "direcao": ""})
+        ex = ex[ex.boa.astype(bool)]
+        for r in ex.itertuples():
+            arqs[(r.sensor, r.identificador)] = {"arquivos": r.arquivos, "versao": r.versao_do_processamento, "utc": r.data_hora_utc, "orbita": r.orbita_relativa, "direcao": r.direcao}
+            fases[(r.sensor, r.identificador)] = r.fase
+            niveis_das_extras[(r.sensor, r.identificador)] = {"nivel_media_diaria_cm": r.regua_cm, "nivel_consistencia": r.origem_do_nivel, "nivel_mais_proximo_da_hora_cm": r.regua_cm_hora, "origem_do_nivel_mais_proximo": r.origem_do_nivel_da_hora}
+        boas = pd.concat([boas, pd.DataFrame({"sensor": ex.sensor, "identificador": ex.identificador, "data_hora_local": ex.data_hora_local, "data": ex.data_hora_local.str[:10], "nuvem_ou_sombra_pct": ex.nuvem_ou_sombra_pct,
+                                              "janela": ex.episodio, "inundacao_em_terra_km2": ex.inundacao_em_terra_km2, "nivel_regua_cm": ex.regua_cm, "boa": True})], ignore_index=True).sort_values("data_hora_local").reset_index(drop=True)
 
     def cena(r, papel: str = "cena") -> dict:
         info = arqs[(r.sensor, r.identificador)]
         orbita = int(float(info["orbita"]))
         return {"sensor": r.sensor, "papel": papel, "data": r.data, "nome": r.data + (f"_o{orbita:03d}" if (r.sensor, r.data) in repetidas else ""), "identificador": r.identificador, "data_hora_utc": info["utc"],
-                "data_hora_local": r.data_hora_local, "orbita_relativa": orbita, "direcao": info["direcao"], **niveis(pd.Timestamp(r.data_hora_local), diaria, tel), "nuvem_ou_sombra_pct": r.nuvem_ou_sombra_pct,
+                "data_hora_local": r.data_hora_local, "orbita_relativa": orbita, "direcao": info["direcao"], "nuvem_ou_sombra_pct": r.nuvem_ou_sombra_pct, "extra": (r.sensor, r.identificador) in niveis_das_extras,
+                **(niveis_das_extras.get((r.sensor, r.identificador)) or niveis(pd.Timestamp(r.data_hora_local), diaria, tel)),
                 "janela": r.janela, "agua_em_terra_km2": r.inundacao_em_terra_km2, "fase": fases.get((r.sensor, r.identificador), ""), "versao": info["versao"], "caminhos": caminhos(sensor=r.sensor, info=info),
                 "arquivos_de_origem": [str(p.relative_to(c.RAIZ)) for p in caminhos(r.sensor, info).values()]}
 
@@ -258,13 +271,13 @@ def main() -> None:
     radar, optico = pedidas(RADAR, ARGS.radar), pedidas(OPTICO, ARGS.optico)
     ref_radar = {}
     for orb in sorted({x["orbita_relativa"] for x in radar}):
-        k = boas[boas.identificador.isin(refs[refs.orbita_relativa == orb].cena_de_referencia) & boas.janela.isin(ARGS.janelas_de_rio_baixo)]
+        k = boas_do_controle[boas_do_controle.identificador.isin(refs[refs.orbita_relativa == orb].cena_de_referencia) & boas_do_controle.janela.isin(ARGS.janelas_de_rio_baixo)]
         ref_radar[orb] = cena(k.iloc[0], "referência de rio baixo da órbita") if len(k) else None
-    cand = boas[(boas.sensor == OPTICO) & (boas.nuvem_ou_sombra_pct < ARGS.nuvem_max_referencia)].sort_values("nivel_regua_cm")
+    cand = boas_do_controle[(boas_do_controle.sensor == OPTICO) & (boas_do_controle.nuvem_ou_sombra_pct < ARGS.nuvem_max_referencia)].sort_values("nivel_regua_cm")
     ref_optico = cena(cand.iloc[0], "referência de rio baixo") if len(cand) else None
     e_ref = {x["identificador"] for x in [*ref_radar.values(), ref_optico] if x}
     radar, optico = [x for x in radar if x["identificador"] not in e_ref], [x for x in optico if x["identificador"] not in e_ref]
-    comum = lambda x: {k: v for k, v in x.items() if k not in ("caminhos", "versao", "nome")}  # noqa: E731
+    comum = lambda x: {k: v for k, v in x.items() if k not in ("caminhos", "versao", "nome", "extra")}  # noqa: E731
     previstos = len(radar) * 2 + len([v for v in ref_radar.values() if v]) + (len(optico) + 1) * len(COMPOSICOES)
     if previstos * ARGS.mb_por_imagem / 1000 > ARGS.limite_gb:
         raise SystemExit(f"{previstos} imagens a gravar, cerca de {previstos * ARGS.mb_por_imagem / 1000:.1f} GB: acima do limite de {ARGS.limite_gb:g} GB; nada foi gravado")
@@ -323,9 +336,9 @@ def main() -> None:
     cortes, regra_dos_cortes = {}, {}
     for comp, nomes in COMPOSICOES.items():
         tipo = comp.split("-")[0]
-        if tipo in ARGS.cortes_da_uniao:  # percentis da união dos pixels válidos de TODAS as cenas ópticas boas, e não só das pedidas
+        if tipo in ARGS.cortes_da_uniao:  # percentis da união dos pixels válidos de TODAS as cenas ópticas boas do controle de qualidade (as pedidas ou não; as extras não entram, para os cortes não mudarem)
             amostra, usadas = [[] for _ in nomes], 0
-            for r in boas[boas.sensor == OPTICO].itertuples():
+            for r in boas_do_controle[boas_do_controle.sensor == OPTICO].itertuples():
                 b = bandas(cena(r), nomes) if (r.sensor, r.identificador) in arqs else None
                 if b is None:
                     continue
@@ -374,7 +387,7 @@ def main() -> None:
     indice.to_csv(arq_indice, index=False)
     c.gravar_meta(arq_indice, status=c.STATUS_CONFERENCIA, ligado_ao_portal=False, script=SCRIPT, motivo=MOTIVO, atribuicao=ATRIBUICAO, descricao="uma linha por imagem da pasta", imagens=int(len(indice)), grade_do_recorte=info_grade,
                   crs=c.CRS_PADRAO, cortes_de_esticamento={k: {**regra_dos_cortes[k], "refletancia": {n.upper(): v for n, v in zip(COMPOSICOES[k], cs)}} for k, cs in cortes.items()},
-                  argumentos={k: v for k, v in vars(ARGS).items() if k not in ("saida", "figuras", "antes")}, avisos=AVISOS or None,
+                  argumentos={k: (v.name if isinstance(v, Path) else v) for k, v in vars(ARGS).items() if k not in ("saida", "figuras", "antes")}, avisos=AVISOS or None,
                   colunas={"arquivo": "nome do GeoTIFF", "tipo": "vv-db, diferenca-vv-db, falsacor ou cornatural", "sensor": "sensor e produto", "data_local": "dia local da cena", "hora_local": "hora local (UTC−3)",
                            "orbita": "órbita relativa", "janela": "período de busca em que a cena foi lida", "regua_cm": "nível da régua: média diária", "regua_cm_hora": "nível da régua mais próximo da hora da cena (telemetria ou leitura das 7h ou 17h)",
                            "fase": "subida, descida ou pico (da curva nível × área)", "referencia": "a cena é a referência de rio baixo (da órbita, no radar; dos cortes da cor natural, no óptico)",
@@ -394,9 +407,10 @@ def main() -> None:
         ARGS.figuras.mkdir(parents=True, exist_ok=True)
         conf.to_csv(ARGS.figuras / "conferencia-dos-geotiffs_sentinel_arquivo.csv", index=False)
         existem = [p for p in produtos if p["arquivo"].exists()]
-        for janela in sorted({p["janela"] for p in existem}):
+        grupo = lambda p: "cenas-extras" if p["extra"] else p["janela"]  # noqa: E731
+        for janela in sorted({grupo(p) for p in existem if not ARGS.figuras_so_das_extras or p["extra"]}):
             for tipo, rotulo in (("vv-db", "VV em dB"), ("falsacor", "falsa cor B11-B08-B03"), ("cornatural", "cor natural B04-B03-B02")):
-                k = sorted((p for p in existem if p["janela"] == janela and p["tipo"] == tipo), key=lambda p: p["data_hora_local"])
+                k = sorted((p for p in existem if grupo(p) == janela and p["tipo"] == tipo), key=lambda p: p["data_hora_local"])
                 if k:
                     figura_de_controle(ARGS.figuras / f"controle_{janela}_{tipo}.png", [{"arquivo": p["arquivo"], "data": p["data"], "tipo": rotulo + (" (referência)" if p["referencia"] else ""),
                                                                                      "sensor": "radar" if p["sensor"] == RADAR else "óptico", "nivel": p["nivel_media_diaria_cm"]} for p in k], ext, f"Janela {janela} — {rotulo}")
@@ -440,6 +454,8 @@ if __name__ == "__main__":
     _p.add_argument("--todas-as-boas", action="store_true", help="todas as cenas boas, em vez das datas de --radar e --optico")
     _p.add_argument("--radar", nargs="*", default=[], metavar="AAAA-MM-DD", help="datas locais das cenas de radar")
     _p.add_argument("--optico", nargs="*", default=[], metavar="AAAA-MM-DD", help="datas locais das cenas ópticas")
+    _p.add_argument("--cenas-extras", type=Path, help="tabela (.csv) de cenas boas de fora do controle de qualidade da área urbana, com arquivos, régua, fase e episódio; entram como as demais, com o episódio na coluna janela")
+    _p.add_argument("--figuras-so-das-extras", action="store_true", help="com --cenas-extras: figuras de controle só das cenas extras")
     _p.add_argument("--regravar", nargs="*", default=[], choices=["vv-db", "diferenca-vv-db", "falsacor", "cornatural"], help="tipos de imagem gravados de novo mesmo se o arquivo já existir (os demais ficam como estão)")
     _p.add_argument("--cortes-da-uniao", nargs="*", default=[], choices=["falsacor", "cornatural"], help="composições com cortes tirados da união das cenas ópticas boas, e não da cena de referência")
     _p.add_argument("--passo-da-amostra", type=int, default=1, help="com --cortes-da-uniao: entra um pixel válido a cada tantos (1 = todos)")

@@ -218,13 +218,24 @@ def baixar_periodo(codigo_estacao: str, inicio: datetime, fim: datetime, forcar:
     return caminho
 
 
-def baixar_serie_historica(codigo_estacao: str, forcar: bool = False) -> Path | None:
-    """Série histórica de cotas (HidroSerieHistorica, tipoDados=1), inteira, em formato longo (uma linha por dia)."""
+def baixar_serie_historica(codigo_estacao: str, forcar: bool = False, desde: datetime | None = None) -> Path | None:
+    """Série histórica de cotas (HidroSerieHistorica, tipoDados=1), em formato longo (uma linha por dia).
+
+    Sem `desde`: a série inteira. Com `desde`: só dessa data até hoje, em arquivo próprio
+    (…_{desde}-a-{hoje}_diario.csv); a série inteira já gravada não é tocada.
+    """
     pasta = RAIZ / "data" / "raw"
-    existentes = sorted(pasta.glob(f"nivel-rio_ana-serie-historica-{codigo_estacao}_*_diario.csv"))
-    if existentes and ja_baixado(existentes[-1], forcar):
-        return existentes[-1]
     params = {"codEstacao": codigo_estacao, "dataInicio": "", "dataFim": "", "tipoDados": "1", "nivelConsistencia": ""}
+    if desde is not None:
+        hoje = datetime.now()
+        params.update(dataInicio=f"{desde:%d/%m/%Y}", dataFim=f"{hoje:%d/%m/%Y}")
+        caminho_do_trecho = pasta / f"nivel-rio_ana-serie-historica-{codigo_estacao}_{desde:%Y-%m-%d}-a-{hoje:%Y-%m-%d}_diario.csv"
+        if ja_baixado(caminho_do_trecho, forcar):
+            return caminho_do_trecho
+    else:
+        existentes = sorted(pasta.glob(f"nivel-rio_ana-serie-historica-{codigo_estacao}_????-????_diario.csv"))
+        if existentes and ja_baixado(existentes[-1], forcar):
+            return existentes[-1]
     resposta = requests.get(f"{BASE_URL_ANA}/HidroSerieHistorica", headers=HEADERS, params=params, timeout=600)
     resposta.raise_for_status()
     linhas = []
@@ -247,7 +258,7 @@ def baixar_serie_historica(codigo_estacao: str, forcar: bool = False) -> Path | 
         logger.warning("O serviço não devolveu série histórica de cotas para a estação %s; nada gravado.", codigo_estacao)
         return None
     serie = serie.sort_values(["data", "nivel_consistencia", "media_diaria", "hora_do_registro"])
-    caminho = pasta / f"nivel-rio_ana-serie-historica-{codigo_estacao}_{serie.data.min()[:4]}-{serie.data.max()[:4]}_diario.csv"
+    caminho = caminho_do_trecho if desde is not None else pasta / f"nivel-rio_ana-serie-historica-{codigo_estacao}_{serie.data.min()[:4]}-{serie.data.max()[:4]}_diario.csv"
     gravar_bruto(serie, caminho, endereco_consultado=f"{BASE_URL_ANA}/HidroSerieHistorica", parametros=params, codigo_estacao=codigo_estacao,
                  periodo={"inicio": serie.data.min(), "fim": serie.data.max()},
                  campos={"hora_do_registro": "hora do registro mensal de origem (00:00 nas médias diárias; hora da leitura nos demais)",
@@ -266,11 +277,12 @@ def main() -> None:
     parser.add_argument("--inicio", default=None, help="Início do período (AAAA-MM-DD): grava a série telemétrica do período em data/raw/")
     parser.add_argument("--fim", default=None, help="Fim do período (AAAA-MM-DD)")
     parser.add_argument("--serie-historica", action="store_true", help="Grava a série histórica de cotas da estação, inteira, em data/raw/")
+    parser.add_argument("--serie-historica-desde", default=None, metavar="AAAA-MM-DD", help="Grava só o trecho da série histórica de cotas dessa data até hoje, em arquivo próprio (a série inteira já gravada não é tocada)")
     parser.add_argument("--forcar", action="store_true", help="Baixa de novo mesmo se os arquivos do período ou da série histórica já existirem")
     args = parser.parse_args()
     if bool(args.inicio) != bool(args.fim):
         parser.error("--inicio e --fim vão juntos")
-    so_series = bool(args.inicio or args.serie_historica)
+    so_series = bool(args.inicio or args.serie_historica or args.serie_historica_desde)
 
     if so_series and args.estacao:
         baixar_series(args.estacao, args)
@@ -342,6 +354,11 @@ def baixar_series(codigo_estacao: str, args) -> None:
             baixar_serie_historica(codigo_estacao, args.forcar)
         except (requests.RequestException, ET.ParseError) as erro:
             logger.error("Série histórica não baixada: %s", erro)
+    if args.serie_historica_desde:
+        try:
+            baixar_serie_historica(codigo_estacao, args.forcar, desde=datetime.strptime(args.serie_historica_desde, "%Y-%m-%d"))
+        except (requests.RequestException, ET.ParseError) as erro:
+            logger.error("Trecho da série histórica não baixado: %s", erro)
 
 
 if __name__ == "__main__":
