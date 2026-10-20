@@ -6,6 +6,9 @@ data/raw/
 data/processed/
 # auditoria local: contém campos crus com dado pessoal (ex.: CPF de diretor clínico no CNES)
 data/auditoria_cnes/
+# dados de campo com dados pessoais: nunca versionar
+data/campo/
+*_campo*.gpkg
 
 node_modules/
 scripts/geoportal/geoportal-headless.png
