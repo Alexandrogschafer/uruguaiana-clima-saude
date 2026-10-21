@@ -19,5 +19,11 @@
     "dedominial",
     "dsversao"
   ],
-  "data_processamento": "2026-08-07T17:58:49.580262+00:00"
+  "data_processamento": "2026-08-07T17:58:49.580262+00:00",
+  "escala_mapeamento": {
+    "escala_equivalente_declarada": "1:100.000",
+    "fonte_da_escala": "ficha de metadados do SNIRH (registro 32e309da-a8c1-443f-90ac-0cd79ce6a33d), campo spatialResolution/equivalentScale, valor único para o conjunto; lida em 2026-10-20",
+    "linhagem": "trechos de drenagem de cartografia na escala 1:250.000 ou maior; a ficha lista a escala por região hidrográfica, mas não lista a Região Hidrográfica do Uruguai, onde fica o município",
+    "escala_local": "a confirmar"
+  }
 }
