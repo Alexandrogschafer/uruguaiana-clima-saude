@@ -14,10 +14,15 @@ Nome dos cursos d'água
 ----------------------
 curso_dagua não tem nome; os nomes da cartografia estão em trecho_drenagem
 (noriocomp = nogenerico + noligacao + noespecif, igual a nooriginal nesta
-área). O campo `nome` de cada curso é o noriocomp com maior comprimento
-somado (nucomptrec) entre os trechos do curso (mesmo cocursodag); empate:
-mais trechos, depois ordem alfabética. Curso sem trecho nomeado: nome nulo.
-Usa todos os trechos do curso no bruto (área de busca), não só os do município.
+área). O campo `nome` de cada curso é o noriocomp do trecho nomeado mais
+próximo da foz do curso, isto é, com o menor nudistcdag (distância, ao longo
+do curso, do ponto de jusante do trecho à foz do curso d'água: dicionário de
+dados da Nota Técnica nº 5/2024/CCOGI/SHE da ANA). O nome só é atribuído se os
+trechos com esse nome somarem >= 25% do comprimento dos trechos do curso;
+abaixo disso, ou sem trecho nomeado, nome nulo. Usa todos os trechos do curso
+no bruto (área de busca), não só os do município: a foz e a cobertura se
+referem à parte do curso presente no bruto (nucompcda, o curso inteiro, não
+serve de denominador para rios que saem muito da área, como o rio Uruguai).
 
 Simplificação de geometria
 ---------------------------
@@ -44,10 +49,15 @@ NIVEIS_OTTO = range(1, 8)
 TOLERANCIA_SIMPLIFICACAO_BACIAS_M = 10
 TOLERANCIA_SIMPLIFICACAO_REDE_M = 7.5
 
+COBERTURA_MINIMA_NOME = 0.25
 REGRA_NOME = (
-    "noriocomp de trecho_drenagem (ligado por cocursodag) com maior comprimento somado "
-    "(nucomptrec) entre os trechos do curso; empate: mais trechos, depois ordem alfabética; "
-    "nulo quando nenhum trecho do curso tem nome"
+    "noriocomp de trecho_drenagem (ligado por cocursodag) do trecho nomeado mais próximo da foz "
+    "do curso (menor nudistcdag, a distância do ponto de jusante do trecho à foz do curso d'água); "
+    "só atribuído se os trechos com esse nome somarem >= 25% do comprimento (nucomptrec) dos "
+    "trechos do curso presentes no bruto (área de busca); abaixo disso, ou sem trecho nomeado, nulo"
+)
+NOTA_NOME = (
+    "o mesmo nome pode aparecer em mais de um curso da BHO quando o rio da carta os atravessa"
 )
 # escala lida na ficha de metadados do SNIRH e na Nota Técnica nº 5/2024/CCOGI/SHE (ANA)
 ESCALA_MAPEAMENTO_BHO = {
@@ -70,17 +80,23 @@ def _area_estudo_municipal() -> gpd.GeoDataFrame:
 def _nome_por_curso(caminho) -> dict:
     """cocursodag -> nome, pela REGRA_NOME (só atributos, sem geometria)."""
     trechos = pyogrio.read_dataframe(
-        caminho, layer="trecho_drenagem", columns=["cocursodag", "noriocomp", "nucomptrec"],
-        read_geometry=False,
+        caminho, layer="trecho_drenagem",
+        columns=["cocursodag", "noriocomp", "nucomptrec", "nudistcdag"], read_geometry=False,
     )
+    km_curso = trechos.groupby("cocursodag")["nucomptrec"].sum()
     nomeados = trechos[trechos["noriocomp"].notna() & (trechos["noriocomp"].str.strip() != "")]
-    resumo = (
-        nomeados.groupby(["cocursodag", "noriocomp"])
-        .agg(km=("nucomptrec", "sum"), trechos=("nucomptrec", "size"))
-        .reset_index()
-        .sort_values(["cocursodag", "km", "trechos", "noriocomp"], ascending=[True, False, False, True])
+    # trecho nomeado mais a jusante de cada curso (empate improvável: ordem alfabética)
+    na_foz = (
+        nomeados.sort_values(["cocursodag", "nudistcdag", "noriocomp"])
+        .drop_duplicates("cocursodag")
+        .set_index("cocursodag")["noriocomp"]
     )
-    return resumo.drop_duplicates("cocursodag").set_index("cocursodag")["noriocomp"].to_dict()
+    km_nome = nomeados.groupby(["cocursodag", "noriocomp"])["nucomptrec"].sum()
+    nomes = {}
+    for curso, nome in na_foz.items():
+        if km_nome[(curso, nome)] / km_curso[curso] >= COBERTURA_MINIMA_NOME:
+            nomes[curso] = nome
+    return nomes
 
 
 def converter_bacias_hidrograficas(forcar: bool = False) -> None:
@@ -156,6 +172,7 @@ def converter_rede_hidrografica(forcar: bool = False) -> None:
     metadados = json.loads(caminho_meta.read_text(encoding="utf-8"))
     metadados["regra_nome"] = REGRA_NOME
     metadados["n_cursos_com_nome"] = int(gdf_recortado["nome"].notna().sum())
+    metadados["nota_nome"] = NOTA_NOME
     metadados["escala_mapeamento"] = ESCALA_MAPEAMENTO_BHO
     caminho_meta.write_text(json.dumps(metadados, ensure_ascii=False, indent=2), encoding="utf-8")
     logger.info("rede hidrográfica: %d de %d cursos com nome", metadados["n_cursos_com_nome"], len(gdf_recortado))
