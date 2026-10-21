@@ -229,6 +229,31 @@
       </div>
     </div>
 
+    <div class="grupo" data-grupo="base-territorial">
+      <button class="grupo-titulo" aria-expanded="true">
+        <span>Base territorial</span><span class="grupo-seta">▾</span>
+      </button>
+      <div class="grupo-conteudo">
+        <p class="secao-ajuda">Número de edificações por célula de 250 m (6,25 ha), desligado por padrão. Não aparecem células urbanas com menos de 5 edificações nem rurais com menos de 10. Não mostra edificações individuais.</p>
+        <label class="checkbox-linha">
+          <input type="checkbox" id="checkbox-densidade-edificacoes" />
+          Densidade de edificações (grade 250 m)
+        </label>
+        <div class="legenda-demografia" id="legenda-densidade-edificacoes">
+          <div class="legenda-bloco">
+            <strong>Edificações por hectare</strong>
+            <div class="legenda-linha"><span class="swatch" style="background:#ffffd4"></span>menos de 2</div>
+            <div class="legenda-linha"><span class="swatch" style="background:#fee391"></span>2 a 5</div>
+            <div class="legenda-linha"><span class="swatch" style="background:#fec44f"></span>5 a 10</div>
+            <div class="legenda-linha"><span class="swatch" style="background:#fe9929"></span>10 a 20</div>
+            <div class="legenda-linha"><span class="swatch" style="background:#d95f0e"></span>20 a 30</div>
+            <div class="legenda-linha"><span class="swatch" style="background:#993404"></span>30 ou mais</div>
+          </div>
+        </div>
+        <p class="secao-ajuda aviso-escala" id="aviso-densidade-edificacoes">⚠ Produto provisório, ainda não conferido. Edificações: Overture Maps Foundation (inclui © contribuidores do OpenStreetMap, Microsoft e Google).</p>
+      </div>
+    </div>
+
     <div class="grupo" data-grupo="educacao">
       <button class="grupo-titulo" aria-expanded="true">
         <span>Educação</span><span class="grupo-seta">▾</span>
@@ -287,5 +312,6 @@
   <script src="js/filtro-saude.js" defer></script>
   <script src="js/filtro-educacao.js" defer></script>
   <script src="js/cobertura-movel.js" defer></script>
+  <script src="js/densidade-edificacoes.js" defer></script>
 </body>
 </html>

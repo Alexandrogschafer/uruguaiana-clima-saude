@@ -179,6 +179,11 @@ const CAMPOS_LEGIVEIS = {
     cobertura_pct_202603: "Cobertura 03/2026 (%)",
     cobertura_pct_202606: "Cobertura 06/2026 (%)",
   },
+  densidadeEdificacoes: {
+    n_edificacoes: "Edificações na célula",
+    area_construida_m2: "Área construída (m²)",
+    densidade_ed_ha: "Densidade (edificações/ha)",
+  },
   escolasInep: {
     codigo_inep: "Código INEP",
     dependencia_administrativa: "Dependência administrativa",
@@ -311,6 +316,7 @@ const CAMPO_TITULO = {
   malhaViariaDnit: (p) => (p.rodovia ? `${p.rodovia} — trecho oficial (DNIT)` : "Trecho rodoviário federal"),
   estruturaFundiaria: (p) => `${p.tipo_imovel_legenda || "Imóvel rural"} — ${p.status_imovel_legenda || "?"}`,
   escolasInep: (p) => p.escola || "Escola",
+  densidadeEdificacoes: () => "Densidade de edificações — célula de 250 m",
   coberturaMovel: (p) => `Setor ${p.CD_SETOR ?? ""}`.trim(),
   redeHidrografica: (p) => p.nome || `Curso d'água ${p.cocursodag ?? ""}`.trim(),
   bacia: (p) => `Bacia ${p.codigo_otto ?? ""}`.trim(),
@@ -359,6 +365,9 @@ const NOTAS_POPUP = {
         "No OpenStreetMap está mapeado como BR-290/RSC-377, não como BR-377 — quem buscar só por \"BR-377\" no " +
         "OSM não encontra este trecho, relevante para quem for usá-lo numa rota de evacuação."
       : null,
+  densidadeEdificacoes: () =>
+    "Produto provisório, ainda não conferido. Não aparecem células urbanas com menos de 5 edificações nem rurais com menos de 10. " +
+    "Edificações: Overture Maps Foundation (inclui © contribuidores do OpenStreetMap, Microsoft e Google).",
   coberturaMovel: (p) => (p.sem_dado ? "Sem dado ANATEL para este setor em nenhum dos 7 períodos (ano_censo=2022)." : null),
 };
 

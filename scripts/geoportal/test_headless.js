@@ -176,6 +176,45 @@ async function main() {
   if (elementoCaixaBairros) await elementoCaixaBairros.click();
   checks.camadaBairrosDesliga = !!elementoCaixaBairros && !(await bairrosNoMapa());
 
+  // densidade de edificações (grupo "Base territorial"): desligada ao abrir; ao ligar,
+  // carrega a grade (só polígonos, centenas de células), com legenda de 6 classes, popup com os 3 valores e
+  // a atribuição do Overture no mapa; o aviso não cria rolagem horizontal no painel;
+  // ao desligar, a camada e a atribuição saem
+  const densidadeEdificacoes = {};
+  densidadeEdificacoes.desligadaAoAbrir = await page.evaluate(() => {
+    const cb = document.getElementById("checkbox-densidade-edificacoes");
+    return !!cb && !cb.checked && !window.App.densidadeEdificacoes;
+  });
+  await page.click("#checkbox-densidade-edificacoes");
+  await page.waitForFunction(() => window.App.densidadeEdificacoes && window.App.map.hasLayer(window.App.densidadeEdificacoes), null, { timeout: 10000 });
+  Object.assign(densidadeEdificacoes, await page.evaluate(() => {
+    const camada = window.App.densidadeEdificacoes;
+    const feicoes = camada.getLayers();
+    const legenda = document.querySelectorAll("#legenda-densidade-edificacoes .legenda-linha").length;
+    const tituloLegenda = document.querySelector("#legenda-densidade-edificacoes strong")?.textContent || "";
+    feicoes[0].openPopup();
+    const popup = document.querySelector(".leaflet-popup-content")?.textContent || "";
+    const atribuicao = document.querySelector(".leaflet-control-attribution")?.textContent || "";
+    const painel = document.getElementById("painel");
+    const aviso = document.getElementById("aviso-densidade-edificacoes");
+    return {
+      ligaSoPoligonos: feicoes.length >= 500 && feicoes.every((l) => l.feature.geometry.type === "Polygon"),
+      legendaSeisClasses: legenda === 6 && tituloLegenda.includes("por hectare"),
+      popupComValores: ["Edificações na célula", "Área construída (m²)", "Densidade (edificações/ha)", "provisório"].every((t) => popup.includes(t)),
+      atribuicaoNoMapa: atribuicao.includes("Overture Maps Foundation") && atribuicao.includes("Microsoft e Google"),
+      avisoVisivel: !!aviso && aviso.offsetHeight > 0 && aviso.textContent.includes("ainda não conferido"),
+      semRolagemHorizontal: painel.scrollWidth <= painel.clientWidth && aviso.scrollWidth <= aviso.clientWidth,
+    };
+  }));
+  await page.evaluate(() => window.App.map.closePopup());
+  await page.click("#checkbox-densidade-edificacoes");
+  densidadeEdificacoes.desliga = await page.evaluate(
+    () => !window.App.map.hasLayer(window.App.densidadeEdificacoes) &&
+      !(document.querySelector(".leaflet-control-attribution")?.textContent || "").includes("Overture")
+  );
+  console.log("densidade de edificações:", JSON.stringify(densidadeEdificacoes));
+  checks.camadaDensidadeEdificacoes = Object.values(densidadeEdificacoes).every(Boolean);
+
   // liga as 6 camadas novas do grupo "Meio físico" (desligadas por padrão) e
   // confirma que cada uma soma pelo menos 1 layer ativo no mapa Leaflet —
   // exercita o fetch()/parse real de cada GeoJSON novo, não só a presença

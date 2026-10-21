@@ -1,0 +1,32 @@
+{
+  "descricao": "Densidade de edificações por célula de 250 m (contagem, área construída e edificações por hectare); células com menos de 5 (urbano) ou 10 (rural) edificações suprimidas. Produto provisório, ainda não conferido.",
+  "fonte": {
+    "caminho_origem": "data/processed/edificacoes/densidade_edificacoes_250m_overture-2026-09-23.1_2026_vetorial.gpkg",
+    "edificacoes": "Overture Maps Foundation — buildings, release 2026-09-23.1"
+  },
+  "crs_saida": "EPSG:4326",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326; coordenadas com 6 casas; sem simplificação da grade; só n_edificacoes, area_construida_m2 e densidade_ed_ha",
+  "n_features": 850,
+  "colunas": [
+    "n_edificacoes",
+    "area_construida_m2",
+    "densidade_ed_ha"
+  ],
+  "codigo_ibge": "4322400",
+  "data_processamento": "2026-10-21T23:47:49.068583+00:00",
+  "licenca": "ODbL 1.0 (base de dados derivada de dados sob ODbL: compartilhar pela mesma licença, com atribuição)",
+  "atribuicao": "Edificações: Overture Maps Foundation (inclui © contribuidores do OpenStreetMap, Microsoft e Google)",
+  "status": "extraido",
+  "supressao": "pela zona predominante da célula: urbano com menos de 5 e rural com menos de 10 edificações não entram na saída",
+  "limiares": {
+    "urbano": 5,
+    "rural": 10
+  },
+  "quintis_densidade_ed_ha": [
+    1.92,
+    3.04,
+    7.49,
+    22.88
+  ],
+  "tamanho_mb": 0.266
+}
