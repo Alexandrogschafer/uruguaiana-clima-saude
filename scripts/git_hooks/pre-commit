@@ -1,0 +1,161 @@
+#!/usr/bin/env python3
+"""Trava pré-commit: bloqueia dado pessoal, caminho local e arquivo pesado.
+
+Examina só os arquivos em stage (conteúdo do índice, não da cópia de
+trabalho). Regras:
+  a) caminho em data/campo/ ou data/auditoria_cnes/;
+  b) texto com caminho local de usuário (pasta pessoal do Linux/WSL ou do Windows);
+  c) texto com padrão de CPF; em CSV/GeoJSON, telefone com DDD 53;
+  d) PDF, .qgz, .gpkg, .shp, .tif/.tiff, .zip (salvo EXCECOES_BINARIOS);
+  e) arquivo > 5 MB (salvo EXCECOES_GRANDES);
+  f) padrões locais de .git/info/padroes_proibidos.txt (fora do git; um regex
+     por linha, insensível a maiúsculas), no caminho e no texto.
+
+A mensagem diz o arquivo e a regra, nunca o trecho encontrado.
+Contorno consciente: git commit --no-verify (ver scripts/git_hooks/README_hooks.md).
+
+Modos extras, para conferência (não bloqueiam nada, só relatam):
+  pre-commit --commit <sha>   arquivos adicionados/alterados por um commit
+  pre-commit --todos          todos os arquivos rastreados no HEAD
+"""
+import csv
+import io
+import re
+import subprocess
+import sys
+
+# exceções por caminho exato, tiradas do `git ls-files` em 2026-10-21:
+# nenhum PDF/.qgz/.gpkg/.shp/.tif/.zip e nenhum arquivo > 5 MB rastreado
+EXCECOES_BINARIOS = set()
+EXCECOES_GRANDES = set()
+
+LIMITE_BYTES = 5 * 1024 * 1024
+PASTAS_PROIBIDAS = ("data/campo/", "data/auditoria_cnes/")
+EXT_BINARIAS = (".pdf", ".qgz", ".gpkg", ".shp", ".tif", ".tiff", ".zip")
+EXT_TEXTO = (".py", ".js", ".html", ".md", ".csv", ".json", ".yml", ".txt", ".geojson")
+EXT_DADOS = (".csv", ".geojson")
+
+RE_CAMINHO_USUARIO = re.compile(
+    r"/mnt/[a-z]/Users/|[A-Za-z]:(\\+|/)Users(\\+|/)|/home/[^/\s\"'`]+/", re.IGNORECASE
+)
+RE_CPF = re.compile(r"(?<![\d.])\d{3}\.\d{3}\.\d{3}-\d{2}(?!\d)")
+# telefone formatado com DDD 53: exige parênteses no DDD ou separador entre as
+# duas metades do número, e não aceita dígito, ponto ou sinal antes do 53 —
+# assim coordenada (-53.123456) e código numérico corrido não casam
+RE_TELEFONE = re.compile(
+    r"(?<![\d.,-])(?:\(\s?53\s?\)\s?|53[\s-])9?\d{4}[\s.-]\d{4}(?!\d)"
+)
+# telefone sem formatação (só dígitos): só conta em coluna/campo de contato
+RE_CAMPO_CONTATO = re.compile(r"tel|fone|celular|whats|contato", re.IGNORECASE)
+RE_DIGITOS_53 = re.compile(r"^(?:55)?53 ?9?\d{8}$")
+RE_PAR_GEOJSON = re.compile(r'"([^"]*)"\s*:\s*"?([^",}\]]*)')
+
+
+def git(*args, binario=False):
+    saida = subprocess.run(["git", *args], check=True, capture_output=True).stdout
+    return saida if binario else saida.decode("utf-8", "replace")
+
+
+def padroes_locais():
+    caminho = git("rev-parse", "--git-path", "info/padroes_proibidos.txt").strip()
+    try:
+        with open(caminho, encoding="utf-8") as f:
+            linhas = [l.strip() for l in f if l.strip() and not l.lstrip().startswith("#")]
+    except FileNotFoundError:
+        return []
+    return [re.compile(l, re.IGNORECASE) for l in linhas]
+
+
+def telefone_em_dados(caminho, texto):
+    if RE_TELEFONE.search(texto):
+        return True
+    if caminho.lower().endswith(".csv"):
+        try:
+            leitor = csv.reader(io.StringIO(texto))
+            cabecalho = next(leitor, [])
+            colunas = [i for i, c in enumerate(cabecalho) if RE_CAMPO_CONTATO.search(c)]
+            if not colunas:
+                return False
+            for linha in leitor:
+                for i in colunas:
+                    if i < len(linha) and RE_DIGITOS_53.match(re.sub(r"[^\d ]", "", linha[i]).strip()):
+                        return True
+        except csv.Error:
+            return False
+        return False
+    for chave, valor in RE_PAR_GEOJSON.findall(texto):
+        if RE_CAMPO_CONTATO.search(chave) and RE_DIGITOS_53.match(re.sub(r"[^\d ]", "", valor).strip()):
+            return True
+    return False
+
+
+def examinar(caminho, ler_conteudo, tamanho, padroes):
+    """Devolve a lista de regras violadas pelo arquivo (sem o trecho)."""
+    regras = []
+    baixo = caminho.lower()
+    if baixo.startswith(PASTAS_PROIBIDAS):
+        regras.append("a) pasta de dado pessoal (campo/auditoria)")
+    if baixo.endswith(EXT_BINARIAS) and caminho not in EXCECOES_BINARIOS:
+        regras.append("d) tipo de arquivo barrado (PDF/QGIS/GeoPackage/shape/raster/zip)")
+    if tamanho > LIMITE_BYTES and caminho not in EXCECOES_GRANDES:
+        regras.append("e) arquivo maior que 5 MB")
+    # no caminho, _ - . / viram espaço, para \b do padrão valer em nome_de_arquivo
+    caminho_palavras = re.sub(r"[_\-./]", " ", caminho)
+    if any(p.search(caminho_palavras) for p in padroes):
+        regras.append("f) padrão proibido local no caminho")
+
+    conteudo = ler_conteudo()
+    if b"\0" in conteudo[:8000]:
+        return regras  # binário: sem regra de texto
+    texto = conteudo.decode("utf-8", "replace")
+    if baixo.endswith(EXT_TEXTO):
+        if RE_CAMINHO_USUARIO.search(texto):
+            regras.append("b) caminho local de usuário")
+        if RE_CPF.search(texto):
+            regras.append("c) padrão de CPF")
+        if baixo.endswith(EXT_DADOS) and telefone_em_dados(caminho, texto):
+            regras.append("c) telefone com DDD 53 em dado")
+    if any(p.search(texto) for p in padroes):
+        regras.append("f) padrão proibido local no conteúdo")
+    return regras
+
+
+def alvos_stage():
+    nomes = git("diff", "--cached", "--name-only", "-z", "--diff-filter=ACMR").split("\0")
+    for nome in filter(None, nomes):
+        tamanho = int(git("cat-file", "-s", f":{nome}").strip())
+        yield nome, (lambda n=nome: git("show", f":{n}", binario=True)), tamanho
+
+
+def alvos_revisao(rev, nomes):
+    for nome in filter(None, nomes):
+        tamanho = int(git("cat-file", "-s", f"{rev}:{nome}").strip())
+        yield nome, (lambda n=nome: git("show", f"{rev}:{n}", binario=True)), tamanho
+
+
+def main(argv):
+    padroes = padroes_locais()
+    if len(argv) >= 2 and argv[0] == "--commit":
+        rev = argv[1]
+        nomes = git("diff-tree", "--no-commit-id", "-r", "--root", "--name-only", "-z",
+                    "--diff-filter=ACMR", rev).split("\0")
+        alvos = alvos_revisao(rev, nomes)
+    elif argv[:1] == ["--todos"]:
+        alvos = alvos_revisao("HEAD", git("ls-files", "-z").split("\0"))
+    else:
+        alvos = alvos_stage()
+
+    bloqueios = 0
+    for nome, ler, tamanho in alvos:
+        for regra in examinar(nome, ler, tamanho, padroes):
+            print(f"pre-commit: BLOQUEADO {nome} — regra {regra}", file=sys.stderr)
+            bloqueios += 1
+    if bloqueios:
+        print(f"pre-commit: {bloqueios} bloqueio(s). Corrija ou, se for consciente, "
+              "use git commit --no-verify (ver scripts/git_hooks/README_hooks.md).", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
