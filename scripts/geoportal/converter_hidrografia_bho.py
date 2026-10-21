@@ -14,12 +14,14 @@ Nome dos cursos d'água
 ----------------------
 curso_dagua não tem nome; os nomes da cartografia estão em trecho_drenagem
 (noriocomp = nogenerico + noligacao + noespecif, igual a nooriginal nesta
-área). O campo `nome` de cada curso é o noriocomp do trecho nomeado mais
+área). O campo `nome` de cada curso parte do noriocomp do trecho nomeado mais
 próximo da foz do curso, isto é, com o menor nudistcdag (distância, ao longo
 do curso, do ponto de jusante do trecho à foz do curso d'água: dicionário de
 dados da Nota Técnica nº 5/2024/CCOGI/SHE da ANA). O nome só é atribuído se os
-trechos com esse nome somarem >= 25% do comprimento dos trechos do curso;
-abaixo disso, ou sem trecho nomeado, nome nulo. Usa todos os trechos do curso
+trechos com esse nome somarem >= 25% do comprimento dos trechos do curso; se
+não somarem, passa-se ao próximo nome nomeado rio acima (nudistcdag crescente)
+e fica o primeiro que atingir 25%; se nenhum atingir, ou sem trecho nomeado,
+nome nulo. Usa todos os trechos do curso
 no bruto (área de busca), não só os do município: a foz e a cobertura se
 referem à parte do curso presente no bruto (nucompcda, o curso inteiro, não
 serve de denominador para rios que saem muito da área, como o rio Uruguai).
@@ -51,10 +53,12 @@ TOLERANCIA_SIMPLIFICACAO_REDE_M = 7.5
 
 COBERTURA_MINIMA_NOME = 0.25
 REGRA_NOME = (
-    "noriocomp de trecho_drenagem (ligado por cocursodag) do trecho nomeado mais próximo da foz "
-    "do curso (menor nudistcdag, a distância do ponto de jusante do trecho à foz do curso d'água); "
-    "só atribuído se os trechos com esse nome somarem >= 25% do comprimento (nucomptrec) dos "
-    "trechos do curso presentes no bruto (área de busca); abaixo disso, ou sem trecho nomeado, nulo"
+    "noriocomp de trecho_drenagem (ligado por cocursodag): candidato é o nome do trecho nomeado "
+    "mais próximo da foz do curso (menor nudistcdag, a distância do ponto de jusante do trecho à "
+    "foz do curso d'água), atribuído se os trechos com esse nome somarem >= 25% do comprimento "
+    "(nucomptrec) dos trechos do curso presentes no bruto (área de busca); se não, passa ao próximo "
+    "nome rio acima (nudistcdag crescente) e fica o primeiro que atingir 25%; se nenhum atingir, ou "
+    "sem trecho nomeado, nulo"
 )
 NOTA_NOME = (
     "o mesmo nome pode aparecer em mais de um curso da BHO quando o rio da carta os atravessa"
@@ -85,15 +89,17 @@ def _nome_por_curso(caminho) -> dict:
     )
     km_curso = trechos.groupby("cocursodag")["nucomptrec"].sum()
     nomeados = trechos[trechos["noriocomp"].notna() & (trechos["noriocomp"].str.strip() != "")]
-    # trecho nomeado mais a jusante de cada curso (empate improvável: ordem alfabética)
-    na_foz = (
+    # nomes de cada curso na ordem em que aparecem a partir da foz (menor nudistcdag primeiro;
+    # empate improvável: ordem alfabética)
+    da_foz_para_cima = (
         nomeados.sort_values(["cocursodag", "nudistcdag", "noriocomp"])
-        .drop_duplicates("cocursodag")
-        .set_index("cocursodag")["noriocomp"]
+        .drop_duplicates(["cocursodag", "noriocomp"])
     )
     km_nome = nomeados.groupby(["cocursodag", "noriocomp"])["nucomptrec"].sum()
     nomes = {}
-    for curso, nome in na_foz.items():
+    for curso, nome in zip(da_foz_para_cima["cocursodag"], da_foz_para_cima["noriocomp"]):
+        if curso in nomes:
+            continue
         if km_nome[(curso, nome)] / km_curso[curso] >= COBERTURA_MINIMA_NOME:
             nomes[curso] = nome
     return nomes
