@@ -4,7 +4,7 @@
     "caminho_origem": "data/raw/vetor/rede-hidrografica_ana-bho_atual_vetorial.gpkg (layer=curso_dagua)"
   },
   "crs_saida": "EPSG:4326",
-  "transformacao_aplicada": "recorte (gpd.clip) por config/area_estudo.geojson (área municipal, não a estendida); simplify(tolerância=7.5m, preserve_topology=True); reprojeção EPSG:31981 -> EPSG:4326",
+  "transformacao_aplicada": "recorte (gpd.clip) por config/area_estudo.geojson (área municipal, não a estendida); simplify(tolerância=7.5m, preserve_topology=True); reprojeção EPSG:31981 -> EPSG:4326; campo nome a partir de trecho_drenagem",
   "n_features": 1983,
   "colunas": [
     "wtc_pk",
@@ -17,9 +17,12 @@
     "nunivotcda",
     "nuordemcda",
     "dedominial",
-    "dsversao"
+    "dsversao",
+    "nome"
   ],
-  "data_processamento": "2026-08-07T17:58:49.580262+00:00",
+  "data_processamento": "2026-10-21T02:03:38.255986+00:00",
+  "regra_nome": "noriocomp de trecho_drenagem (ligado por cocursodag) com maior comprimento somado (nucomptrec) entre os trechos do curso; empate: mais trechos, depois ordem alfabética; nulo quando nenhum trecho do curso tem nome",
+  "n_cursos_com_nome": 74,
   "escala_mapeamento": {
     "escala_equivalente_declarada": "1:100.000",
     "fonte_da_escala": "ficha de metadados do SNIRH (registro 32e309da-a8c1-443f-90ac-0cd79ce6a33d), campo spatialResolution/equivalentScale, valor único para o conjunto; lida em 2026-10-20",
