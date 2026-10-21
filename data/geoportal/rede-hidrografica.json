@@ -20,9 +20,10 @@
     "dsversao",
     "nome"
   ],
-  "data_processamento": "2026-10-21T02:03:38.255986+00:00",
-  "regra_nome": "noriocomp de trecho_drenagem (ligado por cocursodag) com maior comprimento somado (nucomptrec) entre os trechos do curso; empate: mais trechos, depois ordem alfabética; nulo quando nenhum trecho do curso tem nome",
-  "n_cursos_com_nome": 74,
+  "data_processamento": "2026-10-21T02:10:56.989269+00:00",
+  "regra_nome": "noriocomp de trecho_drenagem (ligado por cocursodag) do trecho nomeado mais próximo da foz do curso (menor nudistcdag, a distância do ponto de jusante do trecho à foz do curso d'água); só atribuído se os trechos com esse nome somarem >= 25% do comprimento (nucomptrec) dos trechos do curso presentes no bruto (área de busca); abaixo disso, ou sem trecho nomeado, nulo",
+  "n_cursos_com_nome": 72,
+  "nota_nome": "o mesmo nome pode aparecer em mais de um curso da BHO quando o rio da carta os atravessa",
   "escala_mapeamento": {
     "escala_equivalente_declarada": "1:100.000",
     "fonte_da_escala": "ficha de metadados do SNIRH (registro 32e309da-a8c1-443f-90ac-0cd79ce6a33d), campo spatialResolution/equivalentScale, valor único para o conjunto; lida em 2026-10-20",
