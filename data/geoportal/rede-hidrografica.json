@@ -24,6 +24,11 @@
     "escala_equivalente_declarada": "1:100.000",
     "fonte_da_escala": "ficha de metadados do SNIRH (registro 32e309da-a8c1-443f-90ac-0cd79ce6a33d), campo spatialResolution/equivalentScale, valor único para o conjunto; lida em 2026-10-20",
     "linhagem": "trechos de drenagem de cartografia na escala 1:250.000 ou maior; a ficha lista a escala por região hidrográfica, mas não lista a Região Hidrográfica do Uruguai, onde fica o município",
-    "escala_local": "a confirmar"
+    "escala_local": {
+      "valor": "1:50.000",
+      "origem": "no Rio Grande do Sul, a BHO 6 usa a hidrografia do mapeamento sistemático terrestre do Exército Brasileiro em escala 1:50.000",
+      "fonte": "Nota Técnica nº 5/2024/CCOGI/SHE da ANA (9/9/2024), § 36, p. 9; anexo da ficha de metadados do SNIRH; lida em 2026-10-20",
+      "ressalva": "a nota não cita a Região Hidrográfica do Uruguai pelo nome na seção da BHO 6; a escala vem do estado (RS)"
+    }
   }
 }
