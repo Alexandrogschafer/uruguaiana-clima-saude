@@ -1,6 +1,7 @@
 """
 Temperatura de superfície (LST) da área urbana — composição de verão, anomalia
-e persistência (rodada 73). Exposição ao calor urbano; nada vai ao portal.
+e persistência (rodada 73; ajustes da rodada 74). Exposição ao calor urbano;
+nada vai ao portal.
 
 Reaproveita a AOI, o acesso ao Planetary Computer, a leitura por janela de COG
 e as fórmulas de scripts/exploracao/lst_levantamento.py (rodada 72).
@@ -16,9 +17,12 @@ Etapas (subcomandos):
                 da AOI + 150 m de ST_B10, QA_PIXEL e SR_B3–B6 (bruto, grade e CRS
                 originais, .json com sha256) e os derivados a 30 m em EPSG:31981
                 (LST °C, NDVI, NDBI, MNDWI) alinhados às bordas de pixel da cena.
-    composicao  por pixel e por conjunto, no período inteiro e nas janelas
-                2013–2018, 2019–2023 e 2024–2026: lst_mediana, n_obs, anomalia_mediana,
-                persistencia_p90 (+ medianas de NDVI, NDBI e MNDWI).
+    composicao  por pixel e por conjunto, no período inteiro e nas janelas de
+                verões inteiros 2014–2018, 2019–2023 e 2024–2026 (verão rotulado
+                pelo ano de janeiro: dez/2018 + jan–mar/2019 = verão 2019):
+                lst_mediana, n_obs, anomalia_mediana, persistencia_p90 (+ medianas
+                de NDVI, NDBI e MNDWI); versões "-terra" (água mascarada) de
+                lst-mediana, anomalia-mediana e persistencia-p90 do principal.
     agregacao   grade de 250 m (mesma origem da grade de densidade de
                 edificações), bairros IBGE 2022 e setores censitários urbanos 2022;
                 correlações, rankings, estabilidade entre janelas, principal ×
@@ -35,11 +39,16 @@ Regras (ver também os .json):
       e com MNDWI ≤ 0 na cena; área urbana = núcleo urbanizado IBGE 2019 da AOI.
     - anomalia da cena = LST − média da LST de terra urbana da mesma cena;
       persistencia_p90 = fração das observações válidas do pixel com LST acima
-      do p90 da LST de terra urbana da cena.
+      do p90 da LST de terra urbana da cena, só no núcleo urbanizado fora da
+      água do OSM (fora dele, NaN).
     - n_obs ≥ 10 por pixel (senão NaN); janela com < 5 cenas não é gerada.
     - terra (agregação) = pixel fora da água do OSM e com MNDWI mediano ≤ 0;
       unidade com < 50 % de pixels válidos de terra é suprimida (estatísticas
-      vazias, geometria mantida com o motivo).
+      vazias, geometria mantida com o motivo). Na grade, a fração é sobre todos
+      os pixels da célula; em bairros e setores, só sobre a parte de terra do
+      polígono (pixels fora da água do OSM), porque os ribeirinhos incluem o leito.
+    - persistência agregada só quando ≥ 30 % dos pixels da unidade estão no
+      núcleo urbanizado (senão vazia).
 
 Saídas (fora do git): data/raw/raster/lst_landsat/ (recortes),
 data/processed/lst/ (derivados por cena, composições, grade, bairros, setores,
@@ -92,8 +101,11 @@ VERAO_INI, VERAO_FIM = 2013, 2025  # verões 2013/14 … 2025/26 (ano de dezembr
 LIMIAR_PRINCIPAL, LIMIAR_SENS = 0.95, 0.80
 MIN_OBS = 10
 MIN_CENAS_JANELA = 5
-JANELAS = {"2013-2026": (2013, 2026), "2013-2018": (2013, 2018), "2019-2023": (2019, 2023), "2024-2026": (2024, 2026)}
+# verões pelo ano de janeiro; o período inteiro mantém o nome "2013-2026" (dez/2013 a mar/2026)
+JANELAS = {"2013-2026": (2014, 2026), "2014-2018": (2014, 2018), "2019-2023": (2019, 2023), "2024-2026": (2024, 2026)}
+SUBJANELAS = ["2014-2018", "2019-2023", "2024-2026"]
 MIN_FRAC_TERRA = 0.5
+MIN_FRAC_NUCLEO = 0.3  # persistência agregada só em unidades com ≥ 30 % dos pixels no núcleo urbanizado
 LADO_GRADE = 250  # mesma origem (múltiplos de 250 m em EPSG:31981) da grade de densidade
 ESTACAO_RIO = "77150000"
 COTA_ALERTA_CM = 750.0  # SGB, SAH Uruguai 2023, tabela 2 (Uruguaiana: inundação 850, alerta 750, atenção 650)
@@ -117,7 +129,7 @@ TAB_CENAS = PROC / f"cenas-selecionadas_landsat-c2l2_{PERIODO}.csv"
 def sidecar(caminho: Path, **campos) -> None:
     """Metadado irmão (.json); CSV/PNG/GPKG ganham <nome>.<ext>.json, TIF ganha <nome>.json."""
     meta = {"arquivo": caminho.name, "data_processamento": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "script": SCRIPT, "uso": "composição de verão da LST (rodada 73); exploratório, fora do portal"}
+            "script": SCRIPT, "uso": "composição de verão da LST (rodadas 73–74); exploratório, fora do portal"}
     meta.update(campos)
     if caminho.exists() and caminho.is_file():
         meta["tamanho_bytes"] = caminho.stat().st_size
@@ -136,6 +148,11 @@ def gravar_csv(df: pd.DataFrame, caminho: Path, **campos) -> None:
 def verao_de(d: pd.Timestamp) -> int:
     """Ano de dezembro do verão: jan–mar/2014 e dez/2013 pertencem ao verão 2013/14."""
     return d.year if d.month == 12 else d.year - 1
+
+
+def verao_jan(d: pd.Timestamp) -> int:
+    """Rótulo do verão pelo ano de janeiro: dez/2018 + jan–mar/2019 = verão 2019 (define as janelas)."""
+    return d.year + 1 if d.month == 12 else d.year
 
 
 # ---------------------------------------------------------------------------
@@ -337,9 +354,10 @@ def composicao(a: dict, cenas: pd.DataFrame, g: dict, forcar: bool) -> pd.DataFr
     for conjunto, col in (("principal", "conjunto_principal"), ("sensibilidade", "conjunto_sensibilidade")):
         sel = cenas[cenas[col]].copy()
         for janela, (a0, a1) in JANELAS.items():
-            ano = pd.to_datetime(sel["data"]).dt.year
+            ano = pd.to_datetime(sel["data"]).map(verao_jan)
             sj = sel[(ano >= a0) & (ano <= a1)]
-            lin = {"conjunto": conjunto, "janela": janela, "n_cenas": int(len(sj))}
+            lin = {"conjunto": conjunto, "janela": janela, "n_cenas": int(len(sj)), "verao_ini": a0, "verao_fim": a1,
+                   "primeira_cena": sj["data"].min() if len(sj) else None, "ultima_cena": sj["data"].max() if len(sj) else None}
             if len(sj) < MIN_CENAS_JANELA:
                 lin["gerada"] = False
                 lin["nota"] = f"menos de {MIN_CENAS_JANELA} cenas"
@@ -376,7 +394,8 @@ def composicao(a: dict, cenas: pd.DataFrame, g: dict, forcar: bool) -> pd.DataFr
                     "lst-mediana": np.where(ok, np.nanmedian(st, 0), np.nan),
                     "n-obs": n_obs.astype("float32"),
                     "anomalia-mediana": np.where(ok, np.nanmedian(np.stack(anom), 0), np.nan),
-                    "persistencia-p90": np.where(ok, np.nansum(np.stack(acima), 0) / np.maximum(n_obs, 1), np.nan),
+                    # persistência só no núcleo urbanizado fora da água do OSM (m["urbano"] já exclui a água)
+                    "persistencia-p90": np.where(ok & m["urbano"], np.nansum(np.stack(acima), 0) / np.maximum(n_obs, 1), np.nan),
                     "ndvi-mediana": np.where(ok, np.nanmedian(np.stack(ndvi), 0), np.nan),
                     "ndbi-mediana": np.where(ok, np.nanmedian(np.stack(ndbi), 0), np.nan),
                     "mndwi-mediana": np.where(ok, np.nanmedian(np.stack(mndwi), 0), np.nan),
@@ -384,26 +403,58 @@ def composicao(a: dict, cenas: pd.DataFrame, g: dict, forcar: bool) -> pd.DataFr
             saidas["n-obs"][~m["dentro"]] = np.nan
             regras = {"n_obs_minimo": MIN_OBS, "lst_mediana": "mediana por pixel da LST (°C) das observações limpas",
                       "anomalia": "LST da cena − média da LST de terra urbana da mesma cena; mediana por pixel",
-                      "persistencia_p90": "fração das observações válidas do pixel com LST > p90 da LST de terra urbana da cena",
+                      "persistencia_p90": "fração das observações válidas do pixel com LST > p90 da LST de terra urbana da cena; "
+                                          "só no núcleo urbanizado IBGE 2019 fora da água do OSM (fora dele, NaN)",
                       "terra_urbana_da_cena": "pixel limpo no núcleo urbanizado IBGE 2019 da AOI, fora dos polígonos de água do OSM e com MNDWI ≤ 0",
                       "indices": "medianas por pixel de NDVI, NDBI e MNDWI das mesmas observações"}
             for var, arr in saidas.items():
                 lev.gravar_produto(arr, nome_comp(var, conjunto, janela), g["transform"])
-                sidecar(nome_comp(var, conjunto, janela), fonte=FONTE, conjunto=conjunto, janela_anos_civis=janela,
+                sidecar(nome_comp(var, conjunto, janela), fonte=FONTE, conjunto=conjunto, janela_veroes=janela,
                         cenas_usadas=sj["id"].tolist(), n_cenas=int(len(sj)), regras=regras, crs=CRS_PADRAO, resolucao_m=30,
                         criterio_conjunto=("≥ 95 % limpas, T1, 225/081, rio ≤ cota de alerta (750 cm)" if conjunto == "principal"
                                            else "≥ 80 % limpas, T1, 225/081, máscara por pixel, sem filtro do rio"),
-                        janela_regra="ano civil da data da cena; mínimo de 5 cenas", status="extraido")
+                        janela_regra=JANELA_REGRA, status="extraido")
             lin.update(gerada=True, pixels_validos=int(ok.sum()), nota="")
             resumo.append(lin)
             logger.info("%s %s: %d cenas, %d pixels com n_obs ≥ %d", conjunto, janela, len(sj), ok.sum(), MIN_OBS)
+    terra_mascarada(m, cenas, forcar)
     if por_cena:
         gravar_csv(pd.DataFrame(por_cena), PROC / f"referencia-urbana-por-cena_landsat-c2l2_{PERIODO}.csv", fonte=FONTE,
                    conteudo="média e p90 da LST de terra urbana por cena (referências da anomalia e da persistência)")
     rs = pd.DataFrame(resumo)
-    gravar_csv(rs, PROC / f"composicao-resumo_landsat-c2l2_{PERIODO}.csv", fonte=FONTE, janelas=JANELAS,
+    gravar_csv(rs, PROC / f"composicao-resumo_landsat-c2l2_{PERIODO}.csv", fonte=FONTE, janelas=JANELAS, janela_regra=JANELA_REGRA,
                minimo_cenas_janela=MIN_CENAS_JANELA)
     return rs
+
+
+JANELA_REGRA = ("verões inteiros, rotulados pelo ano de janeiro (dez/2018 + jan–mar/2019 = verão 2019; a cena de dez/2013 "
+                "é do verão 2014); mínimo de 5 cenas")
+
+
+def terra_mascarada(m: dict, cenas: pd.DataFrame, forcar: bool) -> None:
+    """Versões "-terra" do principal (período inteiro): NaN na água do OSM ou com MNDWI mediano > 0; os originais ficam."""
+    mndwi_arq = nome_comp("mndwi-mediana", "principal", "2013-2026")
+    if not mndwi_arq.exists():
+        return
+    mndwi = ler_tif(mndwi_arq)
+    agua = m["agua_osm"] | (np.isfinite(mndwi) & (mndwi > 0))
+    with rasterio.open(mndwi_arq) as s:
+        tr = s.transform
+    for var in ("lst-mediana", "anomalia-mediana", "persistencia-p90"):
+        orig, dest = nome_comp(var, "principal", "2013-2026"), nome_comp(f"{var}-terra", "principal", "2013-2026")
+        if dest.exists() and not forcar:
+            continue
+        arr = ler_tif(orig)
+        arr = np.where(agua, np.nan, arr).astype("float32")
+        lev.gravar_produto(arr, dest, tr)
+        meta_orig = json.loads(orig.with_suffix(".json").read_text(encoding="utf-8"))
+        sidecar(dest, fonte=FONTE, conjunto="principal", janela_veroes="2013-2026", origem=orig.name,
+                cenas_usadas=meta_orig.get("cenas_usadas"), n_cenas=meta_orig.get("n_cenas"), regras=meta_orig.get("regras"),
+                crs=CRS_PADRAO, resolucao_m=30,
+                transformacao_aplicada="cópia do original com NaN onde há polígono de água do OSM ou MNDWI mediano (principal, "
+                                       "período inteiro) > 0; o original segue sem essa máscara",
+                pixels_mascarados_agua=int((agua & np.isfinite(ler_tif(orig))).sum()), status="extraido")
+        logger.info("gravado %s", dest.name)
 
 
 # ---------------------------------------------------------------------------
@@ -418,7 +469,8 @@ def carregar_comp(conjunto: str, janela: str) -> dict | None:
 
 
 def stats_unidade(idx: np.ndarray, n_total: np.ndarray, comp: dict, terra_val: np.ndarray, nmax: int) -> pd.DataFrame:
-    """Estatísticas por unidade (índice inteiro por pixel; −1 = fora) sobre pixels válidos de terra."""
+    """Estatísticas por unidade (índice inteiro por pixel; −1 = fora) sobre pixels válidos de terra.
+    n_total = denominador da fração válida (todos os pixels da célula ou a parte de terra do polígono)."""
     sel = (idx >= 0) & terra_val
     d = pd.DataFrame({"u": idx[sel], "lst": comp["lst-mediana"][sel], "anom": comp["anomalia-mediana"][sel],
                       "pers": comp["persistencia-p90"][sel], "ndvi": comp["ndvi-mediana"][sel], "ndbi": comp["ndbi-mediana"][sel]})
@@ -431,6 +483,13 @@ def stats_unidade(idx: np.ndarray, n_total: np.ndarray, comp: dict, terra_val: n
     out["n_pixels_unidade"] = n_total
     out["fracao_valida"] = np.where(n_total > 0, out["n_pixels_validos"] / np.maximum(n_total, 1), 0.0)
     return out
+
+
+def fracao_nucleo(idx: np.ndarray, urbano: np.ndarray, nmax: int) -> np.ndarray:
+    """Fração dos pixels da unidade (todos, inclusive água) no núcleo urbanizado fora da água do OSM."""
+    n_all = np.bincount(idx[idx >= 0], minlength=nmax)
+    n_urb = np.bincount(idx[(idx >= 0) & urbano], minlength=nmax)
+    return np.where(n_all > 0, n_urb / np.maximum(n_all, 1), 0.0)
 
 
 def rotular(gdf: gpd.GeoDataFrame, g: dict) -> np.ndarray:
@@ -482,11 +541,14 @@ def agregacao(a: dict, cenas: pd.DataFrame, g: dict, forcar: bool) -> dict:
     agua_px = m["agua_osm"] | (np.isfinite(base["mndwi-mediana"]) & (base["mndwi-mediana"] > 0))
     meta_comum = dict(fonte=FONTE, crs=CRS_PADRAO,
                       terra="pixel com lst_mediana válida (n_obs ≥ 10), fora dos polígonos de água do OSM e com MNDWI mediano ≤ 0",
-                      supressao=f"unidade com menos de {MIN_FRAC_TERRA:.0%} de pixels válidos de terra (sobre os pixels de 30 m cujo "
-                                "centro cai na unidade): estatísticas vazias, geometria mantida",
+                      supressao=f"unidade com menos de {MIN_FRAC_TERRA:.0%} de pixels válidos de terra (pixels de 30 m cujo centro cai "
+                                "na unidade): estatísticas vazias, geometria mantida; denominador = todos os pixels da célula (grade) ou "
+                                "só a parte de terra do polígono, fora da água do OSM (bairros e setores)",
+                      persistencia=f"pixels do núcleo urbanizado IBGE 2019 fora da água; agregada só quando ≥ {MIN_FRAC_NUCLEO:.0%} dos "
+                                   "pixels da unidade (todos, inclusive água) estão no núcleo (coluna fracao_nucleo), senão vazia",
                       estatisticas="lst_mediana_c = mediana da lst_mediana; anomalia_mediana_c = mediana da anomalia_mediana; "
-                                   "persistencia_p90_media = média da persistencia_p90; lst_mediana_p90_c = p90 da lst_mediana",
-                      status="extraido")
+                                   "persistencia_p90_media = média da persistencia_p90 (núcleo); lst_mediana_p90_c = p90 da lst_mediana",
+                      janela_regra=JANELA_REGRA, status="extraido")
 
     # --- 4.1 grade de 250 m
     cel, idx = montar_grade(a, g)
@@ -497,13 +559,15 @@ def agregacao(a: dict, cenas: pd.DataFrame, g: dict, forcar: bool) -> dict:
     grade = cel.join(st.reset_index(drop=True))
     grade["fracao_agua"] = frac_agua.round(3)
     grade["agua_predominante"] = frac_agua > 0.5
+    grade["fracao_nucleo"] = fracao_nucleo(idx, m["urbano"], n).round(4)
+    grade.loc[grade["fracao_nucleo"] < MIN_FRAC_NUCLEO, "persistencia_p90_media"] = np.nan
     grade["suprimida"] = grade["fracao_valida"] < MIN_FRAC_TERRA
     grade["motivo_supressao"] = np.where(~grade["suprimida"], None,
                                          np.where(grade["agua_predominante"], "água predominante", "menos de 50 % de pixels válidos de terra"))
     sens = comps.get(("sensibilidade", "2013-2026"))
     if sens is not None:
         grade["lst_mediana_c_sensibilidade"] = stats_unidade(idx, n_total, sens, terra_valida(sens), n)["lst_mediana_c"].to_numpy()
-    for j in ("2013-2018", "2019-2023", "2024-2026"):
+    for j in SUBJANELAS:
         cj = comps.get(("principal", j))
         if cj is not None:
             grade[f"lst_mediana_c_{j.replace('-', '_')}"] = stats_unidade(idx, n_total, cj, terra_valida(cj), n)["lst_mediana_c"].to_numpy()
@@ -546,10 +610,17 @@ def agregacao(a: dict, cenas: pd.DataFrame, g: dict, forcar: bool) -> dict:
     longas = {}
     for nome, (gdf, chaves_u) in unidades.items():
         idx_u = rotular(gdf, g)
-        nt = np.bincount(idx_u[idx_u >= 0], minlength=len(gdf))
+        # fração válida sobre a parte de terra do polígono: os bairros ribeirinhos incluem o leito do rio
+        nt = np.bincount(idx_u[(idx_u >= 0) & ~m["agua_osm"]], minlength=len(gdf))
+        n_todos = np.bincount(idx_u[idx_u >= 0], minlength=len(gdf))
+        fn = fracao_nucleo(idx_u, m["urbano"], len(gdf))
         partes = []
         for (c, j), comp in comps.items():
             s = stats_unidade(idx_u, nt, comp, terra_valida(comp), len(gdf))
+            s = s.rename(columns={"n_pixels_unidade": "n_pixels_terra_osm"})
+            s.insert(s.columns.get_loc("n_pixels_terra_osm"), "n_pixels_unidade", n_todos)
+            s["fracao_nucleo"] = fn
+            s.loc[s["fracao_nucleo"] < MIN_FRAC_NUCLEO, "persistencia_p90_media"] = np.nan
             s = pd.concat([gdf[chaves_u].reset_index(drop=True), s.reset_index(drop=True)], axis=1)
             s["suprimida"] = s["fracao_valida"] < MIN_FRAC_TERRA
             s.loc[s["suprimida"], [x for x in s.columns if x.startswith(("lst_", "anomalia_", "persistencia_", "ndvi_", "ndbi_"))]] = np.nan
@@ -559,7 +630,7 @@ def agregacao(a: dict, cenas: pd.DataFrame, g: dict, forcar: bool) -> dict:
         longa = pd.concat(partes, ignore_index=True)
         for x in ("lst_mediana_c", "anomalia_mediana_c", "lst_mediana_p90_c"):
             longa[x] = longa[x].round(3)
-        for x in ("persistencia_p90_media", "ndvi_mediano", "ndbi_mediano", "fracao_valida"):
+        for x in ("persistencia_p90_media", "ndvi_mediano", "ndbi_mediano", "fracao_valida", "fracao_nucleo"):
             longa[x] = longa[x].round(4)
         rotulo = "bairros_ibge-2022" if nome == "bairro" else "setores-urbanos_ibge-2022"
         nota_pop = ("populacao_total = coluna agregada do setor já existente no projeto (setores-censitarios_vulnerabilidade_unido.gpkg)"
@@ -608,16 +679,17 @@ def exploracao(grade: gpd.GeoDataFrame, bai: pd.DataFrame, comps: dict, m: dict)
     p = bai[(bai["conjunto"] == "principal") & (bai["janela"] == "2013-2026") & ~bai["suprimida"]]
     rk = []
     for var in ("lst_mediana_c", "anomalia_mediana_c", "persistencia_p90_media"):
-        top = p.sort_values(var, ascending=False).head(10)
+        top = p.dropna(subset=[var]).sort_values(var, ascending=False).head(10)
         for pos, r in enumerate(top.itertuples(), 1):
             rk.append({"variavel": var, "posicao": pos, "cd_bairro": r.CD_BAIRRO, "nm_bairro": r.NM_BAIRRO, "valor": round(float(getattr(r, var)), 4)})
     rk = pd.DataFrame(rk)
     gravar_csv(rk, PROC / f"lst-ranking-bairros_landsat-c2l2-principal_{PERIODO}.csv", fonte=FONTE,
-               conteudo="10 bairros mais quentes por lst_mediana, anomalia_mediana e persistência média (principal, 2013–2026)")
+               conteudo="10 bairros mais quentes por lst_mediana, anomalia_mediana e persistência média (principal, 2013–2026); "
+                        "persistência só em bairros com ≥ 30 % dos pixels no núcleo urbanizado")
     out["ranking"] = rk
 
     est = []
-    janelas = ["2013-2018", "2019-2023", "2024-2026"]
+    janelas = SUBJANELAS
     for conj in ("principal", "sensibilidade"):
         for i, j1 in enumerate(janelas):
             for j2 in janelas[i + 1:]:
@@ -684,7 +756,7 @@ def _mapa(ax, arr, g, a, cmap, titulo, rotulo, norm=None, vmin=None, vmax=None):
 
 
 def figuras(a: dict, g: dict, base: dict, grade: gpd.GeoDataFrame, m: dict) -> None:
-    nota = ("Landsat 8/9 C2 L2 (USGS) via Planetary Computer; verões 2013/14–2025/26, conjunto principal; "
+    nota = ("Landsat 8/9 C2 L2 (USGS) via Planetary Computer; verões 2014–2026 (dez/2013–mar/2026), conjunto principal; "
             "contornos: AOI e bairros IBGE 2022; cinza = sem dado/máscara")
     lst = base["lst-mediana"]
     v = lst[np.isfinite(lst)]
@@ -697,7 +769,7 @@ def figuras(a: dict, g: dict, base: dict, grade: gpd.GeoDataFrame, m: dict) -> N
         ("anomalia-mediana", np.clip(an, lo, hi), "RdBu_r", "Anomalia em relação à média urbana da cena — mediana (°C)",
          "°C (0 = média da terra urbana; classes de p2 a p98 da terra)",
          dict(norm=BoundaryNorm(np.round(np.r_[np.linspace(lo, 0, 7), np.linspace(0, hi, 7)[1:]], 2), 256))),
-        ("persistencia-p90", base["persistencia-p90"], "Purples", "Persistência: fração das cenas acima do p90 urbano",
+        ("persistencia-p90", base["persistencia-p90"], "Purples", "Persistência: fração das cenas acima do p90 urbano (só núcleo urbanizado)",
          "fração das observações (0–1)", dict(vmin=0, vmax=1)),
     ]
     for var, arr, cmap, tit, rot, kw in defs:
