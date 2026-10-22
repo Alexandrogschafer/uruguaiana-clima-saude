@@ -1,6 +1,6 @@
 """
 Temperatura de superfície (LST) da área urbana — composição de verão, anomalia
-e persistência (rodada 73; ajustes da rodada 74). Exposição ao calor urbano;
+e persistência (rodada 73; ajustes das rodadas 74 e 75). Exposição ao calor urbano;
 nada vai ao portal.
 
 Reaproveita a AOI, o acesso ao Planetary Computer, a leitura por janela de COG
@@ -47,8 +47,9 @@ Regras (ver também os .json):
       vazias, geometria mantida com o motivo). Na grade, a fração é sobre todos
       os pixels da célula; em bairros e setores, só sobre a parte de terra do
       polígono (pixels fora da água do OSM), porque os ribeirinhos incluem o leito.
-    - persistência agregada só quando ≥ 30 % dos pixels da unidade estão no
-      núcleo urbanizado (senão vazia).
+    - persistência agregada só quando ≥ 30 % dos pixels de terra da unidade
+      (fora da água do OSM, como na fração válida) estão no núcleo urbanizado
+      (senão vazia); denominador sobre a terra desde a rodada 75.
 
 Saídas (fora do git): data/raw/raster/lst_landsat/ (recortes),
 data/processed/lst/ (derivados por cena, composições, grade, bairros, setores,
@@ -129,7 +130,7 @@ TAB_CENAS = PROC / f"cenas-selecionadas_landsat-c2l2_{PERIODO}.csv"
 def sidecar(caminho: Path, **campos) -> None:
     """Metadado irmão (.json); CSV/PNG/GPKG ganham <nome>.<ext>.json, TIF ganha <nome>.json."""
     meta = {"arquivo": caminho.name, "data_processamento": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "script": SCRIPT, "uso": "composição de verão da LST (rodadas 73–74); exploratório, fora do portal"}
+            "script": SCRIPT, "uso": "composição de verão da LST (rodadas 73–75); exploratório, fora do portal"}
     meta.update(campos)
     if caminho.exists() and caminho.is_file():
         meta["tamanho_bytes"] = caminho.stat().st_size
@@ -485,9 +486,11 @@ def stats_unidade(idx: np.ndarray, n_total: np.ndarray, comp: dict, terra_val: n
     return out
 
 
-def fracao_nucleo(idx: np.ndarray, urbano: np.ndarray, nmax: int) -> np.ndarray:
-    """Fração dos pixels da unidade (todos, inclusive água) no núcleo urbanizado fora da água do OSM."""
-    n_all = np.bincount(idx[idx >= 0], minlength=nmax)
+def fracao_nucleo(idx: np.ndarray, urbano: np.ndarray, terra: np.ndarray, nmax: int) -> np.ndarray:
+    """Fração dos pixels de terra da unidade (fora da água do OSM) no núcleo urbanizado fora da água do OSM.
+    Rodada 75: o denominador deixou de incluir a água, como na fração válida (o leito do rio derrubava a
+    fração dos bairros e setores ribeirinhos)."""
+    n_all = np.bincount(idx[(idx >= 0) & terra], minlength=nmax)
     n_urb = np.bincount(idx[(idx >= 0) & urbano], minlength=nmax)
     return np.where(n_all > 0, n_urb / np.maximum(n_all, 1), 0.0)
 
@@ -545,7 +548,8 @@ def agregacao(a: dict, cenas: pd.DataFrame, g: dict, forcar: bool) -> dict:
                                 "na unidade): estatísticas vazias, geometria mantida; denominador = todos os pixels da célula (grade) ou "
                                 "só a parte de terra do polígono, fora da água do OSM (bairros e setores)",
                       persistencia=f"pixels do núcleo urbanizado IBGE 2019 fora da água; agregada só quando ≥ {MIN_FRAC_NUCLEO:.0%} dos "
-                                   "pixels da unidade (todos, inclusive água) estão no núcleo (coluna fracao_nucleo), senão vazia",
+                                   "pixels de terra da unidade (fora da água do OSM) estão no núcleo (coluna fracao_nucleo), senão vazia; "
+                                   "denominador sobre a terra desde a rodada 75 (antes: todos os pixels, inclusive água)",
                       estatisticas="lst_mediana_c = mediana da lst_mediana; anomalia_mediana_c = mediana da anomalia_mediana; "
                                    "persistencia_p90_media = média da persistencia_p90 (núcleo); lst_mediana_p90_c = p90 da lst_mediana",
                       janela_regra=JANELA_REGRA, status="extraido")
@@ -559,7 +563,7 @@ def agregacao(a: dict, cenas: pd.DataFrame, g: dict, forcar: bool) -> dict:
     grade = cel.join(st.reset_index(drop=True))
     grade["fracao_agua"] = frac_agua.round(3)
     grade["agua_predominante"] = frac_agua > 0.5
-    grade["fracao_nucleo"] = fracao_nucleo(idx, m["urbano"], n).round(4)
+    grade["fracao_nucleo"] = fracao_nucleo(idx, m["urbano"], ~m["agua_osm"], n).round(4)
     grade.loc[grade["fracao_nucleo"] < MIN_FRAC_NUCLEO, "persistencia_p90_media"] = np.nan
     grade["suprimida"] = grade["fracao_valida"] < MIN_FRAC_TERRA
     grade["motivo_supressao"] = np.where(~grade["suprimida"], None,
@@ -613,7 +617,7 @@ def agregacao(a: dict, cenas: pd.DataFrame, g: dict, forcar: bool) -> dict:
         # fração válida sobre a parte de terra do polígono: os bairros ribeirinhos incluem o leito do rio
         nt = np.bincount(idx_u[(idx_u >= 0) & ~m["agua_osm"]], minlength=len(gdf))
         n_todos = np.bincount(idx_u[idx_u >= 0], minlength=len(gdf))
-        fn = fracao_nucleo(idx_u, m["urbano"], len(gdf))
+        fn = fracao_nucleo(idx_u, m["urbano"], ~m["agua_osm"], len(gdf))
         partes = []
         for (c, j), comp in comps.items():
             s = stats_unidade(idx_u, nt, comp, terra_valida(comp), len(gdf))
