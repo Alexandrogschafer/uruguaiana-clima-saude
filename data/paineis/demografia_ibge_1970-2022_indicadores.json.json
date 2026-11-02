@@ -1,0 +1,23 @@
+{
+  "produto": "demografia_ibge_1970-2022_indicadores.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "IBGE, Censos Demográficos via SIDRA (indicadores calculados por processamento/demografia_indicadores.py)",
+  "transformacao_aplicada": "indicadores como gravados por demografia_indicadores.py, colunas renomeadas",
+  "entradas": [
+    {
+      "arquivo": "data/processed/demografia-indicadores_ibge-sidra_1970-2022_municipal.csv",
+      "sha256": "a600b715e18c5ed9b6c91460f68b90919656af512a072ca0220a8d6911ffe684",
+      "bytes": 601
+    }
+  ],
+  "script": "scripts/paineis/dados_populacao.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "PD02"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:45:00Z",
+  "supressao_nota": "supressão primária não aplicada: séries municipais oficiais do IBGE, já publicadas pela fonte; nenhum agregado abaixo do município"
+}

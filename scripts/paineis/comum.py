@@ -24,6 +24,7 @@ import csv
 import hashlib
 import json
 import math
+from decimal import ROUND_HALF_UP, Decimal
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -74,6 +75,20 @@ def sha256_texto(texto: str) -> str:
 def relativo(caminho: Path) -> str:
     """Caminho relativo à raiz do repositório (nunca grava caminho local)."""
     return Path(caminho).resolve().relative_to(RAIZ).as_posix()
+
+
+def br(v, casas: int = 0, minimo: int | None = None) -> str:
+    """Número no formato pt-BR (1.234,5) para os textos de nota gerados por script."""
+    minimo = casas if minimo is None else minimo
+    # arredonda como o Intl/toLocaleString do navegador: meio para cima sobre o valor binário exato
+    q = Decimal(v).quantize(Decimal(1).scaleb(-casas), rounding=ROUND_HALF_UP)
+    s = f"{q:,.{casas}f}"
+    inteiro, _, frac = s.partition(".")
+    frac = frac.rstrip("0")
+    if len(frac) < minimo:
+        frac = frac + "0" * (minimo - len(frac))
+    inteiro = inteiro.replace(",", ".")
+    return inteiro + ("," + frac if frac else "")
 
 
 def limpar_valor(v):

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="pt-BR" data-tela="populacao" data-raiz="..">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de População — ClimaPampa, Uruguaiana/RS</title>
+<link rel="stylesheet" href="../css/paineis.css">
+<link rel="stylesheet" href="../css/paineis-componentes.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header id="cabecalho-comum"></header>
+
+  <div class="masthead">
+    <svg class="masthead-contour" viewBox="0 0 800 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
+      <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
+    </svg>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 4 de 4</span>
+    <h1>Painel de demografia</h1>
+    <p data-nota="pop_apresentacao"></p>
+    <div class="masthead-meta">
+      <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
+      <span><b>Censos</b> <span data-nota="pop_meta_censos"></span></span>
+      <span><b>Estimativas anuais</b> <span data-nota="pop_meta_estimativas"></span></span>
+      <span><b>Ver também</b> <a href="saude.html">Saúde</a> · <a href="clima.html">Clima e Ambiente</a> · <a href="territorio.html">Território</a> · <a href="../index.html">Geoportal</a></span>
+    </div>
+  </div>
+
+  <div class="chips-filtro" id="chips-filtro"></div>
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="section-head"><h2>População ao longo do tempo</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="pop_nota_serie"></p>
+  <div class="card">
+    <div class="card-head"><span class="card-title">População total</span><span class="card-meta" data-nota="pop_meta_serie"></span></div>
+    <div class="status-legend">
+      <span class="item"><span class="dot" style="background:var(--series-blue)"></span>Censo (contagem exata)</span>
+      <span class="item"><span class="dash" style="border-color:var(--series-blue)"></span>Estimativa anual</span>
+    </div>
+    <div class="card-body"><div id="chart-populacao"></div><div class="chart-tooltip" id="tt-populacao"></div></div>
+  </div>
+
+  <div class="section-head"><h2>Pirâmide etária comparada</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="pop_nota_piramide"></p>
+  <div class="status-legend">
+    <span class="item"><span class="dot" style="background:var(--series-blue)"></span>Homens</span>
+    <span class="item"><span class="dot" style="background:var(--series-orange)"></span>Mulheres</span>
+  </div>
+  <div class="chart-grid triple" id="piramideGrid"></div>
+
+  <div class="section-head"><h2>Envelhecimento e dependência</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="pop_nota_envelhecimento"></p>
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Índice de envelhecimento</span><span class="card-meta" data-nota="pop_meta_envelhecimento"></span></div>
+      <div class="card-body"><div id="chart-envelhecimento"></div><div class="chart-tooltip" id="tt-envelhecimento"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Razão de dependência</span><span class="card-meta" data-nota="pop_meta_dependencia"></span></div>
+      <div class="card-body"><div id="chart-dependencia"></div><div class="chart-tooltip" id="tt-dependencia"></div></div>
+    </div>
+  </div>
+
+  <div class="section-head"><h2>Urbano vs. rural</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="pop_nota_urbano"></p>
+  <div class="card">
+    <div class="card-head"><span class="card-title">Situação do domicílio</span><span class="card-meta">% da população total</span></div>
+    <div class="status-legend">
+      <span class="item"><span class="dot" style="background:var(--series-aqua)"></span>Urbana</span>
+      <span class="item"><span class="dot" style="background:var(--series-orange)"></span>Rural</span>
+    </div>
+    <div class="card-body"><div id="chart-urbano-rural"></div><div class="chart-tooltip" id="tt-urbano-rural"></div></div>
+  </div>
+
+  <div class="section-head"><h2>População vulnerável</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="pop_nota_vulneravel"></p>
+  <div class="chart-grid">
+    <div class="card"><div class="card-head"><span class="card-title">Crianças 0-4 anos (absoluto)</span></div>
+      <div class="card-body"><div id="chart-criancas-abs"></div><div class="chart-tooltip" id="tt-criancas-abs"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Crianças 0-4 anos (% da população)</span></div>
+      <div class="card-body"><div id="chart-criancas-pct"></div><div class="chart-tooltip" id="tt-criancas-pct"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Idosos 60+ anos (absoluto)</span></div>
+      <div class="card-body"><div id="chart-idosos-abs"></div><div class="chart-tooltip" id="tt-idosos-abs"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Idosos 60+ anos (% da população)</span></div>
+      <div class="card-body"><div id="chart-idosos-pct"></div><div class="chart-tooltip" id="tt-idosos-pct"></div></div></div>
+  </div>
+
+  <details class="table-wrap">
+    <summary data-nota="pop_resumo_tabela"></summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaIndicadores"></table></div>
+  </details>
+
+  <p class="section-note" style="margin-top:28px;" data-nota="pop_nota_agregacao"></p>
+  <p class="section-note" data-nota="pop_leitura"></p>
+
+  <footer id="rodape-comum"></footer>
+</div>
+
+<script src="../js/paineis/componentes.js"></script>
+<script src="../js/paineis/graficos.js"></script>
+<script src="../js/paineis/graficos-extra.js"></script>
+<script src="../js/paineis/dados.js"></script>
+<script src="../js/paineis/filtros.js"></script>
+<script src="../js/paineis/cabecalho.js"></script>
+<script src="../js/paineis/rodape.js"></script>
+<script>
+/* Tela de população: lê os produtos de data/paineis/ (scripts/paineis/dados_populacao.py).
+   Nenhum número fica neste arquivo: textos e indicadores vêm dos campos "notas" e "kpis". */
+const P = window.Paineis;
+const IDS = {serie: 'populacao_ibge_1970-2025_anual', ind: 'demografia_ibge_1970-2022_indicadores', pir: 'demografia_ibge_2000-2010-2022_piramides'};
+const BLOCOS = {serie: ['chart-populacao'], ind: ['chart-envelhecimento', 'chart-dependencia', 'chart-urbano-rural', 'tabelaIndicadores'], pir: ['piramideGrid']};
+function fmtSigned1(n){ return (n>0?'+':'') + fmt1(n); }
+
+async function iniciar(){
+  const c = {};
+  for(const [k, id] of Object.entries(IDS)){
+    c[k] = await P.carregar(id);
+    if(!c[k]) BLOCOS[k].forEach(b => P.erroBloco(document.getElementById(b), id));
+  }
+  const {serie, ind, pir} = c;
+  const anos = [serie, ind].filter(Boolean).flatMap(p => p.dados.map(r => r.ano || r.periodo));
+  P.iniciarFiltros({listas: {periodo: anos.length ? {inicio: Math.min(...anos), fim: Math.max(...anos)} : undefined}});
+  P.montarCabecalho();
+  P.preencherNotas();
+  if(serie) P.montarKpis('kpiRow', serie.meta.kpis);
+
+  const fonteInd = ind ? ind.meta.fonte_curta : '';
+  const anosPir = pir ? Array.from(new Set(pir.dados.map(r => r.ano))) : [];
+  const grid = document.getElementById('piramideGrid');
+  anosPir.forEach(ano => {
+    const card = document.createElement('div'); card.className = 'card';
+    card.innerHTML = `<div class="card-head"><span class="card-title">${ano}</span></div><div class="card-body"><div id="chart-piramide-${ano}"></div><div class="chart-tooltip" id="tt-piramide-${ano}"></div></div>`;
+    grid.appendChild(card);
+  });
+
+  function noPeriodo(linhas, campo){
+    const p = P.filtros.estado.periodo;
+    if(!p) return linhas;
+    const [a, b] = P.anosDoPeriodo(p);
+    return linhas.filter(r => r[campo] >= a && r[campo] <= b);
+  }
+
+  function draw(){
+    const blue = cssVar('--series-blue'), orange = cssVar('--series-orange'), aqua = cssVar('--series-aqua');
+    if(serie){
+      const d = noPeriodo(serie.dados, 'ano');
+      const censos = d.filter(r => r.fonte === 'censo').map(r => r.ano);
+      renderTimeLineChart('chart-populacao', 'tt-populacao', {
+        height: 220,
+        series: [{name: P.dica('População total', serie.meta.fonte_curta), color: blue, points: d.map(r => ({x: r.ano, y: r.populacao, marker: r.fonte === 'censo'}))}],
+        xTicks: censos, yFormat: v => fmtInt(v), zeroBase: false,
+      });
+    }
+    if(pir){
+      const maxP = Math.max(...pir.dados.flatMap(g => [g.homens, g.mulheres]));
+      anosPir.forEach(ano => {
+        // idade crescente para cima: o primeiro grupo desenhado (topo) é o mais velho
+        const p = pir.dados.filter(r => r.ano === ano).reverse();
+        renderPyramidChart(`chart-piramide-${ano}`, `tt-piramide-${ano}`, {
+          labels: p.map(g => g.grupo_idade), homens: p.map(g => g.homens), mulheres: p.map(g => g.mulheres), maxValue: maxP,
+          colorHomens: blue, colorMulheres: orange, nomeHomens: P.dica('Homens', pir.meta.fonte_curta), nomeMulheres: P.dica('Mulheres', pir.meta.fonte_curta),
+        });
+      });
+    }
+    if(ind){
+      const d = noPeriodo(ind.dados, 'periodo');
+      const xt = d.map(r => r.periodo);
+      const linha = (id, nome, cor, campo, fmt, h) => renderTimeLineChart(`chart-${id}`, `tt-${id}`, {
+        height: h, series: [{name: P.dica(nome, fonteInd), color: cor, points: d.map(r => ({x: r.periodo, y: r[campo], marker: true}))}], xTicks: xt, yFormat: fmt,
+      });
+      linha('envelhecimento', 'Índice de envelhecimento', orange, 'indice_envelhecimento', v => fmt1(v), 190);
+      linha('dependencia', 'Razão de dependência', blue, 'razao_dependencia', v => fmt1(v), 190);
+      renderStackedAreaChart('chart-urbano-rural', 'tt-urbano-rural', {
+        height: 200, years: xt, urbano: d.map(r => r.pct_urbano), rural: d.map(r => r.pct_rural), colorUrbano: aqua, colorRural: orange,
+        nomeUrbano: P.dica('Urbana', fonteInd), nomeRural: P.dica('Rural', fonteInd),
+      });
+      linha('criancas-abs', 'Crianças 0-4', blue, 'pop_0_4', v => fmtInt(v), 160);
+      linha('criancas-pct', 'Crianças 0-4 (%)', blue, 'pct_pop_0_4', v => fmt1(v)+'%', 160);
+      linha('idosos-abs', 'Idosos 60+', orange, 'pop_60_mais', v => fmtInt(v), 160);
+      linha('idosos-pct', 'Idosos 60+ (%)', orange, 'pct_pop_60_mais', v => fmt1(v)+'%', 160);
+    }
+  }
+  draw();
+  window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+
+  function tabela(){
+    if(!ind) return;
+    const t = document.getElementById('tabelaIndicadores');
+    t.innerHTML = '<thead><tr><th>Censo</th><th>População</th><th>Cresc. anual</th><th>Índice envelh.</th><th>Razão dep.</th><th>% urbano</th><th>% rural</th><th>0-4 anos</th><th>60+ anos</th></tr></thead>';
+    const tb = document.createElement('tbody');
+    noPeriodo(ind.dados, 'periodo').forEach(d => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${d.periodo}</td><td>${fmtInt(d.populacao_total)}</td><td>${d.taxa_crescimento===null?'—':fmtSigned1(d.taxa_crescimento)+'%'}</td><td>${fmt1(d.indice_envelhecimento)}</td><td>${fmt1(d.razao_dependencia)}</td><td>${fmt1(d.pct_urbano)}%</td><td>${fmt1(d.pct_rural)}%</td><td>${fmtInt(d.pop_0_4)} (${fmt1(d.pct_pop_0_4)}%)</td><td>${fmtInt(d.pop_60_mais)} (${fmt1(d.pct_pop_60_mais)}%)</td>`;
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+  }
+  tabela();
+  P.montarChips('chips-filtro', {periodo: 'Período'});
+  document.addEventListener('filtros:mudou', () => { draw(); tabela(); P.montarChips('chips-filtro', {periodo: 'Período'}); });
+
+  P.montarRodape();
+  document.documentElement.dataset.pronto = '1';
+}
+iniciar();
+</script>
+</body>
+</html>

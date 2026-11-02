@@ -1,0 +1,439 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "demografia_ibge_2000-2010-2022_piramides",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "PD03"
+ ],
+ "titulo": "Pirâmides etárias dos censos",
+ "fonte_curta": "IBGE, Censo",
+ "fonte": "IBGE, Censos Demográficos: SIDRA tabela 200 (2000 e 2010) e tabela 9514 (2022)",
+ "unidade_espacial": "município",
+ "unidade_medida": "habitantes",
+ "periodo": {
+  "inicio": "2000",
+  "fim": "2022"
+ },
+ "dados_ate": "2022",
+ "autorizacao": "exceção por premissa: PD03 (pirâmides de 2000, 2010 e 2022 direto das tabelas SIDRA 200 e 9514 (dado oficial, já exibido no painel de demografia); a tabela de docs/ continua pendente e não é usada)",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "célula vazia na tabela 200 do SIDRA é o \"-\" do IBGE (zero); conferido contra o total do grupo"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:45:00Z",
+ "script": "scripts/paineis/dados_populacao.py",
+ "colunas": [
+  {
+   "nome": "ano",
+   "tipo": "int"
+  },
+  {
+   "nome": "grupo_idade",
+   "tipo": "texto"
+  },
+  {
+   "nome": "homens",
+   "tipo": "float"
+  },
+  {
+   "nome": "mulheres",
+   "tipo": "float"
+  }
+ ],
+ "fonte_rodape": "IBGE — API SIDRA/Agregados, tabelas 200 (Censos 1970-2010, sexo × situação do domicílio × grupo de idade), 9514 (Censo 2022, sexo × idade), 202 (situação do domicílio 1970-2010), 9923 (situação do domicílio 2022) e 6579 (estimativas populacionais anuais). A tabela 6706 (\"pirâmide etária\" nominal do SIDRA) é da PNAD Contínua, uma pesquisa amostral sem representatividade em nível de município pequeno — testada e confirmada sem dado para Uruguaiana em nenhum período; por isso a pirâmide etária aqui vem das tabelas de Censo (200 e 9514), que têm os mesmos 21 grupos etários de 5 anos nos 3 pontos comparados",
+ "telas": [
+  "populacao"
+ ],
+ "supressao_nota": "supressão primária não aplicada: séries municipais oficiais do IBGE, já publicadas pela fonte; nenhum agregado abaixo do município",
+ "dados": [
+  {
+   "ano": 2000,
+   "grupo_idade": "0 a 4 anos",
+   "homens": 6653.0,
+   "mulheres": 6548.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "5 a 9 anos",
+   "homens": 6366.0,
+   "mulheres": 6280.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "10 a 14 anos",
+   "homens": 6341.0,
+   "mulheres": 6084.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "15 a 19 anos",
+   "homens": 6200.0,
+   "mulheres": 6301.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "20 a 24 anos",
+   "homens": 5572.0,
+   "mulheres": 5621.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "25 a 29 anos",
+   "homens": 4983.0,
+   "mulheres": 4952.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "30 a 34 anos",
+   "homens": 4831.0,
+   "mulheres": 5023.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "35 a 39 anos",
+   "homens": 4855.0,
+   "mulheres": 4976.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "40 a 44 anos",
+   "homens": 4147.0,
+   "mulheres": 4216.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "45 a 49 anos",
+   "homens": 3323.0,
+   "mulheres": 3356.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "50 a 54 anos",
+   "homens": 2652.0,
+   "mulheres": 2613.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "55 a 59 anos",
+   "homens": 2191.0,
+   "mulheres": 2303.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "60 a 64 anos",
+   "homens": 1753.0,
+   "mulheres": 1891.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "65 a 69 anos",
+   "homens": 1049.0,
+   "mulheres": 1376.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "70 a 74 anos",
+   "homens": 881.0,
+   "mulheres": 1023.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "75 a 79 anos",
+   "homens": 518.0,
+   "mulheres": 759.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "80 a 84 anos",
+   "homens": 297.0,
+   "mulheres": 537.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "85 a 89 anos",
+   "homens": 105.0,
+   "mulheres": 199.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "90 a 94 anos",
+   "homens": 39.0,
+   "mulheres": 60.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "95 a 99 anos",
+   "homens": 0.0,
+   "mulheres": 19.0
+  },
+  {
+   "ano": 2000,
+   "grupo_idade": "100 anos ou mais",
+   "homens": 0.0,
+   "mulheres": 42.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "0 a 4 anos",
+   "homens": 4778.0,
+   "mulheres": 4805.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "5 a 9 anos",
+   "homens": 5513.0,
+   "mulheres": 5459.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "10 a 14 anos",
+   "homens": 6077.0,
+   "mulheres": 6028.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "15 a 19 anos",
+   "homens": 5582.0,
+   "mulheres": 5599.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "20 a 24 anos",
+   "homens": 4955.0,
+   "mulheres": 5085.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "25 a 29 anos",
+   "homens": 4866.0,
+   "mulheres": 5139.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "30 a 34 anos",
+   "homens": 4501.0,
+   "mulheres": 4768.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "35 a 39 anos",
+   "homens": 4261.0,
+   "mulheres": 4366.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "40 a 44 anos",
+   "homens": 4179.0,
+   "mulheres": 4472.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "45 a 49 anos",
+   "homens": 4077.0,
+   "mulheres": 4319.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "50 a 54 anos",
+   "homens": 3513.0,
+   "mulheres": 3833.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "55 a 59 anos",
+   "homens": 2705.0,
+   "mulheres": 2861.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "60 a 64 anos",
+   "homens": 2289.0,
+   "mulheres": 2229.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "65 a 69 anos",
+   "homens": 1587.0,
+   "mulheres": 1719.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "70 a 74 anos",
+   "homens": 930.0,
+   "mulheres": 1495.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "75 a 79 anos",
+   "homens": 680.0,
+   "mulheres": 948.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "80 a 84 anos",
+   "homens": 316.0,
+   "mulheres": 720.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "85 a 89 anos",
+   "homens": 168.0,
+   "mulheres": 412.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "90 a 94 anos",
+   "homens": 21.0,
+   "mulheres": 131.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "95 a 99 anos",
+   "homens": 11.0,
+   "mulheres": 26.0
+  },
+  {
+   "ano": 2010,
+   "grupo_idade": "100 anos ou mais",
+   "homens": 0.0,
+   "mulheres": 11.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "0 a 4 anos",
+   "homens": 3934.0,
+   "mulheres": 3791.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "5 a 9 anos",
+   "homens": 4230.0,
+   "mulheres": 4030.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "10 a 14 anos",
+   "homens": 4032.0,
+   "mulheres": 4096.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "15 a 19 anos",
+   "homens": 4472.0,
+   "mulheres": 4258.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "20 a 24 anos",
+   "homens": 4352.0,
+   "mulheres": 4628.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "25 a 29 anos",
+   "homens": 4000.0,
+   "mulheres": 4287.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "30 a 34 anos",
+   "homens": 3770.0,
+   "mulheres": 4030.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "35 a 39 anos",
+   "homens": 3944.0,
+   "mulheres": 4338.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "40 a 44 anos",
+   "homens": 3974.0,
+   "mulheres": 4403.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "45 a 49 anos",
+   "homens": 3701.0,
+   "mulheres": 3839.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "50 a 54 anos",
+   "homens": 3626.0,
+   "mulheres": 3856.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "55 a 59 anos",
+   "homens": 3473.0,
+   "mulheres": 3925.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "60 a 64 anos",
+   "homens": 3121.0,
+   "mulheres": 3419.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "65 a 69 anos",
+   "homens": 2330.0,
+   "mulheres": 2762.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "70 a 74 anos",
+   "homens": 1617.0,
+   "mulheres": 2004.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "75 a 79 anos",
+   "homens": 995.0,
+   "mulheres": 1407.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "80 a 84 anos",
+   "homens": 526.0,
+   "mulheres": 889.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "85 a 89 anos",
+   "homens": 255.0,
+   "mulheres": 503.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "90 a 94 anos",
+   "homens": 79.0,
+   "mulheres": 225.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "95 a 99 anos",
+   "homens": 13.0,
+   "mulheres": 64.0
+  },
+  {
+   "ano": 2022,
+   "grupo_idade": "100 anos ou mais",
+   "homens": 5.0,
+   "mulheres": 7.0
+  }
+ ]
+}

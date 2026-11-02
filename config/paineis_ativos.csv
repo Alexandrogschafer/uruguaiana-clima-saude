@@ -30,9 +30,9 @@ TB28,bloqueada,,,
 TB29,bloqueada,,,
 TB30,bloqueada,,,
 TB31,bloqueada,,,
-PD01,livre,,data/processed/populacao-serie-temporal_ibge-sidra_1970-2025_municipal.csv,
-PD02,livre,,data/processed/demografia-indicadores_ibge-sidra_1970-2022_municipal.csv,
-PD03,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/piramide-etaria_ibge-censo_1970-2022_municipal.csv,
+PD01,livre,,data/processed/populacao-serie-temporal_ibge-sidra_1970-2025_municipal.csv,conferido
+PD02,livre,,data/processed/demografia-indicadores_ibge-sidra_1970-2022_municipal.csv,conferido
+PD03,depende de conferência no QGIS,"pirâmides de 2000, 2010 e 2022 direto das tabelas SIDRA 200 e 9514 (dado oficial, já exibido no painel de demografia); a tabela de docs/ continua pendente e não é usada",docs/dinamica_populacional/tabelas/piramide-etaria_ibge-censo_1970-2022_municipal.csv,conferido
 PD04,livre,,data/geoportal/densidade-populacional.geojson,
 PD05,livre,,data/geoportal/criancas-0-4.geojson,
 PD06,depende de conferência no QGIS,,data/processed/dinamica_populacional/populacao-setores_ibge-censo_2022_setor.gpkg,

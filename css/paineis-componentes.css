@@ -2,6 +2,18 @@
    cabeçalho e menu "Explorar", selo, aviso, valor suprimido, chips de
    filtro e caixa de erro de bloco. */
 
+/* ---------- tokens de status e legendas dos painéis de território e população
+   (extraídos sem alteração dos painéis antigos) ---------- */
+:root { --status-good: #0ca30c; --status-warning: #fab219; --status-serious: #ec835a; --status-critical: #d03b3b; }
+.cat-label { font-size: 11.5px; font-weight: 600; fill: var(--ink-secondary); }
+.marker-censo { cursor: pointer; }
+.marker-censo:hover { filter: brightness(1.15); }
+.status-legend { display: flex; gap: 16px; margin: 2px 0 10px; flex-wrap: wrap; font-size: 12px; color: var(--ink-secondary); }
+.status-legend .item { display: flex; align-items: center; gap: 6px; }
+.status-legend .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.status-legend .dash { width: 14px; height: 0; border-top: 2px solid; display: inline-block; }
+.status-legend .dash.dotted { border-top-style: dashed; }
+
 /* ---------- cabeçalho comum ---------- */
 .cabecalho-comum { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-bottom: 14px; font-size: 13px; }
 .cabecalho-marca { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
@@ -60,7 +72,8 @@ table.tabela-cartoes a { color: var(--accent); text-decoration: none; border-bot
    a barra em si não captura o toque, para que o ajuste de toque do navegador não
    desvie o dedo para a barra vizinha quando a barra tocada é baixa ou zero */
 .chart-svg rect[fill="transparent"] { cursor: pointer; }
-.chart-svg path.bar-mark { pointer-events: none; }
+.chart-svg .bar-mark { pointer-events: none; }
+.chart-svg text.cat-label { pointer-events: none; }
 
 /* lista recolhível (celular): o resumo só aparece no ponto de quebra; acima dele a lista fica aberta */
 details.detalhes-unidades > summary { cursor: pointer; font-size: 14px; font-weight: 600; padding: 10px 0 4px; list-style: none; display: flex; align-items: center; gap: 8px; }

@@ -1,0 +1,238 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "populacao_ibge_1970-2025_anual",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "PD01"
+ ],
+ "titulo": "População total: censos e estimativas anuais",
+ "fonte_curta": "IBGE",
+ "fonte": "IBGE, Censos Demográficos (SIDRA tabelas 200 e 9514) e estimativas anuais (tabela 6579)",
+ "unidade_espacial": "município",
+ "unidade_medida": "habitantes",
+ "periodo": {
+  "inicio": "1970",
+  "fim": "2025"
+ },
+ "dados_ate": "2025",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "anos sem estimativa anual publicada ficam fora da série"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:45:00Z",
+ "script": "scripts/paineis/dados_populacao.py",
+ "colunas": [
+  {
+   "nome": "ano",
+   "tipo": "int"
+  },
+  {
+   "nome": "populacao",
+   "tipo": "float"
+  },
+  {
+   "nome": "fonte",
+   "tipo": "texto",
+   "valores": [
+    "censo",
+    "estimativa"
+   ]
+  }
+ ],
+ "fonte_rodape": "IBGE — API SIDRA/Agregados, tabelas 200 (Censos 1970-2010, sexo × situação do domicílio × grupo de idade), 9514 (Censo 2022, sexo × idade), 202 (situação do domicílio 1970-2010), 9923 (situação do domicílio 2022) e 6579 (estimativas populacionais anuais). A tabela 6706 (\"pirâmide etária\" nominal do SIDRA) é da PNAD Contínua, uma pesquisa amostral sem representatividade em nível de município pequeno — testada e confirmada sem dado para Uruguaiana em nenhum período; por isso a pirâmide etária aqui vem das tabelas de Censo (200 e 9514), que têm os mesmos 21 grupos etários de 5 anos nos 3 pontos comparados",
+ "telas": [
+  "populacao"
+ ],
+ "notas": {
+  "pop_apresentacao": "População, estrutura etária, urbanização e indicadores de envelhecimento e dependência — série municipal dos 6 Censos Demográficos (1970 a 2022) via API SIDRA/IBGE, com estimativas anuais preenchendo o intervalo entre 2001 e 2025.",
+  "pop_meta_censos": "1970 · 1980 · 1991 · 2000 · 2010 · 2022",
+  "pop_meta_estimativas": "2001–2025 (exceto 2007/2010/2022/2023)",
+  "pop_nota_serie": "Marcadores maiores = ano de Censo (contagem exata); linha fina entre 2001 e 2025 = estimativas anuais do IBGE. Entre 1970 e 2000 só existem os 3 pontos de Censo — não há estimativa anual publicada nesse trecho, então a linha reta entre eles é uma referência visual, não uma interpolação real.",
+  "pop_meta_serie": "1970–2025",
+  "pop_nota_piramide": "2000, 2010 e 2022 — os únicos 3 censos com abertura fina da faixa 80+ (necessária para uma pirâmide com o mesmo nível de detalhe nos 3 pontos). Mesma escala horizontal nos 3 gráficos, para comparação direta do formato: da pirâmide de base larga em 2000 ao formato já quase retangular (envelhecido) em 2022.",
+  "pop_nota_envelhecimento": "Índice de envelhecimento = (60 anos ou mais / 0-14 anos) × 100. Razão de dependência = ((0-14 anos + 65 anos ou mais) / 15-64 anos) × 100 — quanto da população em idade não-produtiva (crianças + idosos) cada 100 pessoas em idade produtiva sustentam. Os 6 pontos são todos de ano de Censo; eixo horizontal em escala real de tempo (os intervalos entre censos não são iguais).",
+  "pop_meta_envelhecimento": "60+ / 0-14 × 100",
+  "pop_meta_dependencia": "(0-14 + 65+) / 15-64 × 100",
+  "pop_nota_urbano": "% da população total em cada situação de domicílio, nos 6 censos. 1970–2010: SIDRA tabela 202. 2022: tabela 9923 (202 não tem versão 2022).",
+  "pop_nota_vulneravel": "Crianças de 0-4 anos e idosos de 60 anos ou mais — grupos etários de maior atenção em eventos climáticos extremos (calor, enchente, estiagem). Absoluto e % da população total, nos 6 censos.",
+  "pop_resumo_tabela": "Ver todos os indicadores em tabela (6 censos)",
+  "pop_nota_agregacao": "**Nível de agregação — por que municipal, não por setor:** a malha de setores censitários do IBGE muda de configuração a cada Censo (os limites de setor de 2000, 2010 e 2022 não são o mesmo desenho geográfico) — comparar um setor específico ao longo do tempo compara, na prática, áreas diferentes. Por isso toda a série temporal deste painel é agregada no nível **municipal**, o único nível estável para comparação entre os 6 censos. O detalhe espacial por setor censitário — só para o Censo 2022, na malha atual — está no [Painel de Economia](economia.html) (seção \"Perfil censitário\") e no arquivo `data/raw/vulnerabilidade-censo_ibge_2022.csv` / `setores-censitarios_vulnerabilidade_unido.gpkg`.",
+  "pop_leitura": "**Leitura recomendada:** 1970-1991 e 2000/2010/2022 usam o mesmo cálculo de indicadores, mas 1970/1980/1991 só têm a faixa 80+ agregada na fonte (não abrem 80-84/85-89/.../100+ como os censos mais recentes) — isso não muda os totais de \"60 anos ou mais\" usados aqui, só o nível de detalhe interno da faixa mais idosa. A queda populacional de 2010 para 2022 é uma contagem censitária real, não um artefato de metodologia."
+ },
+ "kpis": [
+  {
+   "rotulo": "População (Censo 2022)",
+   "valor": "117.210",
+   "unidade": "hab",
+   "sub": "94,9% urbana"
+  },
+  {
+   "rotulo": "Taxa de crescimento 2010–2022",
+   "valor": "-0,6",
+   "unidade": "%/ano",
+   "sub": "geométrica anual — população vem caindo"
+  },
+  {
+   "rotulo": "Índice de envelhecimento",
+   "valor": "83,9",
+   "unidade": "",
+   "sub": "60+ por 100 crianças de 0-14 anos"
+  },
+  {
+   "rotulo": "% população urbana",
+   "valor": "94,9",
+   "unidade": "%",
+   "sub": "5,1% rural"
+  }
+ ],
+ "supressao_nota": "supressão primária não aplicada: séries municipais oficiais do IBGE, já publicadas pela fonte; nenhum agregado abaixo do município",
+ "dados": [
+  {
+   "ano": 1970,
+   "populacao": 74613.0,
+   "fonte": "censo"
+  },
+  {
+   "ano": 1980,
+   "populacao": 91498.0,
+   "fonte": "censo"
+  },
+  {
+   "ano": 1991,
+   "populacao": 117456.0,
+   "fonte": "censo"
+  },
+  {
+   "ano": 2000,
+   "populacao": 126936.0,
+   "fonte": "censo"
+  },
+  {
+   "ano": 2001,
+   "populacao": 128186.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2002,
+   "populacao": 129620.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2003,
+   "populacao": 130866.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2004,
+   "populacao": 133481.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2005,
+   "populacao": 134928.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2006,
+   "populacao": 136364.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2008,
+   "populacao": 127138.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2009,
+   "populacao": 127045.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2010,
+   "populacao": 125435.0,
+   "fonte": "censo"
+  },
+  {
+   "ano": 2011,
+   "populacao": 125320.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2012,
+   "populacao": 125209.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2013,
+   "populacao": 129504.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2014,
+   "populacao": 129580.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2015,
+   "populacao": 129652.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2016,
+   "populacao": 129720.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2017,
+   "populacao": 129784.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2018,
+   "populacao": 127079.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2019,
+   "populacao": 126970.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2020,
+   "populacao": 126866.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2021,
+   "populacao": 126766.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2022,
+   "populacao": 117210.0,
+   "fonte": "censo"
+  },
+  {
+   "ano": 2024,
+   "populacao": 120885.0,
+   "fonte": "estimativa"
+  },
+  {
+   "ano": 2025,
+   "populacao": 120819.0,
+   "fonte": "estimativa"
+  }
+ ]
+}
