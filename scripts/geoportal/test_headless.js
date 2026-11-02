@@ -5,16 +5,23 @@
 //   - camadas/painéis carregados a partir dos JSON em data/geoportal/
 //   - ausência de erros de JS/console
 //
+//   - parâmetros da URL (cota, unidade, camada; inválidos geram aviso e saem da URL)
+//   - popup das unidades (2017 e 2023, sem 2026 nem total; unidade sem classe sem população)
+//   - links "Painéis", "Ver na saúde" e "Ver na cheia e saúde" respondendo 200
+//
 // Uso: npm run test:geoportal
 // Requer Chromium do Playwright instalado (npx playwright install chromium).
+// O screenshot vai para uma pasta temporária do sistema (ou SCREENSHOT_DIR), fora do repositório.
 
 const path = require("path");
 const http = require("http");
 const fs = require("fs");
+const os = require("os");
 const { chromium } = require("playwright");
 
 const ROOT = path.resolve(__dirname, "..", "..");
-const SCREENSHOT_PATH = path.join(ROOT, "scripts", "geoportal", "geoportal-headless.png");
+const SCREENSHOT_DIR = process.env.SCREENSHOT_DIR || fs.mkdtempSync(path.join(os.tmpdir(), "geoportal-headless-"));
+const SCREENSHOT_PATH = path.join(SCREENSHOT_DIR, "geoportal-headless.png");
 
 const MIME = {
   ".html": "text/html",
@@ -72,8 +79,9 @@ async function main() {
       return !!(el && el.classList.contains("leaflet-container"));
     }),
     gruposColapsaveisPresentes: await page.evaluate(() => {
-      const esperados = ["mapa-base", "saude", "demografia", "inundacao", "uso-solo", "hidrografia-terreno", "meio-fisico", "malha-viaria", "estrutura-fundiaria", "educacao", "cobertura-movel"];
-      return esperados.every((chave) => !!document.querySelector(`.grupo[data-grupo="${chave}"]`));
+      // 12 grupos (o README dizia 11; "base-territorial" entrou depois)
+      const esperados = ["mapa-base", "saude", "demografia", "inundacao", "uso-solo", "hidrografia-terreno", "meio-fisico", "malha-viaria", "estrutura-fundiaria", "base-territorial", "educacao", "cobertura-movel"];
+      return esperados.every((chave) => !!document.querySelector(`.grupo[data-grupo="${chave}"]`)) && document.querySelectorAll(".grupo").length === esperados.length;
     }),
     // 3 caixas (crianças, idosos e bairros): a "Densidade populacional" virou o seletor de ano no commit 531eb53
     camadasDemografiaCarregadas: await page.evaluate(() => {
@@ -245,6 +253,11 @@ async function main() {
 
   await page.screenshot({ path: SCREENSHOT_PATH, fullPage: false });
 
+  // ---------- parâmetros da URL, popup das unidades e links para os painéis (rodada 115) ----------
+  const extras = await checarUrlPopupLinks(browser, baseUrl, consoleErrors, pageErrors);
+  console.log("URL, popup e links:", JSON.stringify(extras.detalhe));
+  Object.assign(checks, extras.checks);
+
   await browser.close();
   server.close();
 
@@ -266,6 +279,99 @@ async function main() {
     return;
   }
   console.log("\nOK");
+}
+
+// abre o portal com uma busca e espera os parâmetros aplicados (url-estado.js marca data-url-pronta)
+async function abrirComParametros(browser, baseUrl, busca, consoleErrors, pageErrors) {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  page.on("console", (msg) => { if (msg.type() === "error") consoleErrors.push(`${busca}: ${msg.text()}`); });
+  page.on("pageerror", (err) => pageErrors.push(`${busca}: ${err}`));
+  await page.goto(`${baseUrl}index.html${busca}`, { waitUntil: "networkidle" });
+  await page.waitForFunction(() => document.documentElement.dataset.urlPronta === "1", null, { timeout: 15000 });
+  return page;
+}
+
+async function checarUrlPopupLinks(browser, baseUrl, consoleErrors, pageErrors) {
+  const checks = {};
+  const detalhe = {};
+  // conteúdo de texto do popup de uma unidade, montado pelo próprio portal
+  const textoPopup = (page, cnes) => page.evaluate((c) => {
+    const m = window.App.layers.unidadesSaude.getLayers().find((l) => l.feature.properties.cnes === c);
+    m.openPopup();
+    const el = m.getPopup().getElement().querySelector(".leaflet-popup-content");
+    return { texto: el.innerText, links: Array.from(el.querySelectorAll("a")).map((a) => a.getAttribute("href")) };
+  }, cnes);
+
+  // cota=952: liga a mancha, só a de 952 visível, controle na posição da cota
+  let page = await abrirComParametros(browser, baseUrl, "?cota=952", consoleErrors, pageErrors);
+  detalhe.cota952 = await page.evaluate(() => {
+    const cam = window.App.layers.cotasInundacao;
+    const visiveis = cam.getLayers().filter((l) => l.options.fillOpacity > 0).map((l) => l.feature.properties.cota_cm);
+    return { naMapa: window.App.map.hasLayer(cam), visiveis: [...new Set(visiveis)], slider: document.getElementById("slider-cota").value,
+      rotulo: document.getElementById("rotulo-cota").textContent, caixa: document.querySelector('input[data-camada="cotasInundacao"]').checked,
+      linkCheia: document.getElementById("link-cheia-saude").getAttribute("href"), url: location.search };
+  });
+  const cotas = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "geoportal", "estatisticas-por-cota.json"), "utf8")).cotas_disponiveis_cm;
+  checks.urlCota952LigaManchaEControle = detalhe.cota952.naMapa && detalhe.cota952.caixa && JSON.stringify(detalhe.cota952.visiveis) === "[952]" &&
+    detalhe.cota952.slider === String(cotas.indexOf(952)) && detalhe.cota952.rotulo === "952 cm" && detalhe.cota952.url === "?cota=952";
+  // mover o controle grava a cota na URL e atualiza o link da cheia e saúde
+  detalhe.cotaMovida = await page.evaluate(() => {
+    const s = document.getElementById("slider-cota");
+    s.value = String(s.max);
+    s.dispatchEvent(new Event("input"));
+    return { url: location.search, link: document.getElementById("link-cheia-saude").getAttribute("href") };
+  });
+  checks.urlCotaMovidaVaiParaUrl = detalhe.cotaMovida.url === `?cota=${cotas[cotas.length - 1]}` && detalhe.cotaMovida.link === `dashboards/cheia-saude.html?cota=${cotas[cotas.length - 1]}`;
+  // links do portal para os painéis: 200 no servidor local
+  const links = await page.evaluate(() => ({ paineis: document.getElementById("link-paineis").getAttribute("href"), cheia: document.getElementById("link-cheia-saude").getAttribute("href") }));
+  const status = async (href) => (await page.request.get(new URL(href, page.url()).toString())).status();
+  detalhe.links = { ...links, paineisStatus: await status(links.paineis), cheiaStatus: await status(links.cheia) };
+  await page.close();
+
+  // unidade válida: popup aberto e mapa centralizado; popup sem 2026 e sem total; "Ver na saúde" com 200
+  page = await abrirComParametros(browser, baseUrl, "?unidade=2247143", consoleErrors, pageErrors);
+  detalhe.unidade = await page.evaluate(() => {
+    const el = document.querySelector(".leaflet-popup-content");
+    const m = window.App.layers.unidadesSaude.getLayers().find((l) => l.feature.properties.cnes === "2247143");
+    const c = window.App.map.getCenter(), p = m.getLatLng();
+    return { aberto: !!el && el.innerText.includes("2247143"), centro: Math.abs(c.lat - p.lat) < 0.01 && Math.abs(c.lng - p.lng) < 0.01, zoom: window.App.map.getZoom(), url: location.search };
+  });
+  checks.urlUnidadeAbrePopup = detalhe.unidade.aberto && detalhe.unidade.centro && detalhe.unidade.zoom >= 15 && detalhe.unidade.url === "?unidade=2247143";
+  // todas as unidades: nenhum popup com 2026, total ou soma; 2017 e 2023 com o aviso; a sem classe sem número de população
+  const geo = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "geoportal", "unidades-saude-esf-ubs.geojson"), "utf8"));
+  const popups = [];
+  for (const f of geo.features) popups.push({ cnes: f.properties.cnes, classe: f.properties.classe, ...(await textoPopup(page, f.properties.cnes)) });
+  await page.evaluate(() => window.App.map.closePopup());
+  const comClasse = popups.filter((x) => x.classe !== "sem classe"), semClasse = popups.filter((x) => x.classe === "sem classe");
+  const aviso = "Número informado pelos profissionais de saúde; o conceito está em confirmação; não somar nem comparar com o Censo";
+  detalhe.popups = { n: popups.length, semClasse: semClasse.map((x) => x.texto.replace(/\s+/g, " ")) };
+  checks.popupUnidadesSem2026NemTotal = popups.length === 22 && popups.every((x) => !/\(2026\)|\b(total|soma)\b/i.test(x.texto)) &&
+    comClasse.every((x) => x.texto.includes("População informada (2017)") && x.texto.includes("População informada (2023)") && x.texto.includes(aviso)) &&
+    popups.every((x) => JSON.stringify(x.links) === JSON.stringify([`dashboards/saude.html?unidade=${x.cnes}`]));
+  checks.popupPrisionalSemPopulacao = semClasse.length === 1 && semClasse[0].cnes === "4126947" &&
+    semClasse[0].texto.includes("Equipe de Saúde Prisional · sem classe · não entra em comparações de cobertura") &&
+    !/popula/i.test(semClasse[0].texto) && !/\d/.test(semClasse[0].texto.replace(/CNES|4126947|BR 472, 07, KM 07|versão 4, 2026/g, ""));
+  detalhe.links.saudeStatus = await status(popups[0].links[0]);
+  await page.close();
+  checks.linksPortalParaPaineis200 = detalhe.links.paineis === "dashboards/sintese.html" && detalhe.links.paineisStatus === 200 &&
+    detalhe.links.cheiaStatus === 200 && detalhe.links.saudeStatus === 200;
+
+  // inválidos: unidade e cota geram aviso e saem da URL; chave de camada inválida é ignorada, a válida fica
+  const errosAntes = consoleErrors.length + pageErrors.length;
+  page = await abrirComParametros(browser, baseUrl, "?unidade=1234567&cota=999&camada=bairros,naoexiste&origem=teste", consoleErrors, pageErrors);
+  detalhe.invalidos = await page.evaluate(() => ({
+    url: location.search, aviso: (document.getElementById("aviso-url") || {}).innerText || "",
+    bairros: window.App.map.hasLayer(window.App.layers.bairros), popup: !!document.querySelector(".leaflet-popup-content"),
+    cota: document.getElementById("rotulo-cota").textContent,
+  }));
+  await page.click("#aviso-url button");
+  detalhe.invalidos.avisoFechado = !(await page.$("#aviso-url"));
+  await page.close();
+  checks.urlInvalidosGeramAvisoESaemDaUrl = detalhe.invalidos.url === "?camada=bairros&origem=teste" && /unidade=1234567/.test(detalhe.invalidos.aviso) &&
+    /cota=999/.test(detalhe.invalidos.aviso) && !detalhe.invalidos.popup && detalhe.invalidos.cota === `${cotas[0]} cm` && detalhe.invalidos.avisoFechado &&
+    consoleErrors.length + pageErrors.length === errosAntes;
+  checks.urlCamadaInvalidaIgnorada = detalhe.invalidos.bairros && /camada=naoexiste/.test(detalhe.invalidos.aviso);
+  return { checks, detalhe };
 }
 
 main();

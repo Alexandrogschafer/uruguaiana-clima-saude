@@ -23,7 +23,17 @@ Regras:
        de soma ou total de população por unidade; produto de unidades sem 2026 e com a
        Prisional fora das comparações e sem população; selo em_confirmacao;
     k) IN15 (publicado × contagem) nunca publicado; ativo não livre só com exceção
-       registrada em config/paineis_ativos.csv (as exceções em uso são listadas).
+       registrada em config/paineis_ativos.csv (as exceções em uso são listadas);
+    l) cheia e saúde: ativos em conferência fora, sem pessoas, trava do evento em curso,
+       Prisional fora da contagem, só mini-mapas como imagem;
+    m) camada publicada das unidades (data/geoportal/unidades-saude-esf-ubs.geojson e o
+       metadado irmão): nenhum campo de 2026 nem de soma ou total;
+    n) nenhum arquivo do portal (index.html, js/, data/geoportal/) nem de data/paineis/ traz
+       dado da cheia de outubro de 2026: nenhum valor de nível ou vazão (nem outro número) em
+       linha datada de 01/10/2026 em diante, nenhum campo de pico, duração ou posição do
+       evento, nenhuma data do evento como valor nas camadas do portal;
+    o) os links dos painéis para o portal (index.html?camada=...) usam só chaves de camada
+       que o portal aceita (lidas de js/url-estado.js e js/layers.js).
 
 Uso:
     python scripts/paineis/test_regras_publicas.py
@@ -345,6 +355,115 @@ def regra_l(prods) -> list[str]:
     return falhas
 
 
+GEO = RAIZ / "data" / "geoportal"
+INICIO_EVENTO = "2026-10-01"
+RE_DATA_ISO = re.compile(r"^(\d{4}-\d{2}-\d{2})")
+# datas que só registram quando o arquivo foi gerado ou lido (não são dado do evento)
+CHAVES_DATA_DE_REGISTRO = {"data_processamento", "gerado_em", "data_acesso", "data_consulta", "atualizado_em", "dados_ate"}
+CAMPOS_DATA_LINHA = ("dia", "data", "data_hora", "inicio", "fim")
+
+
+def regra_m() -> list[str]:
+    """Camada publicada das unidades: sem campo de 2026, sem soma nem total de população."""
+    falhas = []
+    camada = GEO / "unidades-saude-esf-ubs.geojson"
+    if not camada.exists():
+        return [f"{camada.name} ausente"]
+    g = json.loads(camada.read_text(encoding="utf-8"))
+    chaves = {k for f in g["features"] for k in f.get("properties", {})}
+    meta = json.loads(camada.with_suffix(".json").read_text(encoding="utf-8"))
+    chaves |= set(meta.get("colunas", []))
+    ruins = sorted(k for k in chaves if "2026" in k or re.search(r"soma|total", k, re.I))
+    if ruins:
+        falhas.append(f"{camada.name}: campos de 2026, soma ou total {ruins}")
+    if len(g["features"]) != 22:
+        falhas.append(f"{camada.name}: {len(g['features'])} unidades (esperado 22)")
+    return falhas
+
+
+def _walk(obj, caminho=""):
+    """Percorre um JSON e devolve (caminho, chave, valor) de cada folha."""
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            yield from _walk(v, f"{caminho}.{k}") if isinstance(v, (dict, list)) else [(f"{caminho}.{k}", k, v)]
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            yield from _walk(v, f"{caminho}[{i}]") if isinstance(v, (dict, list)) else [(f"{caminho}[{i}]", None, v)]
+
+
+def regra_n(prods) -> list[str]:
+    """Nada da cheia de outubro de 2026 no portal nem nos painéis."""
+    falhas = []
+    # painéis: linhas datadas de 01/10/2026 em diante não podem ter número; nenhum campo de pico/duração/posição
+    for p, d in prods:
+        for i, linha in enumerate(d.get("dados", [])):
+            if not isinstance(linha, dict):
+                continue
+            datas = [str(linha[c])[:10] for c in CAMPOS_DATA_LINHA if isinstance(linha.get(c), str) and RE_DATA_ISO.match(linha[c])]
+            if any(x >= INICIO_EVENTO for x in datas):
+                numeros = [k for k, v in linha.items() if isinstance(v, (int, float)) and not isinstance(v, bool)]
+                if numeros:
+                    falhas.append(f"{p.name}: linha {i} de {max(datas)} com valores {numeros}")
+        if d.get("evento_em_curso") is not None or p.name.startswith("rio_"):
+            ruins = sorted(k for k in _chaves(d) if any(t in k for t in TERMOS_EVENTO))
+            if ruins:
+                falhas.append(f"{p.name}: campos de pico, duração ou posição {ruins}")
+    # portal: nenhuma data do evento como valor nas camadas (fora as datas de registro do arquivo)
+    for f in sorted(GEO.rglob("*")):
+        if re.search(r"2026-?10", f.name):
+            falhas.append(f"data/geoportal: arquivo com data do evento no nome: {f.name}")
+        if f.suffix not in (".json", ".geojson"):
+            continue
+        try:
+            obj = json.loads(f.read_text(encoding="utf-8"))
+        except (ValueError, UnicodeDecodeError):
+            continue
+        for caminho, chave, v in _walk(obj):
+            if chave in CHAVES_DATA_DE_REGISTRO or not isinstance(v, str):
+                continue
+            m = RE_DATA_ISO.match(v)
+            if m and m.group(1) >= INICIO_EVENTO:
+                falhas.append(f"{f.relative_to(RAIZ)}: {caminho} = {v}")
+                break
+    # portal: textos do mapa sem números da cheia de outubro
+    for f in [RAIZ / "index.html", *sorted((RAIZ / "js").glob("*.js"))]:
+        t = f.read_text(encoding="utf-8")
+        if re.search(r"(cheia|evento|enchente)[^.\n]{0,40}outubro de 2026|outubro de 2026[^.\n]{0,40}\d+\s*(cm|m³/s)", t, re.I):
+            falhas.append(f"{f.relative_to(RAIZ)}: texto sobre a cheia de outubro de 2026")
+    return falhas
+
+
+def chaves_camada_portal() -> set[str]:
+    """Chaves que o portal aceita em ?camada= (as mesmas de js/url-estado.js; data-camada vem de layers.js)."""
+    url = (RAIZ / "js" / "url-estado.js").read_text(encoding="utf-8")
+    lay = (RAIZ / "js" / "layers.js").read_text(encoding="utf-8")
+    chaves = set(re.findall(r"^\s+(\w+): (?:anoDensidade|porFiltro)\(", url, re.M))
+    chaves |= set(re.findall(r'^\s+(\w+): "checkbox-', url, re.M))
+    m = re.search(r'\[((?:"\w+",?\s*)+)\]\.forEach\(\(chave\)', url)
+    if m:
+        chaves |= set(re.findall(r'"(\w+)"', m.group(1)))
+    chaves |= set(re.findall(r'\{ chave: "(\w+)", layer:', lay))
+    return chaves
+
+
+def regra_o() -> list[str]:
+    """Links dos painéis ao portal só com chaves de camada que existem."""
+    falhas = []
+    validas = chaves_camada_portal()
+    if len(validas) < 10:
+        return [f"chaves do portal não encontradas em js/url-estado.js e js/layers.js ({sorted(validas)})"]
+    n = 0
+    for f in sorted((RAIZ / "dashboards").glob("*.html")):
+        for lista in re.findall(r"index\.html\?[^\"'`\s]*?camada=([\w,]+)", f.read_text(encoding="utf-8")):
+            n += 1
+            ruins = [k for k in lista.split(",") if k not in validas]
+            if ruins:
+                falhas.append(f"dashboards/{f.name}: camada={lista} com chave inexistente {ruins}")
+    if n == 0:
+        falhas.append("nenhum link dos painéis ao portal com camada= encontrado")
+    return falhas
+
+
 def main() -> int:
     arqs = arquivos_alvo()
     prods = produtos()
@@ -361,6 +480,9 @@ def main() -> int:
         "j saúde: afogamento só por quinquênio, sem soma, sem 2026, Prisional fora": regra_j(prods),
         "k IN15 fora; pirâmides no PD14 e PD03 fora; ativo não livre só com exceção registrada": regra_k(prods),
         "l cheia e saúde: conferência fora, sem pessoas, trava do evento, Prisional fora, imagens": regra_l(prods),
+        "m camada das unidades no portal sem campos de 2026 nem soma": regra_m(),
+        "n nenhum dado da cheia de outubro de 2026 no portal nem nos painéis": regra_n(prods),
+        "o links dos painéis ao portal com chaves de camada que existem": regra_o(),
     }
     print(f"arquivos varridos: {len(arqs)}; produtos: {len(prods)}")
     ok = True

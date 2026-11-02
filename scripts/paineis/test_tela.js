@@ -807,6 +807,25 @@ async function testesExtrasCheia(browser, base, prod) {
     res.push({ nome: "séries simuladas sem evento em curso: nenhum aviso \"em preparação\"", ok: r.avisos === 0 && !r.preparacao && erros.length === 0, detalhe: JSON.stringify(r) });
     await ctx.close();
   }
+  {
+    // tempo de retorno nas frases e área principal (rodada 115, parte B): cada cota, regra calculada dos JSON
+    const lim = prod.cotas.meta.dif_tr_cerca_anos;
+    const vistos = [];
+    let ok = typeof lim === "number";
+    for (const r of prod.cotas.dados) {
+      const { ctx, page, erros } = await abrir(browser, `${pag}?cota=${r.cota_cm}`, {});
+      const t = await page.evaluate(() => ({ meta: document.getElementById("meta-mapa").innerText, th: [...document.querySelectorAll("#tabelaCotas th")].map((e) => e.textContent),
+        notas: [...document.querySelectorAll("[data-nota]")].map((e) => e.innerText) }));
+      const esperado = `${prod.cotas.meta.fonte_curta} · tempo de retorno ${trNaFrase(r, lim)}`;
+      vistos.push(t.meta);
+      ok = ok && t.meta === esperado && t.th.indexOf("Área no município") >= 0 && t.th.indexOf("Área no município") < t.th.indexOf("Mancha inteira") &&
+        t.notas.includes(prod.cotas.meta.notas.cs_nota_area) && /inclui o leito do rio e a margem fora do município/.test(prod.cotas.meta.notas.cs_nota_area) && erros.length === 0;
+      await ctx.close();
+    }
+    const dif = prod.cotas.dados.filter((r) => r.tr_anos_documento !== r.tr_anos_camada && Math.abs(r.tr_anos_camada - r.tr_anos_documento) < lim);
+    res.push({ nome: `tempo de retorno nas frases: "cerca de N anos" em ${dif.map((r) => fmtInt(r.cota_cm)).join(", ") || "nenhuma cota"} (divergência < ${fmt1(lim)} ano); área no município antes da mancha inteira, com a nota`,
+      ok: ok && dif.every((r) => vistos.some((v) => v.includes("cerca de"))), detalhe: JSON.stringify(vistos) });
+  }
   return res;
 }
 
