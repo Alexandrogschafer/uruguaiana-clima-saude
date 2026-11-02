@@ -2,7 +2,7 @@
   "produto": "rio_ana-77150000_ultimos-365-dias_diario.json",
   "esquema": "climapampa-painel/1",
   "fonte": "ANA, telemetria da estação 77150000 (leituras de 15 em 15 minutos)",
-  "transformacao_aplicada": "média diária das leituras de 15 min, últimos 365 dias até o dia anterior ao evento em curso (se houver)",
+  "transformacao_aplicada": "média diária das leituras de 15 min, últimos 365 dias; com evento em curso, até o fim do mês anterior ao mês do evento (MES_DO_EVENTO_COM_CORTE) ou até o dia anterior ao evento",
   "entradas": [
     {
       "arquivo": "data/raw/nivel-rio_ana-telemetria-77150000_2015-07-01-a-2015-08-15_15min.csv",
@@ -43,7 +43,7 @@
   "autorizacao": "livre",
   "selo": "conferido",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-02T14:09:17Z",
+  "data_processamento": "2026-11-02T15:38:08Z",
   "supressao_nota": "não se aplica: medidas de nível e vazão, sem contagem de pessoas",
   "evento_em_curso": true
 }

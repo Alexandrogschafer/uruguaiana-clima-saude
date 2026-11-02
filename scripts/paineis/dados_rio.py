@@ -18,8 +18,9 @@ Regras:
     - média diária = média das leituras de 15 min do dia, no fuso em que o serviço devolve (não informado);
       dia sem leitura fica fora da série (não vira 0);
     - evento em curso: leitura acima de LIMIAR_CM a partir de INICIO_BUSCA_EVENTO, ou última leitura acima
-      de LIMIAR_CM. Nesse caso (regra do gerador, não da tela): a série diária termina no dia anterior ao
-      primeiro dia acima do limiar do evento; as máximas anuais não incluem o ano do evento; a última
+      de LIMIAR_CM. Nesse caso (regra do gerador, não da tela): a série diária termina no último dia do mês
+      anterior ao do evento quando ele começa em MES_DO_EVENTO_COM_CORTE (30/09/2026 para a cheia de outubro
+      de 2026), ou no dia anterior ao primeiro dia acima do limiar nos demais casos; as máximas anuais não incluem o ano do evento; a última
       leitura só traz o aviso, sem valor; nenhum campo de pico, duração ou posição histórica do evento.
 CRS não se aplica (séries tabulares).
 
@@ -53,6 +54,11 @@ DIAS_LEITURA_ANTIGA = 3
 FONTE_RODAPE = "Nível e vazão do rio — ANA, estação 77150000 (série histórica diária e telemetria de 15 em 15 minutos)"
 NOTA_SUPRESSAO = "não se aplica: medidas de nível e vazão, sem contagem de pessoas"
 AVISO_PREPARACAO = "cheia de outubro de 2026: números em preparação"
+# Corte da série diária enquanto o evento estiver em curso: se o primeiro dia acima de LIMIAR_CM cair neste
+# mês, a série termina no último dia do mês anterior (cheia de outubro de 2026 → série até 30/09/2026), para
+# não publicar nenhum valor do mês do evento. Sai (vira None) quando os números do evento forem conferidos;
+# com None, ou para evento em outro mês, vale a regra geral: a série termina no dia anterior ao início do evento.
+MES_DO_EVENTO_COM_CORTE = "2026-10"
 
 
 def entradas() -> dict:
@@ -111,6 +117,20 @@ def maximas(arq: Path, ano_excluido: int | None) -> tuple[list, int]:
     return linhas, ultimo_completo
 
 
+def fim_da_serie(ev: dict) -> str | None:
+    """Primeiro dia que NÃO entra na série diária (None = sem corte)."""
+    if not ev["em_curso"]:
+        return None
+    if MES_DO_EVENTO_COM_CORTE and ev["inicio"][:7] == MES_DO_EVENTO_COM_CORTE:
+        return f"{MES_DO_EVENTO_COM_CORTE}-01"
+    return ev["inicio"]
+
+
+def aviso_corte(fim_excl: str) -> str:
+    ultimo = pd.Timestamp(fim_excl) - pd.Timedelta(days=1)
+    return f"série até {ultimo:%d/%m/%Y}; {AVISO_PREPARACAO}"
+
+
 def diario(t: pd.DataFrame, fim_excl: str | None) -> list:
     if fim_excl:
         t = t[t["dia"] < fim_excl]
@@ -148,7 +168,8 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
     hoje = hoje or date.today()
     ano_ev = int(ev["inicio"][:4]) if ev["em_curso"] else None
     mx, ultimo_completo = maximas(e["serie"], ano_ev)
-    dd = diario(t, ev["inicio"] if ev["em_curso"] else None)
+    fim_excl = fim_da_serie(ev)
+    dd = diario(t, fim_excl)
     dia_ult = pd.Timestamp(t.iloc[-1]["data_hora"])
     aviso_rt = aviso_tempo_real(t)
     avisos_evento = [{"tipo": "evento_em_curso", "texto": AVISO_PREPARACAO}] if ev["em_curso"] else []
@@ -169,10 +190,10 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
         titulo="Nível e vazão do rio: média diária dos últimos 365 dias", fonte_curta=f"ANA {ESTACAO}", fonte=f"ANA, telemetria da estação {ESTACAO} (leituras de 15 em 15 minutos)",
         unidade_medida="cm; m³/s", periodo={"inicio": dd[0]["dia"], "fim": dd[-1]["dia"]}, dados_ate=dd[-1]["dia"],
         avisos=[aviso_rt, {"tipo": "metodo", "texto": "média das leituras do dia, no fuso em que o serviço as devolve (não informado); dia sem leitura fica fora"}] + (
-            [{"tipo": "evento_em_curso", "texto": f"{AVISO_PREPARACAO}; a série termina no dia anterior ao início do evento"}] if ev["em_curso"] else []),
+            [{"tipo": "evento_em_curso", "texto": aviso_corte(fim_excl)}] if ev["em_curso"] else []),
         colunas=[{"nome": "dia", "tipo": "texto"}, {"nome": "nivel_medio_cm", "tipo": "float"}, {"nome": "vazao_media_m3s", "tipo": "float"}, {"nome": "n_leituras", "tipo": "int"}],
         dados=dd, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["cheia-saude"], "evento_em_curso": ev["em_curso"]}),
-        e["telemetria"], "média diária das leituras de 15 min, últimos 365 dias até o dia anterior ao evento em curso (se houver)"))
+        e["telemetria"], "média diária das leituras de 15 min, últimos 365 dias; com evento em curso, até o fim do mês anterior ao mês do evento (MES_DO_EVENTO_COM_CORTE) ou até o dia anterior ao evento"))
     linha, av_ult = ultima_leitura(t, ev, hoje)
     defs.append((n["ult"], ["IN05"], dict(
         titulo="Última leitura do rio", fonte_curta=f"ANA {ESTACAO}", fonte=f"ANA, telemetria da estação {ESTACAO}", unidade_medida="cm; m³/s",

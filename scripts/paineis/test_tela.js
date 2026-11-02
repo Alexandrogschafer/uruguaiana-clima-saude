@@ -784,7 +784,10 @@ async function testesExtrasCheia(browser, base, prod) {
     // trava do evento como está nos dados de hoje: série cortada, máximas sem o ano do evento, sem pico
     const ev = prod.diario.meta.evento_em_curso;
     const ultDia = prod.diario.dados[prod.diario.dados.length - 1].dia, ultAno = prod.maximas.dados[prod.maximas.dados.length - 1].ano;
-    const okEv = ev ? r.metaDiario.endsWith(dataBR(ultDia)) && r.eixoMax.includes(String(ultAno)) && !r.eixoMax.includes(String(ultAno + 1)) && !r.pico && r.avisosEvento.length >= 2
+    // corte de outubro de 2026 (MES_DO_EVENTO_COM_CORTE em dados_rio.py): nenhum dia de outubro no JSON e o aviso "série até 30/09/2026" na tela
+    const avisoCorte = (prod.diario.meta.avisos.find((a) => a.tipo === "evento_em_curso") || {}).texto || "";
+    const okEv = ev ? r.metaDiario.endsWith(dataBR(ultDia)) && r.eixoMax.includes(String(ultAno)) && !r.eixoMax.includes(String(ultAno + 1)) && !r.pico && r.avisosEvento.length >= 2 &&
+                      prod.diario.dados.every((x) => x.dia < "2026-10-01") && avisoCorte.startsWith(`série até ${dataBR(ultDia)}; `) && r.avisosEvento.some((t) => t.includes(avisoCorte))
                     : r.avisosEvento.length === 0;
     res.push({ nome: `evento ${ev ? "em curso" : "não em curso"} nos dados: série até ${dataBR(ultDia)}, máximas até ${ultAno}, avisos ${r.avisosEvento.length}, sem pico`, ok: okEv, detalhe: JSON.stringify({ meta: r.metaDiario, avisos: r.avisosEvento }) });
     await ctx.close();

@@ -1,7 +1,8 @@
 """
 Testes da trava do evento em curso e da última leitura (dados_rio.py), com leituras simuladas:
 (i) rio abaixo de 800 cm e leitura recente; (ii) acima de 800 cm a partir de 01/10/2026;
-(iii) leitura com mais de 3 dias. Também confere que as máximas anuais excluem o ano do evento e que ano
+(iii) leitura com mais de 3 dias. Com o evento começando em outubro de 2026, a série diária termina em
+30/09/2026 (MES_DO_EVENTO_COM_CORTE); o produto publicado não tem nenhum valor de outubro. Também confere que as máximas anuais excluem o ano do evento e que ano
 sem valor fica null (nunca 0).
 
 Uso: python scripts/paineis/test_rio.py
@@ -63,9 +64,13 @@ class Trava(unittest.TestCase):
         self.assertEqual(linha["estado"], "evento_em_curso")
         self.assertTrue(all(linha[k] is None for k in ("data_hora", "nivel_cm", "vazao_m3s", "idade_dias")))
         self.assertEqual(avisos[0], {"tipo": "evento_em_curso", "texto": R.AVISO_PREPARACAO})
-        d = R.diario(t, ev["inicio"])
-        self.assertEqual(d[-1]["dia"], "2026-10-03")
+        # evento que começa em outubro de 2026: a série termina em 30/09/2026, sem nenhum dia de outubro
+        self.assertEqual(R.fim_da_serie(ev), "2026-10-01")
+        d = R.diario(t, R.fim_da_serie(ev))
+        self.assertEqual(d[-1]["dia"], "2026-09-30")
+        self.assertFalse(any(r["dia"] >= "2026-10-01" for r in d))
         self.assertTrue(all(r["nivel_medio_cm"] <= R.LIMIAR_CM for r in d))
+        self.assertEqual(R.aviso_corte(R.fim_da_serie(ev)), "série até 30/09/2026; " + R.AVISO_PREPARACAO)
         texto = json.dumps([linha, avisos, d])
         self.assertFalse(any(c in texto for c in CAMPOS_PROIBIDOS))
 
@@ -77,7 +82,9 @@ class Trava(unittest.TestCase):
         ev = R.evento(t)
         self.assertTrue(ev["em_curso"])
         self.assertEqual(ev["inicio"], "2026-09-20")
-        self.assertEqual(R.diario(t, ev["inicio"])[-1]["dia"], "2026-09-19")
+        # fora do mês do corte vale a regra geral: termina no dia anterior ao início do evento
+        self.assertEqual(R.fim_da_serie(ev), "2026-09-20")
+        self.assertEqual(R.diario(t, R.fim_da_serie(ev))[-1]["dia"], "2026-09-19")
 
     def test_ii_evento_que_comecou_antes_da_busca(self):
         # acima de 800 cm desde 28/09 sem interrupção: o evento começa no primeiro dia da sequência
@@ -92,6 +99,23 @@ class Trava(unittest.TestCase):
         self.assertIn({"tipo": "parcial", "texto": "leitura antiga"}, avisos)
         _, avisos3 = R.ultima_leitura(t, ev, date(2026, 10, 13))
         self.assertNotIn({"tipo": "parcial", "texto": "leitura antiga"}, avisos3)
+
+
+class ProdutoPublicado(unittest.TestCase):
+    def test_json_do_rio_sem_valor_de_outubro_de_2026(self):
+        """Os produtos publicados não têm nenhum valor de 01/10/2026 em diante enquanto o evento estiver em curso."""
+        pasta = R.RAIZ / "data" / "paineis"
+        d = json.loads((pasta / f"{R.ids()['dia']}.json").read_text(encoding="utf-8"))
+        if not d["evento_em_curso"]:
+            self.skipTest("sem evento em curso nos dados")
+        self.assertEqual(d["dados"][-1]["dia"], "2026-09-30")
+        self.assertEqual(d["dados_ate"], "2026-09-30")
+        self.assertFalse(any(r["dia"] >= "2026-10-01" for r in d["dados"]))
+        self.assertIn("série até 30/09/2026; " + R.AVISO_PREPARACAO, [a["texto"] for a in d["avisos"]])
+        u = json.loads((pasta / f"{R.ids()['ult']}.json").read_text(encoding="utf-8"))
+        self.assertTrue(all(v is None for k, v in u["dados"][0].items() if k != "estado"))
+        m = json.loads((pasta / f"{R.ids()['max']}.json").read_text(encoding="utf-8"))
+        self.assertLess(m["dados"][-1]["ano"], 2026)
 
 
 class Maximas(unittest.TestCase):

@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-02T14:19:18Z",
+ "gerado_em": "2026-11-02T15:38:08Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_1974-2024_anual",
@@ -504,13 +504,13 @@
    ],
    "selo": "conferido",
    "autorizacao": "livre",
-   "dados_ate": "2026-10-03",
-   "gerado_em": "2026-11-02T14:09:17Z",
+   "dados_ate": "2026-09-30",
+   "gerado_em": "2026-11-02T15:38:08Z",
    "telas": [
     "cheia-saude"
    ],
-   "bytes": 42170,
-   "sha256": "844b712b415b98e7668dc431c193a76effcfa8f88fbebd34cec642b44855cd83"
+   "bytes": 42141,
+   "sha256": "71ad1af04b915b5e1d2ce16ba145ee85d22200992fa3c517c4e32d231a7b4c81"
   },
   {
    "id": "risco-geologico_cprm_2021_classe",

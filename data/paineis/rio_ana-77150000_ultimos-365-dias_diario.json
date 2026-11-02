@@ -11,10 +11,10 @@
  "unidade_espacial": "estação fluviométrica",
  "unidade_medida": "cm; m³/s",
  "periodo": {
-  "inicio": "2025-10-04",
-  "fim": "2026-10-03"
+  "inicio": "2025-10-01",
+  "fim": "2026-09-30"
  },
- "dados_ate": "2026-10-03",
+ "dados_ate": "2026-09-30",
  "autorizacao": "livre",
  "selo": "conferido",
  "avisos": [
@@ -28,7 +28,7 @@
   },
   {
    "tipo": "evento_em_curso",
-   "texto": "cheia de outubro de 2026: números em preparação; a série termina no dia anterior ao início do evento"
+   "texto": "série até 30/09/2026; cheia de outubro de 2026: números em preparação"
   }
  ],
  "supressao": {
@@ -39,7 +39,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T14:09:17Z",
+ "gerado_em": "2026-11-02T15:38:08Z",
  "script": "scripts/paineis/dados_rio.py",
  "colunas": [
   {
@@ -65,6 +65,24 @@
  ],
  "evento_em_curso": true,
  "dados": [
+  {
+   "dia": "2025-10-01",
+   "nivel_medio_cm": 747.6,
+   "vazao_media_m3s": 10884.0,
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-02",
+   "nivel_medio_cm": 732.6,
+   "vazao_media_m3s": 10520.8,
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-03",
+   "nivel_medio_cm": 719.4,
+   "vazao_media_m3s": 10208.6,
+   "n_leituras": 96
+  },
   {
    "dia": "2025-10-04",
    "nivel_medio_cm": 705.9,
@@ -2235,24 +2253,6 @@
    "dia": "2026-09-30",
    "nivel_medio_cm": 628.8,
    "vazao_media_m3s": 8162.1,
-   "n_leituras": 96
-  },
-  {
-   "dia": "2026-10-01",
-   "nivel_medio_cm": 616.9,
-   "vazao_media_m3s": 7907.1,
-   "n_leituras": 96
-  },
-  {
-   "dia": "2026-10-02",
-   "nivel_medio_cm": 642.2,
-   "vazao_media_m3s": 8455.1,
-   "n_leituras": 96
-  },
-  {
-   "dia": "2026-10-03",
-   "nivel_medio_cm": 716.1,
-   "vazao_media_m3s": 10135.6,
    "n_leituras": 96
   }
  ]
