@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="pt-BR" data-tela="cheia-saude" data-raiz="..">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cheia e acesso à saúde — ClimaPampa, Uruguaiana/RS</title>
+<link rel="stylesheet" href="../css/paineis.css">
+<link rel="stylesheet" href="../css/paineis-componentes.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header id="cabecalho-comum"></header>
+
+  <div class="masthead">
+    <svg class="masthead-contour" viewBox="0 0 800 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
+      <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
+    </svg>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Cheia e acesso à saúde</span>
+    <h1>Até onde o rio chega e o que isso significa para as unidades de saúde</h1>
+    <p>A régua do rio Uruguai, as manchas de inundação do SGB por cota e a posição das ESF/UBS em relação a elas.</p>
+  </div>
+
+  <details class="recolhivel" id="det-filtros" open>
+    <summary>Filtros</summary>
+    <div class="seletor-cota" id="seletor-cota" role="group" aria-label="Cota da mancha"></div>
+  </details>
+  <div class="chips-filtro" id="chips-filtro"></div>
+
+  <!-- (1) régua do rio -->
+  <div class="section-head"><h2>Régua do rio</h2><div class="section-rule"></div></div>
+  <div class="card">
+    <div class="card-head"><span class="card-title">Máxima anual da régua e as cotas das manchas</span><span class="card-meta" id="meta-maximas"></span></div>
+    <div id="aviso-maximas"></div>
+    <div class="card-body"><div id="chart-maximas"></div><div class="chart-tooltip" id="tt-maximas"></div></div>
+    <p class="nota-grafico" id="nota-maximas"></p>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="card-title">Último ano em média diária</span><span class="card-meta" id="meta-diario"></span></div>
+    <div id="aviso-diario"></div>
+    <div class="chart-grid">
+      <div class="card-body"><div id="chart-nivel"></div><div class="chart-tooltip" id="tt-nivel"></div></div>
+      <div class="card-body"><div id="chart-vazao"></div><div class="chart-tooltip" id="tt-vazao"></div></div>
+    </div>
+  </div>
+
+  <!-- (2) onde alaga -->
+  <div class="section-head"><h2>Onde alaga</h2><div class="section-rule"></div></div>
+  <div>
+    <div class="card">
+      <div class="card-head"><span class="card-title" id="titulo-mapa">Mancha da cota</span><span class="card-meta" id="meta-mapa"></span></div>
+      <img class="mini-mapa" id="mini-mapa" alt="" width="520" height="400">
+      <p class="links-sintese"><a id="link-mapa" href="../index.html">abrir no mapa →</a></p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">As manchas por cota</span><span class="card-meta" id="meta-cotas"></span></div>
+      <div id="aviso-cotas"></div>
+      <div class="tabela-cartoes-wrap" style="margin-top:10px;"><table class="data-table tabela-cartoes tabela-cotas" id="tabelaCotas"></table></div>
+      <p class="nota-grafico" data-nota="cs_nota_tr"></p>
+    </div>
+  </div>
+
+  <!-- (3) unidades e manchas -->
+  <div class="section-head"><h2>Unidades de saúde e manchas</h2><div class="section-rule"></div></div>
+  <div class="card">
+    <div class="card-head"><span class="card-title" id="frase-unidades"></span><span class="card-meta" id="meta-unidades"></span></div>
+    <p class="section-note" data-nota="cs_nota_unidades"></p>
+    <details class="recolhivel" id="det-unidades" open>
+      <summary>Ver as 21 ESF/UBS</summary>
+      <div class="tabela-cartoes-wrap"><table class="data-table tabela-cartoes" id="tabelaUnidades"></table></div>
+    </details>
+    <p class="nota-grafico" id="nota-prisional"></p>
+  </div>
+
+  <!-- (4) e (5) em conferência -->
+  <div class="chart-grid">
+    <div class="card" id="caixa-moradores">
+      <div class="card-head"><span class="card-title">Quem mora nas áreas alagáveis</span><span class="card-meta"></span></div>
+      <p class="aviso aviso-em_confirmacao" id="espera-moradores"></p>
+    </div>
+    <div class="card" id="caixa-acesso">
+      <div class="card-head"><span class="card-title">Acesso às ESF/UBS</span><span class="card-meta"></span></div>
+      <p class="aviso aviso-em_confirmacao" id="espera-acesso"></p>
+    </div>
+  </div>
+
+  <!-- (6) delimitações oficiais -->
+  <div class="section-head"><h2>Delimitações oficiais</h2><div class="section-rule"></div></div>
+  <p class="section-note">Números como cada órgão publicou, cada um no seu ano e no seu método: não se comparam nem se somam.</p>
+  <details class="recolhivel" id="det-delimitacoes" open>
+    <summary>Ver as delimitações do SGB e do IBGE</summary>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Setorização de risco (SGB)</span><span class="card-meta" data-nota="ris_meta_setor"></span></div>
+      <div id="aviso-setor"></div>
+      <div class="tabela-cartoes-wrap" style="margin-top:10px;"><table class="data-table tabela-cartoes" id="tabelaSetores"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Áreas de risco do IBGE (BATER, 2018)</span><span class="card-meta" id="meta-bater"></span></div>
+      <p class="nota-grafico" style="margin:2px 0 8px;" data-nota="ris_nota_bater"></p>
+      <div class="tabela-cartoes-wrap"><table class="data-table tabela-cartoes" id="tabelaBater"></table></div>
+    </div>
+  </details>
+
+  <!-- (7) o que falta conferir -->
+  <div class="section-head"><h2>O que falta conferir</h2><div class="section-rule"></div></div>
+  <details class="recolhivel" id="det-espera" open>
+    <summary id="resumo-espera">Ver a lista</summary>
+    <div class="card">
+      <p class="nota-grafico" id="nota-espera"></p>
+      <ul class="lista-espera" id="lista-espera"></ul>
+    </div>
+  </details>
+
+  <footer id="rodape-comum"></footer>
+</div>
+
+<script src="../js/paineis/componentes.js"></script>
+<script src="../js/paineis/graficos.js"></script>
+<script src="../js/paineis/graficos-extra.js"></script>
+<script src="../js/paineis/dados.js"></script>
+<script src="../js/paineis/filtros.js"></script>
+<script src="../js/paineis/cabecalho.js"></script>
+<script src="../js/paineis/rodape.js"></script>
+<script>
+/* Cheia e acesso à saúde: lê só data/paineis/. A trava do evento em curso já vem aplicada pelo gerador;
+   a tela só mostra os avisos. Nenhum número fica neste arquivo. */
+const P = window.Paineis;
+const IDS = {maximas: 'rio_ana-77150000_maximas-anuais', diario: 'rio_ana-77150000_ultimos-365-dias_diario',
+             cotas: 'inundacao_sgb_cotas', unidades: 'inundacao_sgb_unidades-cotas',
+             setor: 'setorizacao-risco_sgb_2014_setor', bater: 'areas-de-risco_ibge_2018_bater'};
+const BLOCOS = {maximas: 'chart-maximas', diario: 'chart-nivel', cotas: 'tabelaCotas', unidades: 'tabelaUnidades', setor: 'tabelaSetores', bater: 'tabelaBater'};
+// ids em espera por caixa (o nome e o motivo vêm de paineis_espera.json)
+const ESPERA_MORADORES = ['IN09', 'IN10', 'IN11'];
+const ESPERA_ACESSO = ['SA09', 'SA11', 'SA12', 'SA13', 'SA15'];
+const dec1 = v => v.toLocaleString('pt-BR', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+const setText = (id, t) => { const e = document.getElementById(id); if(e) e.textContent = t; };
+const dataBR = iso => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ''); return m ? `${m[3]}/${m[2]}/${m[1]}` : (iso || ''); };
+const DIA = 864e5;
+const diaNum = iso => Math.round(Date.parse(iso + 'T00:00:00Z') / DIA);
+const diaTxt = n => { const d = new Date(n * DIA); return `${String(d.getUTCDate()).padStart(2, '0')}/${String(d.getUTCMonth() + 1).padStart(2, '0')}/${String(d.getUTCFullYear()).slice(2)}`; };
+
+async function iniciar(){
+  const c = {};
+  for(const [k, id] of Object.entries(IDS)) c[k] = await P.carregar(id, BLOCOS[k]);
+  let espera = null;
+  try{ const r = await fetch(P.urlProduto('paineis_espera')); if(r.ok) espera = await r.json(); else throw new Error(`HTTP ${r.status}`); }
+  catch(e){ P.erroBloco(document.getElementById('lista-espera'), e.message); }
+  const {maximas, diario, cotas, unidades, setor, bater} = c;
+
+  P.iniciarFiltros({listas: {cota: cotas ? cotas.dados.map(r => r.cota_cm) : [], unidade: unidades ? unidades.dados.map(u => u.cnes) : []}});
+  P.montarCabecalho();
+  P.preencherNotas();
+  const blue = cssVar('--series-blue'), aqua = cssVar('--series-aqua'), orange = cssVar('--series-orange'), muted = cssVar('--series-context');
+  const cotaAtual = () => cotas ? (+P.filtros.estado.cota || cotas.dados[cotas.dados.length - 1].cota_cm) : null;
+
+  /* ================= (1) régua ================= */
+  function regua(){
+    if(!maximas) return;
+    const d = maximas.dados;
+    const lac = new Set(d.filter(r => r.lacuna).map(r => r.ano));
+    renderReguaMaximas('chart-maximas', 'tt-maximas', {
+      labels: d.map(r => r.ano), data: d.map(r => r.maximo_cm), color: blue, colors: d.map(r => lac.has(r.ano) ? muted : blue),
+      seriesName: P.dica('Máxima anual (cm)', maximas.meta.fonte_curta), yFormat: v => fmtInt(v), height: 240,
+      referencias: cotas ? cotas.dados.map(r => ({valor: r.cota_cm, rotulo: `${fmtInt(r.cota_cm)} cm`, cor: r.cota_cm === cotaAtual() ? orange : cssVar('--ink-secondary')})) : [],
+    });
+  }
+  if(maximas){
+    setText('meta-maximas', `${maximas.meta.fonte_curta} · ${maximas.meta.periodo.inicio}–${maximas.meta.periodo.fim}`);
+    P.aviso(document.getElementById('aviso-maximas'), maximas.meta.avisos.filter(a => a.tipo === 'evento_em_curso'));
+    const lacunas = (maximas.meta.avisos.find(a => a.tipo === 'lacuna') || {onde: {anos: []}}).onde.anos;
+    setText('nota-maximas', `Barras cinza: ano com lacuna (menos de 80% dos dias com valor na série: ${lacunas.join(', ')}); ano sem valor fica sem barra. Linhas tracejadas: cotas das manchas do SGB.`);
+  }
+  if(diario){
+    const d = diario.dados, xs = d.map(r => diaNum(r.dia));
+    setText('meta-diario', `${diario.meta.fonte_curta} · ${dataBR(diario.meta.periodo.inicio)} a ${dataBR(diario.meta.periodo.fim)}`);
+    P.aviso(document.getElementById('aviso-diario'), diario.meta.avisos.filter(a => a.tipo === 'evento_em_curso' || a.texto.startsWith('não é dado')));
+    const xt = [xs[0], xs[Math.floor(xs.length / 2)], xs[xs.length - 1]];
+    var desenharDiario = () => {
+      renderTimeLineChart('chart-nivel', 'tt-nivel', {height: 190, xTicks: xt, xFormat: diaTxt, zeroBase: false, padR: 52, rotuloFinalAoLado: true,
+        series: [{name: P.dica('Nível médio do dia (cm)', diario.meta.fonte_curta), color: blue, points: d.map((r, i) => ({x: xs[i], y: r.nivel_medio_cm}))}], yFormat: v => fmtInt(v)});
+      renderTimeLineChart('chart-vazao', 'tt-vazao', {height: 190, xTicks: xt, xFormat: diaTxt, zeroBase: false, padR: 58, padL: 52, rotuloFinalAoLado: true,
+        series: [{name: P.dica('Vazão média do dia (m³/s)', diario.meta.fonte_curta), color: aqua, points: d.map((r, i) => ({x: xs[i], y: r.vazao_media_m3s}))}], yFormat: v => fmtInt(v)});
+    };
+  }
+
+  /* ================= (2) onde alaga ================= */
+  function seletor(){
+    const host = document.getElementById('seletor-cota');
+    host.innerHTML = '';
+    if(!cotas) return;
+    cotas.dados.forEach(r => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = `${fmtInt(r.cota_cm)} cm`;
+      b.setAttribute('aria-pressed', String(r.cota_cm === cotaAtual()));
+      b.addEventListener('click', () => P.definirFiltro('cota', r.cota_cm));
+      host.appendChild(b);
+    });
+  }
+  function mapa(){
+    if(!cotas) return;
+    const r = cotas.dados.find(x => x.cota_cm === cotaAtual());
+    const img = document.getElementById('mini-mapa');
+    img.src = `${P.raiz ? P.raiz() : '..'}/data/paineis/${r.imagem}`;
+    img.alt = r.alt;
+    setText('titulo-mapa', `Mancha da cota ${fmtInt(r.cota_cm)} cm`);
+    setText('meta-mapa', `${cotas.meta.fonte_curta} · tempo de retorno ${dec1(r.tr_anos_camada)} anos`);
+    document.getElementById('link-mapa').href = `${P.raiz ? P.raiz() : '..'}/index.html?cota=${r.cota_cm}`;
+    document.querySelectorAll('#tabelaCotas tbody tr').forEach(tr => tr.classList.toggle('linha-ativa', +tr.dataset.cota === r.cota_cm));
+  }
+  if(cotas){
+    setText('meta-cotas', `${cotas.meta.fonte_curta} · ${cotas.meta.periodo.inicio}–${cotas.meta.periodo.fim}`);
+    P.aviso(document.getElementById('aviso-cotas'), cotas.meta.avisos.filter(a => a.tipo === 'em_confirmacao'));
+    const t = document.getElementById('tabelaCotas');
+    const col = [['Cota', r => `${fmtInt(r.cota_cm)} cm`], ['Tempo de retorno (camada)', r => `${dec1(r.tr_anos_camada)} anos`],
+                 ['Tempo de retorno (documento)', r => `${dec1(r.tr_anos_documento)} anos`], ['Área da mancha', r => `${fmt1(r.area_km2)} km²`],
+                 ['Área no município', r => `${fmt1(r.area_no_municipio_km2)} km²`], ['Período das cenas', r => r.periodo_referencia], ['ESF/UBS dentro', r => fmtInt(r.esf_ubs_dentro)]];
+    t.innerHTML = `<thead><tr>${col.map((c, j) => `<th class="${j === 5 ? 'col-texto' : ''}">${c[0]}</th>`).join('')}</tr></thead><tbody>${
+      cotas.dados.map(r => `<tr data-cota="${r.cota_cm}">${col.map((c, j) => `<td class="${j === 0 ? 'col-nome' : ''}${j === 5 ? ' col-texto' : ''}" data-rotulo="${c[0]}">${c[1](r)}</td>`).join('')}</tr>`).join('')}</tbody>`;
+  }
+
+  /* ================= (3) unidades e manchas ================= */
+  if(cotas) setText('frase-unidades', cotas.meta.notas.cs_frase_unidades.replace(/^./, s => s.toUpperCase()));
+  if(unidades){
+    setText('meta-unidades', unidades.meta.fonte_curta);
+    const comp = unidades.dados.filter(u => !u.fora_das_comparacoes);
+    const pris = unidades.dados.filter(u => u.fora_das_comparacoes);
+    const ccotas = cotas ? cotas.dados.map(r => r.cota_cm) : [];
+    const t = document.getElementById('tabelaUnidades');
+    t.innerHTML = `<thead><tr><th class="col-texto">Unidade</th><th class="col-texto">Tipo</th>${ccotas.map(k => `<th>Cota ${fmtInt(k)}</th>`).join('')}<th class="col-texto"></th></tr></thead><tbody>${
+      comp.map(u => `<tr data-cnes="${u.cnes}"><td class="col-texto col-nome" data-rotulo="Unidade">${u.nome}</td><td class="col-texto" data-rotulo="Tipo">${u.classe}</td>${
+        ccotas.map(k => `<td data-rotulo="Cota ${fmtInt(k)}">${u['dentro_' + k] ? 'dentro' : 'fora'}</td>`).join('')}<td class="col-texto" data-rotulo="Detalhe"><a href="saude.html?unidade=${u.cnes}">ver na saúde →</a></td></tr>`).join('')}</tbody>`;
+    if(pris.length) setText('nota-prisional', `Fora da contagem e da lista: ${pris.map(u => u.nome).join(', ')} (CNES ${pris.map(u => u.cnes).join(', ')}), que atende uma população específica e não entra em comparações entre unidades.`);
+  }
+
+  /* ================= (4)(5) caixas em conferência e (7) lista de espera ================= */
+  const porId = espera ? Object.fromEntries(espera.ativos.map(a => [a.id, a])) : {};
+  const caixa = (el, ids, frase) => {
+    const em = ids.filter(i => porId[i]);
+    setText(el, `${frase} Em conferência: ${em.map(i => `${i} (${porId[i].nome})`).join(', ')}.`);
+  };
+  if(espera){
+    caixa('espera-moradores', ESPERA_MORADORES, 'Quantas pessoas e domicílios ficam dentro de cada mancha, por bairro e por perfil.');
+    caixa('espera-acesso', ESPERA_ACESSO, 'Que unidades perdem acesso pelas ruas em cada cota, e trechos interrompidos.');
+    setText('resumo-espera', `Ver os ${fmtInt(espera.ativos.length)} itens em espera`);
+    setText('nota-espera', 'Dados que existem no projeto mas ainda não podem ir às telas: dependem de conferência ou têm uso bloqueado.');
+    const ul = document.getElementById('lista-espera');
+    espera.ativos.forEach(a => { const li = document.createElement('li'); li.innerHTML = `<code>${a.id}</code> ${a.nome} — <i>${a.motivo}</i>`; ul.appendChild(li); });
+  }
+
+  /* ================= (6) delimitações oficiais ================= */
+  function tabelaCartoes(id, prod, colunas){
+    if(!prod) return;
+    const t = document.getElementById(id);
+    t.innerHTML = `<thead><tr>${colunas.map(c => `<th class="${c.num ? '' : 'col-texto'}">${c.rotulo}</th>`).join('')}</tr></thead>`;
+    const tb = document.createElement('tbody');
+    prod.dados.forEach((r, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = colunas.map((c, j) => {
+        const v = c.num ? P.valor(r[c.campo], fmtInt, P.estaSuprimido(prod.meta, i, c.campo)) : P.valor(r[c.campo]);
+        return `<td class="${c.num ? '' : 'col-texto'}${j === 0 ? ' col-nome' : ''}" data-rotulo="${c.rotulo}">${v}</td>`;
+      }).join('');
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+  }
+  tabelaCartoes('tabelaSetores', setor, [{campo: 'setor', rotulo: 'Setor'}, {campo: 'local', rotulo: 'Local'}, {campo: 'tipologia', rotulo: 'Tipo de risco'},
+    {campo: 'grau_risco', rotulo: 'Grau de risco'}, {campo: 'edificacoes', rotulo: 'Edificações', num: true}, {campo: 'domicilios', rotulo: 'Domicílios', num: true}, {campo: 'pessoas', rotulo: 'Pessoas', num: true}]);
+  tabelaCartoes('tabelaBater', bater, [{campo: 'area_bater', rotulo: 'Área (código BATER)'}, {campo: 'origem', rotulo: 'Origem'}, {campo: 'observacao', rotulo: 'Observação'}]);
+  if(setor) P.aviso(document.getElementById('aviso-setor'), setor.meta.avisos);
+  if(bater) setText('meta-bater', bater.meta.fonte_curta);
+
+  /* ================= chips e filtros ================= */
+  function chips(){
+    const host = document.getElementById('chips-filtro');
+    host.innerHTML = '';
+    const v = P.filtros.estado.cota;
+    if(!v) return;
+    const chip = document.createElement('span');
+    chip.className = 'chip-filtro';
+    chip.textContent = `Cota: ${fmtInt(+v)} cm `;
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = '✕'; b.setAttribute('aria-label', 'remover filtro Cota');
+    b.addEventListener('click', () => P.definirFiltro('cota', undefined));
+    chip.appendChild(b);
+    host.appendChild(chip);
+  }
+  function draw(){ regua(); if(diario) desenharDiario(); }
+  P.recolherNoCelular('det-filtros', null, null);
+  P.recolherNoCelular('det-unidades', () => !!P.filtros.estado.unidade, null);
+  P.recolherNoCelular('det-delimitacoes', null, null);
+  P.recolherNoCelular('det-espera', null, null);
+  seletor(); mapa(); chips(); draw();
+  if(P.filtros.estado.unidade){
+    const tr = document.querySelector(`#tabelaUnidades tr[data-cnes="${P.filtros.estado.unidade}"]`);
+    if(tr) tr.classList.add('linha-ativa');
+  }
+  document.addEventListener('filtros:mudou', () => { seletor(); mapa(); chips(); regua(); });
+  window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+
+  P.montarRodape();
+  document.documentElement.dataset.pronto = '1';
+}
+iniciar();
+</script>
+</body>
+</html>

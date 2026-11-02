@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-02T14:12:15Z",
+ "gerado_em": "2026-11-02T14:19:18Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_1974-2024_anual",
@@ -339,13 +339,13 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2023",
-   "gerado_em": "2026-11-02T14:12:15Z",
+   "gerado_em": "2026-11-02T14:19:18Z",
    "telas": [
     "sintese",
     "cheia-saude"
    ],
    "bytes": 4062,
-   "sha256": "bd772b0f3ca694fe7271cbf46b90af9183dc9020e010a27dd46dd91c5adaaa44"
+   "sha256": "828412e67aec10cb12fda8ed842048d9cf4af27ed0d4db1728ef64607aefcab8"
   },
   {
    "id": "inundacao_sgb_unidades-cotas",

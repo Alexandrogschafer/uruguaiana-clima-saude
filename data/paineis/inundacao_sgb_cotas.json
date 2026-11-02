@@ -41,7 +41,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T14:12:15Z",
+ "gerado_em": "2026-11-02T14:19:18Z",
  "script": "scripts/paineis/dados_inundacao.py",
  "colunas": [
   {
@@ -89,7 +89,7 @@
  "notas": {
   "cs_nota_unidades": "Nenhuma das 21 ESF/UBS fica dentro das manchas do SGB em nenhuma das 4 cotas (833, 952, 1205, 1252 cm). A Equipe de Saúde Prisional fica fora da contagem. Estar fora da mancha não garante acesso pelas ruas: o cálculo de acesso está em conferência.",
   "cs_frase_unidades": "0 de 21 ESF/UBS dentro da mancha em todas as cotas",
-  "cs_nota_tr": "Tempo de retorno: o da camada do SGB; na cota 1205 cm, o documento do SGB traz outro valor (coluna à direita)."
+  "cs_nota_tr": "Tempo de retorno: o da camada do SGB. Na cota 1.205 cm, a camada diz 9,0 anos e o documento do SGB, 9,2 anos."
  },
  "comparacao": false,
  "dados": [
@@ -124,7 +124,7 @@
    "periodo_referencia": "2015–2023",
    "esf_ubs_dentro": 0,
    "imagem": "img/mini-mapa_cota-1205.png",
-   "alt": "Mapa da mancha de inundação da cota 1205 cm (SGB) sobre o limite de Uruguaiana, com as 21 ESF/UBS como pontos laranja: 0 dentro da mancha."
+   "alt": "Mapa da mancha de inundação da cota 1.205 cm (SGB) sobre o limite de Uruguaiana, com as 21 ESF/UBS como pontos laranja: 0 dentro da mancha."
   },
   {
    "cota_cm": 1252,
@@ -135,7 +135,7 @@
    "periodo_referencia": "2015–2023",
    "esf_ubs_dentro": 0,
    "imagem": "img/mini-mapa_cota-1252.png",
-   "alt": "Mapa da mancha de inundação da cota 1252 cm (SGB) sobre o limite de Uruguaiana, com as 21 ESF/UBS como pontos laranja: 0 dentro da mancha."
+   "alt": "Mapa da mancha de inundação da cota 1.252 cm (SGB) sobre o limite de Uruguaiana, com as 21 ESF/UBS como pontos laranja: 0 dentro da mancha."
   }
  ]
 }

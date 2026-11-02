@@ -1,12 +1,12 @@
 /* Cabeçalho comum: navegação entre as telas e avisos de filtro.
-   Telas que ainda não existem aparecem desativadas, com "em breve".
+   Telas que ainda não existirem aparecem desativadas, com "em breve" (hoje, nenhuma).
    O menu "Explorar" leva às seis telas temáticas. Mostra "Atualizado em" com a data do manifesto. A tela atual vem de <html data-tela="...">. */
 (function(){
   const P = window.Paineis = window.Paineis || {};
 
   const PRINCIPAIS = [
-    {tela: 'sintese', rotulo: 'Síntese', href: null},
-    {tela: 'cheia-saude', rotulo: 'Cheia e saúde', href: null},
+    {tela: 'sintese', rotulo: 'Síntese', href: 'sintese.html'},
+    {tela: 'cheia-saude', rotulo: 'Cheia e saúde', href: 'cheia-saude.html'},
   ];
   const EXPLORAR = [
     {tela: 'clima', rotulo: 'Clima e ambiente', href: 'clima.html'},
@@ -40,7 +40,9 @@
     host.innerHTML = '';
     host.className = 'cabecalho-comum';
 
-    const marca = document.createElement('span');
+    // a marca da casa leva à síntese
+    const marca = document.createElement('a');
+    marca.href = 'sintese.html';
     marca.className = 'cabecalho-marca';
     marca.textContent = 'ClimaPampa · Uruguaiana';
     host.appendChild(marca);

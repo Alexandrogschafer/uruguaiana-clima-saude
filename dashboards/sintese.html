@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-BR" data-tela="sintese" data-raiz="..">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Síntese — ClimaPampa, Uruguaiana/RS</title>
+<link rel="stylesheet" href="../css/paineis.css">
+<link rel="stylesheet" href="../css/paineis-componentes.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header id="cabecalho-comum"></header>
+
+  <div class="masthead">
+    <svg class="masthead-contour" viewBox="0 0 800 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
+      <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
+    </svg>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Síntese</span>
+    <h1>O que saber agora sobre cheia, clima e saúde</h1>
+    <p>Um retrato curto do município, com os dados mais recentes de cada fonte. Cada cartão leva à tela com o detalhe.</p>
+  </div>
+
+  <div class="chips-filtro" id="chips-filtro"></div>
+  <div class="faixa-rio" id="faixa-rio" role="status"></div>
+
+  <div class="chart-grid">
+    <div class="card cartao-sintese" id="cartao-cheia">
+      <div class="card-head"><span class="card-title">Cheia e acesso à saúde</span><span class="card-meta" id="selo-cheia"></span></div>
+      <ul class="lista-sintese" id="lista-cheia"></ul>
+      <div id="aviso-cheia"></div>
+      <p class="links-sintese"><a href="cheia-saude.html">abrir →</a> · <a href="../index.html">ver no mapa →</a></p>
+    </div>
+    <div class="card cartao-sintese" id="cartao-clima">
+      <div class="card-head"><span class="card-title">Clima</span><span class="card-meta" id="selo-clima"></span></div>
+      <ul class="lista-sintese" id="lista-clima"></ul>
+      <p class="links-sintese"><a href="clima.html">abrir →</a></p>
+    </div>
+    <div class="card cartao-sintese" id="cartao-saude">
+      <div class="card-head"><span class="card-title">Saúde da população</span><span class="card-meta" id="selo-saude"></span></div>
+      <ul class="lista-sintese" id="lista-saude"></ul>
+      <p class="links-sintese"><a href="saude.html">abrir →</a></p>
+    </div>
+    <div class="card cartao-sintese" id="cartao-contexto">
+      <div class="card-head"><span class="card-title">Contexto</span><span class="card-meta" id="selo-contexto"></span></div>
+      <ul class="lista-sintese" id="lista-contexto"></ul>
+      <p class="links-sintese"><a href="populacao.html">abrir →</a></p>
+    </div>
+  </div>
+
+  <div class="card" id="cartao-atualizacao">
+    <div class="card-head"><span class="card-title">Atualização dos dados</span></div>
+    <ul class="lista-sintese" id="lista-atualizacao"></ul>
+    <p class="nota-grafico" id="legenda-selos"></p>
+  </div>
+
+  <footer id="rodape-comum"></footer>
+</div>
+
+<script src="../js/paineis/componentes.js"></script>
+<script src="../js/paineis/graficos.js"></script>
+<script src="../js/paineis/dados.js"></script>
+<script src="../js/paineis/filtros.js"></script>
+<script src="../js/paineis/cabecalho.js"></script>
+<script src="../js/paineis/rodape.js"></script>
+<script>
+/* Síntese: lê só produtos já publicados em data/paineis/. Nenhum número fica neste arquivo. */
+const P = window.Paineis;
+const IDS = {rio: 'rio_ana-77150000_ultima-leitura', cotas: 'inundacao_sgb_cotas', precip: 'clima_precipitacao-merge_2010-2025_anual',
+             inmet: 'clima_inmet-a809_2007-2025_anual', sim: 'saude_sim_2010-2024_anual', sih: 'saude_sih_2010-2025_anual',
+             sinan: 'saude_sinan_2010-2026_anual', ind: 'demografia_ibge_1970-2022_indicadores'};
+const CARTOES = {rio: 'faixa-rio', cotas: 'lista-cheia', precip: 'lista-clima', inmet: 'lista-clima', sim: 'lista-saude', sih: 'lista-saude', sinan: 'lista-saude', ind: 'lista-contexto'};
+const dataBR = iso => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ''); return m ? `${m[3]}/${m[2]}/${m[1]}` : (iso || ''); };
+const item = (ul, html) => { const li = document.createElement('li'); li.innerHTML = html; document.getElementById(ul).appendChild(li); };
+
+async function iniciar(){
+  const c = {};
+  for(const [k, id] of Object.entries(IDS)){
+    c[k] = await P.carregar(id, CARTOES[k]);
+  }
+  const {rio, cotas, precip, inmet, sim, sih, sinan, ind} = c;
+  // cota: validada contra as cotas do JSON; os links do cartão levam a cota escolhida
+  P.iniciarFiltros({listas: {cota: cotas ? cotas.dados.map(r => r.cota_cm) : []}});
+  P.montarCabecalho();
+  const cota = P.filtros.estado.cota;
+  if(cota){
+    document.querySelector('#cartao-cheia a[href="cheia-saude.html"]').href = `cheia-saude.html?cota=${cota}`;
+    document.querySelector('#cartao-cheia a[href="../index.html"]').href = `../index.html?cota=${cota}`;
+    const chip = document.createElement('span');
+    chip.className = 'chip-filtro';
+    chip.textContent = `Cota: ${fmtInt(+cota)} cm `;
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = '✕'; b.setAttribute('aria-label', 'remover filtro Cota');
+    b.addEventListener('click', () => { P.definirFiltro('cota', undefined); location.reload(); });
+    chip.appendChild(b);
+    document.getElementById('chips-filtro').appendChild(chip);
+  }
+
+  /* ---- faixa "rio agora" (a trava do evento em curso vem do gerador) ---- */
+  if(rio){
+    const r = rio.dados[0], f = document.getElementById('faixa-rio');
+    const avisos = rio.meta.avisos.map(a => a.texto);
+    if(r.estado === 'evento_em_curso'){
+      f.classList.add('faixa-evento');
+      f.innerHTML = `<b>⚠ Rio Uruguai (${rio.meta.fonte_curta}):</b> ${avisos.join(' · ')}`;
+    } else {
+      f.innerHTML = `<b>Rio Uruguai (${rio.meta.fonte_curta}):</b> ${fmtInt(r.nivel_cm)} cm em ${dataBR(r.data_hora)} ${r.data_hora.slice(11, 16)} · vazão ${fmtInt(r.vazao_m3s)} m³/s · ${avisos.join(' · ')}`;
+    }
+  }
+  /* ---- cheia e acesso à saúde ---- */
+  if(cotas){
+    const d = cotas.dados, tr = d.map(x => x.tr_anos_camada);
+    item('lista-cheia', `<b>${d.length}</b> manchas do SGB (cotas ${d.map(x => fmtInt(x.cota_cm)).join(', ')} cm), tempo de retorno de ${fmt1(Math.min(...tr))} a ${fmt1(Math.max(...tr))} anos`);
+    item('lista-cheia', `<b>${P.notaHtml(cotas.meta.notas.cs_frase_unidades)}</b>`);
+    document.getElementById('selo-cheia').appendChild(P.selo(cotas.meta.selo));
+    P.aviso(document.getElementById('aviso-cheia'), cotas.meta.avisos.filter(a => a.tipo === 'em_confirmacao'));
+  }
+  /* ---- clima ---- */
+  if(precip){
+    const u = precip.dados[precip.dados.length - 1];
+    item('lista-clima', `Chuva em ${u.ano}: <b>${fmtInt(u.merge_mm)} mm</b> (${precip.meta.fonte_curta})`);
+    document.getElementById('selo-clima').appendChild(P.selo(precip.meta.selo));
+  }
+  if(inmet){
+    const u = inmet.dados[inmet.dados.length - 1];
+    const parcial = inmet.meta.avisos.find(a => a.tipo === 'parcial' && a.onde && a.onde.ano === u.ano);
+    item('lista-clima', `Dias com máxima ≥ 35 °C em ${u.ano}: <b>${fmtInt(u.dias_calor_extremo)}</b> (${inmet.meta.fonte_curta})${parcial ? ` · ${parcial.texto}` : ''}`);
+  }
+  /* ---- saúde da população ---- */
+  if(sim){
+    const u = sim.dados[sim.dados.length - 1];
+    item('lista-saude', `Óbitos em ${u.ano}: <b>${fmtInt(u.obitos_total)}</b>, dos quais ${fmtInt(u.obitos_respiratorios)} por causas respiratórias (${sim.meta.fonte_curta})`);
+    document.getElementById('selo-saude').appendChild(P.selo(sim.meta.selo));
+  }
+  if(sih){
+    const u = sih.dados[sih.dados.length - 1];
+    item('lista-saude', `Internações respiratórias em ${u.ano}: <b>${fmtInt(u.internacoes_respiratorias)}</b> (${sih.meta.fonte_curta})`);
+  }
+  if(sinan){
+    const fech = sinan.dados.filter(r => !r.preliminar), u = fech[fech.length - 1], pre = sinan.dados.find(r => r.preliminar);
+    item('lista-saude', `Notificações de dengue em ${u.ano}: <b>${fmtInt(u.dengue)}</b>${pre ? `; em ${pre.ano} <span class="marca-preliminar">(preliminar)</span>: ${fmtInt(pre.dengue)}` : ''} (${sinan.meta.fonte_curta})`);
+  }
+  /* ---- contexto ---- */
+  if(ind){
+    const u = ind.dados[ind.dados.length - 1];
+    item('lista-contexto', `População (Censo ${u.periodo}): <b>${fmtInt(u.populacao_total)}</b> habitantes`);
+    item('lista-contexto', `${fmt1(u.pct_urbano)}% urbana · índice de envelhecimento ${fmt1(u.indice_envelhecimento)}`);
+    document.getElementById('selo-contexto').appendChild(P.selo(ind.meta.selo));
+  }
+  /* ---- atualização: data de cada fonte ---- */
+  [[rio, 'Rio (ANA)'], [cotas, 'Manchas de inundação (SGB)'], [precip, 'Chuva (MERGE/INPE)'], [inmet, 'Temperatura (INMET)'],
+   [sim, 'Óbitos (SIM)'], [sih, 'Internações (SIH)'], [sinan, 'Arboviroses (SINAN)'], [ind, 'População (IBGE)']].forEach(([p, nome]) => {
+    if(p) item('lista-atualizacao', `${nome}: dados até ${p.meta.dados_ate.length === 10 ? dataBR(p.meta.dados_ate) : p.meta.dados_ate}`);
+  });
+  const leg = document.getElementById('legenda-selos');
+  leg.append('Selos: ');
+  ['conferido', 'em_confirmacao', 'pendente'].forEach((s, i) => { if(i) leg.append(' · '); leg.appendChild(P.selo(s)); });
+
+  P.montarRodape();
+  document.documentElement.dataset.pronto = '1';
+}
+iniciar();
+</script>
+</body>
+</html>

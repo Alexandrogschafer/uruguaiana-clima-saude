@@ -93,7 +93,7 @@ def mini_mapa(cota: int, mancha, limite: gpd.GeoDataFrame, u: gpd.GeoDataFrame) 
     ax.set_aspect("equal"); ax.set_xticks([]); ax.set_yticks([])
     for s in ax.spines.values():
         s.set_color("#c7cec9")
-    ax.legend(handles=[Patch(color="#2a78d6", alpha=0.55, label=f"mancha da cota {cota} cm"),
+    ax.legend(handles=[Patch(color="#2a78d6", alpha=0.55, label=f"mancha da cota {milhar(cota)} cm"),
                        Line2D([], [], marker="o", color="w", markerfacecolor="#d95926", markersize=6, label="ESF/UBS"),
                        Line2D([], [], color="#7c8f8c", linewidth=0.8, label="limite municipal")],
               loc="upper right", fontsize=7, frameon=True, framealpha=0.9)
@@ -106,6 +106,16 @@ def mini_mapa(cota: int, mancha, limite: gpd.GeoDataFrame, u: gpd.GeoDataFrame) 
 
 
 EXTENSAO = None
+
+
+def dec1(x: float) -> str:
+    """Uma casa decimal com vírgula (pt-BR)."""
+    return f"{x:.1f}".replace(".", ",")
+
+
+def milhar(n: int) -> str:
+    """Inteiro com ponto de milhar (pt-BR), como nas telas."""
+    return f"{n:,}".replace(",", ".")
 
 
 def ids() -> dict:
@@ -138,7 +148,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
                        "area_km2": round(geom.area / 1e6, 2), "area_no_municipio_km2": round(geom.intersection(lim_geom).area / 1e6, 2),
                        "periodo_referencia": tr_doc.loc[cota, "periodo_de_referencia"],
                        "esf_ubs_dentro": n_dentro, "imagem": f"img/{img.name}",
-                       "alt": (f"Mapa da mancha de inundação da cota {cota} cm (SGB) sobre o limite de Uruguaiana, com as 21 ESF/UBS "
+                       "alt": (f"Mapa da mancha de inundação da cota {milhar(cota)} cm (SGB) sobre o limite de Uruguaiana, com as 21 ESF/UBS "
                                f"como pontos laranja: {n_dentro} dentro da mancha.")})
     if any(l["esf_ubs_dentro"] for l in linhas):
         raise ValueError("cálculo deu ESF/UBS dentro de mancha; parar e conferir (esperado: 0 em todas as cotas)")
@@ -148,9 +158,9 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
                              f"({', '.join(str(l['cota_cm']) for l in linhas)} cm). A Equipe de Saúde Prisional fica fora da contagem. "
                              "Estar fora da mancha não garante acesso pelas ruas: o cálculo de acesso está em conferência."),
         "cs_frase_unidades": f"{max(l['esf_ubs_dentro'] for l in linhas)} de 21 ESF/UBS dentro da mancha em todas as cotas",
-        "cs_nota_tr": (f"Tempo de retorno: o da camada do SGB; {'na cota' if len(dif_tr) == 1 else 'nas cotas'} "
-                       f"{', '.join(map(str, dif_tr))} cm, o documento do SGB traz outro valor (coluna à direita)."
-                       if dif_tr else "Tempo de retorno da camada do SGB, igual ao do documento."),
+        "cs_nota_tr": ("Tempo de retorno: o da camada do SGB. " + " ".join(
+            f"Na cota {milhar(l['cota_cm'])} cm, a camada diz {dec1(l['tr_anos_camada'])} anos e o documento do SGB, {dec1(l['tr_anos_documento'])} anos."
+            for l in linhas if l["cota_cm"] in dif_tr) if dif_tr else "Tempo de retorno da camada do SGB, igual ao do documento."),
     }
     c = dict(codigo_ibge=codigo_ibge, script=SCRIPT, unidade_espacial="mancha de inundação (município)", selo="em_confirmacao")
     p1 = comum.montar_produto(
