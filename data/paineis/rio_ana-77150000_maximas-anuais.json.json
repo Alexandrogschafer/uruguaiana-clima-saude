@@ -1,0 +1,24 @@
+{
+  "produto": "rio_ana-77150000_maximas-anuais.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "ANA, série histórica diária da estação 77150000 (leituras das 7h e 17h e médias diárias)",
+  "transformacao_aplicada": "maior leitura das 7h ou 17h por ano civil; ano sem leitura = maior média diária; ano do evento em curso fora",
+  "entradas": [
+    {
+      "arquivo": "data/raw/nivel-rio_ana-serie-historica-77150000_1940-2026_diario.csv",
+      "sha256": "488b5d2eb2d27b6e7e61fd690af3ae29df1b0c2b4f71230d6425fe59af555972",
+      "bytes": 3599880
+    }
+  ],
+  "script": "scripts/paineis/dados_rio.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "IN04"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T14:09:17Z",
+  "supressao_nota": "não se aplica: medidas de nível e vazão, sem contagem de pessoas",
+  "evento_em_curso": true
+}

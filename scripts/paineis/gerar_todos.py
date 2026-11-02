@@ -31,6 +31,7 @@ GERADORES: list[tuple[Path, str]] = [
     (AQUI / "dados_territorio.py", "gerar"),
     (AQUI / "dados_economia.py", "gerar"),
     (AQUI / "dados_riscos.py", "gerar"),
+    (AQUI / "dados_rio.py", "gerar"),
 ]
 
 

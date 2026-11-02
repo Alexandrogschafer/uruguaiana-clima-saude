@@ -64,7 +64,7 @@ IN01,livre,,data/geoportal/cotas-inundacao.geojson,
 IN02,livre,,data/geoportal/estatisticas-por-cota.json,
 IN03,livre,,data/processed/conferencia_fontes_inundacao/manchas-por-cota_sgb_2023_transcricao.csv,
 IN04,livre,,data/raw/nivel-rio_ana-serie-historica-77150000_1940-2026_diario.csv,conferido
-IN05,livre,,data/raw/nivel-rio_ana-telemetria-77150000_2026-09-01-a-2026-10-18_15min.csv,
+IN05,livre,,data/raw/nivel-rio_ana-telemetria-77150000_2026-09-01-a-2026-10-18_15min.csv,conferido
 IN06,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_cheia_2026_10/maximos-anuais-maior-leitura_ana_1940-2026_ano.csv,
 IN07,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_cheia_2026_10/episodio-da-cheia-de-outubro_ana_2026_medida.csv,
 IN08,depende de conferência no QGIS,,data/processed/inventario_sentinel_cheias/episodios-de-cheia_ana_2014-2026_episodio.csv,

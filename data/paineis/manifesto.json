@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-02T13:37:33Z",
+ "gerado_em": "2026-11-02T14:09:17Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_1974-2024_anual",
@@ -426,6 +426,55 @@
    ],
    "bytes": 19355,
    "sha256": "fb4651deb1556eef0a9ef5114e1503de1581ff35c665650f62f91f578663630a"
+  },
+  {
+   "id": "rio_ana-77150000_maximas-anuais",
+   "titulo": "Máxima anual da régua do rio",
+   "ativos": [
+    "IN04"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2025-12-31",
+   "gerado_em": "2026-11-02T14:09:17Z",
+   "telas": [
+    "cheia-saude"
+   ],
+   "bytes": 13983,
+   "sha256": "448694c2c24858a82b9df29b72b2819b33e457ecbcd283198f4f0d49cfc83b6d"
+  },
+  {
+   "id": "rio_ana-77150000_ultima-leitura",
+   "titulo": "Última leitura do rio",
+   "ativos": [
+    "IN05"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2026-10-18",
+   "gerado_em": "2026-11-02T14:09:17Z",
+   "telas": [
+    "sintese",
+    "cheia-saude"
+   ],
+   "bytes": 1577,
+   "sha256": "d204b5767b6b9884b9860b428c30e55c805dee33b45891fd433c632f482def18"
+  },
+  {
+   "id": "rio_ana-77150000_ultimos-365-dias_diario",
+   "titulo": "Nível e vazão do rio: média diária dos últimos 365 dias",
+   "ativos": [
+    "IN05"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2026-10-03",
+   "gerado_em": "2026-11-02T14:09:17Z",
+   "telas": [
+    "cheia-saude"
+   ],
+   "bytes": 42170,
+   "sha256": "844b712b415b98e7668dc431c193a76effcfa8f88fbebd34cec642b44855cd83"
   },
   {
    "id": "risco-geologico_cprm_2021_classe",

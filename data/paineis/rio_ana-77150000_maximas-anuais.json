@@ -1,0 +1,680 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "rio_ana-77150000_maximas-anuais",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "IN04"
+ ],
+ "titulo": "Máxima anual da régua do rio",
+ "fonte_curta": "ANA 77150000",
+ "fonte": "ANA, série histórica diária da estação 77150000 (leituras das 7h e 17h e médias diárias)",
+ "unidade_espacial": "estação fluviométrica",
+ "unidade_medida": "cm",
+ "periodo": {
+  "inicio": "1940",
+  "fim": "2025"
+ },
+ "dados_ate": "2025-12-31",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "lacuna",
+   "onde": {
+    "anos": [
+     1940,
+     1941,
+     1949,
+     2024,
+     2025
+    ]
+   },
+   "texto": "ano com lacuna: menos de 80% dos dias com valor na série"
+  },
+  {
+   "tipo": "evento_em_curso",
+   "texto": "cheia de outubro de 2026: números em preparação"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T14:09:17Z",
+ "script": "scripts/paineis/dados_rio.py",
+ "colunas": [
+  {
+   "nome": "ano",
+   "tipo": "int"
+  },
+  {
+   "nome": "maximo_cm",
+   "tipo": "float"
+  },
+  {
+   "nome": "origem",
+   "tipo": "texto"
+  },
+  {
+   "nome": "dias_com_valor_pct",
+   "tipo": "float"
+  },
+  {
+   "nome": "lacuna",
+   "tipo": "bool"
+  }
+ ],
+ "fonte_rodape": "Nível e vazão do rio — ANA, estação 77150000 (série histórica diária e telemetria de 15 em 15 minutos)",
+ "telas": [
+  "cheia-saude"
+ ],
+ "evento_em_curso": true,
+ "dados": [
+  {
+   "ano": 1940,
+   "maximo_cm": 1000.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 14.5,
+   "lacuna": true
+  },
+  {
+   "ano": 1941,
+   "maximo_cm": null,
+   "origem": "sem valor na fonte",
+   "dias_com_valor_pct": 0.0,
+   "lacuna": true
+  },
+  {
+   "ano": 1942,
+   "maximo_cm": 1012.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 80.5,
+   "lacuna": false
+  },
+  {
+   "ano": 1943,
+   "maximo_cm": 762.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1944,
+   "maximo_cm": 593.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1945,
+   "maximo_cm": 604.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1946,
+   "maximo_cm": 786.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 95.9,
+   "lacuna": false
+  },
+  {
+   "ano": 1947,
+   "maximo_cm": 889.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1948,
+   "maximo_cm": 824.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1949,
+   "maximo_cm": 535.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 79.7,
+   "lacuna": true
+  },
+  {
+   "ano": 1950,
+   "maximo_cm": 976.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 98.4,
+   "lacuna": false
+  },
+  {
+   "ano": 1951,
+   "maximo_cm": 765.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1952,
+   "maximo_cm": 825.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1953,
+   "maximo_cm": 1049.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1954,
+   "maximo_cm": 1072.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1955,
+   "maximo_cm": 867.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1956,
+   "maximo_cm": 800.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 95.9,
+   "lacuna": false
+  },
+  {
+   "ano": 1957,
+   "maximo_cm": 870.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1958,
+   "maximo_cm": 792.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 99.2,
+   "lacuna": false
+  },
+  {
+   "ano": 1959,
+   "maximo_cm": 902.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1960,
+   "maximo_cm": 879.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1961,
+   "maximo_cm": 1036.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 92.3,
+   "lacuna": false
+  },
+  {
+   "ano": 1962,
+   "maximo_cm": 698.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1963,
+   "maximo_cm": 1164.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1964,
+   "maximo_cm": 698.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1965,
+   "maximo_cm": 1116.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1966,
+   "maximo_cm": 894.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 99.7,
+   "lacuna": false
+  },
+  {
+   "ano": 1967,
+   "maximo_cm": 985.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 99.7,
+   "lacuna": false
+  },
+  {
+   "ano": 1968,
+   "maximo_cm": 683.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 94.5,
+   "lacuna": false
+  },
+  {
+   "ano": 1969,
+   "maximo_cm": 887.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1970,
+   "maximo_cm": 833.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1971,
+   "maximo_cm": 884.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1972,
+   "maximo_cm": 1211.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1973,
+   "maximo_cm": 982.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1974,
+   "maximo_cm": 704.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1975,
+   "maximo_cm": 899.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1976,
+   "maximo_cm": 778.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1977,
+   "maximo_cm": 840.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1978,
+   "maximo_cm": 904.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1979,
+   "maximo_cm": 1132.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1980,
+   "maximo_cm": 875.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1981,
+   "maximo_cm": 542.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 99.7,
+   "lacuna": false
+  },
+  {
+   "ano": 1982,
+   "maximo_cm": 1115.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1983,
+   "maximo_cm": 1358.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1984,
+   "maximo_cm": 1062.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1985,
+   "maximo_cm": 860.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1986,
+   "maximo_cm": 1090.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1987,
+   "maximo_cm": 1074.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1988,
+   "maximo_cm": 744.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1989,
+   "maximo_cm": 1012.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1990,
+   "maximo_cm": 1280.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1991,
+   "maximo_cm": 777.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1992,
+   "maximo_cm": 1222.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1993,
+   "maximo_cm": 907.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1994,
+   "maximo_cm": 1086.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1995,
+   "maximo_cm": 831.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1996,
+   "maximo_cm": 773.0,
+   "origem": "maior média diária (ano sem leitura)",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1997,
+   "maximo_cm": 1288.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1998,
+   "maximo_cm": 1104.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 1999,
+   "maximo_cm": 856.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2000,
+   "maximo_cm": 790.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2001,
+   "maximo_cm": 926.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2002,
+   "maximo_cm": 1114.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2003,
+   "maximo_cm": 846.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2004,
+   "maximo_cm": 648.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2005,
+   "maximo_cm": 1016.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2006,
+   "maximo_cm": 700.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2007,
+   "maximo_cm": 834.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2008,
+   "maximo_cm": 1060.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2009,
+   "maximo_cm": 1120.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2010,
+   "maximo_cm": 888.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2011,
+   "maximo_cm": 910.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2012,
+   "maximo_cm": 750.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2013,
+   "maximo_cm": 820.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2014,
+   "maximo_cm": 1187.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2015,
+   "maximo_cm": 1143.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2016,
+   "maximo_cm": 1128.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2017,
+   "maximo_cm": 1269.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2018,
+   "maximo_cm": 775.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2019,
+   "maximo_cm": 927.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2020,
+   "maximo_cm": 781.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2021,
+   "maximo_cm": 693.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2022,
+   "maximo_cm": 912.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2023,
+   "maximo_cm": 1236.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
+  },
+  {
+   "ano": 2024,
+   "maximo_cm": 1218.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 74.9,
+   "lacuna": true
+  },
+  {
+   "ano": 2025,
+   "maximo_cm": 1106.0,
+   "origem": "leitura das 7h ou 17h",
+   "dias_com_valor_pct": 74.8,
+   "lacuna": true
+  }
+ ]
+}

@@ -1,0 +1,79 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "rio_ana-77150000_ultima-leitura",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "IN05"
+ ],
+ "titulo": "Última leitura do rio",
+ "fonte_curta": "ANA 77150000",
+ "fonte": "ANA, telemetria da estação 77150000",
+ "unidade_espacial": "estação fluviométrica",
+ "unidade_medida": "cm; m³/s",
+ "periodo": {
+  "inicio": "2026-10-18",
+  "fim": "2026-10-18"
+ },
+ "dados_ate": "2026-10-18",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "evento_em_curso",
+   "texto": "cheia de outubro de 2026: números em preparação"
+  },
+  {
+   "tipo": "metodo",
+   "texto": "não é dado em tempo real; atualizado em 18/10"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T14:09:17Z",
+ "script": "scripts/paineis/dados_rio.py",
+ "colunas": [
+  {
+   "nome": "estado",
+   "tipo": "texto"
+  },
+  {
+   "nome": "data_hora",
+   "tipo": "texto"
+  },
+  {
+   "nome": "nivel_cm",
+   "tipo": "float"
+  },
+  {
+   "nome": "vazao_m3s",
+   "tipo": "float"
+  },
+  {
+   "nome": "idade_dias",
+   "tipo": "int"
+  }
+ ],
+ "fonte_rodape": "Nível e vazão do rio — ANA, estação 77150000 (série histórica diária e telemetria de 15 em 15 minutos)",
+ "telas": [
+  "sintese",
+  "cheia-saude"
+ ],
+ "evento_em_curso": true,
+ "limiar_cm": 800.0,
+ "atualizado_em": "2026-10-18",
+ "dados": [
+  {
+   "estado": "evento_em_curso",
+   "data_hora": null,
+   "nivel_cm": null,
+   "vazao_m3s": null,
+   "idade_dias": null
+  }
+ ]
+}
