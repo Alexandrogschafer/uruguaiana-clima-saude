@@ -151,6 +151,7 @@ const TELAS = {
   populacao: {
     pagina: "dashboards/populacao.html", enderecoAntigo: "dashboards/painel-demografia.html",
     produtos: { serie: "populacao_ibge_1970-2025_anual", ind: "demografia_ibge_1970-2022_indicadores", pir: "demografia_ibge_2000-2010-2022_piramides" },
+    recolhiveis: ["det-piramides"], extras: async (browser, base, prod) => testePeriodoRecolhivel(browser, base, "dashboards/populacao.html", { "det-piramides": false }),
     kpisCompletos: true,
     kpis: (p) => kpisTexto(p.serie.meta.kpis),
     graficos: (p) => {
@@ -177,7 +178,8 @@ const TELAS = {
   territorio: {
     pagina: "dashboards/territorio.html", enderecoAntigo: "dashboards/painel-territorio.html",
     produtos: { serie: "uso-solo_mapbiomas_1985-2024_classes", classes: "uso-solo_mapbiomas_2024_todas-classes", meio: "meio-fisico_ibge-bdia_atual_classes",
-                pocos: "pocos_siagas_atual_aquifero", app: "app-hidrica_ana-bho-mapbiomas_2024_curso" },
+                pocos: "pocos_siagas_atual_aquifero", app: "app-hidrica_ana-bho-mapbiomas_2024_curso", urb: "areas-urbanizadas_ibge_2019_classe" },
+    recolhiveis: ["det-meio"],
     kpisCompletos: true,
     kpis: (p) => kpisTexto([...p.serie.meta.kpis_uso, ...p.serie.meta.kpis_meio]),
     graficos: (p) => {
@@ -192,6 +194,7 @@ const TELAS = {
         geologia: tema("geologia"), geomorfologia: tema("geomorfologia"), "vegetacao-bdia": tema("vegetacao"), pedologia: tema("pedologia_grafico"),
         "pocos-aquifero": p.pocos.dados.map((r) => [r.aquifero, [[fmtInt(r.pocos), `poços · ${p.pocos.meta.fonte_curta}`]]]),
         "app-curso": p.app.dados.map((r) => [r.rotulo, [[fmtInt(r.area_km2) + " km²", `km² · ${p.app.meta.fonte_curta}`]]]),
+        urbanizadas: p.urb.dados.map((r) => [r.tipo === r.densidade ? r.tipo : `${r.tipo} (${r.densidade.toLowerCase()})`, [[fmt1(r.area_km2) + " km²", `km² · ${p.urb.meta.fonte_curta}`]]]),
       };
     },
     tabelas: (p) => ({
@@ -203,6 +206,8 @@ const TELAS = {
     pagina: "dashboards/economia.html",
     produtos: { censo: "censo_ibge_2022_situacao-setor", pib: "pib_ibge_2002-2023_anual", pam: "agropecuaria_ibge_1974-2024_anual", caged: "emprego_caged_2020-2026_mensal",
                 rais: "emprego_rais_2025_secao", idhm: "idhm_atlas_1991-2010_censos", cadunico: "cadunico_mds_2012-2026_anual", siconfi: "despesas_siconfi_2015-2026_anual" },
+    recolhiveis: ["det-emprego", "det-vulnerabilidade", "det-despesas"],
+    extras: async (browser, base, prod) => testePeriodoRecolhivel(browser, base, "dashboards/economia.html", { "det-emprego": true, "det-vulnerabilidade": true, "det-despesas": true }),
     kpisCompletos: true,
     kpis: (p) => kpisTexto([...p.censo.meta.kpis_censo, ...p.pib.meta.kpis_economia, ...p.idhm.meta.kpis_vulnerabilidade, ...p.siconfi.meta.kpis_siconfi]),
     graficos: (p) => {
@@ -233,7 +238,9 @@ const TELAS = {
   },
   riscos: {
     pagina: "dashboards/riscos.html",
-    produtos: { s2id: "desastres_s2id_2014-2025_anual", cprm: "risco-geologico_cprm_2021_classe", aneel: "energia_aneel_2000-2026_anual" },
+    produtos: { s2id: "desastres_s2id_2014-2025_anual", cprm: "risco-geologico_cprm_2021_classe", aneel: "energia_aneel_2000-2026_anual",
+                setor: "setorizacao-risco_sgb_2014_setor", bater: "areas-de-risco_ibge_2018_bater", indisp: "infraestrutura_indisponivel_atual" },
+    recolhiveis: [], extras: async (browser, base, prod) => testeSuprimidoSetor(browser, base, prod),
     kpisCompletos: true,
     kpis: (p) => kpisTexto([...p.s2id.meta.kpis_s2id, ...p.aneel.meta.kpis_aneel]),
     graficos: (p) => {
@@ -250,7 +257,17 @@ const TELAS = {
         "aneel-fec": fech.map((r) => [r.ano, [[fmt1(r.fec_interrupcoes), `FEC · ${fa}`]]]),
       };
     },
-    tabelas: (p) => ({ tabelaRisco: p.cprm.dados.map((r) => [r.camada, r.classe, fmt1(r.area_km2), fmtInt(r.n_poligonos)]) }),
+    tabelas: (p) => {
+      const sup = (pr, i, c) => (pr.meta.suprimidos || []).some((s) => s.linha === i && s.campo === c);
+      const n = (pr, r, i, c) => (sup(pr, i, c) ? "<5" : r[c] === null ? "—" : fmtInt(r[c]));
+      const tx = (v) => (v === null || v === undefined ? "—" : String(v));
+      return {
+        tabelaRisco: p.cprm.dados.map((r) => [r.camada, r.classe, fmt1(r.area_km2), fmtInt(r.n_poligonos)]),
+        tabelaSetores: p.setor.dados.map((r, i) => [r.setor, r.local, r.tipologia, r.grau_risco, r.grau_vulnerabilidade, n(p.setor, r, i, "edificacoes"), n(p.setor, r, i, "domicilios"), n(p.setor, r, i, "pessoas")]),
+        tabelaBater: p.bater.dados.map((r) => [r.area_bater, tx(r.origem), tx(r.observacao)]),
+        tabelaIndisp: p.indisp.dados.map((r) => [r.tema, r.fonte, r.motivo]),
+      };
+    },
   },
 };
 
@@ -347,13 +364,23 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
   await page.goto(base + def.pagina, { waitUntil: "networkidle" });
   await page.waitForFunction(() => document.documentElement.dataset.pronto === "1", null, { timeout: 10000 });
   await page.waitForTimeout(300);
+  // blocos recolhíveis: fechados a 390 px e abertos a 1280 px; depois abre tudo para medir e percorrer as dicas
+  const alturaRecolhida = await page.evaluate(() => document.documentElement.scrollHeight);
+  const estado = await page.evaluate(() => Object.fromEntries(Array.from(document.querySelectorAll("details.recolhivel")).map((d) => [d.id, d.open])));
+  for (const id of def.recolhiveis || []) {
+    const esperado = largura !== 390;
+    if (estado[id] !== esperado) falhas.push(`bloco ${id} ${estado[id] ? "aberto" : "fechado"} a ${largura} px (esperado ${esperado ? "aberto" : "fechado"})`);
+  }
+  if ((def.recolhiveis || []).length !== Object.keys(estado).length) falhas.push(`recolhíveis na página: ${Object.keys(estado).join(", ")}`);
+  await page.evaluate(() => document.querySelectorAll("details.recolhivel").forEach((d) => { d.open = true; }));
+  await page.waitForTimeout(400);
 
   const r = await page.evaluate(() => {
     const svgNaN = Array.from(document.querySelectorAll("svg *")).filter((e) => Array.from(e.attributes).some((a) => /NaN|undefined/.test(a.value))).length;
     const texto = document.body.innerText;
     const folgas = {};
     document.querySelectorAll('[id^="chart-"] svg').forEach((svg) => {
-      const h = +svg.getAttribute("height");
+      const h = svg.dataset.alturaEixo ? +svg.dataset.alturaEixo : +svg.getAttribute("height");
       const cx = Array.from(svg.querySelectorAll("text.axis-label, text.axis-x")).filter((t) => Math.abs(+t.getAttribute("y") - (h - 6)) < 3)
         .map((t) => { const b = t.getBBox(); return [b.x, b.x + b.width]; }).sort((a, b) => a[0] - b[0]);
       let f = Infinity;
@@ -415,7 +442,7 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
   await page.screenshot({ path: path.join(saida, `${def.pagina.split("/").pop().replace(".html", "")}_${largura}_${tema}.png`), fullPage: true });
   falhas.unshift(...erros.map((e) => `erro: ${e}`));
   await ctx.close();
-  return { modo, falhas, altura: r.altura, dicas, toqueFecha, folgas: r.folgas };
+  return { modo, falhas, altura: alturaRecolhida, dicas, toqueFecha, folgas: r.folgas };
 }
 
 async function testeFalhaDeCarga(browser, base, def) {
@@ -544,6 +571,30 @@ async function testesExtrasSaude(browser, base, prod) {
     await ctx.close();
   }
   return res;
+}
+
+// ?periodo= válido abre os blocos recolhidos que ele afeta (a 390 px); os outros continuam fechados
+async function testePeriodoRecolhivel(browser, base, pagina, esperado) {
+  const { ctx, page, erros } = await abrir(browser, `${base}${pagina}?periodo=2015-2020`, { largura: 390 });
+  const alturaRecolhida = await page.evaluate(() => document.documentElement.scrollHeight);
+  const estado = await page.evaluate(() => Object.fromEntries(Array.from(document.querySelectorAll("details.recolhivel")).map((d) => [d.id, d.open])));
+  await ctx.close();
+  const ok = Object.entries(esperado).every(([id, aberto]) => estado[id] === aberto) && erros.length === 0;
+  return [{ nome: `390 px com ?periodo=2015-2020: blocos ${JSON.stringify(esperado)}`, ok, detalhe: JSON.stringify(estado) }];
+}
+
+// setorização: contagem suprimida no JSON aparece como "<5" (JSON simulado)
+async function testeSuprimidoSetor(browser, base, prod) {
+  const id = prod.setor.meta.id;
+  const rotas = [[`**/data/paineis/${id}.json`, async (route) => {
+    const j = JSON.parse(JSON.stringify({ ...prod.setor.meta, dados: prod.setor.dados }));
+    j.dados[0].pessoas = null; j.suprimidos = [{ linha: 0, campo: "pessoas", motivo: "primaria" }];
+    await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(j) });
+  }]];
+  const { ctx, page, erros } = await abrir(browser, base + "dashboards/riscos.html", { rotas });
+  const v = await page.evaluate(() => document.querySelector("#tabelaSetores tbody tr").cells[7].textContent);
+  await ctx.close();
+  return [{ nome: "setorização: contagem suprimida aparece como \"<5\" (JSON simulado)", ok: v === "<5" && erros.length === 0, detalhe: v }];
 }
 
 async function main() {

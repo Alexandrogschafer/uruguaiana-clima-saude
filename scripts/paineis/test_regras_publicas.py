@@ -262,8 +262,15 @@ def regra_k(prods) -> list[str]:
     """Telas novas: IN15 nunca publicado; ativo não livre só com exceção registrada (as exceções em uso são listadas)."""
     falhas = []
     aut = comum.ler_autorizacoes()
+    # pirâmides: ativo próprio e livre (PD14); o PD03 (tabela pendente) não pode aparecer em produto
+    if aut.get("PD14", {}).get("autorizacao") != "livre" or aut.get("PD03", {}).get("excecao_premissa", "").strip():
+        falhas.append("PD14 deve ser livre e o PD03 não pode ter exceção")
     for p, d in prods:
         ativos = set(d.get("ativos", []))
+        if "PD03" in ativos:
+            falhas.append(f"{p.name}: usa o PD03, que depende de conferência")
+        if p.name.startswith("demografia_") and p.name.endswith("_piramides.json") and ativos != {"PD14"}:
+            falhas.append(f"{p.name}: as pirâmides devem usar o ativo PD14")
         if ativos & ATIVOS_FORA:
             falhas.append(f"{p.name}: ativo fora da publicação {sorted(ativos & ATIVOS_FORA)}")
         for a in sorted(ativos):
@@ -287,7 +294,7 @@ def main() -> int:
         "h LST fora": regra_h(prods),
         "i premissas P5 e P6": regra_i(prods),
         "j saúde: afogamento só por quinquênio, sem soma, sem 2026, Prisional fora": regra_j(prods),
-        "k IN15 fora; ativo não livre só com exceção registrada": regra_k(prods),
+        "k IN15 fora; pirâmides no PD14 e PD03 fora; ativo não livre só com exceção registrada": regra_k(prods),
     }
     print(f"arquivos varridos: {len(arqs)}; produtos: {len(prods)}")
     ok = True
