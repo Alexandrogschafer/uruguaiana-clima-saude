@@ -80,10 +80,15 @@ integrar):
   como zero).
 - **Internações respiratórias (SIH/DATASUS):** internações mensais com
   diagnóstico respiratório — 2010 até o último ano fechado.
-- **Precipitação mensal:** série 2010 até o mês mais recente disponível,
-  via MERGE/INPE-CPTEC (fonte primária tentada é o CHIRPS/UCSB, com troca
-  automática para MERGE quando o CHIRPS bloqueia por IP — documentado por
-  mês/período no metadado `.json` irmão).
+- **Precipitação mensal:** série 2010–2025 via MERGE/INPE-CPTEC, fonte da
+  precipitação do painel de clima (média de uma área com margem de 18 km em
+  torno do município). O script de coleta tenta primeiro o CHIRPS/UCSB e
+  troca para o MERGE quando há bloqueio por IP, com o registro por mês no
+  metadado `.json` irmão. O painel recebe os dados de
+  `scripts/processamento/precipitacao_painel_clima.py`.
+- **Temperatura (INMET A809):** série horária da estação no município, usada
+  para temperatura, dias de calor e geada no painel de clima. A precipitação
+  da estação aparece só na comparação anual com o MERGE.
 - **Focos de queimada (INPE/BDQueimadas):** registro pontual (lat/lon) de
   cada foco de calor por satélite — 2010 até o ano mais recente.
 - **Nível do Rio Uruguai (ANA):** ingestão implementada para a estação
