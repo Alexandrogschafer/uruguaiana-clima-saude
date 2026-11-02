@@ -1,0 +1,22 @@
+{
+  "produto": "pocos_siagas_atual_aquifero.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "SGB/CPRM, SIAGAS",
+  "transformacao_aplicada": "contagem por aquífero (vazio e classes raras = Outros/sem dado); profundidade média, mediana e % sem dado",
+  "entradas": [
+    {
+      "arquivo": "data/raw/vetor/pocos-agua-subterranea_siagas-cprm_atual_vetorial.gpkg",
+      "sha256": "1dd761523aec252cab4f09d076114ada735f5f7d292b3b8471855d575129e72c",
+      "bytes": 180224
+    }
+  ],
+  "script": "scripts/paineis/dados_territorio.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "TB14"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:47:36Z"
+}

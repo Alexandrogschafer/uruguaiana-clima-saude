@@ -1,0 +1,84 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "areas-urbanizadas_ibge_2019_classe",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "TB16"
+ ],
+ "titulo": "Áreas urbanizadas por tipo e densidade (2019)",
+ "fonte_curta": "IBGE",
+ "fonte": "IBGE, Áreas Urbanizadas do Brasil 2019",
+ "unidade_espacial": "município",
+ "unidade_medida": "km²",
+ "periodo": {
+  "inicio": "2019",
+  "fim": "2019"
+ },
+ "dados_ate": "2019",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "produto gerado; ainda sem bloco na tela"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:47:36Z",
+ "script": "scripts/paineis/dados_territorio.py",
+ "colunas": [
+  {
+   "nome": "tipo",
+   "tipo": "texto"
+  },
+  {
+   "nome": "densidade",
+   "tipo": "texto"
+  },
+  {
+   "nome": "area_km2",
+   "tipo": "float"
+  }
+ ],
+ "fonte_rodape": "Áreas urbanizadas — IBGE 2019",
+ "telas": [],
+ "dados": [
+  {
+   "tipo": "Loteamento vazio",
+   "densidade": "Loteamento vazio",
+   "area_km2": 0.07
+  },
+  {
+   "tipo": "Outros equipamentos urbanos",
+   "densidade": "Densa",
+   "area_km2": 0.34
+  },
+  {
+   "tipo": "Outros equipamentos urbanos",
+   "densidade": "Pouco densa",
+   "area_km2": 1.33
+  },
+  {
+   "tipo": "Vazio intraurbano remanescente",
+   "densidade": "Densa",
+   "area_km2": 0.73
+  },
+  {
+   "tipo": "Área urbanizada",
+   "densidade": "Densa",
+   "area_km2": 24.56
+  },
+  {
+   "tipo": "Área urbanizada",
+   "densidade": "Pouco densa",
+   "area_km2": 5.66
+  }
+ ]
+}

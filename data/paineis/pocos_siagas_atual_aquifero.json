@@ -1,0 +1,65 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "pocos_siagas_atual_aquifero",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "TB14"
+ ],
+ "titulo": "Poços de água subterrânea por aquífero",
+ "fonte_curta": "SIAGAS/CPRM",
+ "fonte": "SGB/CPRM, SIAGAS",
+ "unidade_espacial": "município",
+ "unidade_medida": "poços",
+ "periodo": {
+  "inicio": "atual",
+  "fim": "atual"
+ },
+ "dados_ate": "2026-08-09",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:47:36Z",
+ "script": "scripts/paineis/dados_territorio.py",
+ "colunas": [
+  {
+   "nome": "aquifero",
+   "tipo": "texto"
+  },
+  {
+   "nome": "pocos",
+   "tipo": "int"
+  }
+ ],
+ "fonte_rodape": "Poços de água subterrânea — SIAGAS/CPRM",
+ "telas": [
+  "territorio"
+ ],
+ "resumo": {
+  "total": 340,
+  "profundidade_media_m": 82.93,
+  "profundidade_mediana_m": 60.0,
+  "pct_sem_profundidade": 11.8
+ },
+ "dados": [
+  {
+   "aquifero": "Serra Geral",
+   "pocos": 178
+  },
+  {
+   "aquifero": "Guarani",
+   "pocos": 73
+  },
+  {
+   "aquifero": "Outros/sem dado",
+   "pocos": 89
+  }
+ ]
+}

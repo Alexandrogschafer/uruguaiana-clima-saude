@@ -1,0 +1,74 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "app-hidrica_ana-bho-mapbiomas_2024_curso",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "TB15"
+ ],
+ "titulo": "APP hídrica: área por curso d'água",
+ "fonte_curta": "ANA/BHO + MapBiomas",
+ "fonte": "APP calculada da rede ANA/BHO, ocupação pelo MapBiomas 2024",
+ "unidade_espacial": "município",
+ "unidade_medida": "km²",
+ "periodo": {
+  "inicio": "2024",
+  "fim": "2024"
+ },
+ "dados_ate": "2024",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "aproximação metodológica; não serve para fiscalização ou licenciamento"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:47:36Z",
+ "script": "scripts/paineis/dados_territorio.py",
+ "colunas": [
+  {
+   "nome": "curso",
+   "tipo": "texto"
+  },
+  {
+   "nome": "rotulo",
+   "tipo": "texto"
+  },
+  {
+   "nome": "area_km2",
+   "tipo": "float"
+  }
+ ],
+ "fonte_rodape": "APP hídrica — calculada a partir da rede hidrográfica ANA/BHO (aproximação metodológica) cruzada com MapBiomas 2024",
+ "telas": [
+  "territorio"
+ ],
+ "resumo": {
+  "area_total_km2": 321.32,
+  "pct_antropica": 18.86,
+  "pct_antropica_excl_agua": 23.53,
+  "area_natural_km2": 196.9,
+  "area_antropica_km2": 60.59,
+  "area_agua_km2": 63.83
+ },
+ "dados": [
+  {
+   "curso": "rede_local",
+   "rotulo": "Rede local (30m)",
+   "area_km2": 304.91
+  },
+  {
+   "curso": "rio_uruguai",
+   "rotulo": "Rio Uruguai (200m)",
+   "area_km2": 22.61
+  }
+ ]
+}

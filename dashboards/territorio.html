@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="pt-BR" data-tela="territorio" data-raiz="..">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Território e Meio Físico — ClimaPampa, Uruguaiana/RS</title>
+<link rel="stylesheet" href="../css/paineis.css">
+<link rel="stylesheet" href="../css/paineis-componentes.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header id="cabecalho-comum"></header>
+
+  <div class="masthead">
+    <svg class="masthead-contour" viewBox="0 0 800 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
+      <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
+    </svg>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 3 de 4 · Território</span>
+    <h1>Painel de território e vulnerabilidade</h1>
+    <p>Uso do solo (MapBiomas) e meio físico (geologia, geomorfologia, pedologia, vegetação nativa, poços e APP — BDiA/IBGE e SIAGAS/CPRM) — o retrato estrutural do município, que muda devagar. Economia e vulnerabilidade estão no painel de <a href="economia.html">Economia</a>; risco geológico, desastres e energia, no de <a href="riscos.html">Riscos</a>.</p>
+    <div class="masthead-meta">
+      <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
+      <span><b>Uso do solo</b> <span data-nota="ter_meta_masthead_uso"></span></span>
+      <span><b>Meio físico (BDiA)</b> <span data-nota="ter_meta_masthead_meio"></span></span>
+      <span><b>Ver também</b> <a href="saude.html">Saúde</a> · <a href="clima.html">Clima e Ambiente</a> · <a href="populacao.html">Demografia</a> · <a href="../index.html">Geoportal</a></span>
+    </div>
+  </div>
+
+  <div class="chips-filtro" id="chips-filtro"></div>
+
+  <div class="section-head"><h2>Uso do solo</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="ter_nota_uso"></p>
+  <div class="chart-grid triple">
+    <div class="card"><div class="card-head"><span class="card-title">Formação Campestre (Pampa nativo)</span></div>
+      <div class="card-body"><div id="chart-campestre"></div><div class="chart-tooltip" id="tt-campestre"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Arroz</span></div>
+      <div class="card-body"><div id="chart-arroz"></div><div class="chart-tooltip" id="tt-arroz"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Área urbanizada</span></div>
+      <div class="card-body"><div id="chart-urbano"></div><div class="chart-tooltip" id="tt-urbano"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Mosaico de Usos</span></div>
+      <div class="card-body"><div id="chart-mosaico"></div><div class="chart-tooltip" id="tt-mosaico"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Outras Lavouras Temporárias</span></div>
+      <div class="card-body"><div id="chart-outras-lavouras"></div><div class="chart-tooltip" id="tt-outras-lavouras"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Formação Florestal</span></div>
+      <div class="card-body"><div id="chart-florestal"></div><div class="chart-tooltip" id="tt-florestal"></div></div></div>
+  </div>
+  <p class="section-note" style="margin-top:24px;" data-nota="ter_nota_uso_classes"></p>
+  <div class="status-legend">
+    <span class="item"><span class="dot" style="background:var(--series-aqua)"></span>Natural remanescente</span>
+    <span class="item"><span class="dot" style="background:var(--series-orange)"></span>Uso antrópico</span>
+    <span class="item"><span class="dot" style="background:var(--series-blue)"></span>Água</span>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="card-title">Área por classe, ordenada</span><span class="card-meta" data-nota="ter_meta_uso_2024"></span></div>
+    <div class="card-body"><div id="chart-uso-solo-2024"></div><div class="chart-tooltip" id="tt-uso-solo-2024"></div></div>
+  </div>
+  <div class="kpi-row" id="kpiRowUsoSolo"></div>
+  <details class="table-wrap">
+    <summary data-nota="ter_resumo_uso"></summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaUso"></table></div>
+  </details>
+
+  <div class="section-head"><h2>Meio físico</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="ter_nota_meio"></p>
+  <div class="card"><div class="card-head"><span class="card-title">Geologia — área por unidade</span><span class="card-meta" data-nota="ter_meta_geologia"></span></div>
+    <div class="card-body"><div id="chart-geologia"></div><div class="chart-tooltip" id="tt-geologia"></div></div></div>
+  <div class="card"><div class="card-head"><span class="card-title">Geomorfologia — área por unidade</span><span class="card-meta" data-nota="ter_meta_geomorfologia"></span></div>
+    <div class="card-body"><div id="chart-geomorfologia"></div><div class="chart-tooltip" id="tt-geomorfologia"></div></div></div>
+  <div class="card"><div class="card-head"><span class="card-title">Vegetação nativa (BDiA) — área por classe</span><span class="card-meta" data-nota="ter_meta_vegetacao"></span></div>
+    <div class="card-body"><div id="chart-vegetacao-bdia"></div><div class="chart-tooltip" id="tt-vegetacao-bdia"></div></div></div>
+  <div class="card"><div class="card-head"><span class="card-title">Pedologia — área por classe de solo</span><span class="card-meta" data-nota="ter_meta_pedologia"></span></div>
+    <div class="card-body"><div id="chart-pedologia"></div><div class="chart-tooltip" id="tt-pedologia"></div></div></div>
+  <p class="section-note" style="margin-top:24px;" data-nota="ter_nota_pocos_app"></p>
+  <div class="kpi-row" id="kpiRowMeioFisico"></div>
+  <div class="chart-grid">
+    <div class="card"><div class="card-head"><span class="card-title">Poços de água subterrânea — por aquífero</span><span class="card-meta" data-nota="ter_meta_pocos"></span></div>
+      <div class="card-body"><div id="chart-pocos-aquifero"></div><div class="chart-tooltip" id="tt-pocos-aquifero"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">APP hídrica — área por curso d'água</span><span class="card-meta" data-nota="ter_meta_app"></span></div>
+      <div class="card-body"><div id="chart-app-curso"></div><div class="chart-tooltip" id="tt-app-curso"></div></div></div>
+  </div>
+  <details class="table-wrap" style="margin-top:10px;">
+    <summary data-nota="ter_resumo_pedologia"></summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaPedologia"></table></div>
+  </details>
+
+  <p class="section-note" style="margin-top:28px;" data-nota="ter_leitura"></p>
+  <footer id="rodape-comum"></footer>
+</div>
+
+<script src="../js/paineis/componentes.js"></script>
+<script src="../js/paineis/graficos.js"></script>
+<script src="../js/paineis/graficos-extra.js"></script>
+<script src="../js/paineis/dados.js"></script>
+<script src="../js/paineis/filtros.js"></script>
+<script src="../js/paineis/cabecalho.js"></script>
+<script src="../js/paineis/rodape.js"></script>
+<script>
+/* Tela de território e meio físico: lê os produtos de data/paineis/ (scripts/paineis/dados_territorio.py).
+   Nenhum número fica neste arquivo: textos e indicadores vêm de "notas" e "kpis_*". */
+const P = window.Paineis;
+const IDS = {serie: 'uso-solo_mapbiomas_1985-2024_classes', classes: 'uso-solo_mapbiomas_2024_todas-classes', meio: 'meio-fisico_ibge-bdia_atual_classes',
+             pocos: 'pocos_siagas_atual_aquifero', app: 'app-hidrica_ana-bho-mapbiomas_2024_curso'};
+const BLOCOS = {serie: ['chart-campestre', 'chart-arroz', 'chart-urbano', 'chart-mosaico', 'chart-outras-lavouras', 'chart-florestal', 'tabelaUso'],
+                classes: ['chart-uso-solo-2024'], meio: ['chart-geologia', 'chart-geomorfologia', 'chart-vegetacao-bdia', 'chart-pedologia', 'tabelaPedologia'],
+                pocos: ['chart-pocos-aquifero'], app: ['chart-app-curso']};
+
+async function iniciar(){
+  const c = {};
+  for(const [k, id] of Object.entries(IDS)){
+    c[k] = await P.carregar(id);
+    if(!c[k]) BLOCOS[k].forEach(b => P.erroBloco(document.getElementById(b), id));
+  }
+  const {serie, classes, meio, pocos, app} = c;
+  const anos = serie ? serie.dados.map(r => r.ano) : [];
+  P.iniciarFiltros({listas: {periodo: anos.length ? {inicio: Math.min(...anos), fim: Math.max(...anos)} : undefined}});
+  P.montarCabecalho();
+  P.preencherNotas();
+  if(serie){ P.montarKpis('kpiRowUsoSolo', serie.meta.kpis_uso); P.montarKpis('kpiRowMeioFisico', serie.meta.kpis_meio); }
+
+  const noPeriodo = linhas => {
+    const p = P.filtros.estado.periodo;
+    if(!p) return linhas;
+    const [a, b] = P.anosDoPeriodo(p);
+    return linhas.filter(r => r.ano >= a && r.ano <= b);
+  };
+  const tema = t => meio ? meio.dados.filter(r => r.tema === t) : [];
+
+  function draw(){
+    const blue = cssVar('--series-blue'), orange = cssVar('--series-orange'), aqua = cssVar('--series-aqua');
+    if(serie){
+      const d = noPeriodo(serie.dados), f = serie.meta.fonte_curta;
+      [['campestre', 'Formação Campestre', v => fmtInt(v)], ['arroz', 'Arroz', v => fmtInt(v)], ['urbano', 'Área Urbanizada', v => fmt1(v)],
+       ['mosaico', 'Mosaico de Usos', v => fmtInt(v)], ['outras-lavouras', 'Outras Lavouras Temporárias', v => fmtInt(v)], ['florestal', 'Formação Florestal', v => fmtInt(v)]]
+        .forEach(([id, classe, fmt]) => renderLineChart(`chart-${id}`, `tt-${id}`, {
+          labels: d.map(r => r.ano), series: [{name: P.dica(id === 'urbano' ? 'Área urbanizada' : classe, f), color: blue, data: d.map(r => r[classe])}], height: 160, yFormat: fmt,
+        }));
+    }
+    if(classes){
+      const cor = {natural: aqua, antropica: orange, agua: blue};
+      renderHBarChart('chart-uso-solo-2024', 'tt-uso-solo-2024', {
+        labels: classes.dados.map(r => r.classe), data: classes.dados.map(r => r.area_km2), colors: classes.dados.map(r => cor[r.tipo]),
+        seriesName: P.dica('km²', classes.meta.fonte_curta), xFormat: v => fmtInt(v)+' km²',
+      });
+    }
+    if(meio){
+      const f = meio.meta.fonte_curta;
+      [['geologia', 'geologia', {}], ['geomorfologia', 'geomorfologia', {}], ['vegetacao-bdia', 'vegetacao', {}], ['pedologia', 'pedologia_grafico', {padL: 46}]]
+        .forEach(([id, t, extra]) => renderBarChart(`chart-${id}`, `tt-${id}`, Object.assign({
+          labels: tema(t).map(r => r.rotulo), data: tema(t).map(r => r.area_km2), color: aqua, seriesName: P.dica('km²', f), height: 190, yFormat: v => fmtInt(v),
+        }, extra)));
+    }
+    if(pocos){
+      renderBarChart('chart-pocos-aquifero', 'tt-pocos-aquifero', {
+        labels: pocos.dados.map(r => r.aquifero), data: pocos.dados.map(r => r.pocos), color: blue, seriesName: P.dica('poços', pocos.meta.fonte_curta), height: 190, barMax: 60,
+      });
+    }
+    if(app){
+      renderBarChart('chart-app-curso', 'tt-app-curso', {
+        labels: app.dados.map(r => r.rotulo), data: app.dados.map(r => r.area_km2), color: blue, seriesName: P.dica('km²', app.meta.fonte_curta), height: 190, barMax: 60, padL: 64,
+        yFormat: v => fmtInt(v)+' km²',
+      });
+    }
+  }
+  draw();
+  window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+
+  function tabelas(){
+    if(serie){
+      const t = document.getElementById('tabelaUso');
+      t.innerHTML = '<thead><tr><th>Ano</th><th>Formação Campestre (km²)</th><th>Arroz (km²)</th><th>Área Urbanizada (km²)</th></tr></thead>';
+      const tb = document.createElement('tbody');
+      noPeriodo(serie.dados).forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${r.ano}</td><td>${fmt1(r['Formação Campestre'])}</td><td>${fmt1(r['Arroz'])}</td><td>${fmt1(r['Área Urbanizada'])}</td>`;
+        tb.appendChild(tr);
+      });
+      t.appendChild(tb);
+    }
+    if(meio){
+      const t = document.getElementById('tabelaPedologia');
+      t.innerHTML = '<thead><tr><th>Classe de solo</th><th>Área (km²)</th><th>Nº de feições</th></tr></thead>';
+      const tb = document.createElement('tbody');
+      tema('pedologia').forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${r.classe}</td><td>${fmt1(r.area_km2)}</td><td>${P.valor(r.n_feicoes, fmtInt)}</td>`;
+        tb.appendChild(tr);
+      });
+      t.appendChild(tb);
+    }
+  }
+  tabelas();
+  P.montarChips('chips-filtro', {periodo: 'Período'});
+  document.addEventListener('filtros:mudou', () => { draw(); tabelas(); P.montarChips('chips-filtro', {periodo: 'Período'}); });
+
+  P.montarRodape();
+  document.documentElement.dataset.pronto = '1';
+}
+iniciar();
+</script>
+</body>
+</html>

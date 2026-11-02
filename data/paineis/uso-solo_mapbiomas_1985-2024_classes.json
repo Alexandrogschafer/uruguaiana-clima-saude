@@ -1,0 +1,219 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "uso-solo_mapbiomas_1985-2024_classes",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "CA08"
+ ],
+ "titulo": "Uso do solo por classe (6 classes em destaque)",
+ "fonte_curta": "MapBiomas",
+ "fonte": "MapBiomas Coleção 10, área por classe no município",
+ "unidade_espacial": "município",
+ "unidade_medida": "km²",
+ "periodo": {
+  "inicio": "1985",
+  "fim": "2024"
+ },
+ "dados_ate": "2024",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:47:36Z",
+ "script": "scripts/paineis/dados_territorio.py",
+ "colunas": [
+  {
+   "nome": "ano",
+   "tipo": "int"
+  },
+  {
+   "nome": "Formação Campestre",
+   "tipo": "float"
+  },
+  {
+   "nome": "Arroz",
+   "tipo": "float"
+  },
+  {
+   "nome": "Área Urbanizada",
+   "tipo": "float"
+  },
+  {
+   "nome": "Mosaico de Usos",
+   "tipo": "float"
+  },
+  {
+   "nome": "Outras Lavouras Temporárias",
+   "tipo": "float"
+  },
+  {
+   "nome": "Formação Florestal",
+   "tipo": "float"
+  }
+ ],
+ "fonte_rodape": "Uso do solo — MapBiomas Coleção 10",
+ "telas": [
+  "territorio"
+ ],
+ "notas": {
+  "ter_meta_uso": "1985–2024",
+  "ter_nota_uso": "Série MapBiomas (Coleção 10), anos disponíveis 1985–2024. Escalas independentes por classe — a Formação Campestre nativa é ~100× maior que a área urbanizada, numa escala só a urbanização não apareceria.",
+  "ter_nota_uso_classes": "As 12 classes da área de estudo em 2024, não só as 3 em destaque acima — para dar visibilidade equivalente a lavoura, mosaico de usos e área urbana, não só vegetação nativa. O MapBiomas diferencia Soja e Arroz especificamente, mas agrupa os demais cultivos anuais em \"Outras Lavouras Temporárias\"; não há classe de pastagem isolada nesta série. \"Mosaico de Usos\" não é vegetação nem lavoura específica — é a classe do MapBiomas para áreas onde agricultura/pastagem/vegetação se misturam no pixel.",
+  "ter_meta_uso_2024": "2024 · 12 classes",
+  "ter_nota_meio": "Geologia, geomorfologia, pedologia e vegetação nativa vêm do Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000 — leitura regional/contextual, não decisão em nível de microárea; versão preliminar, ainda em revisão. \"Vegetação nativa\" aqui é diferente do \"Uso do solo\" (MapBiomas) acima: classifica fitofisionomias remanescentes, não uso genérico da terra — por isso aparece quase toda como \"Agropecuária\" (nenhuma fitofisionomia nativa primária é detectável nessa escala dentro do município, coerente com um Pampa intensamente ocupado).",
+  "ter_meta_geologia": "6 classes",
+  "ter_meta_geomorfologia": "3 classes",
+  "ter_meta_vegetacao": "4 classes",
+  "ter_meta_pedologia": "top 7 de 13 classes, resto agrupado em \"Outras\"",
+  "ter_nota_pocos_app": "Poços de água subterrânea (SIAGAS/CPRM) e Área de Preservação Permanente (APP) hídrica calculada a partir da rede de drenagem (ANA/BHO) — a APP é uma **aproximação metodológica** (largura do rio Uruguai estimada, rede local assumida <10m), útil para leitura exploratória, não para fiscalização/licenciamento.",
+  "ter_meta_pocos": "SIAGAS/CPRM · 340 poços",
+  "ter_meta_app": "aproximação metodológica",
+  "ter_resumo_pedologia": "Ver pedologia completa em tabela (13 classes)",
+  "ter_resumo_uso": "Ver uso do solo em tabela (km² por ano)",
+  "ter_meta_masthead_uso": "1985–2024",
+  "ter_meta_masthead_meio": "escala 1:250.000, versão preliminar",
+  "ter_leitura": "**Leitura recomendada:** a classificação de suscetibilidade (risco geológico) é um produto de modelagem validado por campo, não medição direta — use como triagem territorial, não como laudo pontual. As camadas de meio físico do BDiA (geologia/geomorfologia/pedologia/vegetação) são leitura regional (1:250.000), não decisão em nível de microárea; a APP hídrica é uma aproximação exploratória, não uma delimitação técnica para fiscalização ou licenciamento."
+ },
+ "kpis_uso": [
+  {
+   "rotulo": "Classe dominante",
+   "valor": "2.573",
+   "unidade": "km²",
+   "sub": "Formação Campestre · 45,2% da área"
+  },
+  {
+   "rotulo": "Uso antrópico (total)",
+   "valor": "43,5",
+   "unidade": "%",
+   "sub": "2.473 km² — mosaico de usos, lavouras, área urbana..."
+  },
+  {
+   "rotulo": "Natural remanescente",
+   "valor": "50,8",
+   "unidade": "%",
+   "sub": "2.890 km² — campestre, florestal, alagado, afloramento"
+  },
+  {
+   "rotulo": "Água",
+   "valor": "5,8",
+   "unidade": "%",
+   "sub": "328 km² — rio, lago e oceano"
+  }
+ ],
+ "kpis_meio": [
+  {
+   "rotulo": "Poços de água subterrânea (SIAGAS)",
+   "valor": "340",
+   "unidade": "poços",
+   "sub": "Serra Geral (178) e Guarani (73) são os aquíferos predominantes"
+  },
+  {
+   "rotulo": "Profundidade média dos poços",
+   "valor": "82,9",
+   "unidade": "m",
+   "sub": "mediana 60m · 11,8% sem esse dado"
+  },
+  {
+   "rotulo": "APP hídrica — área total (aprox.)",
+   "valor": "321",
+   "unidade": "km²",
+   "sub": "304,9 km² rede local + 22,6 km² rio Uruguai"
+  },
+  {
+   "rotulo": "APP hídrica — ocupação antrópica",
+   "valor": "18,9",
+   "unidade": "%",
+   "sub": "23,5% excluindo a lâmina d'água · MapBiomas 2024"
+  }
+ ],
+ "dados": [
+  {
+   "ano": 1985,
+   "Formação Campestre": 3357.5432,
+   "Arroz": 240.0461,
+   "Área Urbanizada": 12.8288,
+   "Mosaico de Usos": 967.195,
+   "Outras Lavouras Temporárias": 490.9878,
+   "Formação Florestal": 182.2845
+  },
+  {
+   "ano": 1990,
+   "Formação Campestre": 3335.6461,
+   "Arroz": 292.9706,
+   "Área Urbanizada": 14.5128,
+   "Mosaico de Usos": 293.0273,
+   "Outras Lavouras Temporárias": 1060.545,
+   "Formação Florestal": 193.1958
+  },
+  {
+   "ano": 1995,
+   "Formação Campestre": 3007.9891,
+   "Arroz": 299.5007,
+   "Área Urbanizada": 17.0093,
+   "Mosaico de Usos": 359.1798,
+   "Outras Lavouras Temporárias": 1305.0522,
+   "Formação Florestal": 199.4221
+  },
+  {
+   "ano": 2000,
+   "Formação Campestre": 2804.5118,
+   "Arroz": 428.2914,
+   "Área Urbanizada": 18.8447,
+   "Mosaico de Usos": 477.0025,
+   "Outras Lavouras Temporárias": 1319.9231,
+   "Formação Florestal": 200.0884
+  },
+  {
+   "ano": 2005,
+   "Formação Campestre": 2912.2179,
+   "Arroz": 366.632,
+   "Área Urbanizada": 19.9244,
+   "Mosaico de Usos": 496.3121,
+   "Outras Lavouras Temporárias": 1247.2257,
+   "Formação Florestal": 199.7422
+  },
+  {
+   "ano": 2010,
+   "Formação Campestre": 2845.8968,
+   "Arroz": 460.7312,
+   "Área Urbanizada": 20.7168,
+   "Mosaico de Usos": 269.6424,
+   "Outras Lavouras Temporárias": 1427.0711,
+   "Formação Florestal": 197.1629
+  },
+  {
+   "ano": 2015,
+   "Formação Campestre": 2868.417,
+   "Arroz": 803.5911,
+   "Área Urbanizada": 21.6054,
+   "Mosaico de Usos": 272.9291,
+   "Outras Lavouras Temporárias": 1027.9873,
+   "Formação Florestal": 206.3319
+  },
+  {
+   "ano": 2020,
+   "Formação Campestre": 2905.1074,
+   "Arroz": 886.9021,
+   "Área Urbanizada": 22.8984,
+   "Mosaico de Usos": 284.9222,
+   "Outras Lavouras Temporárias": 908.6015,
+   "Formação Florestal": 203.7272
+  },
+  {
+   "ano": 2024,
+   "Formação Campestre": 2573.0177,
+   "Arroz": 702.1419,
+   "Área Urbanizada": 23.6013,
+   "Mosaico de Usos": 1242.6952,
+   "Outras Lavouras Temporárias": 465.5772,
+   "Formação Florestal": 204.3055
+  }
+ ]
+}

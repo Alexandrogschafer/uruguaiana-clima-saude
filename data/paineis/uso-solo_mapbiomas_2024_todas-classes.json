@@ -1,0 +1,117 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "uso-solo_mapbiomas_2024_todas-classes",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "CA08"
+ ],
+ "titulo": "Uso do solo em 2024, todas as classes",
+ "fonte_curta": "MapBiomas",
+ "fonte": "MapBiomas Coleção 10",
+ "unidade_espacial": "município",
+ "unidade_medida": "km²",
+ "periodo": {
+  "inicio": "2024",
+  "fim": "2024"
+ },
+ "dados_ate": "2024",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "tipo: natural remanescente, uso antrópico ou água"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:47:36Z",
+ "script": "scripts/paineis/dados_territorio.py",
+ "colunas": [
+  {
+   "nome": "classe",
+   "tipo": "texto"
+  },
+  {
+   "nome": "area_km2",
+   "tipo": "float",
+   "casas": 2
+  },
+  {
+   "nome": "tipo",
+   "tipo": "texto"
+  }
+ ],
+ "fonte_rodape": "Uso do solo — MapBiomas Coleção 10",
+ "telas": [
+  "territorio"
+ ],
+ "dados": [
+  {
+   "classe": "Formação Campestre",
+   "area_km2": 2573.02,
+   "tipo": "natural"
+  },
+  {
+   "classe": "Mosaico de Usos",
+   "area_km2": 1242.7,
+   "tipo": "antropica"
+  },
+  {
+   "classe": "Arroz",
+   "area_km2": 702.14,
+   "tipo": "antropica"
+  },
+  {
+   "classe": "Outras Lavouras Temporárias",
+   "area_km2": 465.58,
+   "tipo": "antropica"
+  },
+  {
+   "classe": "Rio, Lago e Oceano",
+   "area_km2": 327.99,
+   "tipo": "agua"
+  },
+  {
+   "classe": "Formação Florestal",
+   "area_km2": 204.31,
+   "tipo": "natural"
+  },
+  {
+   "classe": "Campo Alagado e Área Pantanosa",
+   "area_km2": 87.94,
+   "tipo": "natural"
+  },
+  {
+   "classe": "Afloramento Rochoso",
+   "area_km2": 25.06,
+   "tipo": "natural"
+  },
+  {
+   "classe": "Área Urbanizada",
+   "area_km2": 23.6,
+   "tipo": "antropica"
+  },
+  {
+   "classe": "Soja",
+   "area_km2": 22.51,
+   "tipo": "antropica"
+  },
+  {
+   "classe": "Outras Áreas não Vegetadas",
+   "area_km2": 15.24,
+   "tipo": "antropica"
+  },
+  {
+   "classe": "Silvicultura",
+   "area_km2": 1.49,
+   "tipo": "antropica"
+  }
+ ]
+}

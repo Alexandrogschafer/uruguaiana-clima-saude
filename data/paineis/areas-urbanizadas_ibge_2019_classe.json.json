@@ -1,0 +1,22 @@
+{
+  "produto": "areas-urbanizadas_ibge_2019_classe.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "IBGE, Áreas Urbanizadas do Brasil 2019",
+  "transformacao_aplicada": "soma das áreas (km², EPSG:31981) por tipo e densidade",
+  "entradas": [
+    {
+      "arquivo": "data/raw/vetor/areas-urbanizadas_ibge_2019_recorte-municipio.gpkg",
+      "sha256": "8b638f2226ce4e95389297693db67ffd4e8da8f07a5404cc6d323eb4a457f5bc",
+      "bytes": 122880
+    }
+  ],
+  "script": "scripts/paineis/dados_territorio.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "TB16"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:47:36Z"
+}

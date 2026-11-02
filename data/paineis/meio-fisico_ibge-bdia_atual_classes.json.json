@@ -1,0 +1,40 @@
+{
+  "produto": "meio-fisico_ibge-bdia_atual_classes.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "IBGE, Banco de Dados de Informações Ambientais (BDiA), 1:250.000",
+  "transformacao_aplicada": "área por classe dos metadados de cada tema; pedologia_grafico = 7 maiores e o resto somado",
+  "entradas": [
+    {
+      "arquivo": "data/raw/vetor/geologia_ibge-bdia_atual_vetorial.json",
+      "sha256": "563f92e92ac2dbcd0de7ad6df2e551d2b6c4433fa216c444c139539c9fe8d9b1",
+      "bytes": 1918
+    },
+    {
+      "arquivo": "data/raw/vetor/geomorfologia_ibge-bdia_atual_vetorial.json",
+      "sha256": "6c89a1186d56f794ff9409f8dfeaca1384559b12e69f1824a9cce455c6c2d530",
+      "bytes": 1270
+    },
+    {
+      "arquivo": "data/raw/vetor/vegetacao_ibge-bdia_atual_vetorial.json",
+      "sha256": "3edae771a0378183062757a7835695e44cc82aa4e1ea24f0b3cbdb6164c5c6d0",
+      "bytes": 2376
+    },
+    {
+      "arquivo": "data/raw/vetor/pedologia_ibge-bdia_atual_vetorial.json",
+      "sha256": "765c96568446a6625f8cbd8e59b86a3cadea2fdd1351064722cf856a08a114a4",
+      "bytes": 2256
+    }
+  ],
+  "script": "scripts/paineis/dados_territorio.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "TB10",
+    "TB11",
+    "TB12",
+    "TB13"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:47:36Z"
+}

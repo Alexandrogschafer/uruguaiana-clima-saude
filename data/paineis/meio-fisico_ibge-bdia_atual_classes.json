@@ -1,0 +1,305 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "meio-fisico_ibge-bdia_atual_classes",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "TB10",
+  "TB11",
+  "TB12",
+  "TB13"
+ ],
+ "titulo": "Meio físico: área por classe (BDiA)",
+ "fonte_curta": "IBGE BDiA",
+ "fonte": "IBGE, Banco de Dados de Informações Ambientais (BDiA), 1:250.000",
+ "unidade_espacial": "município",
+ "unidade_medida": "km²",
+ "periodo": {
+  "inicio": "atual",
+  "fim": "atual"
+ },
+ "dados_ate": "2026-08-09",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "escala 1:250.000: leitura regional, não decisão em nível de microárea"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:47:36Z",
+ "script": "scripts/paineis/dados_territorio.py",
+ "colunas": [
+  {
+   "nome": "tema",
+   "tipo": "texto"
+  },
+  {
+   "nome": "rotulo",
+   "tipo": "texto"
+  },
+  {
+   "nome": "classe",
+   "tipo": "texto"
+  },
+  {
+   "nome": "area_km2",
+   "tipo": "float"
+  },
+  {
+   "nome": "n_feicoes",
+   "tipo": "int"
+  }
+ ],
+ "fonte_rodape": "Geologia, geomorfologia, pedologia e vegetação nativa — Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000",
+ "telas": [
+  "territorio"
+ ],
+ "dados": [
+  {
+   "tema": "geologia",
+   "rotulo": "Serra Geral",
+   "classe": "Serra Geral",
+   "area_km2": 4649.75,
+   "n_feicoes": null
+  },
+  {
+   "tema": "geologia",
+   "rotulo": "Dep. Aluv. Holocênicos",
+   "classe": "Depósitos Aluvionares Holocênicos",
+   "area_km2": 487.49,
+   "n_feicoes": null
+  },
+  {
+   "tema": "geologia",
+   "rotulo": "Corpo d'água",
+   "classe": "Corpo d'água continental",
+   "area_km2": 260.46,
+   "n_feicoes": null
+  },
+  {
+   "tema": "geologia",
+   "rotulo": "Botucatu",
+   "classe": "Botucatu",
+   "area_km2": 235.56,
+   "n_feicoes": null
+  },
+  {
+   "tema": "geologia",
+   "rotulo": "Arenitos Interderrames",
+   "classe": "Arenitos Interderrames",
+   "area_km2": 54.39,
+   "n_feicoes": null
+  },
+  {
+   "tema": "geologia",
+   "rotulo": "Dep. Aluv. Antigos",
+   "classe": "Depósitos Aluvionares Antigos",
+   "area_km2": 3.85,
+   "n_feicoes": null
+  },
+  {
+   "tema": "geomorfologia",
+   "rotulo": "Planalto da Campanha",
+   "classe": "2Planalto da Campanha",
+   "area_km2": 4945.58,
+   "n_feicoes": null
+  },
+  {
+   "tema": "geomorfologia",
+   "rotulo": "Planícies Alúvio-coluv.",
+   "classe": "1Planícies Alúvio-coluvionares",
+   "area_km2": 485.47,
+   "n_feicoes": null
+  },
+  {
+   "tema": "geomorfologia",
+   "rotulo": "Corpo d'água",
+   "classe": "6Corpo d´água continental",
+   "area_km2": 260.46,
+   "n_feicoes": null
+  },
+  {
+   "tema": "vegetacao",
+   "rotulo": "Agropecuária",
+   "classe": "3Ag - Agropecuária",
+   "area_km2": 5136.75,
+   "n_feicoes": null
+  },
+  {
+   "tema": "vegetacao",
+   "rotulo": "Veg. Secundária",
+   "classe": "3Vss - Vegetação Secundária sem palmeiras",
+   "area_km2": 262.19,
+   "n_feicoes": null
+  },
+  {
+   "tema": "vegetacao",
+   "rotulo": "Corpo d'água",
+   "classe": "5Corpo d'água continental",
+   "area_km2": 260.46,
+   "n_feicoes": null
+  },
+  {
+   "tema": "vegetacao",
+   "rotulo": "Influência urbana",
+   "classe": "3Iu - Influência urbana",
+   "area_km2": 32.1,
+   "n_feicoes": null
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "RLm",
+   "classe": "RLm - Neossolo Litólico Chernossólico",
+   "area_km2": 2945.87,
+   "n_feicoes": 11
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "MEk",
+   "classe": "MEk - Chernossolo Ebânico Carbonático",
+   "area_km2": 1561.0,
+   "n_feicoes": 25
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "Corpo d'água",
+   "classe": "Corpo d'água continental",
+   "area_km2": 260.46,
+   "n_feicoes": 410
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "SXe",
+   "classe": "SXe - Planossolo Háplico Eutrófico",
+   "area_km2": 246.44,
+   "n_feicoes": 4
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "FTd",
+   "classe": "FTd - Plintossolo Argilúvico Distrófico",
+   "area_km2": 230.72,
+   "n_feicoes": 2
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "VEk",
+   "classe": "VEk - Vertissolo Ebânico Carbonático",
+   "area_km2": 159.24,
+   "n_feicoes": 7
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "RLk",
+   "classe": "RLk - Neossolo Litólico Carbonático",
+   "area_km2": 101.03,
+   "n_feicoes": 1
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "PVva",
+   "classe": "PVva - Argissolo Vermelho Ta Alumínico",
+   "area_km2": 93.84,
+   "n_feicoes": 7
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "AR",
+   "classe": "AR - Afloramentos De Rochas",
+   "area_km2": 34.71,
+   "n_feicoes": 5
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "Área Urbana",
+   "classe": "Área Urbana",
+   "area_km2": 32.1,
+   "n_feicoes": 8
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "RLd",
+   "classe": "RLd - Neossolo Litólico Distrófico",
+   "area_km2": 19.68,
+   "n_feicoes": 1
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "RYve",
+   "classe": "RYve - Neossolo Flúvico Ta Eutrófico",
+   "area_km2": 6.19,
+   "n_feicoes": 4
+  },
+  {
+   "tema": "pedologia",
+   "rotulo": "RQo",
+   "classe": "RQo - Neossolo Quartzarênico Órtico",
+   "area_km2": 0.21,
+   "n_feicoes": 3
+  },
+  {
+   "tema": "pedologia_grafico",
+   "rotulo": "RLm",
+   "classe": "RLm - Neossolo Litólico Chernossólico",
+   "area_km2": 2945.87,
+   "n_feicoes": null
+  },
+  {
+   "tema": "pedologia_grafico",
+   "rotulo": "MEk",
+   "classe": "MEk - Chernossolo Ebânico Carbonático",
+   "area_km2": 1561.0,
+   "n_feicoes": null
+  },
+  {
+   "tema": "pedologia_grafico",
+   "rotulo": "Corpo d'água",
+   "classe": "Corpo d'água continental",
+   "area_km2": 260.46,
+   "n_feicoes": null
+  },
+  {
+   "tema": "pedologia_grafico",
+   "rotulo": "SXe",
+   "classe": "SXe - Planossolo Háplico Eutrófico",
+   "area_km2": 246.44,
+   "n_feicoes": null
+  },
+  {
+   "tema": "pedologia_grafico",
+   "rotulo": "FTd",
+   "classe": "FTd - Plintossolo Argilúvico Distrófico",
+   "area_km2": 230.72,
+   "n_feicoes": null
+  },
+  {
+   "tema": "pedologia_grafico",
+   "rotulo": "VEk",
+   "classe": "VEk - Vertissolo Ebânico Carbonático",
+   "area_km2": 159.24,
+   "n_feicoes": null
+  },
+  {
+   "tema": "pedologia_grafico",
+   "rotulo": "RLk",
+   "classe": "RLk - Neossolo Litólico Carbonático",
+   "area_km2": 101.03,
+   "n_feicoes": null
+  },
+  {
+   "tema": "pedologia_grafico",
+   "rotulo": "Outras (6)",
+   "classe": "outras",
+   "area_km2": 186.73,
+   "n_feicoes": null
+  }
+ ]
+}

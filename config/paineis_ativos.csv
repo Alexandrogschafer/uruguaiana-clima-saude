@@ -8,13 +8,13 @@ TB06,livre,,data/processed/declividade_anadem_atual_30m.tif,
 TB07,livre,,data/geoportal/bacias/nivel7.geojson,
 TB08,livre,,data/geoportal/rede-hidrografica.geojson,
 TB09,livre,,data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg,
-TB10,livre,,data/geoportal/geologia.geojson,
-TB11,livre,,data/geoportal/geomorfologia.geojson,
-TB12,livre,,data/geoportal/pedologia.geojson,
-TB13,livre,,data/geoportal/vegetacao.geojson,
-TB14,livre,,data/geoportal/pocos-agua-subterranea.geojson,
-TB15,livre,,data/geoportal/app-hidrica.geojson,
-TB16,livre,,data/raw/vetor/areas-urbanizadas_ibge_2019_recorte-municipio.gpkg,
+TB10,livre,,data/geoportal/geologia.geojson,conferido
+TB11,livre,,data/geoportal/geomorfologia.geojson,conferido
+TB12,livre,,data/geoportal/pedologia.geojson,conferido
+TB13,livre,,data/geoportal/vegetacao.geojson,conferido
+TB14,livre,,data/geoportal/pocos-agua-subterranea.geojson,conferido
+TB15,livre,,data/geoportal/app-hidrica.geojson,conferido
+TB16,livre,,data/raw/vetor/areas-urbanizadas_ibge_2019_recorte-municipio.gpkg,conferido
 TB17,livre,,data/processed/edificacoes/edificacoes_overture-2026-09-23.1_2026_vetorial.gpkg,
 TB18,depende de conferência no QGIS,,data/geoportal/densidade-edificacoes-250m.geojson,
 TB19,livre,,data/processed/viario/faces-logradouros_ibge-censo_2022_4322400_vetorial.gpkg,
@@ -97,7 +97,7 @@ CA04,livre,,data/raw/precipitacao_merge-inpe_2010-2025_mensal.csv,conferido
 CA05,livre,,data/geoportal/estacoes-clima.geojson,
 CA06,livre,,data/raw/focos-queimada_inpe_2010-2025_pontual.csv,conferido
 CA07,livre,,data/geoportal/uso-solo/2024.png,
-CA08,livre,,data/processed/uso-solo_mapbiomas_serie-temporal_area-por-classe.csv,
+CA08,livre,,data/processed/uso-solo_mapbiomas_serie-temporal_area-por-classe.csv,conferido
 CA09,livre,,data/processed/lst/lst-mediana_landsat-c2l2-principal_verao-2013-2026_30m.tif,
 CA10,livre,,data/processed/lst/anomalia-mediana_landsat-c2l2-principal_verao-2024-2026_30m.tif,
 CA11,livre,,data/processed/lst/persistencia-p90_landsat-c2l2-principal_verao-2013-2026_30m.tif,
