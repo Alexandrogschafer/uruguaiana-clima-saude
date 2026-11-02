@@ -87,6 +87,67 @@ const TELAS = {
       };
     },
   },
+  saude: {
+    pagina: "dashboards/saude.html",
+    enderecoAntigo: "dashboards/painel-saude.html",
+    produtos: {
+      sim: "saude_sim_2010-2024_anual",
+      afog: "saude_sim-afogamento-enchente_2010-2024_quinquenal",
+      sih: "saude_sih_2010-2025_anual",
+      sinan: "saude_sinan_2010-2026_anual",
+      unidades: "saude_unidades-esf-ubs_2026",
+    },
+    graficos: (p) => {
+      const fc = (k) => p[k].meta.fonte_curta;
+      const sup = (k, campo) => new Set((p[k].meta.suprimidos || []).filter((s) => s.campo === campo).map((s) => s.linha));
+      const nulo = (k, campo, i) => (sup(k, campo).has(i) ? "<5" : "—");
+      const v = (k, campo) => (r, i) => (r[campo] === null ? nulo(k, campo, i) : fmtInt(r[campo]));
+      const rot = (r) => (r.preliminar ? `${r.ano}*` : String(r.ano));
+      const arbo = (ag) => p.sinan.dados.map((r, i) => [rot(r), [[v("sinan", ag)(r, i), `notificações · ${fc("sinan")}`]]]);
+      return {
+        obitos: p.sim.dados.map((r) => [r.ano, [[fmtInt(r.obitos_total), `Óbitos totais · ${fc("sim")}`], [fmtInt(r.obitos_respiratorios), `Óbitos por causas respiratórias · ${fc("sim")}`]]]),
+        afogamento: p.afog.dados.map((r, i) => [r.periodo, [[v("afog", "obitos")(r, i), `óbitos · ${fc("afog")}`]]]),
+        sih: p.sih.dados.map((r) => [r.ano, [[fmtInt(r.internacoes_total), `Internações totais · ${fc("sih")}`], [fmtInt(r.internacoes_respiratorias), `Internações respiratórias · ${fc("sih")}`]]]),
+        dengue: arbo("dengue"), chik: arbo("chikungunya"), zika: arbo("zika"),
+      };
+    },
+    kpis: (p) => {
+      const us = p.sim.dados[p.sim.dados.length - 1], uh = p.sih.dados[p.sih.dados.length - 1];
+      const f = p.sinan.dados.filter((r) => !r.preliminar);
+      return [fmtInt(us.obitos_total), fmtInt(us.obitos_respiratorios), fmtInt(f[f.length - 1].dengue), fmtInt(uh.internacoes_respiratorias)];
+    },
+    tabelas: (p) => {
+      const por = (d) => Object.fromEntries(d.map((r) => [r.ano, r]));
+      const s = por(p.sim.dados), sn = por(p.sinan.dados), h = por(p.sih.dados);
+      const anos = [...new Set([...Object.keys(s), ...Object.keys(sn), ...Object.keys(h)].map(Number))].sort((a, b) => a - b);
+      const c = (x) => (x === null || x === undefined ? "—" : fmtInt(x));
+      const anual = anos.map((a) => {
+        const A = s[a] || {}, B = sn[a] || {}, C = h[a] || {};
+        return [`${a}${B.preliminar ? "*" : ""}`, c(A.obitos_total), c(A.obitos_respiratorios), c(B.dengue), c(B.chikungunya), c(B.zika), c(C.internacoes_total), c(C.internacoes_respiratorias)];
+      });
+      const m = p.unidades.meta;
+      const supU = (i, campo) => (m.suprimidos || []).some((x) => x.linha === i && x.campo === campo);
+      const unid = p.unidades.dados.map((u, i) => [
+        u.nome, u.fora_das_comparacoes ? `${u.classe} · fora das comparações` : u.classe, u.zona || "—", u.bairro || "—",
+        ...["2017", "2023"].map((a) => { const k = `populacao_informada_${a}`; return supU(i, k) ? "<5" : c(u[k]); }),
+        "ver no mapa",
+      ]);
+      return { tabelaAnual: anual, tabelaUnidades: unid };
+    },
+    rotulosFinais: (p) => {
+      const ult = (a) => a[a.length - 1];
+      const barras = (vals) => { const num = vals.map((x) => (x === null ? 0 : x)); const i = num.indexOf(Math.max(...num)); return [...new Set([i, vals.length - 1])].sort((a, b) => a - b).map((j) => (vals[j] === null ? "—" : fmtInt(vals[j]))); };
+      return {
+        obitos: [fmtInt(ult(p.sim.dados).obitos_respiratorios)],
+        sih: [fmtInt(ult(p.sih.dados).internacoes_respiratorias)],
+        afogamento: barras(p.afog.dados.map((r) => r.obitos)),
+        dengue: barras(p.sinan.dados.map((r) => r.dengue)),
+        chik: barras(p.sinan.dados.map((r) => r.chikungunya)),
+        zika: barras(p.sinan.dados.map((r) => r.zika)),
+      };
+    },
+    extras: async (browser, base, prod) => testesExtrasSaude(browser, base, prod),
+  },
 };
 
 // ------------------------------------------------------------------ apoio
@@ -266,6 +327,91 @@ async function testeRedirecionamento(browser, base, def) {
   return { ok: url.pathname.endsWith(def.pagina.split("/").pop()) && url.search === "?periodo=2021-2025", destino: url.pathname + url.search };
 }
 
+
+// ------------------------------------------------------------------ extras da tela de saúde
+async function abrir(browser, url, opcoes) {
+  const ctx = await browser.newContext({ viewport: { width: opcoes.largura || 1280, height: 900 }, hasTouch: (opcoes.largura || 1280) === 390 });
+  const page = await ctx.newPage();
+  const erros = [], avisosConsole = [];
+  page.on("console", (m) => { if (m.type() === "error") erros.push(m.text()); if (m.type() === "warning") avisosConsole.push(m.text()); });
+  page.on("pageerror", (e) => erros.push(String(e)));
+  for (const [padrao, fn] of opcoes.rotas || []) await page.route(padrao, fn);
+  await page.goto(url, { waitUntil: "networkidle" });
+  await page.waitForFunction(() => document.documentElement.dataset.pronto === "1", null, { timeout: 10000 });
+  await page.waitForTimeout(200);
+  return { ctx, page, erros, avisosConsole };
+}
+
+async function testesExtrasSaude(browser, base, prod) {
+  const res = [];
+  const pag = base + "dashboards/saude.html";
+  const valida = prod.unidades.dados.find((u) => !u.fora_das_comparacoes).cnes;
+  for (const largura of [1280, 390]) {
+    const { ctx, page, erros } = await abrir(browser, `${pag}?unidade=${valida}`, { largura });
+    const r = await page.evaluate((c) => {
+      const tr = document.querySelector(`#tabelaUnidades tr[data-cnes="${c}"]`);
+      return { destacado: !!tr && tr.classList.contains("destacado") && tr.getAttribute("aria-current") === "true", outros: document.querySelectorAll("#tabelaUnidades tr.destacado").length, chip: document.getElementById("chips-filtro").innerText };
+    }, valida);
+    res.push({ nome: `?unidade=${valida} destaca a linha (${largura} px)`, ok: r.destacado && r.outros === 1 && erros.length === 0, detalhe: JSON.stringify(r) });
+    await ctx.close();
+  }
+  {
+    const { ctx, page, erros, avisosConsole } = await abrir(browser, `${pag}?unidade=1234567&periodo=1990-1995`, {});
+    const r = await page.evaluate(() => ({ avisos: [...document.querySelectorAll(".cabecalho-avisos .aviso")].map((e) => e.textContent), destacados: document.querySelectorAll("#tabelaUnidades tr.destacado").length, url: location.search }));
+    const ok = r.avisos.includes("Parâmetro ignorado: unidade=1234567") && r.avisos.includes("Parâmetro ignorado: periodo=1990-1995") && r.destacados === 0 && r.url === "" && erros.length === 0;
+    res.push({ nome: "unidade e período inválidos geram aviso e saem da URL", ok, detalhe: JSON.stringify({ ...r, avisosConsole }) });
+    await ctx.close();
+  }
+  {
+    const { ctx, page, erros } = await abrir(browser, `${pag}?periodo=2015-2020`, {});
+    const r = await page.evaluate(() => ({ linhas: document.querySelectorAll("#tabelaAnual tbody tr").length, pontosObitos: document.querySelector("#chart-obitos svg path[stroke]").getAttribute("d").match(/[ML]/g).length, chip: document.getElementById("chips-filtro").innerText }));
+    res.push({ nome: "?periodo=2015-2020 recorta séries e tabela anual", ok: r.linhas === 6 && r.pontosObitos === 6 && /2015-2020/.test(r.chip) && erros.length === 0, detalhe: JSON.stringify(r) });
+    await ctx.close();
+  }
+  {
+    // JSON simulado: um valor suprimido (null + suprimidos) e um ausente (null), nas unidades e no afogamento
+    const idU = prod.unidades.meta.id, idA = prod.afog.meta.id;
+    const rotas = [
+      [`**/data/paineis/${idU}.json`, async (route) => {
+        const j = JSON.parse(JSON.stringify({ ...prod.unidades.meta, dados: prod.unidades.dados }));
+        j.dados[0].populacao_informada_2017 = null; j.dados[1].populacao_informada_2023 = null;
+        j.suprimidos = [{ linha: 0, campo: "populacao_informada_2017", motivo: "primaria" }];
+        await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(j) });
+      }],
+      [`**/data/paineis/${idA}.json`, async (route) => {
+        const j = JSON.parse(JSON.stringify({ ...prod.afog.meta, dados: prod.afog.dados }));
+        const k = j.dados.length - 1; j.dados[k].obitos = null; j.suprimidos = [{ linha: k, campo: "obitos", motivo: "primaria" }];
+        await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(j) });
+      }],
+    ];
+    const { ctx, page, erros } = await abrir(browser, pag, { rotas });
+    const r = await page.evaluate(() => {
+      const linhas = document.querySelectorAll("#tabelaUnidades tbody tr");
+      const cel = (i, j) => linhas[i].cells[j].textContent;
+      const rot = [...document.querySelectorAll("#chart-afogamento svg text.bar-label")].map((t) => t.textContent);
+      return { suprimido: cel(0, 4), ausente: cel(1, 5), rotulosAfog: rot, nan: /NaN|undefined/.test(document.body.innerText) };
+    });
+    res.push({ nome: "JSON simulado: suprimido aparece como \"<5\" e ausente como \"—\"", ok: r.suprimido === "<5" && r.ausente === "—" && r.rotulosAfog.includes("<5") && !r.nan && erros.length === 0, detalhe: JSON.stringify(r) });
+    await ctx.close();
+  }
+  {
+    const { ctx, page } = await abrir(browser, pag, {});
+    const r = await page.evaluate(() => {
+      const linhas = [...document.querySelectorAll("#tabelaUnidades tbody tr")];
+      const ult = linhas[linhas.length - 1];
+      return { ultimaCnes: ult.dataset.cnes, classe: ult.cells[1].textContent, numeros: [ult.cells[4].textContent, ult.cells[5].textContent], n: linhas.length,
+        palavraCobertura: /cobertura/i.test(document.body.innerText), mapa: ult.querySelector("a").getAttribute("href") };
+    });
+    const ok = r.ultimaCnes === "4126947" && /fora das comparações/.test(r.classe) && r.numeros.every((x) => !/\d/.test(x)) && r.n === 22 && !r.palavraCobertura && r.mapa === "../index.html?camada=unidades&unidade=4126947";
+    res.push({ nome: "Prisional na última linha, sem números; 22 linhas; sem a palavra \"cobertura\"; link do mapa", ok, detalhe: JSON.stringify(r) });
+    // o link do mapa abre o portal mesmo sem o portal ler o parâmetro
+    const resp = await page.request.get(new URL(r.mapa, page.url()).toString());
+    res.push({ nome: "\"ver no mapa\" abre o portal", ok: resp.status() === 200, detalhe: `HTTP ${resp.status()}` });
+    await ctx.close();
+  }
+  return res;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const iSaida = args.indexOf("--saida");
@@ -295,6 +441,12 @@ async function main() {
     const fc = await testeFalhaDeCarga(browser, base, def);
     console.log(`[${fc.ok ? "ok" : "FALHA"}] produto indisponível vira erro no bloco (${fc.erroBloco} bloco(s) com erro, ${fc.svgs} gráficos desenhados)`);
     if (!fc.ok) total++;
+    if (def.extras) {
+      for (const x of await def.extras(browser, base, prod)) {
+        console.log(`[${x.ok ? "ok" : "FALHA"}] ${x.nome}`);
+        if (!x.ok) { total++; console.log(`    - ${x.detalhe}`); }
+      }
+    }
     const rd = await testeRedirecionamento(browser, base, def);
     if (rd) { console.log(`[${rd.ok ? "ok" : "FALHA"}] endereço antigo redireciona para ${rd.destino}`); if (!rd.ok) total++; }
   }

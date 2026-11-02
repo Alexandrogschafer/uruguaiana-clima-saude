@@ -56,6 +56,11 @@ table.tabela-cartoes a { color: var(--accent); text-decoration: none; border-bot
 /* rótulos de valor e de eixo não capturam o cursor nem o toque: numa barra baixa,
    o rótulo fica sobre a área da coluna e impedia a dica de abrir */
 .chart-svg text.bar-label, .chart-svg text.end-label, .chart-svg text.axis-label { pointer-events: none; }
+/* a coluna inteira de cada barra é a área de toque (tem os mesmos ouvintes da barra);
+   a barra em si não captura o toque, para que o ajuste de toque do navegador não
+   desvie o dedo para a barra vizinha quando a barra tocada é baixa ou zero */
+.chart-svg rect[fill="transparent"] { cursor: pointer; }
+.chart-svg path.bar-mark { pointer-events: none; }
 
 /* ---------- erro de bloco ---------- */
 .erro-bloco { border: 1px dashed var(--series-orange); border-radius: 6px; padding: 14px 16px; font-size: 13px; color: var(--ink-secondary); }

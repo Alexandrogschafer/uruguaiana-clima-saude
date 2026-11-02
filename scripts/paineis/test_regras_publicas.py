@@ -18,7 +18,10 @@ Regras:
        obrigatórios (e o produto, os campos do esquema climapampa-painel/1);
     h) nenhum produto de LST (ativos CA09 a CA16);
     i) premissas: Equipe de Saúde Prisional (CNES 4126947) fora de produtos de
-       comparação; população por unidade (SA02) com selo "em_confirmacao" e sem soma.
+       comparação; população por unidade (SA02) com selo "em_confirmacao" e sem soma;
+    j) saúde: nenhuma série anual de óbitos por afogamento ou enchente; nenhum campo
+       de soma ou total de população por unidade; produto de unidades sem 2026 e com a
+       Prisional fora das comparações e sem população; selo em_confirmacao.
 
 Uso:
     python scripts/paineis/test_regras_publicas.py
@@ -208,6 +211,48 @@ def regra_i(prods) -> list[str]:
     return falhas
 
 
+ATIVOS_SAUDE = {"SA01", "SA02", "SA03", "SA04", "SA05"}
+RE_AFOGAMENTO = re.compile(r"afogamento|enchente", re.IGNORECASE)
+RE_SOMA = re.compile(r"soma|total", re.IGNORECASE)
+
+
+def regra_j(prods) -> list[str]:
+    """Saúde: (a) sem série anual de afogamento/enchente; (b) sem soma de população por unidade;
+    (c) unidades sem 2026 e Prisional fora das comparações; (d) população com selo em_confirmacao."""
+    falhas = []
+    for p, d in prods:
+        ativos = set(d.get("ativos", []))
+        if not (ativos & ATIVOS_SAUDE or d.get("id", "").startswith("saude_")):
+            continue
+        colunas = [c["nome"] for c in d.get("colunas", [])]
+        chaves = {k for linha in d.get("dados", []) for k in linha}
+        # (a) série anual do agravo: coluna "ano" junto com coluna de afogamento, ou produto do agravo com "ano"
+        if "ano" in chaves and (any(RE_AFOGAMENTO.search(c) for c in chaves) or RE_AFOGAMENTO.search(d.get("id", ""))):
+            falhas.append(f"{p.name}: série anual de óbitos por afogamento ou enchente")
+        if ativos & {"SA01", "SA02"}:
+            # (b) soma ou total de população
+            if any(RE_SOMA.search(c) for c in colunas + list(chaves)) or any(RE_SOMA.search(k) and "popul" in k for k in d):
+                falhas.append(f"{p.name}: campo de soma ou total de população por unidade")
+            # (c) sem 2026; Prisional fora das comparações e sem população
+            if any("2026" in c for c in colunas + list(chaves)):
+                falhas.append(f"{p.name}: campo de 2026 na população por unidade")
+            if d.get("comparacao"):
+                falhas.append(f"{p.name}: produto de unidades marcado como comparação")
+            for linha in d.get("dados", []):
+                if str(linha.get("cnes")) == CNES_PRISIONAL:
+                    pops = [v for k, v in linha.items() if k.startswith("populacao")]
+                    if linha.get("fora_das_comparacoes") is not True or any(v is not None for v in pops):
+                        falhas.append(f"{p.name}: Equipe de Saúde Prisional sem fora_das_comparacoes ou com população")
+            # (d) selo
+            if "SA02" in ativos and d.get("selo") != "em_confirmacao":
+                falhas.append(f"{p.name}: população por unidade sem selo em_confirmacao")
+    # nenhuma chave anual do agravo em nenhum arquivo publicado (inclui metadados)
+    for f in sorted(PASTA.glob("*.json")):
+        if "obitos_afogamento_enchente" in f.read_text(encoding="utf-8"):
+            falhas.append(f"{f.name}: contém a coluna anual obitos_afogamento_enchente")
+    return falhas
+
+
 def main() -> int:
     arqs = arquivos_alvo()
     prods = produtos()
@@ -221,6 +266,7 @@ def main() -> int:
         "g metadado irmão": regra_g(),
         "h LST fora": regra_h(prods),
         "i premissas P5 e P6": regra_i(prods),
+        "j saúde: afogamento só por quinquênio, sem soma, sem 2026, Prisional fora": regra_j(prods),
     }
     print(f"arquivos varridos: {len(arqs)}; produtos: {len(prods)}")
     ok = True
