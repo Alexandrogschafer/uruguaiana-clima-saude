@@ -1,0 +1,23 @@
+{
+  "produto": "areas-de-risco_ibge_2018_bater.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "IBGE, População em áreas de risco no Brasil (2018), base BATER",
+  "transformacao_aplicada": "áreas BATER do município (sem geometria)",
+  "entradas": [
+    {
+      "arquivo": "data/raw/vetor/populacao-areas-de-risco_ibge_2018_bater.zip",
+      "sha256": "2de8c8e2549a25c3eb692d98c029a8e84d337b1f16fde135dc2df1982afd7219",
+      "bytes": 5025488
+    }
+  ],
+  "script": "scripts/paineis/dados_riscos.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "RD04"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:52:10Z",
+  "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)"
+}

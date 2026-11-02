@@ -1,0 +1,122 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "setorizacao-risco_sgb_2014_setor",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "RD03"
+ ],
+ "titulo": "Setores de risco do SGB (2014)",
+ "fonte_curta": "SGB",
+ "fonte": "SGB, setorização de risco (camada pública)",
+ "unidade_espacial": "setor de risco",
+ "unidade_medida": "edificações; domicílios; pessoas",
+ "periodo": {
+  "inicio": "2014",
+  "fim": "2014"
+ },
+ "dados_ate": "2014",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "produto gerado; ainda sem bloco na tela"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [
+   "edificacoes",
+   "domicilios",
+   "pessoas"
+  ],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:52:10Z",
+ "script": "scripts/paineis/dados_riscos.py",
+ "colunas": [
+  {
+   "nome": "setor",
+   "tipo": "texto"
+  },
+  {
+   "nome": "local",
+   "tipo": "texto"
+  },
+  {
+   "nome": "tipologia",
+   "tipo": "texto"
+  },
+  {
+   "nome": "grau_risco",
+   "tipo": "texto"
+  },
+  {
+   "nome": "grau_vulnerabilidade",
+   "tipo": "texto"
+  },
+  {
+   "nome": "edificacoes",
+   "tipo": "int",
+   "contagem": true
+  },
+  {
+   "nome": "domicilios",
+   "tipo": "int",
+   "contagem": true
+  },
+  {
+   "nome": "pessoas",
+   "tipo": "int",
+   "contagem": true
+  }
+ ],
+ "fonte_rodape": "Setorização de risco — SGB, 2014",
+ "telas": [],
+ "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)",
+ "dados": [
+  {
+   "setor": "RS_UR_SR_01_CPRM",
+   "local": "Alexandre Zachia/N.Esperança",
+   "tipologia": "Inundação",
+   "grau_risco": "Alto",
+   "grau_vulnerabilidade": "Médio",
+   "edificacoes": 730,
+   "domicilios": 1500,
+   "pessoas": 2920
+  },
+  {
+   "setor": "RS_UR_SR_02_CPRM",
+   "local": "Bela Vista/Boa Vista",
+   "tipologia": "Inundação",
+   "grau_risco": "Alto",
+   "grau_vulnerabilidade": "Médio",
+   "edificacoes": 240,
+   "domicilios": 457,
+   "pessoas": 960
+  },
+  {
+   "setor": "RS_UR_SR_03_CPRM",
+   "local": "Mascarenhas de Moraes/Santana",
+   "tipologia": "Inundação",
+   "grau_risco": "Alto",
+   "grau_vulnerabilidade": "Alto",
+   "edificacoes": 543,
+   "domicilios": 717,
+   "pessoas": 2173
+  },
+  {
+   "setor": "RS_UR_SR_04_CPRM",
+   "local": "Joquei Clube/Cidade Nova",
+   "tipologia": "Inundação",
+   "grau_risco": "Alto",
+   "grau_vulnerabilidade": "Baixo",
+   "edificacoes": 234,
+   "domicilios": 320,
+   "pessoas": 936
+  }
+ ]
+}

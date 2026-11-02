@@ -117,7 +117,7 @@ EV06,livre,,data/raw/bolsa-familia_mds-ri_atual_municipal.csv,conferido
 EV07,livre,,data/raw/despesas-por-funcao_siconfi_2015-2026_municipal.csv,conferido
 EV08,livre,,data/geoportal/indicadores-municipais.json,conferido
 EV09,livre,,data/geoportal/estrutura-fundiaria.geojson,
-IF01,livre,,data/raw/continuidade-energia_aneel_2000-2026_conjunto-consumidor.csv,
+IF01,livre,,data/raw/continuidade-energia_aneel_2000-2026_conjunto-consumidor.csv,conferido
 IF02,livre,,data/geoportal/cobertura-movel-anatel.geojson,
 IF03,livre,,data/geoportal/escolas-inep.geojson,
 IF04,livre,,data/geoportal/malha-viaria.geojson,
@@ -125,12 +125,12 @@ IF05,livre,,data/geoportal/malha-viaria-dnit.geojson,
 IF06,depende de conferência no QGIS,,data/processed/viario/viario_referencia_2026-10-21.gpkg,
 IF07,depende de conferência no QGIS,,data/processed/viario/cruzamentos-via-curso-dagua_osm_2026-10-20.gpkg,
 IF08,livre,,data/raw/vetor/malha-viaria-pontes-separadas_osm_atual_vetorial.gpkg,
-IF09,livre,,data/raw/saneamento_snis_indisponivel.json,
-IF10,livre,,data/raw/malha-viaria_daer_indisponivel.json,
-RD01,livre,,data/processed/desastres_s2id_2013-2026_municipal.csv,
-RD02,livre,,data/raw/vetor/risco-geologico_cprm_2021_vetorial.gpkg,
-RD03,livre,,data/raw/vetor/relatorio-setorizacao-risco_sgb_2014_02-sig-uruguaiana-rs-risco.zip,
-RD04,livre,,data/raw/vetor/populacao-areas-de-risco_ibge_2018_bater.zip,
+IF09,livre,,data/raw/saneamento_snis_indisponivel.json,conferido
+IF10,livre,,data/raw/malha-viaria_daer_indisponivel.json,conferido
+RD01,livre,,data/processed/desastres_s2id_2013-2026_municipal.csv,conferido
+RD02,livre,,data/raw/vetor/risco-geologico_cprm_2021_vetorial.gpkg,conferido
+RD03,livre,,data/raw/vetor/relatorio-setorizacao-risco_sgb_2014_02-sig-uruguaiana-rs-risco.zip,conferido
+RD04,livre,,data/raw/vetor/populacao-areas-de-risco_ibge_2018_bater.zip,conferido
 RD05,livre,,data/processed/conferencia_fontes_inundacao/profundidade-inundacao_glofas-jrc_tr-100-anos_3arcseg_recorte-municipio-5km.tif,
 RD06,depende de conferência no QGIS,,docs/exposicao_inundacao/numeros_publicados/numeros-publicados_ana-atlas-risco-inundacoes_2025_transcricao.csv,
 RD07,bloqueada,,,

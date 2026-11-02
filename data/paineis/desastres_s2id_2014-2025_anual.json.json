@@ -1,0 +1,28 @@
+{
+  "produto": "desastres_s2id_2014-2025_anual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "S2ID, SEDEC-MIDR (relatório gerencial de reconhecimentos)",
+  "transformacao_aplicada": "contagem de reconhecimentos por ano e categoria (tipologia agrupada)",
+  "entradas": [
+    {
+      "arquivo": "data/processed/desastres_s2id_2013-2026_municipal.csv",
+      "sha256": "70a22841c8a8b274460c2aeb99c862bc276bf5eb9006714ed18645f5b3724d03",
+      "bytes": 2270
+    },
+    {
+      "arquivo": "data/processed/desastres_s2id_2013-2026_municipal.json",
+      "sha256": "c5151c78cf0ef638f08345287073ef61870d4c6a61dd9f94cc74e6f6c200c393",
+      "bytes": 1113
+    }
+  ],
+  "script": "scripts/paineis/dados_riscos.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "RD01"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:59:31Z",
+  "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)"
+}

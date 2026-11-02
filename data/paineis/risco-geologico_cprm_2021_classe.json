@@ -1,0 +1,95 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "risco-geologico_cprm_2021_classe",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "RD02"
+ ],
+ "titulo": "Suscetibilidade a inundação e movimento de massa: área e polígonos por classe",
+ "fonte_curta": "CPRM/SGB",
+ "fonte": "CPRM/SGB, carta de suscetibilidade (RIGEO), validação de campo em 2021",
+ "unidade_espacial": "município",
+ "unidade_medida": "km²; polígonos",
+ "periodo": {
+  "inicio": "2021",
+  "fim": "2021"
+ },
+ "dados_ate": "2021",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "modelagem validada em campo; triagem territorial, não laudo"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:52:10Z",
+ "script": "scripts/paineis/dados_riscos.py",
+ "colunas": [
+  {
+   "nome": "camada",
+   "tipo": "texto"
+  },
+  {
+   "nome": "classe",
+   "tipo": "texto"
+  },
+  {
+   "nome": "area_km2",
+   "tipo": "float"
+  },
+  {
+   "nome": "n_poligonos",
+   "tipo": "int"
+  }
+ ],
+ "fonte_rodape": "Risco geológico — CPRM/SGB, Carta de Suscetibilidade a Movimentos Gravitacionais de Massa e Inundações (repositório RIGEO)",
+ "telas": [
+  "riscos"
+ ],
+ "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)",
+ "totais": {
+  "inundacao_km2": 1204.31,
+  "movimento_km2": 5699.21
+ },
+ "dados": [
+  {
+   "camada": "Inundação",
+   "classe": "Baixa",
+   "area_km2": 51.23,
+   "n_poligonos": 1239
+  },
+  {
+   "camada": "Inundação",
+   "classe": "Média",
+   "area_km2": 291.55,
+   "n_poligonos": 2543
+  },
+  {
+   "camada": "Inundação",
+   "classe": "Alta",
+   "area_km2": 861.54,
+   "n_poligonos": 445
+  },
+  {
+   "camada": "Movimento de massa",
+   "classe": "Baixa",
+   "area_km2": 5698.71,
+   "n_poligonos": 1
+  },
+  {
+   "camada": "Movimento de massa",
+   "classe": "Média",
+   "area_km2": 0.5,
+   "n_poligonos": 42
+  }
+ ]
+}

@@ -1,7 +1,6 @@
 /* Cabeçalho comum: navegação entre as telas e avisos de filtro.
    Telas que ainda não existem aparecem desativadas, com "em breve".
-   Os painéis antigos de saúde, demografia e território seguem no menu
-   "Explorar" até serem migrados. Mostra "Atualizado em" com a data do manifesto. A tela atual vem de <html data-tela="...">. */
+   O menu "Explorar" leva às seis telas temáticas. Mostra "Atualizado em" com a data do manifesto. A tela atual vem de <html data-tela="...">. */
 (function(){
   const P = window.Paineis = window.Paineis || {};
 
@@ -12,8 +11,10 @@
   const EXPLORAR = [
     {tela: 'clima', rotulo: 'Clima e ambiente', href: 'clima.html'},
     {tela: 'saude', rotulo: 'Saúde', href: 'saude.html'},
-    {tela: 'demografia', rotulo: 'Demografia', href: 'painel-demografia.html'},
-    {tela: 'territorio', rotulo: 'Território e vulnerabilidade', href: 'painel-territorio.html'},
+    {tela: 'populacao', rotulo: 'População', href: 'populacao.html'},
+    {tela: 'territorio', rotulo: 'Território e meio físico', href: 'territorio.html'},
+    {tela: 'economia', rotulo: 'Economia e vulnerabilidade', href: 'economia.html'},
+    {tela: 'riscos', rotulo: 'Riscos, desastres e infraestrutura', href: 'riscos.html'},
   ];
 
   function item(def, atual){

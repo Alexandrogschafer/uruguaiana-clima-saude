@@ -1,0 +1,23 @@
+{
+  "produto": "risco-geologico_cprm_2021_classe.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "CPRM/SGB, carta de suscetibilidade (RIGEO), validação de campo em 2021",
+  "transformacao_aplicada": "área e número de polígonos por classe, do metadado de risco_geologico_cprm.py",
+  "entradas": [
+    {
+      "arquivo": "data/raw/vetor/risco-geologico_cprm_2021_vetorial.json",
+      "sha256": "57d62ae599ee0b618f1dafe1f9ca3db452463ef9b3141035b5e5ee4f17cc2387",
+      "bytes": 2689
+    }
+  ],
+  "script": "scripts/paineis/dados_riscos.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "RD02"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:52:10Z",
+  "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)"
+}

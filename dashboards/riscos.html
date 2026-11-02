@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="pt-BR" data-tela="riscos" data-raiz="..">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Riscos, Desastres e Infraestrutura — ClimaPampa, Uruguaiana/RS</title>
+<link rel="stylesheet" href="../css/paineis.css">
+<link rel="stylesheet" href="../css/paineis-componentes.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header id="cabecalho-comum"></header>
+
+  <div class="masthead">
+    <svg class="masthead-contour" viewBox="0 0 800 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
+      <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
+    </svg>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 3 de 4 · Riscos</span>
+    <h1>Painel de território e vulnerabilidade</h1>
+    <p>Risco geológico (CPRM/SGB), desastres reconhecidos (S2ID) e continuidade de energia (ANEEL) — o retrato estrutural do município, que muda devagar. Uso do solo e meio físico estão no painel de <a href="territorio.html">Território</a>; economia e vulnerabilidade, no de <a href="economia.html">Economia</a>.</p>
+    <div class="masthead-meta">
+      <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
+      <span data-nota="ris_meta_masthead"></span>
+      <span><b>Ver também</b> <a href="saude.html">Saúde</a> · <a href="clima.html">Clima e Ambiente</a> · <a href="populacao.html">Demografia</a> · <a href="../index.html">Geoportal</a></span>
+    </div>
+  </div>
+
+  <div class="chips-filtro" id="chips-filtro"></div>
+
+  <div class="section-head"><h2>Risco e Desastres</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="ris_nota_risco"></p>
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Inundação — área por classe</span><span class="card-meta" data-nota="ris_meta_inund"></span></div>
+      <div class="status-legend">
+        <span class="item"><span class="dot" style="background:var(--status-good)"></span>Baixa</span>
+        <span class="item"><span class="dot" style="background:var(--status-warning)"></span>Média</span>
+        <span class="item"><span class="dot" style="background:var(--status-critical)"></span>Alta</span>
+      </div>
+      <div class="card-body"><div id="chart-risco-inund"></div><div class="chart-tooltip" id="tt-risco-inund"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Movimento de massa — área por classe</span><span class="card-meta" data-nota="ris_meta_mov"></span></div>
+      <div class="status-legend">
+        <span class="item"><span class="dot" style="background:var(--status-good)"></span>Baixa</span>
+        <span class="item"><span class="dot" style="background:var(--status-warning)"></span>Média</span>
+      </div>
+      <div class="card-body"><div id="chart-risco-mov"></div><div class="chart-tooltip" id="tt-risco-mov"></div></div>
+    </div>
+  </div>
+  <details class="table-wrap" style="margin-top:10px;">
+    <summary data-nota="ris_resumo_risco"></summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaRisco"></table></div>
+  </details>
+  <p class="section-note" style="margin-top:24px;" data-nota="ris_nota_s2id"></p>
+  <div class="kpi-row" id="kpiRowS2id"></div>
+  <div class="card">
+    <div class="card-head"><span class="card-title">Reconhecimentos federais de desastre por ano e tipo</span><span class="card-meta" data-nota="ris_meta_s2id"></span></div>
+    <div class="status-legend" id="legenda-s2id"></div>
+    <div class="card-body"><div id="chart-s2id-anual"></div><div class="chart-tooltip" id="tt-s2id-anual"></div></div>
+  </div>
+  <p class="section-note" style="margin-top:6px;" data-nota="ris_nota_s2id_2"></p>
+
+  <div class="section-head"><h2>Continuidade de Energia — ANEEL</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="ris_nota_aneel"></p>
+  <div class="kpi-row" id="kpiRowAneel"></div>
+  <div class="chart-grid">
+    <div class="card"><div class="card-head"><span class="card-title">DEC — Duração Equivalente de Interrupção</span><span class="card-meta" data-nota="ris_meta_dec"></span></div>
+      <div class="card-body"><div id="chart-aneel-dec"></div><div class="chart-tooltip" id="tt-aneel-dec"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">FEC — Frequência Equivalente de Interrupção</span><span class="card-meta" data-nota="ris_meta_fec"></span></div>
+      <div class="card-body"><div id="chart-aneel-fec"></div><div class="chart-tooltip" id="tt-aneel-fec"></div></div></div>
+  </div>
+  <p class="section-note" style="margin-top:-6px;" data-nota="ris_nota_aneel_2"></p>
+
+  <p class="section-note" style="margin-top:28px;" data-nota="ris_leitura"></p>
+  <footer id="rodape-comum"></footer>
+</div>
+
+<script src="../js/paineis/componentes.js"></script>
+<script src="../js/paineis/graficos.js"></script>
+<script src="../js/paineis/graficos-extra.js"></script>
+<script src="../js/paineis/dados.js"></script>
+<script src="../js/paineis/filtros.js"></script>
+<script src="../js/paineis/cabecalho.js"></script>
+<script src="../js/paineis/rodape.js"></script>
+<script>
+/* Tela de riscos, desastres e infraestrutura: lê os produtos de data/paineis/ (scripts/paineis/dados_riscos.py).
+   Nenhum número fica neste arquivo: textos e indicadores vêm de "notas" e "kpis_*". */
+const P = window.Paineis;
+const IDS = {s2id: 'desastres_s2id_2014-2025_anual', cprm: 'risco-geologico_cprm_2021_classe', aneel: 'energia_aneel_2000-2026_anual'};
+const BLOCOS = {s2id: ['chart-s2id-anual'], cprm: ['chart-risco-inund', 'chart-risco-mov', 'tabelaRisco'], aneel: ['chart-aneel-dec', 'chart-aneel-fec']};
+
+async function iniciar(){
+  const c = {};
+  for(const [k, id] of Object.entries(IDS)){
+    c[k] = await P.carregar(id);
+    if(!c[k]) BLOCOS[k].forEach(b => P.erroBloco(document.getElementById(b), id));
+  }
+  const {s2id, cprm, aneel} = c;
+  const anos = [s2id, aneel].filter(Boolean).flatMap(p => p.dados.map(r => r.ano));
+  P.iniciarFiltros({listas: {periodo: anos.length ? {inicio: Math.min(...anos), fim: Math.max(...anos)} : undefined}});
+  P.montarCabecalho();
+  P.preencherNotas();
+  // a linha do masthead traz rótulos em negrito: "Risco geológico 2021 · Desastres (S2ID) 2014–2025"
+  const mh = document.querySelector('[data-nota="ris_meta_masthead"]');
+  if(mh) mh.innerHTML = mh.innerHTML.replace('Risco geológico', '<b>Risco geológico</b>').replace('Desastres (S2ID)', '<b>Desastres (S2ID)</b>');
+  if(s2id) P.montarKpis('kpiRowS2id', s2id.meta.kpis_s2id);
+  if(aneel) P.montarKpis('kpiRowAneel', aneel.meta.kpis_aneel);
+
+  const noPeriodo = linhas => {
+    const p = P.filtros.estado.periodo;
+    if(!p) return linhas;
+    const [a, b] = P.anosDoPeriodo(p);
+    return linhas.filter(r => r.ano >= a && r.ano <= b);
+  };
+  const cores = () => ({'Inundação': cssVar('--series-blue'), 'Estiagem': cssVar('--series-orange'), 'Tempestade local/convectiva': cssVar('--series-aqua'),
+                        'Doença infecciosa viral': cssVar('--series-context'), 'Enxurrada': cssVar('--status-critical')});
+  const corVar = {'Inundação': '--series-blue', 'Estiagem': '--series-orange', 'Tempestade local/convectiva': '--series-aqua', 'Doença infecciosa viral': '--series-context', 'Enxurrada': '--status-critical'};
+  if(s2id){
+    document.getElementById('legenda-s2id').innerHTML = s2id.meta.categorias.map(cat =>
+      `<span class="item"><span class="dot" style="background:var(${corVar[cat]})"></span>${cat}</span>`).join('');
+  }
+
+  function draw(){
+    const good = cssVar('--status-good'), warning = cssVar('--status-warning'), critical = cssVar('--status-critical');
+    const blue = cssVar('--series-blue'), orange = cssVar('--series-orange');
+    if(cprm){
+      const f = cprm.meta.fonte_curta, cor = {Baixa: good, 'Média': warning, Alta: critical};
+      const inund = cprm.dados.filter(r => r.camada === 'Inundação'), mov = cprm.dados.filter(r => r.camada !== 'Inundação');
+      renderBarChart('chart-risco-inund', 'tt-risco-inund', {labels: inund.map(r => r.classe), data: inund.map(r => r.area_km2), colors: inund.map(r => cor[r.classe]),
+        seriesName: P.dica('km²', f), height: 190, padL: 64, yFormat: v => fmtInt(v)+' km²'});
+      renderBarChart('chart-risco-mov', 'tt-risco-mov', {labels: mov.map(r => r.classe), data: mov.map(r => r.area_km2), colors: mov.map(r => cor[r.classe]),
+        seriesName: P.dica('km²', f), height: 190, padL: 64, yFormat: v => fmtInt(v)+' km²', tickCount: 3});
+    }
+    if(s2id){
+      const d = noPeriodo(s2id.dados), cr = cores(), f = s2id.meta.fonte_curta;
+      renderStackedBarChart('chart-s2id-anual', 'tt-s2id-anual', {
+        labels: d.map(r => r.ano), series: s2id.meta.categorias.map(cat => ({name: P.dica(cat, f), color: cr[cat], data: d.map(r => r[cat])})),
+        height: 190, barMax: 40, tickCount: 3, nomeVazio: P.dica('reconhecimentos', f),
+      });
+    }
+    if(aneel){
+      const d = noPeriodo(aneel.dados.filter(r => !r.parcial)), f = aneel.meta.fonte_curta;
+      renderLineChart('chart-aneel-dec', 'tt-aneel-dec', {labels: d.map(r => r.ano), series: [{name: P.dica('DEC', f), color: blue, data: d.map(r => r.dec_horas)}], height: 190, yFormat: v => fmt1(v)+'h'});
+      renderLineChart('chart-aneel-fec', 'tt-aneel-fec', {labels: d.map(r => r.ano), series: [{name: P.dica('FEC', f), color: orange, data: d.map(r => r.fec_interrupcoes)}], height: 190, yFormat: v => fmt1(v)});
+    }
+  }
+  draw();
+  window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+
+  if(cprm){
+    const t = document.getElementById('tabelaRisco');
+    t.innerHTML = '<thead><tr><th>Camada</th><th>Classe</th><th>Área (km²)</th><th>Nº de polígonos</th></tr></thead>';
+    const tb = document.createElement('tbody');
+    cprm.dados.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${r.camada}</td><td>${r.classe}</td><td>${fmt1(r.area_km2)}</td><td>${fmtInt(r.n_poligonos)}</td>`;
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+  }
+  P.montarChips('chips-filtro', {periodo: 'Período'});
+  document.addEventListener('filtros:mudou', () => { draw(); P.montarChips('chips-filtro', {periodo: 'Período'}); });
+
+  P.montarRodape();
+  document.documentElement.dataset.pronto = '1';
+}
+iniciar();
+</script>
+</body>
+</html>

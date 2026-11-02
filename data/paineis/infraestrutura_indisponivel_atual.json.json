@@ -1,0 +1,29 @@
+{
+  "produto": "infraestrutura_indisponivel_atual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "SNIS e DAER-RS (situação de acesso)",
+  "transformacao_aplicada": "situação registrada nos metadados de indisponibilidade",
+  "entradas": [
+    {
+      "arquivo": "data/raw/saneamento_snis_indisponivel.json",
+      "sha256": "31e951cf4f0fe1b0fc69e4cb9de3773d753234f17e62fb32705c5fff20251b66",
+      "bytes": 2781
+    },
+    {
+      "arquivo": "data/raw/malha-viaria_daer_indisponivel.json",
+      "sha256": "3eb210fa2870742cfc324dbbf5bc1a0105836e0db29a19fe77cf201e6d63b5c8",
+      "bytes": 2265
+    }
+  ],
+  "script": "scripts/paineis/dados_riscos.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "IF09",
+    "IF10"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:52:10Z",
+  "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)"
+}

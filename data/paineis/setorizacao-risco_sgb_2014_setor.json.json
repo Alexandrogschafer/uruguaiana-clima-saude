@@ -1,0 +1,23 @@
+{
+  "produto": "setorizacao-risco_sgb_2014_setor.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "SGB, setorização de risco (camada pública)",
+  "transformacao_aplicada": "atributos por setor, sem geometria; supressão de comum.py nas contagens",
+  "entradas": [
+    {
+      "arquivo": "data/raw/vetor/setorizacao-risco_sgb_atual_vetorial.geojson",
+      "sha256": "896fac20ed0be4f2c2801da1c5710727cf2d66763a3d9bdca1e71a72621591d3",
+      "bytes": 47484
+    }
+  ],
+  "script": "scripts/paineis/dados_riscos.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "RD03"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:52:10Z",
+  "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)"
+}

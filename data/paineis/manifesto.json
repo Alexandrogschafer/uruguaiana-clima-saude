@@ -1,8 +1,117 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-02T12:07:23Z",
+ "gerado_em": "2026-11-02T12:59:46Z",
  "produtos": [
+  {
+   "id": "agropecuaria_ibge_1974-2024_anual",
+   "titulo": "Área colhida (arroz, soja) e efetivo de rebanho (bovino, ovino)",
+   "ativos": [
+    "EV02"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2024",
+   "gerado_em": "2026-11-02T12:50:06Z",
+   "telas": [
+    "economia"
+   ],
+   "bytes": 11061,
+   "sha256": "29f60e5f4a44b9316793a115ccadeb14526b0c06d7784a5f57234a92dc757e34"
+  },
+  {
+   "id": "app-hidrica_ana-bho-mapbiomas_2024_curso",
+   "titulo": "APP hídrica: área por curso d'água",
+   "ativos": [
+    "TB15"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2024",
+   "gerado_em": "2026-11-02T12:47:36Z",
+   "telas": [
+    "territorio"
+   ],
+   "bytes": 1584,
+   "sha256": "0d9f09f650a24ee81142dc77f7fd86758331671777397f5b350019e6fc365ea5"
+  },
+  {
+   "id": "areas-de-risco_ibge_2018_bater",
+   "titulo": "Áreas de risco do IBGE (BATER 2018) no município",
+   "ativos": [
+    "RD04"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2018",
+   "gerado_em": "2026-11-02T12:52:10Z",
+   "telas": [],
+   "bytes": 1733,
+   "sha256": "ffacc7ab2e2560cde655de2e695212ea67ddbcf3499e29eac164419194971e97"
+  },
+  {
+   "id": "areas-urbanizadas_ibge_2019_classe",
+   "titulo": "Áreas urbanizadas por tipo e densidade (2019)",
+   "ativos": [
+    "TB16"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2019",
+   "gerado_em": "2026-11-02T12:47:36Z",
+   "telas": [],
+   "bytes": 1604,
+   "sha256": "b92d05be25c8231872606af0786c452c884188ef0bbf2312335447ce4043b85b"
+  },
+  {
+   "id": "bolsa-familia_mds_2026-07_mes",
+   "titulo": "Bolsa Família no mês mais recente",
+   "ativos": [
+    "EV06"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2026-07",
+   "gerado_em": "2026-11-02T12:50:06Z",
+   "telas": [
+    "economia"
+   ],
+   "bytes": 1610,
+   "sha256": "dd333c86606ef7daee5e3e8b63c2012a96b3db9d70dc856b7f6c898955e87f40"
+  },
+  {
+   "id": "cadunico_mds_2012-2026_anual",
+   "titulo": "Famílias no CadÚnico e taxa de atualização",
+   "ativos": [
+    "EV05"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2026-07",
+   "gerado_em": "2026-11-02T12:50:06Z",
+   "telas": [
+    "economia"
+   ],
+   "bytes": 3271,
+   "sha256": "adca7c0314c7c5ef508682dc0fa073f9cac9e07e6ae9736170c664e7b4226a0e"
+  },
+  {
+   "id": "censo_ibge_2022_situacao-setor",
+   "titulo": "População e setores por situação (Censo 2022)",
+   "ativos": [
+    "EV08",
+    "TB03"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2022",
+   "gerado_em": "2026-11-02T12:59:46Z",
+   "telas": [
+    "economia"
+   ],
+   "bytes": 8110,
+   "sha256": "bb72b649ee245e098e6e1ef370741733f36bb0d447c428010486aa42f4434c93"
+  },
   {
    "id": "clima_inmet-a809_2007-2025_anual",
    "titulo": "Temperatura, calor extremo e geada por ano",
@@ -71,6 +180,216 @@
    "sha256": "b0a174f97ee02ce2bc1b4351a917671d2dcf25e793b48a56afee10f8e9f7e5dc"
   },
   {
+   "id": "demografia_ibge_1970-2022_indicadores",
+   "titulo": "Indicadores demográficos dos censos",
+   "ativos": [
+    "PD02"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2022",
+   "gerado_em": "2026-11-02T12:45:00Z",
+   "telas": [
+    "populacao"
+   ],
+   "bytes": 4091,
+   "sha256": "68d6c186bec961df7eafcd40efa9598139aededffebaae50248f6dfd15236044"
+  },
+  {
+   "id": "demografia_ibge_2000-2010-2022_piramides",
+   "titulo": "Pirâmides etárias dos censos",
+   "ativos": [
+    "PD03"
+   ],
+   "selo": "conferido",
+   "autorizacao": "exceção por premissa: PD03 (pirâmides de 2000, 2010 e 2022 direto das tabelas SIDRA 200 e 9514 (dado oficial, já exibido no painel de demografia); a tabela de docs/ continua pendente e não é usada)",
+   "dados_ate": "2022",
+   "gerado_em": "2026-11-02T12:45:00Z",
+   "telas": [
+    "populacao"
+   ],
+   "bytes": 8529,
+   "sha256": "3b9f7776c0f209bbd3a688f4c0460aa15e6bd6ba5937c530ed967f621c1121b5"
+  },
+  {
+   "id": "desastres_s2id_2014-2025_anual",
+   "titulo": "Reconhecimentos federais de desastre por ano e tipo",
+   "ativos": [
+    "RD01"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2025",
+   "gerado_em": "2026-11-02T12:59:31Z",
+   "telas": [
+    "riscos"
+   ],
+   "bytes": 7404,
+   "sha256": "4c65a700c055d5101756e24aea1a6ae13d10885b0c906e784a0eafc3365dc018"
+  },
+  {
+   "id": "despesas_siconfi_2015-2026_anual",
+   "titulo": "Despesas em Saúde e Assistência Social por habitante",
+   "ativos": [
+    "EV07"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2026",
+   "gerado_em": "2026-11-02T12:50:06Z",
+   "telas": [
+    "economia"
+   ],
+   "bytes": 4255,
+   "sha256": "dd019520899fa8c1398b57b18112779a83ddd0e2d6a3ed5d47fabb876b848f86"
+  },
+  {
+   "id": "emprego_caged_2020-2026_mensal",
+   "titulo": "Admissões, desligamentos e saldo acumulado (Novo CAGED)",
+   "ativos": [
+    "EV03"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "202606",
+   "gerado_em": "2026-11-02T12:50:06Z",
+   "telas": [
+    "economia"
+   ],
+   "bytes": 12873,
+   "sha256": "b466184392a7103d8c2dce102c4c232629cee5d4b6ab15c6b4b62c857ccef3bd"
+  },
+  {
+   "id": "emprego_rais_2025_secao",
+   "titulo": "Vínculos formais ativos por seção CNAE (RAIS)",
+   "ativos": [
+    "EV03"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2025-12-31",
+   "gerado_em": "2026-11-02T12:50:43Z",
+   "telas": [
+    "economia"
+   ],
+   "bytes": 3679,
+   "sha256": "6e8654b61fcc4760d49155c4df66db6c75563b5d8310516d94dde51787621c25"
+  },
+  {
+   "id": "energia_aneel_2000-2026_anual",
+   "titulo": "DEC e FEC anuais do município",
+   "ativos": [
+    "IF01"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2026",
+   "gerado_em": "2026-11-02T12:52:10Z",
+   "telas": [
+    "riscos"
+   ],
+   "bytes": 5291,
+   "sha256": "7167e0b1343cdf605613d52e6ba582a1c05e621c808fc7597410305acdacb33f"
+  },
+  {
+   "id": "idhm_atlas_1991-2010_censos",
+   "titulo": "IDHM e componentes",
+   "ativos": [
+    "EV04"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2010",
+   "gerado_em": "2026-11-02T12:50:06Z",
+   "telas": [
+    "economia"
+   ],
+   "bytes": 2460,
+   "sha256": "be2d689ed0ae9369f39f7ddcc6f1262164e4bb7635b1ba3d0e2619deb30961d4"
+  },
+  {
+   "id": "infraestrutura_indisponivel_atual",
+   "titulo": "Saneamento e malha estadual: fontes indisponíveis",
+   "ativos": [
+    "IF09",
+    "IF10"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2026-08-12",
+   "gerado_em": "2026-11-02T12:52:10Z",
+   "telas": [],
+   "bytes": 1762,
+   "sha256": "7aa6c7f5b4097e0aee22000a9f911a711501334e7244e8da4cdb762f3a9f1a7e"
+  },
+  {
+   "id": "meio-fisico_ibge-bdia_atual_classes",
+   "titulo": "Meio físico: área por classe (BDiA)",
+   "ativos": [
+    "TB10",
+    "TB11",
+    "TB12",
+    "TB13"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2026-08-09",
+   "gerado_em": "2026-11-02T12:47:36Z",
+   "telas": [
+    "territorio"
+   ],
+   "bytes": 6488,
+   "sha256": "0cf49e8507be54be2b7c066e465d3e64c9d87df6cc17c49f7f07f84fddb08439"
+  },
+  {
+   "id": "pib_ibge_2002-2023_anual",
+   "titulo": "PIB per capita e composição do VAB",
+   "ativos": [
+    "EV01"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2023",
+   "gerado_em": "2026-11-02T12:59:46Z",
+   "telas": [
+    "economia"
+   ],
+   "bytes": 7276,
+   "sha256": "9eb9c653cac224019d0e5235355a6ff12bf7f600a4d426a84d645670b47c6ea3"
+  },
+  {
+   "id": "pocos_siagas_atual_aquifero",
+   "titulo": "Poços de água subterrânea por aquífero",
+   "ativos": [
+    "TB14"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2026-08-09",
+   "gerado_em": "2026-11-02T12:47:36Z",
+   "telas": [
+    "territorio"
+   ],
+   "bytes": 1202,
+   "sha256": "408f145a88633dc3bdbfb43b9a88e42f60f115e73a3f3c045070034f152545ad"
+  },
+  {
+   "id": "populacao_ibge_1970-2025_anual",
+   "titulo": "População total: censos e estimativas anuais",
+   "ativos": [
+    "PD01"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2025",
+   "gerado_em": "2026-11-02T12:45:00Z",
+   "telas": [
+    "populacao"
+   ],
+   "bytes": 7825,
+   "sha256": "e989d51b8833e1a2059e8be0170dcd7c312a9d37df7b254d6cf68b16e6b685f8"
+  },
+  {
    "id": "queimadas_inpe_2010-2025_anual",
    "titulo": "Focos de queimada por ano",
    "ativos": [
@@ -101,6 +420,22 @@
    ],
    "bytes": 19355,
    "sha256": "fb4651deb1556eef0a9ef5114e1503de1581ff35c665650f62f91f578663630a"
+  },
+  {
+   "id": "risco-geologico_cprm_2021_classe",
+   "titulo": "Suscetibilidade a inundação e movimento de massa: área e polígonos por classe",
+   "ativos": [
+    "RD02"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2021",
+   "gerado_em": "2026-11-02T12:52:10Z",
+   "telas": [
+    "riscos"
+   ],
+   "bytes": 2037,
+   "sha256": "c1ad0bf482e293c203b76f67853046f26d0d7d0619aca15d0fed00a3c7dd8ca7"
   },
   {
    "id": "saude_sih_2010-2025_anual",
@@ -182,6 +517,52 @@
    ],
    "bytes": 7741,
    "sha256": "728a037aee08c2aaa9df02029075ebfd9f41b9b0f8a089dea90b84ce46574a4a"
+  },
+  {
+   "id": "setorizacao-risco_sgb_2014_setor",
+   "titulo": "Setores de risco do SGB (2014)",
+   "ativos": [
+    "RD03"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2014",
+   "gerado_em": "2026-11-02T12:52:10Z",
+   "telas": [],
+   "bytes": 2530,
+   "sha256": "3cf89dcfd3cbdd620d95f2bafc3be2889815eb35e51475e864798dc60df9b42b"
+  },
+  {
+   "id": "uso-solo_mapbiomas_1985-2024_classes",
+   "titulo": "Uso do solo por classe (6 classes em destaque)",
+   "ativos": [
+    "CA08"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2024",
+   "gerado_em": "2026-11-02T12:47:36Z",
+   "telas": [
+    "territorio"
+   ],
+   "bytes": 7476,
+   "sha256": "fe7fed4d66dff53252faaff3fcf7bdbf1da069afce0df6b2b2b41035810372f4"
+  },
+  {
+   "id": "uso-solo_mapbiomas_2024_todas-classes",
+   "titulo": "Uso do solo em 2024, todas as classes",
+   "ativos": [
+    "CA08"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2024",
+   "gerado_em": "2026-11-02T12:47:36Z",
+   "telas": [
+    "territorio"
+   ],
+   "bytes": 2123,
+   "sha256": "8c7026020c5fea2da9cfe519d1be2d0bcf57c4773864adb89edc8d0a0f14d7ec"
   }
  ]
 }

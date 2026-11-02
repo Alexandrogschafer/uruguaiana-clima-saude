@@ -1,0 +1,70 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "infraestrutura_indisponivel_atual",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "IF09",
+  "IF10"
+ ],
+ "titulo": "Saneamento e malha estadual: fontes indisponíveis",
+ "fonte_curta": "SNIS; DAER-RS",
+ "fonte": "SNIS e DAER-RS (situação de acesso)",
+ "unidade_espacial": "município",
+ "unidade_medida": "—",
+ "periodo": {
+  "inicio": "atual",
+  "fim": "atual"
+ },
+ "dados_ate": "2026-08-12",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "lacuna",
+   "texto": "dados não disponíveis para download programático"
+  },
+  {
+   "tipo": "metodo",
+   "texto": "produto gerado; ainda sem bloco na tela"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:52:10Z",
+ "script": "scripts/paineis/dados_riscos.py",
+ "colunas": [
+  {
+   "nome": "tema",
+   "tipo": "texto"
+  },
+  {
+   "nome": "fonte",
+   "tipo": "texto"
+  },
+  {
+   "nome": "situacao",
+   "tipo": "texto"
+  }
+ ],
+ "fonte_rodape": "Saneamento (SNIS) e malha estadual (DAER-RS) — indisponíveis para download programático",
+ "telas": [],
+ "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)",
+ "dados": [
+  {
+   "tema": "saneamento",
+   "fonte": "SNIS (Sistema Nacional de Informações sobre Saneamento) — Ministério das Cidades / MDR",
+   "situacao": "não baixado: sem download programático sem login gov.br"
+  },
+  {
+   "tema": "malha estadual",
+   "fonte": "DAER-RS (Departamento Autônomo de Estradas de Rodagem do Rio Grande do Sul)",
+   "situacao": "não baixado: sem download vetorial programático"
+  }
+ ]
+}
