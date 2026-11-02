@@ -82,9 +82,11 @@ integrar):
   diagnóstico respiratório — 2010 até o último ano fechado.
 - **Precipitação mensal:** série 2010–2025 via MERGE/INPE-CPTEC, fonte da
   precipitação do painel de clima (média de uma área com margem de 18 km em
-  torno do município). O script de coleta tenta primeiro o CHIRPS/UCSB e
-  troca para o MERGE quando há bloqueio por IP, com o registro por mês no
-  metadado `.json` irmão. O painel recebe os dados de
+  torno do município). O script de coleta
+  (`scripts/download/precipitacao_merge.py`) usa o MERGE por padrão; com
+  `--fonte chirps` usa só o CHIRPS/UCSB, e com `--fonte auto` tenta o CHIRPS
+  e troca para o MERGE depois de 3 falhas seguidas. O registro por mês fica
+  no metadado `.json` irmão. O painel recebe os dados de
   `scripts/processamento/precipitacao_painel_clima.py`.
 - **Temperatura (INMET A809):** série horária da estação no município, usada
   para temperatura, dias de calor e geada no painel de clima. A precipitação

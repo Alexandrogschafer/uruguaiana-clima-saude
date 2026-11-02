@@ -15,8 +15,14 @@ fallback MERGE — nome corrigido/renomeado manualmente para
 precipitacao_merge-inpe_2010-2025_mensal.csv, e a lógica abaixo evita
 que isso aconteça de novo silenciosamente numa próxima coleta.
 
-Fonte primária: CHIRPS v2.0
------------------------------
+Escolha da fonte (--fonte)
+--------------------------
+merge (padrão): usa só o MERGE e não consulta o CHIRPS.
+chirps: usa só o CHIRPS; para depois de 3 falhas seguidas, com o progresso salvo.
+auto: tenta o CHIRPS e troca para o MERGE depois de 3 falhas seguidas.
+
+CHIRPS v2.0 (--fonte chirps ou auto)
+------------------------------------
 CHIRPS v2.0 (Climate Hazards Group InfraRed Precipitation with Station
 data, UCSB), grade global mensal ~0,05° (~5,5 km), distribuída como um
 GeoTIFF (.tif.gz) por mês em
@@ -40,7 +46,7 @@ OK) — era temporário, não permanente. Mesmo assim, este script agora:
    fsync), não só ao final do loop inteiro — se travar de novo, os
    meses já processados não se perdem; uma nova execução (sem --forcar)
    retoma de onde parou.
-3. Se o CHIRPS voltar a falhar de forma persistente (3 meses seguidos
+3. No modo auto, se o CHIRPS falhar de forma persistente (3 meses seguidos
    com erro após as tentativas internas de retry — não confundir com
    "mês sem arquivo publicado", que é uma condição normal e não conta
    pra esse limite), troca automaticamente para a fonte alternativa
@@ -48,8 +54,8 @@ OK) — era temporário, não permanente. Mesmo assim, este script agora:
    documenta no metadado (campo `fontes_usadas_por_mes` e
    `fonte_dado` por linha no CSV) quais meses vieram de qual fonte.
 
-Fonte alternativa: INPE/MERGE (CPTEC), acionada só se o CHIRPS bloquear
----------------------------------------------------------------------------
+Fonte padrão: INPE/MERGE (CPTEC)
+--------------------------------
 Produto MERGE (CPTEC/INPE) não tem uma grade MENSAL pronta — só diária,
 em https://ftp.cptec.inpe.br/modelos/tempo/MERGE/GPM/DAILY/{ano}/{mes}/
 MERGE_CPTEC_{ano}{mes}{dia}.grib2 (grade ~10km, GRIB2, lido também via
@@ -62,12 +68,16 @@ a grade completa de 28-31 dias em memória só pra isso) — aproximação
 documentada no metadado quando essa fonte é usada, não é o mesmo cálculo
 exato do CHIRPS.
 
-Janela temporal: 2010 até o último ano CALENDÁRIO COMPLETO disponível no
-CHIRPS (mesmo critério usado no SIH/SINAN) — detectado verificando a
-existência do arquivo de dezembro via HTTP HEAD, não hardcoded.
+Janela temporal: 2010 até o último ano CALENDÁRIO COMPLETO disponível na
+fonte escolhida (mesmo critério usado no SIH/SINAN) — detectado via HTTP
+HEAD do último arquivo do ano, não hardcoded (no modo auto, pelo CHIRPS). Se a
+descoberta falhar, o script para e pede --ano-fim.
 
 Uso:
     python scripts/download/precipitacao_merge.py
+    python scripts/download/precipitacao_merge.py --fonte merge --ano-fim 2025
+    python scripts/download/precipitacao_merge.py --fonte auto
+    python scripts/download/precipitacao_merge.py --fonte chirps --ano-fim 2025
     python scripts/download/precipitacao_merge.py --codigo-ibge 4314902 --forcar
 """
 
@@ -77,6 +87,7 @@ import csv
 import json
 import logging
 import os
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -113,6 +124,9 @@ BACKOFF_BASE_S = 2.0
 DELAY_ENTRE_MESES_S = 3.0
 DELAY_ENTRE_DIAS_MERGE_S = 0.3
 LIMITE_FALHAS_CONSECUTIVAS_CHIRPS = 3
+FONTES = ("merge", "chirps", "auto")
+FONTE_PADRAO = "merge"
+ROTULO_MERGE = "merge_inpe_cptec_diario_agregado"
 
 CAMPOS_CSV = [
     "ano", "mes", "codigo_ibge", "nome_municipio", "fonte_dado",
@@ -147,29 +161,49 @@ def verificar_chirps(ano: int, mes: int) -> bool:
     return resposta.status_code == 200
 
 
-def descobrir_ultimo_ano_completo() -> int:
-    """Verifica (via HTTP HEAD) o dezembro de anos candidatos, do mais recente para trás. Se o
-    bloqueio estiver ativo (403), tenta com backoff antes de desistir — nunca confunde bloqueio
-    com "ano incompleto" (o que erradamente jogaria ano_fim pra trás)."""
+class DescobertaAnoFimError(Exception):
+    """Não foi possível saber o último ano completo; quem chama deve pedir --ano-fim."""
+
+
+class ChirpsIndisponivelError(Exception):
+    """Falhas seguidas no modo --fonte chirps, que não tem outra fonte para assumir."""
+
+
+def url_ultimo_arquivo_do_ano(fonte: str, ano: int) -> str:
+    """Último arquivo do ano na fonte: dezembro no CHIRPS e 31/12 no MERGE. O modo auto começa pelo CHIRPS."""
+    if fonte == "merge":
+        return URL_MERGE_DIARIO.format(ano=ano, mes=12, dia=31)
+    return BASE_URL_CHIRPS.format(ano=ano, mes=12)
+
+
+def descobrir_ultimo_ano_completo(fonte: str = FONTE_PADRAO, ano_inicio: int = ANO_INICIO_DEFAULT) -> int:
+    """Consulta (HTTP HEAD) só a fonte escolhida, do ano mais recente para trás. Apenas 404 faz
+    recuar um ano: bloqueio, erro do servidor ou de rede não podem encurtar a série em silêncio."""
     ano = datetime.now(timezone.utc).year - 1
-    while ano >= 1981:
+    while ano >= ano_inicio:
+        ultimo_problema = None
         for tentativa in range(1, N_TENTATIVAS + 1):
             try:
-                if verificar_chirps(ano, 12):
+                status = requests.head(url_ultimo_arquivo_do_ano(fonte, ano), headers=HEADERS, timeout=30, allow_redirects=True).status_code
+            except requests.RequestException as erro:
+                ultimo_problema = f"erro de rede: {erro}"
+            else:
+                if status == 200:
                     return ano
-                break  # 404 genuíno pra este ano — tenta o anterior, sem retry
-            except ChirpsBloqueadoError as erro:
-                if tentativa == N_TENTATIVAS:
-                    raise RuntimeError(
-                        f"CHIRPS bloqueado (HTTP 403) ao tentar descobrir o último ano completo — "
-                        f"não é possível determinar ano_fim com segurança. Tente de novo mais tarde, "
-                        f"ou informe --ano-fim manualmente. Último erro: {erro}"
-                    ) from erro
-                espera = BACKOFF_BASE_S * (2 ** (tentativa - 1))
-                logger.warning("CHIRPS bloqueado ao checar %d-12 (tentativa %d/%d) — nova tentativa em %.0fs", ano, tentativa, N_TENTATIVAS, espera)
-                time.sleep(espera)
+                if status == 404:
+                    ultimo_problema = None
+                    break
+                ultimo_problema = f"HTTP {status}" + (" (possível bloqueio de IP)" if status == 403 else "")
+            logger.warning("Fonte %s: %s ao checar %d (tentativa %d/%d)", fonte, ultimo_problema, ano, tentativa, N_TENTATIVAS)
+            if tentativa < N_TENTATIVAS:
+                time.sleep(BACKOFF_BASE_S * (2 ** (tentativa - 1)))
+        if ultimo_problema:
+            raise DescobertaAnoFimError(
+                f"não foi possível descobrir o último ano completo pela fonte {fonte} em {ano}: "
+                f"{ultimo_problema}. Informe --ano-fim."
+            )
         ano -= 1
-    raise RuntimeError("Não encontrou nenhum ano completo de CHIRPS — verifique conectividade/URL da fonte.")
+    raise DescobertaAnoFimError(f"nenhum ano completo encontrado na fonte {fonte} desde {ano_inicio}. Informe --ano-fim.")
 
 
 def extrair_precipitacao_mes_chirps(ano: int, mes: int, area_4326: gpd.GeoDataFrame) -> dict | None:
@@ -285,12 +319,77 @@ def escrever_linha_incremental(caminho_csv: Path, linha: dict, escrever_header: 
         os.fsync(f.fileno())
 
 
+def resumir_csv(caminho_csv: Path) -> tuple[dict[str, list[str]], list[str]]:
+    """Meses por fonte e meses sem dado no CSV inteiro. Contar só a execução atual daria uma
+    fonte dominante errada ao retomar uma coleta."""
+    meses_por_fonte: dict[str, list[str]] = {"chirps": [], ROTULO_MERGE: []}
+    sem_arquivo: list[str] = []
+    for linha in pd.read_csv(caminho_csv).itertuples():
+        rotulo = f"{int(linha.ano)}-{int(linha.mes):02d}"
+        if pd.isna(linha.fonte_dado):
+            sem_arquivo.append(rotulo)
+        else:
+            meses_por_fonte.setdefault(linha.fonte_dado, []).append(rotulo)
+    return meses_por_fonte, sem_arquivo
+
+
+def meses_pendentes(ano_inicio: int, ano_fim: int, ja_processados: set[tuple[int, int]]) -> list[tuple[int, int]]:
+    return [(a, m) for a in range(ano_inicio, ano_fim + 1) for m in range(1, 13) if (a, m) not in ja_processados]
+
+
+def obter_stats_do_mes(ano: int, mes: int, fonte_pedida: str, estado: dict, area_4326, detalhes_merge: dict) -> tuple[dict | None, str | None, bool]:
+    """Devolve (estatísticas, fonte, gravar). `estado` guarda a troca de fonte e as falhas seguidas.
+    gravar=False deixa o mês fora do CSV, para ser tentado de novo na retomada."""
+    rotulo_mes = f"{ano}-{mes:02d}"
+    stats, fonte = None, None
+    if not estado["usando_merge"]:
+        try:
+            stats = extrair_precipitacao_mes_chirps(ano, mes, area_4326)
+            estado["falhas_chirps"] = 0
+            if stats is not None:
+                fonte = "chirps"
+        except RuntimeError as erro:
+            estado["falhas_chirps"] += 1
+            logger.error(
+                "CHIRPS %s falhou (%d falha(s) consecutiva(s) de %d): %s",
+                rotulo_mes, estado["falhas_chirps"], LIMITE_FALHAS_CONSECUTIVAS_CHIRPS, erro,
+            )
+            if estado["falhas_chirps"] >= LIMITE_FALHAS_CONSECUTIVAS_CHIRPS:
+                if fonte_pedida == "chirps":
+                    raise ChirpsIndisponivelError(
+                        f"CHIRPS falhou {estado['falhas_chirps']} vezes seguidas até {rotulo_mes}. O progresso "
+                        "foi salvo; rode de novo mais tarde ou use --fonte merge."
+                    ) from erro
+                estado["usando_merge"] = True
+                logger.warning(
+                    "Bloqueio persistente detectado no CHIRPS (%d falhas seguidas) — trocando para "
+                    "INPE/MERGE a partir de %s.", estado["falhas_chirps"], rotulo_mes,
+                )
+            if fonte_pedida == "chirps":
+                return None, None, False
+
+    if estado["usando_merge"] and stats is None:
+        stats_merge = extrair_precipitacao_mes_merge(ano, mes, area_4326)
+        if stats_merge is not None:
+            fonte = ROTULO_MERGE
+            detalhes_merge[rotulo_mes] = {
+                "n_dias_com_dado": stats_merge.pop("n_dias_com_dado"),
+                "n_dias_no_mes": stats_merge.pop("n_dias_no_mes"),
+            }
+            stats = stats_merge
+    return stats, fonte, True
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Baixa série mensal de precipitação (CHIRPS, com fallback INPE/MERGE) para a área de estudo estendida.")
+    parser = argparse.ArgumentParser(description="Baixa série mensal de precipitação (MERGE/INPE por padrão; CHIRPS opcional) para a área de estudo estendida.")
     parser.add_argument("--codigo-ibge", default="4322400", help="Código IBGE do município (só para rótulo/metadado — a área usada é --area-bacias)")
     parser.add_argument("--area-bacias", type=Path, default=CAMINHO_AREA_BACIAS_DEFAULT)
     parser.add_argument("--ano-inicio", type=int, default=ANO_INICIO_DEFAULT)
-    parser.add_argument("--ano-fim", type=int, default=None, help="Default: último ano calendário completo disponível na fonte")
+    parser.add_argument("--ano-fim", type=int, default=None, help="Default: último ano calendário completo disponível na fonte escolhida")
+    parser.add_argument(
+        "--fonte", choices=FONTES, default=FONTE_PADRAO,
+        help="merge: só MERGE/INPE (padrão). chirps: só CHIRPS. auto: CHIRPS primeiro, com troca ao MERGE depois de 3 falhas seguidas",
+    )
     parser.add_argument("--forcar", action="store_true", help="Ignora progresso incremental salvo e recomeça do zero")
     args = parser.parse_args()
 
@@ -303,7 +402,10 @@ def main() -> None:
     area_estudo_bacias = gpd.read_file(args.area_bacias)
     area_4326 = area_estudo_bacias.to_crs("EPSG:4326")
 
-    ano_fim = args.ano_fim or descobrir_ultimo_ano_completo()
+    try:
+        ano_fim = args.ano_fim or descobrir_ultimo_ano_completo(args.fonte, args.ano_inicio)
+    except DescobertaAnoFimError as erro:
+        parser.error(str(erro))
     logger.info("Município de referência: %s (%s) — janela: %d-%d", nome_municipio, uf, args.ano_inicio, ano_fim)
 
     caminho_saida = localizar_arquivo_trabalho(args.ano_inicio, ano_fim, args.forcar)
@@ -314,11 +416,18 @@ def main() -> None:
         logger.info("Retomando: %d mês(es) já processado(s) em %s — pulando esses.", len(ja_processados), caminho_saida)
     escrever_header = not caminho_saida.exists()
 
-    usando_merge = False
-    falhas_consecutivas_chirps = 0
-    meses_sem_arquivo: list[str] = []
-    meses_por_fonte: dict[str, list[str]] = {"chirps": [], "merge_inpe_cptec_diario_agregado": []}
+    # Sem mês pendente, nada muda: nem o nome do arquivo final nem o metadado.
+    pendentes = meses_pendentes(args.ano_inicio, ano_fim, ja_processados)
+    if not pendentes:
+        logger.info("Coleta já completa em %s — nada a fazer (use --forcar para refazer).", caminho_saida)
+        return
+
+    estado = {"usando_merge": args.fonte == "merge", "falhas_chirps": 0}
     detalhes_merge: dict[str, dict] = {}
+    # Na retomada, mantém os detalhes dos meses de execuções anteriores.
+    caminho_metadados_anterior = caminho_saida.with_suffix(".json")
+    if caminho_metadados_anterior.exists():
+        detalhes_merge = json.loads(caminho_metadados_anterior.read_text(encoding="utf-8")).get("detalhes_merge_por_mes", {})
 
     for ano in range(args.ano_inicio, ano_fim + 1):
         for mes in range(1, 13):
@@ -326,40 +435,15 @@ def main() -> None:
                 continue
 
             rotulo_mes = f"{ano}-{mes:02d}"
-            stats = None
-            fonte = None
-
-            if not usando_merge:
-                try:
-                    stats = extrair_precipitacao_mes_chirps(ano, mes, area_4326)
-                    falhas_consecutivas_chirps = 0
-                    if stats is not None:
-                        fonte = "chirps"
-                except RuntimeError as erro:
-                    falhas_consecutivas_chirps += 1
-                    logger.error(
-                        "CHIRPS %s falhou (%d falha(s) consecutiva(s) de %d): %s",
-                        rotulo_mes, falhas_consecutivas_chirps, LIMITE_FALHAS_CONSECUTIVAS_CHIRPS, erro,
-                    )
-                    if falhas_consecutivas_chirps >= LIMITE_FALHAS_CONSECUTIVAS_CHIRPS:
-                        usando_merge = True
-                        logger.warning(
-                            "Bloqueio persistente detectado no CHIRPS (%d falhas seguidas) — trocando para "
-                            "INPE/MERGE a partir de %s.", falhas_consecutivas_chirps, rotulo_mes,
-                        )
-
-            if usando_merge and stats is None:
-                stats_merge = extrair_precipitacao_mes_merge(ano, mes, area_4326)
-                if stats_merge is not None:
-                    fonte = "merge_inpe_cptec_diario_agregado"
-                    detalhes_merge[rotulo_mes] = {
-                        "n_dias_com_dado": stats_merge.pop("n_dias_com_dado"),
-                        "n_dias_no_mes": stats_merge.pop("n_dias_no_mes"),
-                    }
-                    stats = stats_merge
+            try:
+                stats, fonte, gravar = obter_stats_do_mes(ano, mes, args.fonte, estado, area_4326, detalhes_merge)
+            except ChirpsIndisponivelError as erro:
+                logger.error("%s", erro)
+                sys.exit(1)
+            if not gravar:
+                continue
 
             if stats is None or stats.get("mean") is None:
-                meses_sem_arquivo.append(rotulo_mes)
                 linha = {
                     "ano": ano, "mes": mes, "codigo_ibge": args.codigo_ibge, "nome_municipio": nome_municipio,
                     "fonte_dado": pd.NA,
@@ -367,7 +451,6 @@ def main() -> None:
                     "n_pixels": pd.NA,
                 }
             else:
-                meses_por_fonte[fonte].append(rotulo_mes)
                 linha = {
                     "ano": ano, "mes": mes, "codigo_ibge": args.codigo_ibge, "nome_municipio": nome_municipio,
                     "fonte_dado": fonte,
@@ -383,19 +466,24 @@ def main() -> None:
 
         logger.info("Ano %d processado.", ano)
 
+    if not caminho_saida.exists():
+        logger.error("Nenhum mês foi gravado; nada a concluir.")
+        sys.exit(1)
+    meses_por_fonte, meses_sem_arquivo = resumir_csv(caminho_saida)
     n_meses_por_fonte = {fonte: len(meses) for fonte, meses in meses_por_fonte.items()}
     caminho_saida = nomear_saida_final(caminho_saida, args.ano_inicio, ano_fim, n_meses_por_fonte)
 
     tabela = pd.read_csv(caminho_saida)
     logger.info(
         "Concluído: %s (%d meses no total; %d via CHIRPS, %d via MERGE/INPE, %d sem arquivo em nenhuma fonte)",
-        caminho_saida, len(tabela), len(meses_por_fonte["chirps"]), len(meses_por_fonte["merge_inpe_cptec_diario_agregado"]),
+        caminho_saida, len(tabela), len(meses_por_fonte["chirps"]), len(meses_por_fonte[ROTULO_MERGE]),
         len(meses_sem_arquivo),
     )
 
     metadados = {
-        "fonte_primaria": "CHIRPS v2.0 (Climate Hazards Group InfraRed Precipitation with Station data, UCSB) — https://data.chc.ucsb.edu/products/CHIRPS-2.0/global_monthly/tifs/",
-        "fonte_alternativa_se_chirps_bloquear": "MERGE (CPTEC/INPE), grade diária agregada para total mensal — https://ftp.cptec.inpe.br/modelos/tempo/MERGE/GPM/DAILY/",
+        "fonte_solicitada": args.fonte,
+        "fonte_chirps": "CHIRPS v2.0 (Climate Hazards Group InfraRed Precipitation with Station data, UCSB) — https://data.chc.ucsb.edu/products/CHIRPS-2.0/global_monthly/tifs/",
+        "fonte_merge": "MERGE (CPTEC/INPE), grade diária agregada para total mensal — https://ftp.cptec.inpe.br/modelos/tempo/MERGE/GPM/DAILY/",
         "licenca": "CHIRPS: domínio público/uso livre (Climate Hazards Center, UCSB). MERGE/INPE: dados abertos do CPTEC/INPE.",
         "resolucao_espacial_original": "CHIRPS ~0,05° (~5,5 km); MERGE ~0,1° (~10 km)",
         "resolucao_temporal": "mensal (CHIRPS nativo; MERGE agregado de diário para mensal por este script)",
@@ -403,7 +491,7 @@ def main() -> None:
             "CHIRPS: leitura em streaming via GDAL (/vsigzip//vsicurl/) de um GeoTIFF global por mês, sem "
             "baixar o arquivo inteiro; média espacial (rasterstats.zonal_stats) da precipitação (mm) dentro "
             "da área de estudo ESTENDIDA (buffer de 18 km sobre o limite municipal — "
-            "config/area_estudo_bacias.geojson). MERGE (só se acionado como fallback): soma das médias "
+            "config/area_estudo_bacias.geojson). MERGE: soma das médias "
             "espaciais diárias (mesma área) para obter o total mensal; min/max mensais são a SOMA dos "
             "mínimos/máximos diários (aproximação — não é o mínimo/máximo real do total acumulado por "
             "pixel, ver detalhes_merge_por_mes para quantos dias de cada mês tinham dado)."
@@ -415,15 +503,15 @@ def main() -> None:
             "rodar de novo sem --forcar retoma dos meses faltantes"
         ),
         "criterio_troca_de_fonte": (
-            f"CHIRPS -> MERGE/INPE após {LIMITE_FALHAS_CONSECUTIVAS_CHIRPS} falhas consecutivas do CHIRPS "
+            f"só no modo auto: CHIRPS -> MERGE/INPE após {LIMITE_FALHAS_CONSECUTIVAS_CHIRPS} falhas consecutivas do CHIRPS "
             "por erro de rede/leitura (possível bloqueio) — mês sem arquivo publicado na fonte não conta "
             "para esse limite, é tratado à parte (ver meses_sem_arquivo_disponivel)"
         ),
         "criterio_nomeacao_arquivo": (
             "o nome do CSV/JSON (precipitacao_{fonte}_{...}) segue a convenção {tema}_{fonte}_... do "
             "projeto, decidido pela fonte que forneceu mais meses (ver n_meses_por_fonte) — só é "
-            "possível saber ao final do processamento, já que o CHIRPS pode bloquear a qualquer "
-            "momento; o arquivo é renomeado automaticamente ao fim de cada execução se a fonte "
+            "possível saber ao final do processamento, já que no modo auto o CHIRPS pode bloquear a "
+            "qualquer momento; o arquivo é renomeado automaticamente ao fim de cada execução se a fonte "
             "dominante mudar"
         ),
         "codigo_ibge_referencia": args.codigo_ibge,
@@ -431,7 +519,7 @@ def main() -> None:
         "uf": uf,
         "area_usada": "config/area_estudo_bacias.geojson (buffer de 18 km sobre area_estudo.geojson — NÃO é o limite municipal estrito)",
         "periodo_coberto": f"{args.ano_inicio}-{ano_fim}",
-        "criterio_ano_fim": "último ano calendário com os 12 meses publicados no CHIRPS no momento da coleta (verificado via HTTP HEAD do arquivo de dezembro)",
+        "criterio_ano_fim": "--ano-fim informado" if args.ano_fim else f"último ano calendário completo na fonte consultada ({'MERGE' if args.fonte == 'merge' else 'CHIRPS'}), verificado via HTTP HEAD do último arquivo do ano",
         "nivel_agregacao": "média espacial sobre a área de estudo estendida, por mês — não há série por pixel/sub-área neste CSV",
         "nodata": f"CHIRPS: {NODATA_CHIRPS} (não vem marcado no header do GeoTIFF, tratado explicitamente); MERGE: -999",
         "n_meses_por_fonte": n_meses_por_fonte,
