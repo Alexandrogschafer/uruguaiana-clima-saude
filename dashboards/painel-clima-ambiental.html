@@ -553,12 +553,12 @@ function draw(){
   const nivelLabels = DATA.nivel_rio.map(r => r.data_hora_utc.slice(5,16));
   renderLineChart('chart-nivel', 'tt-nivel', {
     labels: nivelLabels,
-    series: [{name:'Nível', color: blue, data: DATA.nivel_rio.map(r=>r.nivel_cm)}],
+    series: [{name:'Nível · ANA 77150000', color: blue, data: DATA.nivel_rio.map(r=>r.nivel_cm)}],
     height: 190, yFormat: v => fmtInt(v)+' cm',
   });
   renderLineChart('chart-vazao', 'tt-vazao', {
     labels: nivelLabels,
-    series: [{name:'Vazão', color: blue, data: DATA.nivel_rio.map(r=>r.vazao_m3s)}],
+    series: [{name:'Vazão (m³/s) · ANA 77150000', color: blue, data: DATA.nivel_rio.map(r=>r.vazao_m3s)}],
     height: 190, yFormat: v => fmtInt(v),
   });
 
