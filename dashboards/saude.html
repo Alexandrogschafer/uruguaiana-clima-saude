@@ -105,9 +105,12 @@
       <span class="card-meta" id="meta-unidades"></span>
     </div>
     <div id="aviso-unidades"></div>
-    <div class="tabela-cartoes-wrap" style="margin-top:10px;">
-      <table class="data-table tabela-cartoes" id="tabelaUnidades"></table>
-    </div>
+    <details class="detalhes-unidades" id="detalhesUnidades" open>
+      <summary id="resumoUnidades"></summary>
+      <div class="tabela-cartoes-wrap" style="margin-top:10px;">
+        <table class="data-table tabela-cartoes" id="tabelaUnidades"></table>
+      </div>
+    </details>
   </div>
 
   <footer id="rodape-comum"></footer>
@@ -319,6 +322,18 @@ async function iniciar(){
   }
   tabelaUnidades();
 
+  // No celular a lista das unidades fica recolhida, salvo com ?unidade= válido; a 1280 px fica sempre aberta.
+  const celular = window.matchMedia('(max-width: 720px)');
+  const detalhes = document.getElementById('detalhesUnidades');
+  if(unidades) setText('resumoUnidades', `Ver as ${unidades.dados.length} unidades`);
+  function ajustarLista(){ detalhes.open = !celular.matches || !!P.filtros.estado.unidade; }
+  ajustarLista();
+  celular.addEventListener('change', ajustarLista);
+  if(P.filtros.estado.unidade){
+    const alvo = document.querySelector('#tabelaUnidades tr.destacado');
+    if(alvo && celular.matches) alvo.scrollIntoView({block: 'center'});
+  }
+
   /* ================= chips de filtro ================= */
   function chips(){
     const host = document.getElementById('chips-filtro');
@@ -337,7 +352,7 @@ async function iniciar(){
     });
   }
   chips();
-  document.addEventListener('filtros:mudou', () => { draw(); tabelaAnual(); tabelaUnidades(); chips(); });
+  document.addEventListener('filtros:mudou', () => { draw(); tabelaAnual(); tabelaUnidades(); chips(); ajustarLista(); });
 
   P.montarRodape();
   document.documentElement.dataset.pronto = '1';
