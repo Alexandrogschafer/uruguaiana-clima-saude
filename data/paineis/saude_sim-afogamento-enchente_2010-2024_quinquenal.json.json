@@ -1,0 +1,22 @@
+{
+  "produto": "saude_sim-afogamento-enchente_2010-2024_quinquenal.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "SIM (Sistema de Informação sobre Mortalidade), DATASUS; causa básica W65-W74 ou X38",
+  "transformacao_aplicada": "soma dos óbitos por afogamento ou enchente em blocos de 5 anos; a série anual não é publicada; supressão de comum.py (limiar 5) aplicada aos quinquênios",
+  "entradas": [
+    {
+      "arquivo": "data/raw/obitos_sim-datasus_2010-2024_municipal.csv",
+      "sha256": "6bc160d98123f3d4a5e96e1239f23e703d4751bf2027067893a5a5e41cfc8d28",
+      "bytes": 746
+    }
+  ],
+  "script": "scripts/paineis/dados_saude.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "SA03"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:07:22Z"
+}

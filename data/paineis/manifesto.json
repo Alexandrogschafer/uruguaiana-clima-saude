@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-02T11:37:59Z",
+ "gerado_em": "2026-11-02T12:07:23Z",
  "produtos": [
   {
    "id": "clima_inmet-a809_2007-2025_anual",
@@ -101,6 +101,87 @@
    ],
    "bytes": 19355,
    "sha256": "fb4651deb1556eef0a9ef5114e1503de1581ff35c665650f62f91f578663630a"
+  },
+  {
+   "id": "saude_sih_2010-2025_anual",
+   "titulo": "Internações e internações respiratórias por ano",
+   "ativos": [
+    "SA05"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2025-12-31",
+   "gerado_em": "2026-11-02T12:07:22Z",
+   "telas": [
+    "saude"
+   ],
+   "bytes": 2875,
+   "sha256": "43c549f9c089d5191c8801cf416078dc8041af7aa7bf60e51079c6b4faa2d30d"
+  },
+  {
+   "id": "saude_sim-afogamento-enchente_2010-2024_quinquenal",
+   "titulo": "Óbitos por afogamento ou relacionados a enchente, por quinquênio",
+   "ativos": [
+    "SA03"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2024-12-31",
+   "gerado_em": "2026-11-02T12:07:22Z",
+   "telas": [
+    "saude"
+   ],
+   "bytes": 1737,
+   "sha256": "bade0cc444d4601ec450d514a46d4e21f08f7bb041fdf87f014e85b7227cc5bb"
+  },
+  {
+   "id": "saude_sim_2010-2024_anual",
+   "titulo": "Óbitos por ano: total e por causas respiratórias",
+   "ativos": [
+    "SA03"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2024-12-31",
+   "gerado_em": "2026-11-02T12:07:22Z",
+   "telas": [
+    "saude"
+   ],
+   "bytes": 2738,
+   "sha256": "f0e4d0485be3eb2bd56a0c7b329be64b6e088387c7f738c2cc7f6d5b233d4f3f"
+  },
+  {
+   "id": "saude_sinan_2010-2026_anual",
+   "titulo": "Notificações de arboviroses por ano",
+   "ativos": [
+    "SA04"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2026-08-02",
+   "gerado_em": "2026-11-02T12:07:22Z",
+   "telas": [
+    "saude"
+   ],
+   "bytes": 3819,
+   "sha256": "0c4006df152d785fbd76f8bd4b92faed9f895f0b19b2f1d6101c1775fdd69c77"
+  },
+  {
+   "id": "saude_unidades-esf-ubs_2026",
+   "titulo": "Unidades de saúde da atenção primária (ESF/UBS) e população informada",
+   "ativos": [
+    "SA01",
+    "SA02"
+   ],
+   "selo": "em_confirmacao",
+   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
+   "dados_ate": "2026",
+   "gerado_em": "2026-11-02T12:07:23Z",
+   "telas": [
+    "saude"
+   ],
+   "bytes": 7741,
+   "sha256": "728a037aee08c2aaa9df02029075ebfd9f41b9b0f8a089dea90b84ce46574a4a"
   }
  ]
 }

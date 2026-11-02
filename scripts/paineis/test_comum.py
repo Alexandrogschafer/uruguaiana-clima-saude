@@ -21,7 +21,8 @@ AUT = {
     "L1": {"id": "L1", "autorizacao": "livre", "excecao_premissa": "", "arquivo_origem": "a.csv"},
     "Q1": {"id": "Q1", "autorizacao": "depende de conferência no QGIS", "excecao_premissa": "", "arquivo_origem": "b.csv"},
     "B1": {"id": "B1", "autorizacao": "bloqueada", "excecao_premissa": "", "arquivo_origem": ""},
-    "E1": {"id": "E1", "autorizacao": "depende de conferência no QGIS", "excecao_premissa": "P6: aviso", "arquivo_origem": "c.csv"},
+    "E1": {"id": "E1", "autorizacao": "depende de conferência no QGIS", "excecao_premissa": "P6: aviso", "arquivo_origem": "c.csv",
+           "selo": "em_confirmacao"},
 }
 
 
@@ -115,6 +116,16 @@ class Autorizacao(unittest.TestCase):
     def test_montar_recusa(self):
         with self.assertRaises(comum.ErroAutorizacao):
             produto([{"ano": 2020}], ativos=("B1",))
+
+
+class Selo(unittest.TestCase):
+    def test_selo_mais_forte_que_o_ativo_recusa(self):
+        with self.assertRaises(comum.ErroProduto):
+            produto([{"ano": 2020}], ativos=("E1",), selo="conferido")
+
+    def test_selo_igual_ou_mais_fraco_passa(self):
+        self.assertEqual(produto([{"ano": 2020}], ativos=("E1",), selo="em_confirmacao")["selo"], "em_confirmacao")
+        self.assertEqual(produto([{"ano": 2020}], ativos=("E1",), selo="pendente")["selo"], "pendente")
 
 
 class Gravacao(unittest.TestCase):

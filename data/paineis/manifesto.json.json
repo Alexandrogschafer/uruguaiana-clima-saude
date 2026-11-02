@@ -5,5 +5,5 @@
   "transformacao_aplicada": "lista dos produtos com id, título, ativos, selo, autorização, datas, telas, tamanho e sha256",
   "script": "scripts/paineis/manifesto.py",
   "codigo_ibge": "4322400",
-  "data_processamento": "2026-11-02T11:37:59Z"
+  "data_processamento": "2026-11-02T12:07:23Z"
 }

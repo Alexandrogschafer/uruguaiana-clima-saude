@@ -25,6 +25,8 @@ import manifesto  # noqa: E402
 GERADORES: list[tuple[Path, str]] = [
     (RAIZ / "scripts" / "processamento" / "precipitacao_painel_clima.py", "gerar_paineis"),
     (AQUI / "dados_clima.py", "gerar"),
+    (AQUI / "dados_saude.py", "gerar"),
+    (AQUI / "dados_saude_unidades.py", "gerar"),
 ]
 
 

@@ -98,6 +98,19 @@ def ler_autorizacoes(arquivo: Path | None = None) -> dict[str, dict]:
         return {r["id"]: r for r in csv.DictReader(f)}
 
 
+# ordem de força do selo: um produto não pode ter selo mais forte que o de qualquer ativo de origem
+FORCA_SELO = {"pendente": 0, "em_confirmacao": 1, "conferido": 2}
+
+
+def conferir_selo(selo: str, ativos: list[str], autorizacoes: dict | None = None) -> None:
+    """Lança ErroProduto se o selo do produto for mais forte que o selo registrado de algum ativo."""
+    autorizacoes = autorizacoes if autorizacoes is not None else ler_autorizacoes()
+    for a in ativos:
+        registrado = (autorizacoes.get(a) or {}).get("selo", "").strip()
+        if registrado and FORCA_SELO[selo] > FORCA_SELO[registrado]:
+            raise ErroProduto(f"selo '{selo}' mais forte que o selo '{registrado}' registrado para {a}")
+
+
 def conferir_autorizacao(ativos: list[str], autorizacoes: dict | None = None) -> str:
     """Devolve "livre" ou "excecao: ..."; lança ErroAutorizacao se algum ativo não puder sair."""
     if not ativos:
@@ -181,6 +194,8 @@ def montar_produto(*, id: str, codigo_ibge: str, ativos: list[str], titulo: str,
                    autorizacoes: dict | None = None) -> dict:
     """Monta o produto já suprimido e conferido contra o esquema."""
     autorizacao = conferir_autorizacao(ativos, autorizacoes)
+    if selo in SELOS:
+        conferir_selo(selo, ativos, autorizacoes)
     dados = limpar_linhas(dados)
     campos_contagem = campos_contagem or []
     suprimidos = []
