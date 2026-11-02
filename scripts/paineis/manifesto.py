@@ -63,13 +63,13 @@ def gerar(codigo_ibge: str = "4322400", pasta: Path = comum.PASTA_PUBLICACAO) ->
     }
 
     aut = comum.ler_autorizacoes()
-    espera = [{"id": i, "motivo": r["autorizacao"]} for i, r in aut.items()
+    espera = [{"id": i, "nome": r.get("nome", ""), "motivo": r["autorizacao"]} for i, r in aut.items()
               if r["autorizacao"] != "livre" and not r.get("excecao_premissa", "").strip()]
     lista_espera = {"esquema": ESQUEMA_ESPERA, "codigo_ibge": codigo_ibge, "ativos": espera}
     meta_espera = {
         "produto": "paineis_espera.json", "esquema": ESQUEMA_ESPERA,
         "fonte": "config/paineis_ativos.csv",
-        "transformacao_aplicada": "ativos sem autorização 'livre' e sem exceção por premissa; só id e motivo",
+        "transformacao_aplicada": "ativos sem autorização 'livre' e sem exceção por premissa; id, nome e motivo",
         "script": "scripts/paineis/manifesto.py", "codigo_ibge": codigo_ibge,
         "data_processamento": None, "sha256_entrada": comum.sha256_arquivo(comum.ARQ_ATIVOS),
     }

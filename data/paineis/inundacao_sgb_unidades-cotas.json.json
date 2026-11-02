@@ -1,0 +1,39 @@
+{
+  "produto": "inundacao_sgb_unidades-cotas.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "SGB (manchas por cota) e CNES revisado pela equipe do projeto (versão 4)",
+  "transformacao_aplicada": "teste ponto-dentro de cada unidade contra a mancha acumulada de cada cota",
+  "entradas": [
+    {
+      "arquivo": "data/raw/vetor/cotas-inundacao_sgb_atual_vetorial.gpkg",
+      "sha256": "aa07faa588bd2e6c57719910ebcbe96e19c77e8417a540e2fe63e2245ed69d9b",
+      "bytes": 913408
+    },
+    {
+      "arquivo": "data/processed/conferencia_fontes_inundacao/manchas-por-cota_sgb_2023_transcricao.csv",
+      "sha256": "4270e5ab95ecbef9492ddc228dd98db27168bb8ccb54c1bfeb8b0c8fc7a18016",
+      "bytes": 1290
+    },
+    {
+      "arquivo": "data/processed/saude/unidades-saude-esf-ubs_cnes-revisado-v4_2026_pontos.gpkg",
+      "sha256": "c7f237dd2ffbd23c5685b0d46d7814048eccb07553cfc897ac8f514f47424382",
+      "bytes": 98304
+    },
+    {
+      "arquivo": "config/area_estudo.geojson",
+      "sha256": "0baaed344d2e15676c16fce1f288ad9e8550c909c5dc012e3f13e0bef36eb5df",
+      "bytes": 40454
+    }
+  ],
+  "script": "scripts/paineis/dados_inundacao.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "SA01",
+    "IN01"
+  ],
+  "autorizacao": "livre",
+  "selo": "em_confirmacao",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T14:11:27Z",
+  "supressao_nota": "não se aplica: sem contagem de pessoas; só número de unidades de saúde"
+}

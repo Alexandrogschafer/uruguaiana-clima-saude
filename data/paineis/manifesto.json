@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-02T14:09:17Z",
+ "gerado_em": "2026-11-02T14:12:15Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_1974-2024_anual",
@@ -327,6 +327,42 @@
    ],
    "bytes": 1977,
    "sha256": "9d782482162aee60f95000e92617c9734e69940ee5e5178e423b6602e9a7ff6f"
+  },
+  {
+   "id": "inundacao_sgb_cotas",
+   "titulo": "Manchas de inundação por cota e ESF/UBS dentro delas",
+   "ativos": [
+    "IN01",
+    "IN03",
+    "SA01"
+   ],
+   "selo": "em_confirmacao",
+   "autorizacao": "livre",
+   "dados_ate": "2023",
+   "gerado_em": "2026-11-02T14:12:15Z",
+   "telas": [
+    "sintese",
+    "cheia-saude"
+   ],
+   "bytes": 4062,
+   "sha256": "bd772b0f3ca694fe7271cbf46b90af9183dc9020e010a27dd46dd91c5adaaa44"
+  },
+  {
+   "id": "inundacao_sgb_unidades-cotas",
+   "titulo": "ESF/UBS em relação às manchas de inundação",
+   "ativos": [
+    "SA01",
+    "IN01"
+   ],
+   "selo": "em_confirmacao",
+   "autorizacao": "livre",
+   "dados_ate": "2026",
+   "gerado_em": "2026-11-02T14:11:27Z",
+   "telas": [
+    "cheia-saude"
+   ],
+   "bytes": 6292,
+   "sha256": "8d33fd93e21fa61f25ae3d8fb177ee5cc691054e50f1a4590473945ea6e55885"
   },
   {
    "id": "meio-fisico_ibge-bdia_atual_classes",

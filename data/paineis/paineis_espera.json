@@ -4,254 +4,317 @@
  "ativos": [
   {
    "id": "TB18",
+   "nome": "densidade de edificações",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "TB20",
+   "nome": "Plano Diretor: areas-verdes-e-patrimonio",
    "motivo": "bloqueada"
   },
   {
    "id": "TB21",
+   "nome": "Plano Diretor: base-urbana",
    "motivo": "bloqueada"
   },
   {
    "id": "TB22",
+   "nome": "Plano Diretor: curvas-nivel",
    "motivo": "bloqueada"
   },
   {
    "id": "TB23",
+   "nome": "Plano Diretor: equipamentos-de-mobilidade",
    "motivo": "bloqueada"
   },
   {
    "id": "TB24",
+   "nome": "Plano Diretor: hidrografia",
    "motivo": "bloqueada"
   },
   {
    "id": "TB25",
+   "nome": "Plano Diretor: industrias-do-arroz-e-transportadoras",
    "motivo": "bloqueada"
   },
   {
    "id": "TB26",
+   "nome": "Plano Diretor: linhas-de-cheia",
    "motivo": "bloqueada"
   },
   {
    "id": "TB27",
+   "nome": "Plano Diretor: mdt",
    "motivo": "bloqueada"
   },
   {
    "id": "TB28",
+   "nome": "Plano Diretor: ocupacao-urbana",
    "motivo": "bloqueada"
   },
   {
    "id": "TB29",
+   "nome": "Plano Diretor: sistema-viario",
    "motivo": "bloqueada"
   },
   {
    "id": "TB30",
+   "nome": "Plano Diretor: toponimia",
    "motivo": "bloqueada"
   },
   {
    "id": "TB31",
+   "nome": "Plano Diretor: zoneamento",
    "motivo": "bloqueada"
   },
   {
    "id": "PD03",
+   "nome": "pirâmides etárias",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "PD06",
+   "nome": "população por setor",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "PD07",
+   "nome": "mudança 2010–2022",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "PD08",
+   "nome": "grade estatística",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "PD09",
+   "nome": "população por distrito",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "PD10",
+   "nome": "domicílios",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "PD11",
+   "nome": "distância ao centro e quadrantes",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "PD12",
+   "nome": "endereços CNEFE (pontos)",
    "motivo": "bloqueada"
   },
   {
    "id": "PD13",
+   "nome": "qualidade dos endereços",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "SA06",
+   "nome": "CNES por categoria",
    "motivo": "bloqueada"
   },
   {
    "id": "SA07",
+   "nome": "estabelecimentos OSM",
    "motivo": "bloqueada"
   },
   {
    "id": "SA08",
+   "nome": "acessibilidade de base",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "SA09",
+   "nome": "acessibilidade por cota",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "SA10",
+   "nome": "endereços com classe de acesso",
    "motivo": "bloqueada"
   },
   {
    "id": "SA11",
+   "nome": "trechos interrompidos",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "SA12",
+   "nome": "trechos críticos",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "SA13",
+   "nome": "ilhas da rede",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "SA15",
+   "nome": "acesso por unidade na cheia",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "SA16",
+   "nome": "calor × acesso à saúde",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN06",
+   "nome": "máximas anuais",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN07",
+   "nome": "episódio de outubro de 2026",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN08",
+   "nome": "episódios de cheia",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN09",
+   "nome": "expostos por cota",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN10",
+   "nome": "bairros expostos",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN11",
+   "nome": "perfil dos expostos",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN12",
+   "nome": "dinâmica dos expostos",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN13",
+   "nome": "endereços expostos (pontos)",
    "motivo": "bloqueada"
   },
   {
    "id": "IN14",
+   "nome": "métodos de população exposta",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN15",
+   "nome": "delimitações oficiais × contagem",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN16",
+   "nome": "contornos oficiais",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN18",
+   "nome": "água vista pelo Sentinel (2017–2024)",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN19",
+   "nome": "água vista na área urbana",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN20",
+   "nome": "curva nível × área alagada",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN21",
+   "nome": "nível equivalente das manchas",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN22",
+   "nome": "mancha vista e não vista",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN23",
+   "nome": "água na cheia de outubro de 2026",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN24",
+   "nome": "pontes e travessias para campo",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IN25",
+   "nome": "conferência da régua 2015",
    "motivo": "bloqueada"
   },
   {
    "id": "IN26",
+   "nome": "manchas TR Defesa Civil RS",
    "motivo": "bloqueada"
   },
   {
    "id": "IN27",
+   "nome": "mancha observada 2014 (extraída de figura)",
    "motivo": "bloqueada"
   },
   {
    "id": "IN28",
+   "nome": "perigo e suscetibilidade (extraído de figura)",
    "motivo": "bloqueada"
   },
   {
    "id": "IN29",
+   "nome": "zoneamento de risco (extraído de figura)",
    "motivo": "bloqueada"
   },
   {
    "id": "IN30",
+   "nome": "comparação entre fontes de mancha",
    "motivo": "bloqueada"
   },
   {
    "id": "IN31",
+   "nome": "endereços por bairro e cota (com Plano Diretor)",
    "motivo": "bloqueada"
   },
   {
    "id": "CA16",
+   "nome": "exposição da população ao calor",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "CA17",
+   "nome": "validação LST × ar",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IF06",
+   "nome": "viário de referência",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "IF07",
+   "nome": "cruzamentos via × curso d'água",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "RD06",
+   "nome": "atlas de risco ANA",
    "motivo": "depende de conferência no QGIS"
   },
   {
    "id": "RD07",
+   "nome": "acervo de documentos",
    "motivo": "bloqueada"
   }
  ]

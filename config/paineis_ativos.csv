@@ -1,137 +1,137 @@
-id,autorizacao,excecao_premissa,arquivo_origem,selo
-TB01,livre,,data/geoportal/limite-municipal.geojson,
-TB02,livre,,data/geoportal/bairros.geojson,
-TB03,livre,,data/processed/setores-censitarios_vulnerabilidade_unido.gpkg,conferido
-TB04,livre,,data/geoportal/densidade-populacional-2010.geojson,
-TB05,livre,,data/geoportal/terreno/hipsometria.png,
-TB06,livre,,data/processed/declividade_anadem_atual_30m.tif,
-TB07,livre,,data/geoportal/bacias/nivel7.geojson,
-TB08,livre,,data/geoportal/rede-hidrografica.geojson,
-TB09,livre,,data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg,
-TB10,livre,,data/geoportal/geologia.geojson,conferido
-TB11,livre,,data/geoportal/geomorfologia.geojson,conferido
-TB12,livre,,data/geoportal/pedologia.geojson,conferido
-TB13,livre,,data/geoportal/vegetacao.geojson,conferido
-TB14,livre,,data/geoportal/pocos-agua-subterranea.geojson,conferido
-TB15,livre,,data/geoportal/app-hidrica.geojson,conferido
-TB16,livre,,data/raw/vetor/areas-urbanizadas_ibge_2019_recorte-municipio.gpkg,conferido
-TB17,livre,,data/processed/edificacoes/edificacoes_overture-2026-09-23.1_2026_vetorial.gpkg,
-TB18,depende de conferência no QGIS,,data/geoportal/densidade-edificacoes-250m.geojson,
-TB19,livre,,data/processed/viario/faces-logradouros_ibge-censo_2022_4322400_vetorial.gpkg,
-TB20,bloqueada,,,
-TB21,bloqueada,,,
-TB22,bloqueada,,,
-TB23,bloqueada,,,
-TB24,bloqueada,,,
-TB25,bloqueada,,,
-TB26,bloqueada,,,
-TB27,bloqueada,,,
-TB28,bloqueada,,,
-TB29,bloqueada,,,
-TB30,bloqueada,,,
-TB31,bloqueada,,,
-PD01,livre,,data/processed/populacao-serie-temporal_ibge-sidra_1970-2025_municipal.csv,conferido
-PD02,livre,,data/processed/demografia-indicadores_ibge-sidra_1970-2022_municipal.csv,conferido
-PD03,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/piramide-etaria_ibge-censo_1970-2022_municipal.csv,
-PD04,livre,,data/geoportal/densidade-populacional.geojson,
-PD05,livre,,data/geoportal/criancas-0-4.geojson,
-PD06,depende de conferência no QGIS,,data/processed/dinamica_populacional/populacao-setores_ibge-censo_2022_setor.gpkg,
-PD07,depende de conferência no QGIS,,data/processed/dinamica_populacional/populacao-mudanca_ibge-censo_2010-2022_area-comparavel.gpkg,
-PD08,depende de conferência no QGIS,,data/processed/dinamica_populacional/populacao-grade_ibge-censo_2022_200m-1km.gpkg,
-PD09,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/populacao-distritos_ibge-censo_2000-2022_distrito.csv,
-PD10,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/domicilios_ibge-censo_1970-2022_municipal.csv,
-PD11,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/populacao-faixa-distancia-centro_ibge-censo_2010-2022_area-comparavel.csv,
-PD12,bloqueada,,,
-PD13,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/enderecos-qualidade_ibge-cnefe_2022_municipal.csv,
-PD14,livre,,data/raw/populacao_ibge-sidra-tabela200_1970-2010_municipal.csv;data/raw/populacao-sexo-idade_ibge-sidra-tabela9514_2022_municipal.csv,conferido
-SA01,livre,,data/geoportal/unidades-saude-esf-ubs.geojson,em_confirmacao
-SA02,depende de conferência no QGIS,"P6: só 2017 e 2023, com aviso ""em confirmação""; 2026 não publicado; sem soma nem ranking",data/geoportal/unidades-saude-esf-ubs.geojson,em_confirmacao
-SA03,livre,,data/raw/obitos_sim-datasus_2010-2024_municipal.csv,conferido
-SA04,livre,,data/raw/arboviroses_sinan-datasus_2010-2025_municipal.csv,conferido
-SA05,livre,,data/raw/internacoes-respiratorias_sih-datasus_2010-2025_municipal.csv,conferido
-SA06,bloqueada,,,
-SA07,bloqueada,,,
-SA08,depende de conferência no QGIS,,docs/acessibilidade_inundacao/tabelas/acessibilidade-base-resumo_osm-cnes-ibge_2022_zona.csv,
-SA09,depende de conferência no QGIS,,docs/acessibilidade_inundacao/tabelas/acessibilidade-classes-por-cota-cenario_osm-sgb-cnes-ibge_2022_zona.csv,
-SA10,bloqueada,,,
-SA11,depende de conferência no QGIS,,data/processed/acessibilidade_inundacao/trechos-interrompidos-cotas_osm-sgb_atual_linhas.gpkg,
-SA12,depende de conferência no QGIS,,data/processed/acessibilidade_inundacao/trechos-criticos_osm-sgb_atual_linhas.gpkg,
-SA13,depende de conferência no QGIS,,data/processed/acessibilidade_inundacao/ilhas-rede-cotas_osm-sgb_atual_poligonos.gpkg,
-SA14,livre,,docs/exposicao_inundacao/tabelas/unidades-saude-cotas-inundacao_sgb-cnes-revisado_2026_unidade.csv,
-SA15,depende de conferência no QGIS,,docs/acessibilidade_inundacao/tabelas/acessibilidade-por-unidade-cota-cenario_osm-sgb-cnes_2026_unidade.csv,
-SA16,depende de conferência no QGIS,,data/processed/lst_exposicao/exposicao-calor-acesso-esf-ubs_osm-cnes-ibge-landsat-c2l2_2022-verao-2013-2026_classe.csv,
-IN01,livre,,data/geoportal/cotas-inundacao.geojson,
-IN02,livre,,data/geoportal/estatisticas-por-cota.json,
-IN03,livre,,data/processed/conferencia_fontes_inundacao/manchas-por-cota_sgb_2023_transcricao.csv,
-IN04,livre,,data/raw/nivel-rio_ana-serie-historica-77150000_1940-2026_diario.csv,conferido
-IN05,livre,,data/raw/nivel-rio_ana-telemetria-77150000_2026-09-01-a-2026-10-18_15min.csv,conferido
-IN06,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_cheia_2026_10/maximos-anuais-maior-leitura_ana_1940-2026_ano.csv,
-IN07,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_cheia_2026_10/episodio-da-cheia-de-outubro_ana_2026_medida.csv,
-IN08,depende de conferência no QGIS,,data/processed/inventario_sentinel_cheias/episodios-de-cheia_ana_2014-2026_episodio.csv,
-IN09,depende de conferência no QGIS,,docs/exposicao_inundacao/tabelas/enderecos-populacao-por-cota_sgb-ibge-cnefe_2022_municipal.csv,
-IN10,depende de conferência no QGIS,,docs/exposicao_inundacao/tabelas/bairros-expostos-por-cota_sgb-ibge-cnefe_2022_bairro.csv,
-IN11,depende de conferência no QGIS,,docs/exposicao_inundacao/tabelas/perfil-expostos-por-cota_sgb-ibge_2022_municipal.csv,
-IN12,depende de conferência no QGIS,,docs/exposicao_inundacao/tabelas/expostos-dinamica-2010-2022-por-cota_sgb-ibge_2010-2022_area-comparavel.csv,
-IN13,bloqueada,,,
-IN14,depende de conferência no QGIS,,data/processed/exposicao_inundacao_sintese/sintese-tres-metodos_sgb-ibge-fepam-cnefe_2022_delimitacao.csv,
-IN15,depende de conferência no QGIS,,data/processed/exposicao_inundacao_sintese/sintese-delimitacoes-e-contagem_sgb-ibge-fepam-cnefe_2022_delimitacao.csv,
-IN16,depende de conferência no QGIS,,data/processed/exposicao_inundacao_oficiais/delimitacoes-oficiais-e-mancha-cota1252_sgb-ibge-fepam_2010-2024_contornos_urbano.png,
-IN17,livre,,data/raw/vetor/area-diretamente-atingida_fepam_2024-05_vetorial.zip,
-IN18,depende de conferência no QGIS,,data/processed/agua_observada_sentinel/agua-observada_sentinel1-rtc_2017-2024_10m.gpkg,
-IN19,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_area_urbana/agua-observada-area-urbana_sentinel1-rtc_2017-2024_10m.gpkg,
-IN20,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_cheia_2026_10/curva-nivel-x-area-antes-e-depois_sentinel-ana_2016-2026_ponto.csv,
-IN21,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_cheia_2026_10/nivel-equivalente-das-manchas-antes-e-depois_sentinel-sgb_2016-2026_cota.csv,
-IN22,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_comparacao/mancha-vista-e-nao-vista-como-agua_sentinel-sgb_2017-2024_10m.gpkg,
-IN23,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_cheia_2026_10/agua-observada-cenas-da-cheia_sentinel1-rtc_2026-09-2026-10_10m.gpkg,
-IN24,depende de conferência no QGIS,,docs/acessibilidade_inundacao/campo/pontes-travessias-campo_osm-bho-sgb_2026_pontos.geojson,
-IN25,bloqueada,,,
-IN26,bloqueada,,,
-IN27,bloqueada,,,
-IN28,bloqueada,,,
-IN29,bloqueada,,,
-IN30,bloqueada,,,
-IN31,bloqueada,,,
-CA01,livre,,data/raw/clima_inmet_historico-completo_horario.parquet,conferido
-CA02,livre,,data/raw/clima_inmet_historico-completo_horario.parquet,
-CA03,livre,,data/raw/clima_inmet-a809_2026-parcial_horario.csv,
-CA04,livre,,data/raw/precipitacao_merge-inpe_2010-2025_mensal.csv,conferido
-CA05,livre,,data/geoportal/estacoes-clima.geojson,
-CA06,livre,,data/raw/focos-queimada_inpe_2010-2025_pontual.csv,conferido
-CA07,livre,,data/geoportal/uso-solo/2024.png,
-CA08,livre,,data/processed/uso-solo_mapbiomas_serie-temporal_area-por-classe.csv,conferido
-CA09,livre,,data/processed/lst/lst-mediana_landsat-c2l2-principal_verao-2013-2026_30m.tif,
-CA10,livre,,data/processed/lst/anomalia-mediana_landsat-c2l2-principal_verao-2024-2026_30m.tif,
-CA11,livre,,data/processed/lst/persistencia-p90_landsat-c2l2-principal_verao-2013-2026_30m.tif,
-CA12,livre,,data/processed/lst/lst-grade_landsat-c2l2-principal_verao-2013-2026_250m.gpkg,
-CA13,livre,,data/processed/lst/lst-bairros_ibge-2022_landsat-c2l2-principal_verao-2013-2026_vetorial.gpkg,
-CA14,livre,,data/processed/lst/lst-setores-urbanos_ibge-2022_landsat-c2l2-principal_verao-2013-2026_vetorial.gpkg,
-CA15,livre,,data/processed/lst/ndvi-mediana_landsat-c2l2-principal_verao-2013-2026_30m.tif,
-CA16,depende de conferência no QGIS,,data/processed/lst_exposicao/exposicao-calor-bairros_ibge-censo-landsat-c2l2_2022-verao-2013-2026_bairro.gpkg,
-CA17,depende de conferência no QGIS,,data/processed/lst_exposicao/validacao-lst-ar-resumo_landsat-c2l2-inmet-a809_verao-2013-2026.csv,
-CA18,livre,,data/raw/modis,
-EV01,livre,,data/processed/pib-per-capita_ibge-sidra_2002-2023_municipal.csv,conferido
-EV02,livre,,data/raw/producao-agricola_ibge-sidra-tabela5457_1974-2024_municipal.csv,conferido
-EV03,livre,,data/raw/caged-movimentacao_mte_2020-202606_municipal.csv,conferido
-EV04,livre,,data/raw/idhm_atlas-brasil_1991-2010_municipal.csv,conferido
-EV05,livre,,data/raw/cadunico_mds-ri_2012-2026_municipal.csv,conferido
-EV06,livre,,data/raw/bolsa-familia_mds-ri_atual_municipal.csv,conferido
-EV07,livre,,data/raw/despesas-por-funcao_siconfi_2015-2026_municipal.csv,conferido
-EV08,livre,,data/geoportal/indicadores-municipais.json,conferido
-EV09,livre,,data/geoportal/estrutura-fundiaria.geojson,
-IF01,livre,,data/raw/continuidade-energia_aneel_2000-2026_conjunto-consumidor.csv,conferido
-IF02,livre,,data/geoportal/cobertura-movel-anatel.geojson,
-IF03,livre,,data/geoportal/escolas-inep.geojson,
-IF04,livre,,data/geoportal/malha-viaria.geojson,
-IF05,livre,,data/geoportal/malha-viaria-dnit.geojson,
-IF06,depende de conferência no QGIS,,data/processed/viario/viario_referencia_2026-10-21.gpkg,
-IF07,depende de conferência no QGIS,,data/processed/viario/cruzamentos-via-curso-dagua_osm_2026-10-20.gpkg,
-IF08,livre,,data/raw/vetor/malha-viaria-pontes-separadas_osm_atual_vetorial.gpkg,
-IF09,livre,,data/raw/saneamento_snis_indisponivel.json,conferido
-IF10,livre,,data/raw/malha-viaria_daer_indisponivel.json,conferido
-RD01,livre,,data/processed/desastres_s2id_2013-2026_municipal.csv,conferido
-RD02,livre,,data/raw/vetor/risco-geologico_cprm_2021_vetorial.gpkg,conferido
-RD03,livre,,data/raw/vetor/relatorio-setorizacao-risco_sgb_2014_02-sig-uruguaiana-rs-risco.zip,conferido
-RD04,livre,,data/raw/vetor/populacao-areas-de-risco_ibge_2018_bater.zip,conferido
-RD05,livre,,data/processed/conferencia_fontes_inundacao/profundidade-inundacao_glofas-jrc_tr-100-anos_3arcseg_recorte-municipio-5km.tif,
-RD06,depende de conferência no QGIS,,docs/exposicao_inundacao/numeros_publicados/numeros-publicados_ana-atlas-risco-inundacoes_2025_transcricao.csv,
-RD07,bloqueada,,,
+id,nome,autorizacao,excecao_premissa,arquivo_origem,selo
+TB01,limite municipal,livre,,data/geoportal/limite-municipal.geojson,conferido
+TB02,bairros,livre,,data/geoportal/bairros.geojson,
+TB03,setores censitários 2022,livre,,data/processed/setores-censitarios_vulnerabilidade_unido.gpkg,conferido
+TB04,setores históricos,livre,,data/geoportal/densidade-populacional-2010.geojson,
+TB05,relevo,livre,,data/geoportal/terreno/hipsometria.png,
+TB06,declividade,livre,,data/processed/declividade_anadem_atual_30m.tif,
+TB07,bacias,livre,,data/geoportal/bacias/nivel7.geojson,
+TB08,rede hidrográfica,livre,,data/geoportal/rede-hidrografica.geojson,
+TB09,área de água,livre,,data/raw/vetor/hidrografia-area-agua_osm_atual_vetorial.gpkg,
+TB10,geologia,livre,,data/geoportal/geologia.geojson,conferido
+TB11,geomorfologia,livre,,data/geoportal/geomorfologia.geojson,conferido
+TB12,pedologia,livre,,data/geoportal/pedologia.geojson,conferido
+TB13,vegetação,livre,,data/geoportal/vegetacao.geojson,conferido
+TB14,poços,livre,,data/geoportal/pocos-agua-subterranea.geojson,conferido
+TB15,APP hídrica,livre,,data/geoportal/app-hidrica.geojson,conferido
+TB16,áreas urbanizadas,livre,,data/raw/vetor/areas-urbanizadas_ibge_2019_recorte-municipio.gpkg,conferido
+TB17,edificações,livre,,data/processed/edificacoes/edificacoes_overture-2026-09-23.1_2026_vetorial.gpkg,
+TB18,densidade de edificações,depende de conferência no QGIS,,data/geoportal/densidade-edificacoes-250m.geojson,
+TB19,faces de logradouro,livre,,data/processed/viario/faces-logradouros_ibge-censo_2022_4322400_vetorial.gpkg,
+TB20,Plano Diretor: areas-verdes-e-patrimonio,bloqueada,,,
+TB21,Plano Diretor: base-urbana,bloqueada,,,
+TB22,Plano Diretor: curvas-nivel,bloqueada,,,
+TB23,Plano Diretor: equipamentos-de-mobilidade,bloqueada,,,
+TB24,Plano Diretor: hidrografia,bloqueada,,,
+TB25,Plano Diretor: industrias-do-arroz-e-transportadoras,bloqueada,,,
+TB26,Plano Diretor: linhas-de-cheia,bloqueada,,,
+TB27,Plano Diretor: mdt,bloqueada,,,
+TB28,Plano Diretor: ocupacao-urbana,bloqueada,,,
+TB29,Plano Diretor: sistema-viario,bloqueada,,,
+TB30,Plano Diretor: toponimia,bloqueada,,,
+TB31,Plano Diretor: zoneamento,bloqueada,,,
+PD01,série populacional,livre,,data/processed/populacao-serie-temporal_ibge-sidra_1970-2025_municipal.csv,conferido
+PD02,indicadores demográficos,livre,,data/processed/demografia-indicadores_ibge-sidra_1970-2022_municipal.csv,conferido
+PD03,pirâmides etárias,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/piramide-etaria_ibge-censo_1970-2022_municipal.csv,
+PD04,densidade por setor,livre,,data/geoportal/densidade-populacional.geojson,
+PD05,crianças e idosos por setor,livre,,data/geoportal/criancas-0-4.geojson,
+PD06,população por setor,depende de conferência no QGIS,,data/processed/dinamica_populacional/populacao-setores_ibge-censo_2022_setor.gpkg,
+PD07,mudança 2010–2022,depende de conferência no QGIS,,data/processed/dinamica_populacional/populacao-mudanca_ibge-censo_2010-2022_area-comparavel.gpkg,
+PD08,grade estatística,depende de conferência no QGIS,,data/processed/dinamica_populacional/populacao-grade_ibge-censo_2022_200m-1km.gpkg,
+PD09,população por distrito,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/populacao-distritos_ibge-censo_2000-2022_distrito.csv,
+PD10,domicílios,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/domicilios_ibge-censo_1970-2022_municipal.csv,
+PD11,distância ao centro e quadrantes,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/populacao-faixa-distancia-centro_ibge-censo_2010-2022_area-comparavel.csv,
+PD12,endereços CNEFE (pontos),bloqueada,,,
+PD13,qualidade dos endereços,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/enderecos-qualidade_ibge-cnefe_2022_municipal.csv,
+PD14,pirâmides etárias oficiais do IBGE (SIDRA 200 e 9514),livre,,data/raw/populacao_ibge-sidra-tabela200_1970-2010_municipal.csv;data/raw/populacao-sexo-idade_ibge-sidra-tabela9514_2022_municipal.csv,conferido
+SA01,unidades ESF/UBS,livre,,data/geoportal/unidades-saude-esf-ubs.geojson,em_confirmacao
+SA02,população por unidade,depende de conferência no QGIS,"P6: só 2017 e 2023, com aviso ""em confirmação""; 2026 não publicado; sem soma nem ranking",data/geoportal/unidades-saude-esf-ubs.geojson,em_confirmacao
+SA03,mortalidade,livre,,data/raw/obitos_sim-datasus_2010-2024_municipal.csv,conferido
+SA04,arboviroses,livre,,data/raw/arboviroses_sinan-datasus_2010-2025_municipal.csv,conferido
+SA05,internações respiratórias,livre,,data/raw/internacoes-respiratorias_sih-datasus_2010-2025_municipal.csv,conferido
+SA06,CNES por categoria,bloqueada,,,
+SA07,estabelecimentos OSM,bloqueada,,,
+SA08,acessibilidade de base,depende de conferência no QGIS,,docs/acessibilidade_inundacao/tabelas/acessibilidade-base-resumo_osm-cnes-ibge_2022_zona.csv,
+SA09,acessibilidade por cota,depende de conferência no QGIS,,docs/acessibilidade_inundacao/tabelas/acessibilidade-classes-por-cota-cenario_osm-sgb-cnes-ibge_2022_zona.csv,
+SA10,endereços com classe de acesso,bloqueada,,,
+SA11,trechos interrompidos,depende de conferência no QGIS,,data/processed/acessibilidade_inundacao/trechos-interrompidos-cotas_osm-sgb_atual_linhas.gpkg,
+SA12,trechos críticos,depende de conferência no QGIS,,data/processed/acessibilidade_inundacao/trechos-criticos_osm-sgb_atual_linhas.gpkg,
+SA13,ilhas da rede,depende de conferência no QGIS,,data/processed/acessibilidade_inundacao/ilhas-rede-cotas_osm-sgb_atual_poligonos.gpkg,
+SA14,unidades na mancha,livre,,docs/exposicao_inundacao/tabelas/unidades-saude-cotas-inundacao_sgb-cnes-revisado_2026_unidade.csv,
+SA15,acesso por unidade na cheia,depende de conferência no QGIS,,docs/acessibilidade_inundacao/tabelas/acessibilidade-por-unidade-cota-cenario_osm-sgb-cnes_2026_unidade.csv,
+SA16,calor × acesso à saúde,depende de conferência no QGIS,,data/processed/lst_exposicao/exposicao-calor-acesso-esf-ubs_osm-cnes-ibge-landsat-c2l2_2022-verao-2013-2026_classe.csv,
+IN01,manchas SGB por cota,livre,,data/geoportal/cotas-inundacao.geojson,conferido
+IN02,estatísticas por cota,livre,,data/geoportal/estatisticas-por-cota.json,
+IN03,transcrição das manchas,livre,,data/processed/conferencia_fontes_inundacao/manchas-por-cota_sgb_2023_transcricao.csv,conferido
+IN04,régua diária,livre,,data/raw/nivel-rio_ana-serie-historica-77150000_1940-2026_diario.csv,conferido
+IN05,telemetria da cheia de outubro,livre,,data/raw/nivel-rio_ana-telemetria-77150000_2026-09-01-a-2026-10-18_15min.csv,conferido
+IN06,máximas anuais,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_cheia_2026_10/maximos-anuais-maior-leitura_ana_1940-2026_ano.csv,
+IN07,episódio de outubro de 2026,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_cheia_2026_10/episodio-da-cheia-de-outubro_ana_2026_medida.csv,
+IN08,episódios de cheia,depende de conferência no QGIS,,data/processed/inventario_sentinel_cheias/episodios-de-cheia_ana_2014-2026_episodio.csv,
+IN09,expostos por cota,depende de conferência no QGIS,,docs/exposicao_inundacao/tabelas/enderecos-populacao-por-cota_sgb-ibge-cnefe_2022_municipal.csv,
+IN10,bairros expostos,depende de conferência no QGIS,,docs/exposicao_inundacao/tabelas/bairros-expostos-por-cota_sgb-ibge-cnefe_2022_bairro.csv,
+IN11,perfil dos expostos,depende de conferência no QGIS,,docs/exposicao_inundacao/tabelas/perfil-expostos-por-cota_sgb-ibge_2022_municipal.csv,
+IN12,dinâmica dos expostos,depende de conferência no QGIS,,docs/exposicao_inundacao/tabelas/expostos-dinamica-2010-2022-por-cota_sgb-ibge_2010-2022_area-comparavel.csv,
+IN13,endereços expostos (pontos),bloqueada,,,
+IN14,métodos de população exposta,depende de conferência no QGIS,,data/processed/exposicao_inundacao_sintese/sintese-tres-metodos_sgb-ibge-fepam-cnefe_2022_delimitacao.csv,
+IN15,delimitações oficiais × contagem,depende de conferência no QGIS,,data/processed/exposicao_inundacao_sintese/sintese-delimitacoes-e-contagem_sgb-ibge-fepam-cnefe_2022_delimitacao.csv,
+IN16,contornos oficiais,depende de conferência no QGIS,,data/processed/exposicao_inundacao_oficiais/delimitacoes-oficiais-e-mancha-cota1252_sgb-ibge-fepam_2010-2024_contornos_urbano.png,
+IN17,área atingida maio/2024,livre,,data/raw/vetor/area-diretamente-atingida_fepam_2024-05_vetorial.zip,
+IN18,água vista pelo Sentinel (2017–2024),depende de conferência no QGIS,,data/processed/agua_observada_sentinel/agua-observada_sentinel1-rtc_2017-2024_10m.gpkg,
+IN19,água vista na área urbana,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_area_urbana/agua-observada-area-urbana_sentinel1-rtc_2017-2024_10m.gpkg,
+IN20,curva nível × área alagada,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_cheia_2026_10/curva-nivel-x-area-antes-e-depois_sentinel-ana_2016-2026_ponto.csv,
+IN21,nível equivalente das manchas,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_cheia_2026_10/nivel-equivalente-das-manchas-antes-e-depois_sentinel-sgb_2016-2026_cota.csv,
+IN22,mancha vista e não vista,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_comparacao/mancha-vista-e-nao-vista-como-agua_sentinel-sgb_2017-2024_10m.gpkg,
+IN23,água na cheia de outubro de 2026,depende de conferência no QGIS,,data/processed/agua_observada_sentinel_cheia_2026_10/agua-observada-cenas-da-cheia_sentinel1-rtc_2026-09-2026-10_10m.gpkg,
+IN24,pontes e travessias para campo,depende de conferência no QGIS,,docs/acessibilidade_inundacao/campo/pontes-travessias-campo_osm-bho-sgb_2026_pontos.geojson,
+IN25,conferência da régua 2015,bloqueada,,,
+IN26,manchas TR Defesa Civil RS,bloqueada,,,
+IN27,mancha observada 2014 (extraída de figura),bloqueada,,,
+IN28,perigo e suscetibilidade (extraído de figura),bloqueada,,,
+IN29,zoneamento de risco (extraído de figura),bloqueada,,,
+IN30,comparação entre fontes de mancha,bloqueada,,,
+IN31,endereços por bairro e cota (com Plano Diretor),bloqueada,,,
+CA01,INMET anual,livre,,data/raw/clima_inmet_historico-completo_horario.parquet,conferido
+CA02,INMET mensal,livre,,data/raw/clima_inmet_historico-completo_horario.parquet,
+CA03,INMET 2026 parcial,livre,,data/raw/clima_inmet-a809_2026-parcial_horario.csv,
+CA04,precipitação MERGE,livre,,data/raw/precipitacao_merge-inpe_2010-2025_mensal.csv,conferido
+CA05,estação INMET,livre,,data/geoportal/estacoes-clima.geojson,
+CA06,focos de queimada,livre,,data/raw/focos-queimada_inpe_2010-2025_pontual.csv,conferido
+CA07,uso do solo MapBiomas,livre,,data/geoportal/uso-solo/2024.png,
+CA08,uso do solo por classe,livre,,data/processed/uso-solo_mapbiomas_serie-temporal_area-por-classe.csv,conferido
+CA09,LST composição de verão,livre,,data/processed/lst/lst-mediana_landsat-c2l2-principal_verao-2013-2026_30m.tif,
+CA10,LST por janela,livre,,data/processed/lst/anomalia-mediana_landsat-c2l2-principal_verao-2024-2026_30m.tif,
+CA11,persistência do calor,livre,,data/processed/lst/persistencia-p90_landsat-c2l2-principal_verao-2013-2026_30m.tif,
+CA12,LST grade 250 m,livre,,data/processed/lst/lst-grade_landsat-c2l2-principal_verao-2013-2026_250m.gpkg,
+CA13,LST por bairro,livre,,data/processed/lst/lst-bairros_ibge-2022_landsat-c2l2-principal_verao-2013-2026_vetorial.gpkg,
+CA14,LST por setor urbano,livre,,data/processed/lst/lst-setores-urbanos_ibge-2022_landsat-c2l2-principal_verao-2013-2026_vetorial.gpkg,
+CA15,índices espectrais,livre,,data/processed/lst/ndvi-mediana_landsat-c2l2-principal_verao-2013-2026_30m.tif,
+CA16,exposição da população ao calor,depende de conferência no QGIS,,data/processed/lst_exposicao/exposicao-calor-bairros_ibge-censo-landsat-c2l2_2022-verao-2013-2026_bairro.gpkg,
+CA17,validação LST × ar,depende de conferência no QGIS,,data/processed/lst_exposicao/validacao-lst-ar-resumo_landsat-c2l2-inmet-a809_verao-2013-2026.csv,
+CA18,LST de outros sensores,livre,,data/raw/modis,
+EV01,PIB,livre,,data/processed/pib-per-capita_ibge-sidra_2002-2023_municipal.csv,conferido
+EV02,agropecuária,livre,,data/raw/producao-agricola_ibge-sidra-tabela5457_1974-2024_municipal.csv,conferido
+EV03,emprego formal,livre,,data/raw/caged-movimentacao_mte_2020-202606_municipal.csv,conferido
+EV04,IDHM,livre,,data/raw/idhm_atlas-brasil_1991-2010_municipal.csv,conferido
+EV05,CadÚnico,livre,,data/raw/cadunico_mds-ri_2012-2026_municipal.csv,conferido
+EV06,Bolsa Família,livre,,data/raw/bolsa-familia_mds-ri_atual_municipal.csv,conferido
+EV07,despesas por função,livre,,data/raw/despesas-por-funcao_siconfi_2015-2026_municipal.csv,conferido
+EV08,indicadores do Censo por setor,livre,,data/geoportal/indicadores-municipais.json,conferido
+EV09,estrutura fundiária,livre,,data/geoportal/estrutura-fundiaria.geojson,
+IF01,continuidade de energia,livre,,data/raw/continuidade-energia_aneel_2000-2026_conjunto-consumidor.csv,conferido
+IF02,cobertura móvel,livre,,data/geoportal/cobertura-movel-anatel.geojson,
+IF03,escolas,livre,,data/geoportal/escolas-inep.geojson,
+IF04,malha viária OSM (portal),livre,,data/geoportal/malha-viaria.geojson,
+IF05,malha federal,livre,,data/geoportal/malha-viaria-dnit.geojson,
+IF06,viário de referência,depende de conferência no QGIS,,data/processed/viario/viario_referencia_2026-10-21.gpkg,
+IF07,cruzamentos via × curso d'água,depende de conferência no QGIS,,data/processed/viario/cruzamentos-via-curso-dagua_osm_2026-10-20.gpkg,
+IF08,malha com pontes separadas,livre,,data/raw/vetor/malha-viaria-pontes-separadas_osm_atual_vetorial.gpkg,
+IF09,saneamento,livre,,data/raw/saneamento_snis_indisponivel.json,conferido
+IF10,malha estadual,livre,,data/raw/malha-viaria_daer_indisponivel.json,conferido
+RD01,reconhecimentos federais,livre,,data/processed/desastres_s2id_2013-2026_municipal.csv,conferido
+RD02,suscetibilidade CPRM,livre,,data/raw/vetor/risco-geologico_cprm_2021_vetorial.gpkg,conferido
+RD03,setorização de risco SGB,livre,,data/raw/vetor/relatorio-setorizacao-risco_sgb_2014_02-sig-uruguaiana-rs-risco.zip,conferido
+RD04,população em áreas de risco,livre,,data/raw/vetor/populacao-areas-de-risco_ibge_2018_bater.zip,conferido
+RD05,perigo GloFAS,livre,,data/processed/conferencia_fontes_inundacao/profundidade-inundacao_glofas-jrc_tr-100-anos_3arcseg_recorte-municipio-5km.tif,
+RD06,atlas de risco ANA,depende de conferência no QGIS,,docs/exposicao_inundacao/numeros_publicados/numeros-publicados_ana-atlas-risco-inundacoes_2025_transcricao.csv,
+RD07,acervo de documentos,bloqueada,,,

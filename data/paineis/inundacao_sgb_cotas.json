@@ -1,0 +1,141 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "inundacao_sgb_cotas",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "IN01",
+  "IN03",
+  "SA01"
+ ],
+ "titulo": "Manchas de inundação por cota e ESF/UBS dentro delas",
+ "fonte_curta": "SGB",
+ "fonte": "SGB, manchas de inundação por cota (relatório de 2023); unidades do CNES revisado v4",
+ "unidade_espacial": "mancha de inundação (município)",
+ "unidade_medida": "cm; anos; km²; unidades",
+ "periodo": {
+  "inicio": "2015",
+  "fim": "2023"
+ },
+ "dados_ate": "2023",
+ "autorizacao": "livre",
+ "selo": "em_confirmacao",
+ "avisos": [
+  {
+   "tipo": "em_confirmacao",
+   "texto": "pessoas expostas e acesso: em conferência"
+  },
+  {
+   "tipo": "metodo",
+   "texto": "mancha acumulada: união das manchas de cota menor ou igual; área em SIRGAS 2000 / UTM 21S, da mancha inteira como o SGB publica (inclui rio e margem fora do município) e só da parte dentro do município"
+  },
+  {
+   "tipo": "metodo",
+   "texto": "Equipe de Saúde Prisional fora da contagem de unidades"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T14:12:15Z",
+ "script": "scripts/paineis/dados_inundacao.py",
+ "colunas": [
+  {
+   "nome": "cota_cm",
+   "tipo": "int"
+  },
+  {
+   "nome": "tr_anos_camada",
+   "tipo": "float"
+  },
+  {
+   "nome": "tr_anos_documento",
+   "tipo": "float"
+  },
+  {
+   "nome": "area_km2",
+   "tipo": "float"
+  },
+  {
+   "nome": "area_no_municipio_km2",
+   "tipo": "float"
+  },
+  {
+   "nome": "periodo_referencia",
+   "tipo": "texto"
+  },
+  {
+   "nome": "esf_ubs_dentro",
+   "tipo": "int"
+  },
+  {
+   "nome": "imagem",
+   "tipo": "texto"
+  },
+  {
+   "nome": "alt",
+   "tipo": "texto"
+  }
+ ],
+ "fonte_rodape": "Manchas de inundação por cota — SGB (Serviço Geológico do Brasil), relatório de 2023",
+ "telas": [
+  "sintese",
+  "cheia-saude"
+ ],
+ "notas": {
+  "cs_nota_unidades": "Nenhuma das 21 ESF/UBS fica dentro das manchas do SGB em nenhuma das 4 cotas (833, 952, 1205, 1252 cm). A Equipe de Saúde Prisional fica fora da contagem. Estar fora da mancha não garante acesso pelas ruas: o cálculo de acesso está em conferência.",
+  "cs_frase_unidades": "0 de 21 ESF/UBS dentro da mancha em todas as cotas",
+  "cs_nota_tr": "Tempo de retorno: o da camada do SGB; na cota 1205 cm, o documento do SGB traz outro valor (coluna à direita)."
+ },
+ "comparacao": false,
+ "dados": [
+  {
+   "cota_cm": 833,
+   "tr_anos_camada": 1.3,
+   "tr_anos_documento": 1.3,
+   "area_km2": 28.86,
+   "area_no_municipio_km2": 19.66,
+   "periodo_referencia": "2015–2023",
+   "esf_ubs_dentro": 0,
+   "imagem": "img/mini-mapa_cota-833.png",
+   "alt": "Mapa da mancha de inundação da cota 833 cm (SGB) sobre o limite de Uruguaiana, com as 21 ESF/UBS como pontos laranja: 0 dentro da mancha."
+  },
+  {
+   "cota_cm": 952,
+   "tr_anos_camada": 1.9,
+   "tr_anos_documento": 1.9,
+   "area_km2": 40.23,
+   "area_no_municipio_km2": 26.53,
+   "periodo_referencia": "2015–2023",
+   "esf_ubs_dentro": 0,
+   "imagem": "img/mini-mapa_cota-952.png",
+   "alt": "Mapa da mancha de inundação da cota 952 cm (SGB) sobre o limite de Uruguaiana, com as 21 ESF/UBS como pontos laranja: 0 dentro da mancha."
+  },
+  {
+   "cota_cm": 1205,
+   "tr_anos_camada": 9.0,
+   "tr_anos_documento": 9.2,
+   "area_km2": 45.59,
+   "area_no_municipio_km2": 31.07,
+   "periodo_referencia": "2015–2023",
+   "esf_ubs_dentro": 0,
+   "imagem": "img/mini-mapa_cota-1205.png",
+   "alt": "Mapa da mancha de inundação da cota 1205 cm (SGB) sobre o limite de Uruguaiana, com as 21 ESF/UBS como pontos laranja: 0 dentro da mancha."
+  },
+  {
+   "cota_cm": 1252,
+   "tr_anos_camada": 13.4,
+   "tr_anos_documento": 13.4,
+   "area_km2": 47.06,
+   "area_no_municipio_km2": 32.49,
+   "periodo_referencia": "2015–2023",
+   "esf_ubs_dentro": 0,
+   "imagem": "img/mini-mapa_cota-1252.png",
+   "alt": "Mapa da mancha de inundação da cota 1252 cm (SGB) sobre o limite de Uruguaiana, com as 21 ESF/UBS como pontos laranja: 0 dentro da mancha."
+  }
+ ]
+}

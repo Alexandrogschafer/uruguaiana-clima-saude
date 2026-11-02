@@ -1,0 +1,298 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "inundacao_sgb_unidades-cotas",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "SA01",
+  "IN01"
+ ],
+ "titulo": "ESF/UBS em relação às manchas de inundação",
+ "fonte_curta": "SGB; CNES revisado v4",
+ "fonte": "SGB (manchas por cota) e CNES revisado pela equipe do projeto (versão 4)",
+ "unidade_espacial": "mancha de inundação (município)",
+ "unidade_medida": "sim/não",
+ "periodo": {
+  "inicio": "2023",
+  "fim": "2026"
+ },
+ "dados_ate": "2026",
+ "autorizacao": "livre",
+ "selo": "em_confirmacao",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "Equipe de Saúde Prisional fora das comparações"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T14:11:27Z",
+ "script": "scripts/paineis/dados_inundacao.py",
+ "colunas": [
+  {
+   "nome": "cnes",
+   "tipo": "texto"
+  },
+  {
+   "nome": "nome",
+   "tipo": "texto"
+  },
+  {
+   "nome": "classe",
+   "tipo": "texto"
+  },
+  {
+   "nome": "fora_das_comparacoes",
+   "tipo": "bool"
+  },
+  {
+   "nome": "dentro_833",
+   "tipo": "bool"
+  },
+  {
+   "nome": "dentro_952",
+   "tipo": "bool"
+  },
+  {
+   "nome": "dentro_1205",
+   "tipo": "bool"
+  },
+  {
+   "nome": "dentro_1252",
+   "tipo": "bool"
+  }
+ ],
+ "fonte_rodape": "Manchas de inundação por cota — SGB (Serviço Geológico do Brasil), relatório de 2023",
+ "telas": [
+  "cheia-saude"
+ ],
+ "comparacao": false,
+ "dados": [
+  {
+   "cnes": "2247143",
+   "nome": "ESF 01 RUI RAMOS",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247119",
+   "nome": "ESF 02 MARDUQUE",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247100",
+   "nome": "ESF 03 CIDADE NOVA",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247135",
+   "nome": "ESF 04 COHAB I",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247127",
+   "nome": "ESF 05 TARRAGO",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247232",
+   "nome": "ESF 06 SAO JOAO",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "6989357",
+   "nome": "ESF 07 UNIAO DAS VILAS",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247305",
+   "nome": "ESF 09 BARRAGEM SANCHURI",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247240",
+   "nome": "ESF 14TABAJARA BRITES",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247259",
+   "nome": "ESF 15 HIPICA I E II",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247267",
+   "nome": "ESF 16 CIDADE ALEGRIA",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247275",
+   "nome": "ESF 17 NOVA ESPERANCA",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "3938336",
+   "nome": "ESF 18 PROFILURB",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "7159366",
+   "nome": "ESF 19 JOAO PAULO II",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "6989373",
+   "nome": "ESF 20 CAIC",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "7762682",
+   "nome": "ESF 21 CENTRO",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "9203400",
+   "nome": "ESF 22 CABO LUIS QUEVEDO",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2896478",
+   "nome": "ESF 23 SANTO ANTONIO",
+   "classe": "ESF",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247321",
+   "nome": "UNIDADE DE SAUDE SAO MARCOS 10",
+   "classe": "UBS",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247348",
+   "nome": "UNIDADE DE SAUDE JOAO ARREGUI 11",
+   "classe": "UBS",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "2247356",
+   "nome": "UNIDADE DE SAUDE PLANO ALTO 12",
+   "classe": "UBS",
+   "fora_das_comparacoes": false,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  },
+  {
+   "cnes": "4126947",
+   "nome": "EQUIPE DE SAUDE PRISIONAL DE URUGUAIANA",
+   "classe": "sem classe",
+   "fora_das_comparacoes": true,
+   "dentro_833": false,
+   "dentro_952": false,
+   "dentro_1205": false,
+   "dentro_1252": false
+  }
+ ]
+}
