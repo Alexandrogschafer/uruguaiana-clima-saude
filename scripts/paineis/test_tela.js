@@ -148,7 +148,116 @@ const TELAS = {
     },
     extras: async (browser, base, prod) => testesExtrasSaude(browser, base, prod),
   },
+  populacao: {
+    pagina: "dashboards/populacao.html", enderecoAntigo: "dashboards/painel-demografia.html",
+    produtos: { serie: "populacao_ibge_1970-2025_anual", ind: "demografia_ibge_1970-2022_indicadores", pir: "demografia_ibge_2000-2010-2022_piramides" },
+    kpisCompletos: true,
+    kpis: (p) => kpisTexto(p.serie.meta.kpis),
+    graficos: (p) => {
+      const fi = p.ind.meta.fonte_curta, fp = p.pir.meta.fonte_curta, I = p.ind.dados;
+      const tl = (campo, nome, fmt) => I.map((r) => [r.periodo, [[fmt(r[campo]), `${nome} · ${fi}`]]]);
+      const g = {
+        populacao: p.serie.dados.map((r) => [r.ano, [[fmtInt(r.populacao), `População total · ${p.serie.meta.fonte_curta}`]]]),
+        envelhecimento: tl("indice_envelhecimento", "Índice de envelhecimento", fmt1),
+        dependencia: tl("razao_dependencia", "Razão de dependência", fmt1),
+        "urbano-rural": I.map((r) => [r.periodo, [[fmt1(r.pct_urbano) + "%", `Urbana · ${fi}`], [fmt1(r.pct_rural) + "%", `Rural · ${fi}`]]]),
+        "criancas-abs": tl("pop_0_4", "Crianças 0-4", fmtInt), "criancas-pct": tl("pct_pop_0_4", "Crianças 0-4 (%)", (v) => fmt1(v) + "%"),
+        "idosos-abs": tl("pop_60_mais", "Idosos 60+", fmtInt), "idosos-pct": tl("pct_pop_60_mais", "Idosos 60+ (%)", (v) => fmt1(v) + "%"),
+      };
+      for (const ano of [...new Set(p.pir.dados.map((r) => r.ano))]) {
+        g[`piramide-${ano}`] = p.pir.dados.filter((r) => r.ano === ano).reverse().map((r) => [r.grupo_idade, [[fmtInt(r.homens), `Homens · ${fp}`], [fmtInt(r.mulheres), `Mulheres · ${fp}`]]]);
+      }
+      return g;
+    },
+    tabelas: (p) => ({
+      tabelaIndicadores: p.ind.dados.map((d) => [String(d.periodo), fmtInt(d.populacao_total), d.taxa_crescimento === null ? "—" : (d.taxa_crescimento > 0 ? "+" : "") + fmt1(d.taxa_crescimento) + "%",
+        fmt1(d.indice_envelhecimento), fmt1(d.razao_dependencia), fmt1(d.pct_urbano) + "%", fmt1(d.pct_rural) + "%", `${fmtInt(d.pop_0_4)} (${fmt1(d.pct_pop_0_4)}%)`, `${fmtInt(d.pop_60_mais)} (${fmt1(d.pct_pop_60_mais)}%)`]),
+    }),
+  },
+  territorio: {
+    pagina: "dashboards/territorio.html", enderecoAntigo: "dashboards/painel-territorio.html",
+    produtos: { serie: "uso-solo_mapbiomas_1985-2024_classes", classes: "uso-solo_mapbiomas_2024_todas-classes", meio: "meio-fisico_ibge-bdia_atual_classes",
+                pocos: "pocos_siagas_atual_aquifero", app: "app-hidrica_ana-bho-mapbiomas_2024_curso" },
+    kpisCompletos: true,
+    kpis: (p) => kpisTexto([...p.serie.meta.kpis_uso, ...p.serie.meta.kpis_meio]),
+    graficos: (p) => {
+      const S = p.serie.dados, fs = p.serie.meta.fonte_curta, fm = p.meio.meta.fonte_curta;
+      const uso = (classe, nome, fmt) => S.map((r) => [r.ano, [[fmt(r[classe]), `${nome} · ${fs}`]]]);
+      const tema = (t) => p.meio.dados.filter((r) => r.tema === t).map((r) => [r.rotulo, [[fmtInt(r.area_km2), `km² · ${fm}`]]]);
+      return {
+        campestre: uso("Formação Campestre", "Formação Campestre", fmtInt), arroz: uso("Arroz", "Arroz", fmtInt), urbano: uso("Área Urbanizada", "Área urbanizada", fmt1),
+        mosaico: uso("Mosaico de Usos", "Mosaico de Usos", fmtInt), "outras-lavouras": uso("Outras Lavouras Temporárias", "Outras Lavouras Temporárias", fmtInt),
+        florestal: uso("Formação Florestal", "Formação Florestal", fmtInt),
+        "uso-solo-2024": p.classes.dados.map((r) => [r.classe, [[fmtInt(r.area_km2) + " km²", `km² · ${p.classes.meta.fonte_curta}`]]]),
+        geologia: tema("geologia"), geomorfologia: tema("geomorfologia"), "vegetacao-bdia": tema("vegetacao"), pedologia: tema("pedologia_grafico"),
+        "pocos-aquifero": p.pocos.dados.map((r) => [r.aquifero, [[fmtInt(r.pocos), `poços · ${p.pocos.meta.fonte_curta}`]]]),
+        "app-curso": p.app.dados.map((r) => [r.rotulo, [[fmtInt(r.area_km2) + " km²", `km² · ${p.app.meta.fonte_curta}`]]]),
+      };
+    },
+    tabelas: (p) => ({
+      tabelaUso: p.serie.dados.map((r) => [String(r.ano), fmt1(r["Formação Campestre"]), fmt1(r["Arroz"]), fmt1(r["Área Urbanizada"])]),
+      tabelaPedologia: p.meio.dados.filter((r) => r.tema === "pedologia").map((r) => [r.classe, fmt1(r.area_km2), fmtInt(r.n_feicoes)]),
+    }),
+  },
+  economia: {
+    pagina: "dashboards/economia.html",
+    produtos: { censo: "censo_ibge_2022_situacao-setor", pib: "pib_ibge_2002-2023_anual", pam: "agropecuaria_ibge_1974-2024_anual", caged: "emprego_caged_2020-2026_mensal",
+                rais: "emprego_rais_2025_secao", idhm: "idhm_atlas_1991-2010_censos", cadunico: "cadunico_mds_2012-2026_anual", siconfi: "despesas_siconfi_2015-2026_anual" },
+    kpisCompletos: true,
+    kpis: (p) => kpisTexto([...p.censo.meta.kpis_censo, ...p.pib.meta.kpis_economia, ...p.idhm.meta.kpis_vulnerabilidade, ...p.siconfi.meta.kpis_siconfi]),
+    graficos: (p) => {
+      const f = (k) => p[k].meta.fonte_curta;
+      const fmt3 = (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+      const pc = p.pib.dados.filter((r) => r.pib_per_capita !== null), cp = p.pib.dados.filter((r) => r.vab_agropecuaria_pct !== null);
+      const sf = p.siconfi.dados.filter((r) => !r.parcial), sp = sf.filter((r) => r.saude_pct_pib !== null);
+      const ser = (linhas, rot, defs) => linhas.map((r) => [rot(r), defs.map(([campo, nome, fmt, k]) => [fmt(r[campo]), `${nome} · ${f(k)}`])]);
+      return {
+        "pop-situacao": p.censo.dados.map((r) => [r.situacao, [[fmtInt(r.populacao), `habitantes · ${f("censo")}`]]]),
+        "pib-per-capita": ser(pc, (r) => r.ano, [["pib_per_capita", "PIB per capita", (v) => "R$ " + fmtInt(v), "pib"]]),
+        "pib-composicao": ser(cp, (r) => r.ano, [["vab_servicos_pct", "Serviços"], ["vab_administracao_publica_pct", "Adm. pública"], ["vab_agropecuaria_pct", "Agropecuária"], ["vab_industria_pct", "Indústria"]].map(([c, n]) => [c, n, (v) => fmt1(v) + "%", "pib"])),
+        "pam-area": ser(p.pam.dados, (r) => r.ano, [["arroz_area_colhida_ha", "Arroz", (v) => fmtInt(v) + " ha", "pam"], ["soja_area_colhida_ha", "Soja", (v) => fmtInt(v) + " ha", "pam"]]),
+        "ppm-rebanho": ser(p.pam.dados, (r) => r.ano, [["bovino_cabecas", "Bovino", fmtInt, "pam"], ["ovino_cabecas", "Ovino", fmtInt, "pam"]]),
+        "caged-fluxo": ser(p.caged.dados, (r) => r.rotulo, [["admissoes", "Admissões", fmtInt, "caged"], ["desligamentos", "Desligamentos", fmtInt, "caged"]]),
+        "caged-saldo": ser(p.caged.dados, (r) => r.rotulo, [["saldo_acumulado", "Saldo acumulado", fmtInt, "caged"]]),
+        "rais-setor": p.rais.meta.grafico.map((r) => [r.rotulo, [[fmtInt(r.vinculos), `vínculos · ${f("rais")}`]]]),
+        "idhm-componentes": ser(p.idhm.dados, (r) => r.ano, [["idhm", "IDHM"], ["idhm_longevidade", "Longevidade"], ["idhm_renda", "Renda"], ["idhm_educacao", "Educação"]].map(([c, n]) => [c, n, fmt3, "idhm"])),
+        "idhm-brasil": ser(p.idhm.dados, (r) => r.ano, [["idhm", "Uruguaiana", fmt3, "idhm"], ["idhm_brasil", "Brasil", fmt3, "idhm"]]),
+        "cadunico-familias": ser(p.cadunico.dados, (r) => r.rotulo, [["familias_cadastradas", "Famílias cadastradas", fmtInt, "cadunico"]]),
+        "cadunico-taxa": ser(p.cadunico.dados, (r) => r.rotulo, [["taxa_atualizacao_pct", "Taxa de atualização", (v) => fmt1(v) + "%", "cadunico"]]),
+        "siconfi-saude-pc": ser(sf, (r) => r.ano, [["saude_per_capita_reais", "Saúde per capita", (v) => "R$ " + fmtInt(v), "siconfi"]]),
+        "siconfi-assist-pc": ser(sf, (r) => r.ano, [["assistencia_social_per_capita_reais", "Assistência Social per capita", (v) => "R$ " + fmt1(v), "siconfi"]]),
+        "siconfi-pct-pib": ser(sp, (r) => r.ano, [["saude_pct_pib", "Saúde — % do PIB", (v) => fmt1(v) + "%", "siconfi"]]),
+      };
+    },
+    tabelas: (p) => ({ tabelaRais: p.rais.dados.map((r) => [r.rotulo, fmtInt(r.vinculos), fmt1((100 * r.vinculos) / p.rais.meta.total) + "%"]) }),
+  },
+  riscos: {
+    pagina: "dashboards/riscos.html",
+    produtos: { s2id: "desastres_s2id_2014-2025_anual", cprm: "risco-geologico_cprm_2021_classe", aneel: "energia_aneel_2000-2026_anual" },
+    kpisCompletos: true,
+    kpis: (p) => kpisTexto([...p.s2id.meta.kpis_s2id, ...p.aneel.meta.kpis_aneel]),
+    graficos: (p) => {
+      const fc = p.cprm.meta.fonte_curta, fs = p.s2id.meta.fonte_curta, fa = p.aneel.meta.fonte_curta;
+      const cl = (cam) => p.cprm.dados.filter((r) => (cam ? r.camada === "Inundação" : r.camada !== "Inundação")).map((r) => [r.classe, [[fmtInt(r.area_km2) + " km²", `km² · ${fc}`]]]);
+      const fech = p.aneel.dados.filter((r) => !r.parcial);
+      return {
+        "risco-inund": cl(true), "risco-mov": cl(false),
+        "s2id-anual": p.s2id.dados.map((r) => {
+          const linhas = p.s2id.meta.categorias.filter((c) => r[c] > 0).map((c) => [fmtInt(r[c]), `${c} · ${fs}`]);
+          return [r.ano, linhas.length ? linhas : [["0", `reconhecimentos · ${fs}`]]];
+        }),
+        "aneel-dec": fech.map((r) => [r.ano, [[fmt1(r.dec_horas) + "h", `DEC · ${fa}`]]]),
+        "aneel-fec": fech.map((r) => [r.ano, [[fmt1(r.fec_interrupcoes), `FEC · ${fa}`]]]),
+      };
+    },
+    tabelas: (p) => ({ tabelaRisco: p.cprm.dados.map((r) => [r.camada, r.classe, fmt1(r.area_km2), fmtInt(r.n_poligonos)]) }),
+  },
 };
+
+// Texto completo esperado de cada indicador vindo do JSON (rótulo, valor, unidade e subtítulo).
+function kpisTexto(kpis) {
+  return kpis.map((k) => `${k.rotulo} ${(k.prefixo || "") + k.valor}${k.unidade || ""} ${k.sub || ""}`.replace(/\s+/g, " ").trim());
+}
 
 // ------------------------------------------------------------------ apoio
 function servir() {
@@ -199,6 +308,11 @@ async function conferirDicas(page, esperadas, toque, falhas) {
         if (i === 0 || tipo > 1) alvo.scrollIntoView({ block: "center" });
         const b = alvo.getBoundingClientRect();
         if (tipo > 1) return { x: b.left + b.width / 2, y: b.top + b.height * 0.9 };
+        // eixo em escala real de tempo: posição pelo ano do ponto
+        if (alvo.dataset.anos) {
+          const anos = alvo.dataset.anos.split(",").map(Number), mn = +alvo.dataset.min, mx = +alvo.dataset.max;
+          return { x: b.left + (b.width * (anos[i] - mn)) / (mx - mn), y: b.top + b.height / 2 };
+        }
         return { x: b.left + (n === 1 ? b.width / 2 : (b.width * i) / (n - 1)), y: b.top + b.height / 2 };
       }, [id, i, pontos.length, tipo]);
       if (toque) await page.touchscreen.tap(c.x, c.y); else await page.mouse.move(c.x, c.y);
@@ -240,7 +354,7 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
     const folgas = {};
     document.querySelectorAll('[id^="chart-"] svg').forEach((svg) => {
       const h = +svg.getAttribute("height");
-      const cx = Array.from(svg.querySelectorAll("text.axis-label")).filter((t) => Math.abs(+t.getAttribute("y") - (h - 6)) < 0.5)
+      const cx = Array.from(svg.querySelectorAll("text.axis-label, text.axis-x")).filter((t) => Math.abs(+t.getAttribute("y") - (h - 6)) < 3)
         .map((t) => { const b = t.getBBox(); return [b.x, b.x + b.width]; }).sort((a, b) => a[0] - b[0]);
       let f = Infinity;
       for (let i = 1; i < cx.length; i++) f = Math.min(f, cx[i][0] - cx[i - 1][1]);
@@ -260,6 +374,7 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
       altura: document.documentElement.scrollHeight,
       fundo: getComputedStyle(document.body).backgroundColor,
       kpis: Array.from(document.querySelectorAll(".kpi-value")).map((e) => e.textContent),
+      kpisCompletos: Array.from(document.querySelectorAll(".kpi-tile")).map((e) => e.innerText.replace(/\s+/g, " ").trim()),
       folgas, finais, tabelas,
       rodape: document.getElementById("rodape-comum") ? document.getElementById("rodape-comum").innerText : "",
       cabecalho: !!document.querySelector("#cabecalho-comum nav"),
@@ -276,11 +391,12 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
   if (escuro !== (r.fundo === FUNDO_ESCURO)) falhas.push(`fundo ${r.fundo} no modo ${tema}`);
   for (const [g, f] of Object.entries(r.folgas)) if (f !== null && f < 8) falhas.push(`folga de eixo ${g}: ${f} px`);
   const kEsp = def.kpis(prod);
-  if (JSON.stringify(r.kpis) !== JSON.stringify(kEsp)) falhas.push(`indicadores ${JSON.stringify(r.kpis)} ≠ ${JSON.stringify(kEsp)}`);
+  const kObtido = def.kpisCompletos ? r.kpisCompletos : r.kpis;
+  if (JSON.stringify(kObtido) !== JSON.stringify(kEsp)) falhas.push(`indicadores ${JSON.stringify(kObtido)} ≠ ${JSON.stringify(kEsp)}`);
   for (const [t, linhas] of Object.entries(def.tabelas(prod))) {
     if (JSON.stringify(r.tabelas[t]) !== JSON.stringify(linhas)) falhas.push(`tabela ${t} difere do JSON`);
   }
-  for (const [g, rot] of Object.entries(def.rotulosFinais(prod))) {
+  for (const [g, rot] of Object.entries(def.rotulosFinais ? def.rotulosFinais(prod) : {})) {
     if (JSON.stringify(r.finais[g]) !== JSON.stringify(rot)) falhas.push(`rótulo final ${g}: ${JSON.stringify(r.finais[g])} ≠ ${JSON.stringify(rot)}`);
   }
   for (const m of Object.values(prod)) {
@@ -321,10 +437,11 @@ async function testeRedirecionamento(browser, base, def) {
   if (!def.enderecoAntigo) return null;
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
-  await page.goto(base + def.enderecoAntigo + "?periodo=2021-2025", { waitUntil: "networkidle" });
+  // parâmetro neutro: os filtros não o tocam, então ele precisa chegar intacto à tela nova
+  await page.goto(base + def.enderecoAntigo + "?origem=redirecionamento", { waitUntil: "networkidle" });
   const url = new URL(page.url());
   await ctx.close();
-  return { ok: url.pathname.endsWith(def.pagina.split("/").pop()) && url.search === "?periodo=2021-2025", destino: url.pathname + url.search };
+  return { ok: url.pathname.split("/").pop() === def.pagina.split("/").pop() && url.search === "?origem=redirecionamento", destino: url.pathname + url.search };
 }
 
 
@@ -354,6 +471,23 @@ async function testesExtrasSaude(browser, base, prod) {
     }, valida);
     res.push({ nome: `?unidade=${valida} destaca a linha (${largura} px)`, ok: r.destacado && r.outros === 1 && erros.length === 0, detalhe: JSON.stringify(r) });
     await ctx.close();
+  }
+  {
+    // a 390 px a lista das unidades fica recolhida; com ?unidade= abre sozinha e mostra o cartão destacado
+    const a = await abrir(browser, pag, { largura: 390 });
+    const fechada = await a.page.evaluate(() => ({ aberta: document.getElementById("detalhesUnidades").open, resumo: document.getElementById("resumoUnidades").textContent }));
+    await a.ctx.close();
+    const b = await abrir(browser, `${pag}?unidade=${valida}`, { largura: 390 });
+    const aberta = await b.page.evaluate((c) => {
+      const tr = document.querySelector(`#tabelaUnidades tr[data-cnes="${c}"]`); const r = tr.getBoundingClientRect();
+      return { aberta: document.getElementById("detalhesUnidades").open, visivel: r.height > 0 && r.top < innerHeight && r.bottom > 0 };
+    }, valida);
+    await b.ctx.close();
+    const c1280 = await abrir(browser, pag, { largura: 1280 });
+    const desktop = await c1280.page.evaluate(() => ({ aberta: document.getElementById("detalhesUnidades").open, resumoVisivel: getComputedStyle(document.getElementById("resumoUnidades")).display !== "none" }));
+    await c1280.ctx.close();
+    const ok = !fechada.aberta && fechada.resumo === `Ver as ${prod.unidades.dados.length} unidades` && aberta.aberta && aberta.visivel && desktop.aberta && !desktop.resumoVisivel;
+    res.push({ nome: "390 px: lista recolhida em \"Ver as N unidades\"; ?unidade= abre e mostra o cartão; 1280 px sempre aberta", ok, detalhe: JSON.stringify({ fechada, aberta, desktop }) });
   }
   {
     const { ctx, page, erros, avisosConsole } = await abrir(browser, `${pag}?unidade=1234567&periodo=1990-1995`, {});

@@ -21,7 +21,9 @@ Regras:
        comparação; população por unidade (SA02) com selo "em_confirmacao" e sem soma;
     j) saúde: nenhuma série anual de óbitos por afogamento ou enchente; nenhum campo
        de soma ou total de população por unidade; produto de unidades sem 2026 e com a
-       Prisional fora das comparações e sem população; selo em_confirmacao.
+       Prisional fora das comparações e sem população; selo em_confirmacao;
+    k) IN15 (publicado × contagem) nunca publicado; ativo não livre só com exceção
+       registrada em config/paineis_ativos.csv (as exceções em uso são listadas).
 
 Uso:
     python scripts/paineis/test_regras_publicas.py
@@ -253,6 +255,24 @@ def regra_j(prods) -> list[str]:
     return falhas
 
 
+ATIVOS_FORA = {"IN15"}  # publicado × contagem: fora por decisão
+
+
+def regra_k(prods) -> list[str]:
+    """Telas novas: IN15 nunca publicado; ativo não livre só com exceção registrada (as exceções em uso são listadas)."""
+    falhas = []
+    aut = comum.ler_autorizacoes()
+    for p, d in prods:
+        ativos = set(d.get("ativos", []))
+        if ativos & ATIVOS_FORA:
+            falhas.append(f"{p.name}: ativo fora da publicação {sorted(ativos & ATIVOS_FORA)}")
+        for a in sorted(ativos):
+            r = aut.get(a, {})
+            if r.get("autorizacao") != "livre":
+                print(f"    · exceção em uso: {a} ({r.get('autorizacao')}) em {p.name}: {r.get('excecao_premissa', '').strip()[:90]}")
+    return falhas
+
+
 def main() -> int:
     arqs = arquivos_alvo()
     prods = produtos()
@@ -267,6 +287,7 @@ def main() -> int:
         "h LST fora": regra_h(prods),
         "i premissas P5 e P6": regra_i(prods),
         "j saúde: afogamento só por quinquênio, sem soma, sem 2026, Prisional fora": regra_j(prods),
+        "k IN15 fora; ativo não livre só com exceção registrada": regra_k(prods),
     }
     print(f"arquivos varridos: {len(arqs)}; produtos: {len(prods)}")
     ok = True
