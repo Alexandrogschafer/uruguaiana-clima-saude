@@ -57,6 +57,7 @@
       <div class="card-head"><span class="card-title">As manchas por cota</span><span class="card-meta" id="meta-cotas"></span></div>
       <div id="aviso-cotas"></div>
       <div class="tabela-cartoes-wrap" style="margin-top:10px;"><table class="data-table tabela-cartoes tabela-cotas" id="tabelaCotas"></table></div>
+      <p class="nota-grafico" data-nota="cs_nota_area"></p>
       <p class="nota-grafico" data-nota="cs_nota_tr"></p>
     </div>
   </div>
@@ -134,6 +135,10 @@ const BLOCOS = {maximas: 'chart-maximas', diario: 'chart-nivel', cotas: 'tabelaC
 const ESPERA_MORADORES = ['IN09', 'IN10', 'IN11'];
 const ESPERA_ACESSO = ['SA09', 'SA11', 'SA12', 'SA13', 'SA15'];
 const dec1 = v => v.toLocaleString('pt-BR', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+/* tempo de retorno nas frases: se camada e documento do SGB diferem menos que dif_tr_cerca_anos (do JSON),
+   "cerca de N anos"; senão, o da camada com uma casa. A tabela mostra sempre os dois valores. */
+const trFrase = (r, lim) => { const c = r.tr_anos_camada, d = r.tr_anos_documento;
+  return (d != null && c !== d && Math.abs(c - d) < lim) ? `cerca de ${fmtInt(Math.round((c + d) / 2))} anos` : `${dec1(c)} anos`; };
 const setText = (id, t) => { const e = document.getElementById(id); if(e) e.textContent = t; };
 const dataBR = iso => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ''); return m ? `${m[3]}/${m[2]}/${m[1]}` : (iso || ''); };
 const DIA = 864e5;
@@ -205,7 +210,7 @@ async function iniciar(){
     img.src = `${P.raiz ? P.raiz() : '..'}/data/paineis/${r.imagem}`;
     img.alt = r.alt;
     setText('titulo-mapa', `Mancha da cota ${fmtInt(r.cota_cm)} cm`);
-    setText('meta-mapa', `${cotas.meta.fonte_curta} · tempo de retorno ${dec1(r.tr_anos_camada)} anos`);
+    setText('meta-mapa', `${cotas.meta.fonte_curta} · tempo de retorno ${trFrase(r, cotas.meta.dif_tr_cerca_anos)}`);
     document.getElementById('link-mapa').href = `${P.raiz ? P.raiz() : '..'}/index.html?cota=${r.cota_cm}`;
     document.querySelectorAll('#tabelaCotas tbody tr').forEach(tr => tr.classList.toggle('linha-ativa', +tr.dataset.cota === r.cota_cm));
   }
@@ -214,8 +219,8 @@ async function iniciar(){
     P.aviso(document.getElementById('aviso-cotas'), cotas.meta.avisos.filter(a => a.tipo === 'em_confirmacao'));
     const t = document.getElementById('tabelaCotas');
     const col = [['Cota', r => `${fmtInt(r.cota_cm)} cm`], ['Tempo de retorno (camada)', r => `${dec1(r.tr_anos_camada)} anos`],
-                 ['Tempo de retorno (documento)', r => `${dec1(r.tr_anos_documento)} anos`], ['Área da mancha', r => `${fmt1(r.area_km2)} km²`],
-                 ['Área no município', r => `${fmt1(r.area_no_municipio_km2)} km²`], ['Período das cenas', r => r.periodo_referencia], ['ESF/UBS dentro', r => fmtInt(r.esf_ubs_dentro)]];
+                 ['Tempo de retorno (documento)', r => `${dec1(r.tr_anos_documento)} anos`], ['Área no município', r => `${fmt1(r.area_no_municipio_km2)} km²`],
+                 ['Mancha inteira', r => `${fmt1(r.area_km2)} km²`], ['Período das cenas', r => r.periodo_referencia], ['ESF/UBS dentro', r => fmtInt(r.esf_ubs_dentro)]];
     t.innerHTML = `<thead><tr>${col.map((c, j) => `<th class="${j === 5 ? 'col-texto' : ''}">${c[0]}</th>`).join('')}</tr></thead><tbody>${
       cotas.dados.map(r => `<tr data-cota="${r.cota_cm}">${col.map((c, j) => `<td class="${j === 0 ? 'col-nome' : ''}${j === 5 ? ' col-texto' : ''}" data-rotulo="${c[0]}">${c[1](r)}</td>`).join('')}</tr>`).join('')}</tbody>`;
   }

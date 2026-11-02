@@ -34,6 +34,11 @@ const dec1 = (n) => n.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximu
 const DIA = 864e5;
 const diaNum = (iso) => Math.round(Date.parse(iso + "T00:00:00Z") / DIA);
 const diaTxt = (n) => { const d = new Date(n * DIA); return `${String(d.getUTCDate()).padStart(2, "0")}/${String(d.getUTCMonth() + 1).padStart(2, "0")}/${String(d.getUTCFullYear()).slice(2)}`; };
+// regra das frases do tempo de retorno (B.1 da rodada 115): camada e documento diferem menos que o limite do JSON → "cerca de N anos"
+const trNaFrase = (r, lim) => {
+  const c = r.tr_anos_camada, d = r.tr_anos_documento;
+  return d != null && c !== d && Math.abs(c - d) < lim ? `cerca de ${fmtInt(Math.round((c + d) / 2))} anos` : `${dec1(c)} anos`;
+};
 const dataBR = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ""); return m ? `${m[3]}/${m[2]}/${m[1]}` : iso || ""; };
 
 // ------------------------------------------------------------------ telas
@@ -313,7 +318,7 @@ const TELAS = {
       const cotas = p.cotas.dados.map((r) => r.cota_cm);
       return {
         tabelaCotas: p.cotas.dados.map((r) => [`${fmtInt(r.cota_cm)} cm`, `${dec1(r.tr_anos_camada)} anos`, `${dec1(r.tr_anos_documento)} anos`,
-          `${fmt1(r.area_km2)} km²`, `${fmt1(r.area_no_municipio_km2)} km²`, r.periodo_referencia, fmtInt(r.esf_ubs_dentro)]),
+          `${fmt1(r.area_no_municipio_km2)} km²`, `${fmt1(r.area_km2)} km²`, r.periodo_referencia, fmtInt(r.esf_ubs_dentro)]),
         tabelaUnidades: p.unidades.dados.filter((u) => !u.fora_das_comparacoes).map((u) => [u.nome, u.classe, ...cotas.map((k) => (u[`dentro_${k}`] ? "dentro" : "fora")), "ver na saúde →"]),
         tabelaSetores: p.setor.dados.map((r, i) => [r.setor, r.local, r.tipologia, r.grau_risco, n(p.setor, r, i, "edificacoes"), n(p.setor, r, i, "domicilios"), n(p.setor, r, i, "pessoas")]),
         tabelaBater: p.bater.dados.map((r) => [r.area_bater, tx(r.origem), tx(r.observacao)]),
@@ -675,14 +680,15 @@ async function testesExtrasSintese(browser, base, prod) {
         nav: [...document.querySelectorAll(".cabecalho-nav a.nav-item")].map((a) => a.getAttribute("href")) };
     });
     const p = prod, ult = (x) => x.dados[x.dados.length - 1];
-    const tr = p.cotas.dados.map((x) => x.tr_anos_camada);
+    const ordTr = [...p.cotas.dados].sort((a, b) => a.tr_anos_camada - b.tr_anos_camada);
+    const trS = (r) => trNaFrase(r, p.cotas.meta.dif_tr_cerca_anos).replace(/ anos$/, "");
     const inm = ult(p.inmet), parcial = p.inmet.meta.avisos.find((a) => a.tipo === "parcial" && a.onde && a.onde.ano === inm.ano);
     const fech = p.sinan.dados.filter((x) => !x.preliminar), sn = fech[fech.length - 1], pre = p.sinan.dados.find((x) => x.preliminar);
     const ind = ult(p.ind);
     const fr = p.rio.dados[0];
     const esperado = {
       faixa: fr.estado === "evento_em_curso" ? `⚠ Rio Uruguai (${p.rio.meta.fonte_curta}): ${p.rio.meta.avisos.map((a) => a.texto).join(" · ")}` : null,
-      cheia: [`${p.cotas.dados.length} manchas do SGB (cotas ${p.cotas.dados.map((x) => fmtInt(x.cota_cm)).join(", ")} cm), tempo de retorno de ${fmt1(Math.min(...tr))} a ${fmt1(Math.max(...tr))} anos`,
+      cheia: [`${p.cotas.dados.length} manchas do SGB (cotas ${p.cotas.dados.map((x) => fmtInt(x.cota_cm)).join(", ")} cm), tempo de retorno de ${trS(ordTr[0])} a ${trS(ordTr[ordTr.length - 1])} anos`,
               p.cotas.meta.notas.cs_frase_unidades],
       clima: [`Chuva em ${ult(p.precip).ano}: ${fmtInt(ult(p.precip).merge_mm)} mm (${p.precip.meta.fonte_curta})`,
               `Dias com máxima ≥ 35 °C em ${inm.ano}: ${fmtInt(inm.dias_calor_extremo)} (${p.inmet.meta.fonte_curta})${parcial ? ` · ${parcial.texto}` : ""}`],

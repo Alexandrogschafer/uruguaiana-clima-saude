@@ -110,8 +110,12 @@ async function iniciar(){
   }
   /* ---- cheia e acesso à saúde ---- */
   if(cotas){
-    const d = cotas.dados, tr = d.map(x => x.tr_anos_camada);
-    item('lista-cheia', `<b>${d.length}</b> manchas do SGB (cotas ${d.map(x => fmtInt(x.cota_cm)).join(', ')} cm), tempo de retorno de ${fmt1(Math.min(...tr))} a ${fmt1(Math.max(...tr))} anos`);
+    const d = cotas.dados, lim = cotas.meta.dif_tr_cerca_anos;
+    // tempo de retorno na frase: a mesma regra da tela da cheia ("cerca de N anos" quando camada e documento diferem menos que lim)
+    const trTxt = r => { const c = r.tr_anos_camada, k = r.tr_anos_documento;
+      return (k != null && c !== k && Math.abs(c - k) < lim) ? `cerca de ${fmtInt(Math.round((c + k) / 2))}` : c.toLocaleString('pt-BR', {minimumFractionDigits: 1, maximumFractionDigits: 1}); };
+    const ord = [...d].sort((x, y) => x.tr_anos_camada - y.tr_anos_camada);
+    item('lista-cheia', `<b>${d.length}</b> manchas do SGB (cotas ${d.map(x => fmtInt(x.cota_cm)).join(', ')} cm), tempo de retorno de ${trTxt(ord[0])} a ${trTxt(ord[ord.length - 1])} anos`);
     item('lista-cheia', `<b>${P.notaHtml(cotas.meta.notas.cs_frase_unidades)}</b>`);
     document.getElementById('selo-cheia').appendChild(P.selo(cotas.meta.selo));
     P.aviso(document.getElementById('aviso-cheia'), cotas.meta.avisos.filter(a => a.tipo === 'em_confirmacao'));

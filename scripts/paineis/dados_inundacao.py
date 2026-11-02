@@ -57,6 +57,7 @@ LIMITE_PNG = 150 * 1024
 FONTE_RODAPE = "Manchas de inundação por cota — SGB (Serviço Geológico do Brasil), relatório de 2023"
 NOTA_SUPRESSAO = "não se aplica: sem contagem de pessoas; só número de unidades de saúde"
 AVISO_CONFERENCIA = "pessoas expostas e acesso: em conferência"
+DIF_TR_CERCA = 0.5  # camada e documento diferem menos que isso: as frases das telas dizem "cerca de N anos" (regra aplicada nas telas)
 
 
 def manchas_acumuladas() -> list[tuple[int, float, object]]:
@@ -83,17 +84,22 @@ def unidades() -> gpd.GeoDataFrame:
 
 
 def mini_mapa(cota: int, mancha, limite: gpd.GeoDataFrame, u: gpd.GeoDataFrame) -> bytes:
-    """PNG pequeno: enquadra a mancha da maior cota e as unidades urbanas; sem mapa de fundo."""
+    """PNG pequeno: enquadra a mancha da maior cota e as unidades urbanas; sem mapa de fundo.
+    A parte da mancha dentro do município (a área principal da tela) vai em cor cheia; a parte fora
+    (leito do rio e margem fora do município, que o SGB inclui na mancha inteira) vai em tom claro."""
     fig, ax = plt.subplots(figsize=(5.2, 4.0), dpi=100)
     limite.boundary.plot(ax=ax, color="#7c8f8c", linewidth=0.8)
-    gpd.GeoSeries([mancha], crs=CRS_PADRAO).plot(ax=ax, color="#2a78d6", alpha=0.55, linewidth=0)
+    lim_geom = limite.union_all()
+    gpd.GeoSeries([mancha.difference(lim_geom)], crs=CRS_PADRAO).plot(ax=ax, color="#2a78d6", alpha=0.18, linewidth=0)
+    gpd.GeoSeries([mancha.intersection(lim_geom)], crs=CRS_PADRAO).plot(ax=ax, color="#2a78d6", alpha=0.55, linewidth=0)
     comp = u[u["comparavel"]]
     comp.plot(ax=ax, color="#d95926", markersize=14, edgecolor="white", linewidth=0.6, zorder=3)
     ax.set_xlim(*EXTENSAO[0]); ax.set_ylim(*EXTENSAO[1])
     ax.set_aspect("equal"); ax.set_xticks([]); ax.set_yticks([])
     for s in ax.spines.values():
         s.set_color("#c7cec9")
-    ax.legend(handles=[Patch(color="#2a78d6", alpha=0.55, label=f"mancha da cota {milhar(cota)} cm"),
+    ax.legend(handles=[Patch(color="#2a78d6", alpha=0.55, label=f"mancha da cota {milhar(cota)} cm no município"),
+                       Patch(color="#2a78d6", alpha=0.18, label="leito do rio e margem fora do município"),
                        Line2D([], [], marker="o", color="w", markerfacecolor="#d95926", markersize=6, label="ESF/UBS"),
                        Line2D([], [], color="#7c8f8c", linewidth=0.8, label="limite municipal")],
               loc="upper right", fontsize=7, frameon=True, framealpha=0.9)
@@ -148,7 +154,8 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
                        "area_km2": round(geom.area / 1e6, 2), "area_no_municipio_km2": round(geom.intersection(lim_geom).area / 1e6, 2),
                        "periodo_referencia": tr_doc.loc[cota, "periodo_de_referencia"],
                        "esf_ubs_dentro": n_dentro, "imagem": f"img/{img.name}",
-                       "alt": (f"Mapa da mancha de inundação da cota {milhar(cota)} cm (SGB) sobre o limite de Uruguaiana, com as 21 ESF/UBS "
+                       "alt": (f"Mapa da mancha de inundação da cota {milhar(cota)} cm (SGB) sobre o limite de Uruguaiana: a parte dentro do "
+                               f"município em azul forte e, em azul claro, o leito do rio e a margem fora do município; as 21 ESF/UBS "
                                f"como pontos laranja: {n_dentro} dentro da mancha.")})
     if any(l["esf_ubs_dentro"] for l in linhas):
         raise ValueError("cálculo deu ESF/UBS dentro de mancha; parar e conferir (esperado: 0 em todas as cotas)")
@@ -158,9 +165,11 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
                              f"({', '.join(str(l['cota_cm']) for l in linhas)} cm). A Equipe de Saúde Prisional fica fora da contagem. "
                              "Estar fora da mancha não garante acesso pelas ruas: o cálculo de acesso está em conferência."),
         "cs_frase_unidades": f"{max(l['esf_ubs_dentro'] for l in linhas)} de 21 ESF/UBS dentro da mancha em todas as cotas",
-        "cs_nota_tr": ("Tempo de retorno: o da camada do SGB. " + " ".join(
-            f"Na cota {milhar(l['cota_cm'])} cm, a camada diz {dec1(l['tr_anos_camada'])} anos e o documento do SGB, {dec1(l['tr_anos_documento'])} anos."
-            for l in linhas if l["cota_cm"] in dif_tr) if dif_tr else "Tempo de retorno da camada do SGB, igual ao do documento."),
+        "cs_nota_tr": (" ".join(
+            f"Na cota {milhar(l['cota_cm'])} cm, a camada do SGB diz {dec1(l['tr_anos_camada'])} anos e o documento do SGB, {dec1(l['tr_anos_documento'])} anos."
+            for l in linhas if l["cota_cm"] in dif_tr) + f" Nas frases, quando os dois diferem em menos de {dec1(DIF_TR_CERCA)} ano, o tempo de retorno aparece "
+            "arredondado (\"cerca de N anos\"); nos demais casos, vale o da camada." if dif_tr else "Tempo de retorno da camada do SGB, igual ao do documento."),
+        "cs_nota_area": "Área principal: a parte da mancha dentro do município. Mancha inteira (SGB): inclui o leito do rio e a margem fora do município.",
     }
     c = dict(codigo_ibge=codigo_ibge, script=SCRIPT, unidade_espacial="mancha de inundação (município)", selo="em_confirmacao")
     p1 = comum.montar_produto(
@@ -168,13 +177,13 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
         fonte_curta="SGB", fonte="SGB, manchas de inundação por cota (relatório de 2023); unidades do CNES revisado v4",
         unidade_medida="cm; anos; km²; unidades", periodo={"inicio": "2015", "fim": "2023"}, dados_ate="2023",
         avisos=[{"tipo": "em_confirmacao", "texto": AVISO_CONFERENCIA},
-                {"tipo": "metodo", "texto": "mancha acumulada: união das manchas de cota menor ou igual; área em SIRGAS 2000 / UTM 21S, da mancha inteira como o SGB publica (inclui rio e margem fora do município) e só da parte dentro do município"},
+                {"tipo": "metodo", "texto": "mancha acumulada: união das manchas de cota menor ou igual; área em SIRGAS 2000 / UTM 21S, da parte dentro do município (área principal) e da mancha inteira como o SGB publica (inclui o leito do rio e a margem fora do município)"},
                 {"tipo": "metodo", "texto": "Equipe de Saúde Prisional fora da contagem de unidades"}],
         colunas=[{"nome": "cota_cm", "tipo": "int"}, {"nome": "tr_anos_camada", "tipo": "float"}, {"nome": "tr_anos_documento", "tipo": "float"},
                  {"nome": "area_km2", "tipo": "float"}, {"nome": "area_no_municipio_km2", "tipo": "float"},
                  {"nome": "periodo_referencia", "tipo": "texto"}, {"nome": "esf_ubs_dentro", "tipo": "int"},
                  {"nome": "imagem", "tipo": "texto"}, {"nome": "alt", "tipo": "texto"}],
-        dados=linhas, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["sintese", "cheia-saude"], "notas": notas, "comparacao": False}, **c)
+        dados=linhas, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["sintese", "cheia-saude"], "notas": notas, "dif_tr_cerca_anos": DIF_TR_CERCA, "comparacao": False}, **c)
     lu = []
     for i, r in u.reset_index(drop=True).iterrows():
         linha = {"cnes": str(r["cnes"]), "nome": r["nome"], "classe": r["classe"], "fora_das_comparacoes": not bool(r["comparavel"])}
