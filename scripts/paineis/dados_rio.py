@@ -207,7 +207,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
         avisos=[aviso_rt, {"tipo": "metodo", "texto": "média das leituras do dia, no fuso em que o serviço as devolve (não informado); dia sem leitura fica fora"}] + (
             [{"tipo": "evento_em_curso", "texto": aviso_corte(fim_excl)}] if ev["em_curso"] else []),
         colunas=[{"nome": "dia", "tipo": "texto"}, {"nome": "nivel_medio_cm", "tipo": "float"}, {"nome": "vazao_media_m3s", "tipo": "float"}, {"nome": "n_leituras", "tipo": "int"}],
-        dados=dd, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["cheia-saude"], "evento_em_curso": ev["em_curso"]}),
+        dados=dd, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["cheia-saude", "clima"], "evento_em_curso": ev["em_curso"]}),
         e["telemetria"], "média diária das leituras de 15 min, últimos 365 dias; com evento em curso, até o fim do mês anterior ao mês do evento (MES_DO_EVENTO_COM_CORTE) ou até o dia anterior ao evento"))
     linha, av_ult = ultima_leitura(t, ev, hoje)
     defs.append((n["ult"], ["IN05"], dict(

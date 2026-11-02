@@ -62,15 +62,16 @@
   </div>
 
   <div class="section-head"><h2>Hidrologia</h2><div class="section-rule"></div></div>
-  <p class="section-note">Leituras telemétricas da estação 77150000 (Rio Uruguai, operada por SGB-CPRM) — amostra recente de exemplo, não um histórico longo.</p>
+  <p class="section-note" id="nota-rio"></p>
+  <div id="aviso-rio" style="margin-bottom:16px;"></div>
 
   <div class="chart-grid">
     <div class="card">
-      <div class="card-head"><span class="card-title">Nível do Rio Uruguai</span><span class="card-meta">ANA · 15 em 15 min</span></div>
+      <div class="card-head"><span class="card-title">Nível do Rio Uruguai</span><span class="card-meta" id="meta-nivel"></span></div>
       <div class="card-body"><div id="chart-nivel"></div><div class="chart-tooltip" id="tt-nivel"></div></div>
     </div>
     <div class="card">
-      <div class="card-head"><span class="card-title">Vazão do Rio Uruguai</span><span class="card-meta">ANA · m³/s</span></div>
+      <div class="card-head"><span class="card-title">Vazão do Rio Uruguai</span><span class="card-meta" id="meta-vazao"></span></div>
       <div class="card-body"><div id="chart-vazao"></div><div class="chart-tooltip" id="tt-vazao"></div></div>
     </div>
   </div>
@@ -90,7 +91,7 @@
   </details>
 
   <details class="table-wrap" style="margin-top:10px;">
-    <summary>Ver leituras do nível do rio (amostra, 15 em 15 min)</summary>
+    <summary>Ver médias diárias do nível e da vazão do rio</summary>
     <div class="table-scroll"><table class="data-table" id="tabelaNivel"></table></div>
   </details>
 
@@ -100,6 +101,7 @@
 
 <script src="../js/paineis/componentes.js"></script>
 <script src="../js/paineis/graficos.js"></script>
+<script src="../js/paineis/graficos-extra.js"></script>
 <script src="../js/paineis/dados.js"></script>
 <script src="../js/paineis/filtros.js"></script>
 <script src="../js/paineis/cabecalho.js"></script>
@@ -114,7 +116,7 @@ const IDS = {
   precip:  'clima_precipitacao-merge_2010-2025_anual',
   mensal:  'clima_precipitacao-merge_2010-2025_mensal',
   queim:   'queimadas_inpe_2010-2025_anual',
-  rio:     'rio_ana-77150000_2026-08-06-a-2026-08-07_15min',
+  rio:     'rio_ana-77150000_ultimos-365-dias_diario',
   tabela:  'clima_tabela-anual_2007-2025',
 };
 const MESES_NO_GRAFICO = 60;
@@ -133,6 +135,11 @@ const setText = (id, texto) => { const e = document.getElementById(id); if(e) e.
 const periodo = m => `${m.periodo.inicio}–${m.periodo.fim}`;
 // Aviso com ano ("parcial" ou "lacuna"): "2025: dados até 18/08/2025" ou o texto como vem.
 const avisoNoCartao = a => a.tipo === 'parcial' && a.onde && a.onde.ano ? `${a.onde.ano}: ${a.texto}` : a.texto;
+// Rio: média diária dos últimos 365 dias (mesmo produto da tela Cheia e saúde); eixo x em dias.
+const dataBR = iso => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ''); return m ? `${m[3]}/${m[2]}/${m[1]}` : (iso || ''); };
+const DIA = 864e5;
+const diaNum = iso => Math.round(Date.parse(iso + 'T00:00:00Z') / DIA);
+const diaTxt = n => { const d = new Date(n * DIA); return `${String(d.getUTCDate()).padStart(2, '0')}/${String(d.getUTCMonth() + 1).padStart(2, '0')}/${String(d.getUTCFullYear()).slice(2)}`; };
 
 async function iniciar(){
   P.iniciarFiltros();
@@ -150,6 +157,14 @@ async function iniciar(){
   if(mensal) setText('meta-precip-mensal', `${mensal.meta.fonte_curta} · mm/mês`);
   if(precip) setText('meta-comparacao', `mm · ${periodo(precip.meta)}`);
   if(queim) setText('meta-queimadas', `${queim.meta.fonte_curta} · ${periodo(queim.meta)}`);
+  if(rio){
+    // título, fonte, janela e avisos vêm do JSON; o corte da série com evento em curso já vem do gerador
+    setText('nota-rio', `${rio.meta.titulo}. ${rio.meta.fonte}.`);
+    const janela = `${dataBR(rio.meta.periodo.inicio)} a ${dataBR(rio.meta.periodo.fim)}`;
+    setText('meta-nivel', `${rio.meta.fonte_curta} · ${janela}`);
+    setText('meta-vazao', `${rio.meta.fonte_curta} · ${janela}`);
+    P.aviso(document.getElementById('aviso-rio'), rio.meta.avisos.filter(a => a.tipo === 'evento_em_curso' || a.texto.startsWith('não é dado')));
+  }
   let avisosAnual = [], parcial = null, lacunas = [];
   if(anual){
     avisosAnual = anual.meta.avisos.filter(a => ['parcial', 'lacuna'].includes(a.tipo));
@@ -190,7 +205,7 @@ async function iniciar(){
   }
   if(rio){
     const ult = rio.dados[rio.dados.length-1];
-    kpis.push({label:`Nível do rio agora`, value: Math.round(ult.nivel_cm), unit:'cm', sub:`vazão ${fmtInt(ult.vazao_m3s)} m³/s`, spark: rio.dados.map(r=>r.nivel_cm)});
+    kpis.push({label:`Nível médio · ${dataBR(ult.dia)}`, value: Math.round(ult.nivel_medio_cm), unit:'cm', sub:`vazão ${fmtInt(ult.vazao_media_m3s)} m³/s`, spark: rio.dados.map(r=>r.nivel_medio_cm)});
   }
   const kpiRow = document.getElementById('kpiRow');
   kpis.forEach(k => {
@@ -240,17 +255,12 @@ async function iniciar(){
       });
     }
     if(rio){
-      const nivelLabels = rio.dados.map(r => r.data_hora_utc.slice(5,16));
-      renderLineChart('chart-nivel', 'tt-nivel', {
-        labels: nivelLabels,
-        series: [{name: P.dica('Nível', rio.meta.fonte_curta), color: blue, data: rio.dados.map(r=>r.nivel_cm)}],
-        height: 190, yFormat: v => fmtInt(v)+' cm',
-      });
-      renderLineChart('chart-vazao', 'tt-vazao', {
-        labels: nivelLabels,
-        series: [{name: P.dica('Vazão (m³/s)', rio.meta.fonte_curta), color: blue, data: rio.dados.map(r=>r.vazao_m3s)}],
-        height: 190, yFormat: v => fmtInt(v),
-      });
+      const d = rio.dados, xs = d.map(r => diaNum(r.dia));
+      const xt = [xs[0], xs[Math.floor(xs.length / 2)], xs[xs.length - 1]];
+      renderTimeLineChart('chart-nivel', 'tt-nivel', {height: 190, xTicks: xt, xFormat: diaTxt, zeroBase: false, padR: 52, rotuloFinalAoLado: true,
+        series: [{name: P.dica('Nível médio do dia (cm)', rio.meta.fonte_curta), color: blue, points: d.map((r, i) => ({x: xs[i], y: r.nivel_medio_cm}))}], yFormat: v => fmtInt(v)});
+      renderTimeLineChart('chart-vazao', 'tt-vazao', {height: 190, xTicks: xt, xFormat: diaTxt, zeroBase: false, padR: 58, padL: 52, rotuloFinalAoLado: true,
+        series: [{name: P.dica('Vazão média do dia (m³/s)', rio.meta.fonte_curta), color: blue, points: d.map((r, i) => ({x: xs[i], y: r.vazao_media_m3s}))}], yFormat: v => fmtInt(v)});
     }
     if(queim){
       renderBarChart('chart-queimadas', 'tt-queimadas', {
@@ -285,12 +295,12 @@ async function iniciar(){
   if(rio){
     const tabelaNivel = document.getElementById('tabelaNivel');
     const head2 = document.createElement('thead');
-    head2.innerHTML = '<tr><th>Data/hora (UTC)</th><th>Nível (cm)</th><th>Vazão (m³/s)</th></tr>';
+    head2.innerHTML = '<tr><th>Dia</th><th>Nível médio (cm)</th><th>Vazão média (m³/s)</th><th>Leituras no dia</th></tr>';
     tabelaNivel.appendChild(head2);
     const tbody2 = document.createElement('tbody');
     rio.dados.slice().reverse().forEach(r => {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${r.data_hora_utc}</td><td>${P.valor(r.nivel_cm, fmtInt)}</td><td>${P.valor(r.vazao_m3s, fmt1)}</td>`;
+      tr.innerHTML = `<td>${dataBR(r.dia)}</td><td>${P.valor(r.nivel_medio_cm, fmtInt)}</td><td>${P.valor(r.vazao_media_m3s, fmt1)}</td><td>${P.valor(r.n_leituras)}</td>`;
       tbody2.appendChild(tr);
     });
     tabelaNivel.appendChild(tbody2);
