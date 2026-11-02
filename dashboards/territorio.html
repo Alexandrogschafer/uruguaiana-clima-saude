@@ -32,6 +32,8 @@
 
   <div class="section-head"><h2>Uso do solo</h2><div class="section-rule"></div></div>
   <p class="section-note" data-nota="ter_nota_uso"></p>
+  <details class="recolhivel" id="det-uso" open>
+  <summary>Ver as 6 classes em destaque</summary>
   <div class="chart-grid triple">
     <div class="card"><div class="card-head"><span class="card-title">Formação Campestre (Pampa nativo)</span></div>
       <div class="card-body"><div id="chart-campestre"></div><div class="chart-tooltip" id="tt-campestre"></div></div></div>
@@ -46,6 +48,7 @@
     <div class="card"><div class="card-head"><span class="card-title">Formação Florestal</span></div>
       <div class="card-body"><div id="chart-florestal"></div><div class="chart-tooltip" id="tt-florestal"></div></div></div>
   </div>
+  </details>
   <p class="section-note" style="margin-top:24px;" data-nota="ter_nota_uso_classes"></p>
   <div class="status-legend">
     <span class="item"><span class="dot" style="background:var(--series-aqua)"></span>Natural remanescente</span>
@@ -184,6 +187,8 @@ async function iniciar(){
   window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
   // celular: os 4 gráficos do meio físico ficam recolhidos (sem série no tempo, o período não os afeta)
   P.recolherNoCelular('det-meio', null, draw);
+  // as 6 séries de uso do solo dependem do período: abrem sozinhas com ?periodo= válido
+  const ajustarUso = P.recolherNoCelular('det-uso', () => !!P.filtros.estado.periodo, draw);
 
   function tabelas(){
     if(serie){
@@ -211,7 +216,7 @@ async function iniciar(){
   }
   tabelas();
   P.montarChips('chips-filtro', {periodo: 'Período'});
-  document.addEventListener('filtros:mudou', () => { draw(); tabelas(); P.montarChips('chips-filtro', {periodo: 'Período'}); });
+  document.addEventListener('filtros:mudou', () => { ajustarUso(); draw(); tabelas(); P.montarChips('chips-filtro', {periodo: 'Período'}); });
 
   P.montarRodape();
   document.documentElement.dataset.pronto = '1';

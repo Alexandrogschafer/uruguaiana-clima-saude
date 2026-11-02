@@ -64,6 +64,8 @@
   <p class="section-note" style="margin-top:6px;" data-nota="ris_nota_s2id_2"></p>
 
   <div class="section-head"><h2>Setorização e áreas de risco</h2><div class="section-rule"></div></div>
+  <details class="recolhivel" id="det-setorizacao" open>
+  <summary>Ver setorização e áreas de risco</summary>
   <p class="section-note" data-nota="ris_nota_setor"></p>
   <div class="card">
     <div class="card-head"><span class="card-title">Setorização de risco (SGB)</span><span class="card-meta" data-nota="ris_meta_setor"></span></div>
@@ -76,6 +78,7 @@
     <div id="aviso-bater"></div>
     <div class="tabela-cartoes-wrap" style="margin-top:10px;"><table class="data-table tabela-cartoes" id="tabelaBater"></table></div>
   </div>
+  </details>
 
   <div class="section-head"><h2>Continuidade de Energia — ANEEL</h2><div class="section-rule"></div></div>
   <p class="section-note" data-nota="ris_nota_aneel"></p>
@@ -87,12 +90,15 @@
       <div class="card-body"><div id="chart-aneel-fec"></div><div class="chart-tooltip" id="tt-aneel-fec"></div></div></div>
   </div>
   <p class="section-note" style="margin-top:-6px;" data-nota="ris_nota_aneel_2"></p>
+  <details class="recolhivel" id="det-indisponivel" open>
+  <summary>Ver o que está indisponível</summary>
   <div class="card" style="margin-top:16px;">
     <div class="card-head"><span class="card-title">Saneamento e malha estadual: indisponíveis</span><span class="card-meta" id="meta-indisp"></span></div>
     <p class="nota-grafico" style="margin:2px 0 8px;" data-nota="ris_nota_indisp"></p>
     <div id="aviso-indisp"></div>
     <div class="tabela-cartoes-wrap" style="margin-top:10px;"><table class="data-table tabela-cartoes" id="tabelaIndisp"></table></div>
   </div>
+  </details>
 
   <p class="section-note" style="margin-top:28px;" data-nota="ris_leitura"></p>
   <footer id="rodape-comum"></footer>
@@ -209,6 +215,9 @@ async function iniciar(){
   if(bater){ setText('meta-bater', bater.meta.fonte_curta); P.aviso(document.getElementById('aviso-bater'), bater.meta.avisos); }
   if(indisp){ setText('meta-indisp', indisp.meta.fonte_curta); P.aviso(document.getElementById('aviso-indisp'), indisp.meta.avisos); }
 
+  // celular: setorização/BATER e indisponíveis recolhidos (não dependem do período)
+  P.recolherNoCelular('det-setorizacao', null, null);
+  P.recolherNoCelular('det-indisponivel', null, null);
   P.montarChips('chips-filtro', {periodo: 'Período'});
   document.addEventListener('filtros:mudou', () => { draw(); P.montarChips('chips-filtro', {periodo: 'Período'}); });
 
