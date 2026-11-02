@@ -183,7 +183,7 @@
   <div class="kpi-row" id="kpiRow"></div>
 
   <div class="section-head"><h2>Clima</h2><div class="section-rule"></div></div>
-  <p class="section-note">Série horária da estação automática INMET A809 (Uruguaiana), agregada por dia e por ano. Radiação solar tem ~51% de falhas no sensor mais recente; as variáveis usadas aqui (temperatura, precipitação) têm entre 6% e 13% de falhas. <b>Exceção em 2025:</b> a A809 parou de registrar em 18/08/2025; set–dez/2025 e o total de 2025 de precipitação vêm do MERGE/INPE (média de área, com margem de 18 km), não da estação. Por isso o total de 2025 não é a soma dos meses do gráfico (jan–ago são da A809) nem é diretamente comparável aos demais anos.</p>
+  <p class="section-note">Série horária da estação automática INMET A809 (Uruguaiana), agregada por dia e por ano. Radiação solar tem ~51% de falhas no sensor mais recente; temperatura e precipitação têm de 0,5% a 1,7% de horas sem registro por ano em 2021–2024 (até 11,4% em um mês). Antes disso, os anos com mais falhas são 2016 (29,9%), 2012 (9,8%) e 2020 (7,5%). Em 2025 faltam 55,0% das horas. <b>Exceção em 2025:</b> a A809 parou de registrar em 18/08/2025; set–dez/2025 e o total de 2025 de precipitação vêm do MERGE/INPE (média de área, com margem de 18 km), não da estação. Por isso o total de 2025 não é a soma dos meses do gráfico (jan–ago são da A809) nem é diretamente comparável aos demais anos.</p>
 
   <div class="chart-grid">
     <div class="card">
@@ -191,13 +191,13 @@
       <div class="card-body"><div id="chart-precip-anual"></div><div class="chart-tooltip" id="tt-precip-anual"></div></div>
     </div>
     <div class="card">
-      <div class="card-head"><span class="card-title">Dias com calor extremo (≥ 35°C) por ano</span><span class="card-meta">INMET A809</span></div>
+      <div class="card-head"><span class="card-title">Dias com calor extremo (≥ 35°C) por ano</span><span class="card-meta">INMET A809 · 2025: dados até 18/08/2025</span></div>
       <div class="card-body"><div id="chart-calor"></div><div class="chart-tooltip" id="tt-calor"></div></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-head"><span class="card-title">Temperatura média anual</span><span class="card-meta">INMET A809 · °C</span></div>
+    <div class="card-head"><span class="card-title">Temperatura média anual</span><span class="card-meta">INMET A809 · °C · 2025: dados até 18/08/2025</span></div>
     <div class="card-body"><div id="chart-temp-anual"></div><div class="chart-tooltip" id="tt-temp-anual"></div></div>
   </div>
 
@@ -235,6 +235,7 @@
 
   <details class="table-wrap">
     <summary>Ver dados climáticos anuais em tabela</summary>
+    <p class="section-note" style="padding:0 20px;">* 2025: temperatura, dias ≥35°C e dias de geada com dados até 18/08/2025.</p>
     <div class="table-scroll"><table class="data-table" id="tabelaAnual"></table></div>
   </details>
 
@@ -309,9 +310,18 @@ function renderLineChart(containerId, tooltipId, opts){
   });
   el('line', {x1:padL, x2:padL+innerW, y1:padT+innerH, y2:padT+innerH, class:'baseline'}, svg);
 
-  const xTickEvery = Math.max(1, Math.ceil(n/8));
+  // Espaça os rótulos pela largura real do texto. O primeiro e o último ficam
+  // ancorados para dentro, então a distância mínima é de 1,5 rótulo mais a folga.
+  const medidor = el('text', {x:0, y:-100, class:'axis-label'}, svg);
+  const maisLongo = opts.labels.reduce((a, b) => String(b).length > String(a).length ? b : a, '');
+  medidor.textContent = maisLongo;
+  const larguraRotulo = medidor.getComputedTextLength() || String(maisLongo).length * 7;
+  medidor.remove();
+  const distMin = larguraRotulo * 1.5 + 10;
+  const xTickEvery = n > 1 ? Math.max(1, Math.ceil(distMin / (innerW/(n-1)))) : 1;
   opts.labels.forEach((lab, i) => {
-    if(i % xTickEvery === 0 || i === n-1){
+    const longeDoUltimo = xAt(n-1) - xAt(i) >= distMin;
+    if((i % xTickEvery === 0 && longeDoUltimo) || i === n-1){
       const t = el('text', {x:xAt(i), y:height-6, class:'axis-label', 'text-anchor': i===n-1 ? 'end' : (i===0?'start':'middle')}, svg);
       t.textContent = lab;
     }
@@ -450,7 +460,7 @@ const nivelLast = DATA.nivel_rio[DATA.nivel_rio.length-1];
 
 const kpis = [
   {label:`Precipitação total · ${anualLast.ano}`, value: Math.round(anualLast.precipitacao_total), unit:'mm', sub:`média 2007–2024: ${fmtInt(DATA.inmet_anual.slice(0,-1).reduce((a,r)=>a+r.precipitacao_total,0)/(DATA.inmet_anual.length-1))} mm`, spark: DATA.inmet_anual.map(r=>r.precipitacao_total)},
-  {label:`Dias de calor ≥35°C · ${anualLast.ano}`, value: anualLast.dias_calor_extremo, unit:'dias', sub:`recorde: ${Math.max(...DATA.inmet_anual.map(r=>r.dias_calor_extremo))} dias (2023)`, spark: DATA.inmet_anual.map(r=>r.dias_calor_extremo)},
+  {label:`Dias de calor ≥35°C · ${anualLast.ano}`, value: anualLast.dias_calor_extremo, unit:'dias', sub:`dados até 18/08/2025 · recorde: ${Math.max(...DATA.inmet_anual.map(r=>r.dias_calor_extremo))} dias (2023)`, spark: DATA.inmet_anual.map(r=>r.dias_calor_extremo)},
   {label:`Focos de queimada · ${queimLast.ano}`, value: queimLast.focos, unit:'focos', sub:`pico 2022: ${fmtInt(Math.max(...DATA.queimadas.map(r=>r.focos)))}`, spark: DATA.queimadas.map(r=>r.focos)},
   {label:`Nível do rio agora`, value: Math.round(nivelLast.nivel_cm), unit:'cm', sub:`vazão ${fmtInt(nivelLast.vazao_m3s)} m³/s`, spark: DATA.nivel_rio.map(r=>r.nivel_cm)},
 ];
@@ -515,7 +525,8 @@ const queimByAno = Object.fromEntries(DATA.queimadas.map(r=>[r.ano,r]));
 DATA.inmet_anual.forEach(r => {
   const q = queimByAno[r.ano];
   const tr = document.createElement('tr');
-  tr.innerHTML = `<td>${r.ano}</td><td>${fmtInt(r.precipitacao_total)}</td><td>${fmt1(r.temp_media_anual)}</td><td>${fmt1(r.temp_max_anual)}</td><td>${fmt1(r.temp_min_anual)}</td><td>${r.dias_calor_extremo}</td><td>${r.dias_geada}</td><td>${q ? fmtInt(q.focos) : '—'}</td>`;
+  const parcial = r.ano === 2025 ? '*' : ''; // A809 sem registro depois de 18/08/2025
+  tr.innerHTML = `<td>${r.ano}</td><td>${fmtInt(r.precipitacao_total)}</td><td>${fmt1(r.temp_media_anual)}${parcial}</td><td>${fmt1(r.temp_max_anual)}${parcial}</td><td>${fmt1(r.temp_min_anual)}${parcial}</td><td>${r.dias_calor_extremo}${parcial}</td><td>${r.dias_geada}${parcial}</td><td>${q ? fmtInt(q.focos) : '—'}</td>`;
   tbody.appendChild(tr);
 });
 table.appendChild(tbody);
