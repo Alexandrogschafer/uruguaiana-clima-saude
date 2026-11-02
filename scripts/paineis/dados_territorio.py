@@ -222,6 +222,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
     poc_l, poc_r = pocos()
     app_l, app_r = app()
     notas, kpis_uso, kpis_meio = notas_kpis(anos, serie, classes, meio, poc_l, poc_r, app_l, app_r)
+    urb = urbanizadas()
     n = ids()
     c = dict(codigo_ibge=codigo_ibge, script=SCRIPT, selo="conferido")
     defs = [
@@ -256,9 +257,13 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
          [E["app"], E["app_ocup"]], "áreas por curso e ocupação lidas dos metadados de app_hidrica.py"),
         (n["urb"], ["TB16"], dict(titulo="Áreas urbanizadas por tipo e densidade (2019)", fonte_curta="IBGE", fonte="IBGE, Áreas Urbanizadas do Brasil 2019",
                                    unidade_espacial="município", unidade_medida="km²", periodo={"inicio": "2019", "fim": "2019"}, dados_ate="2019",
-                                   avisos=[{"tipo": "metodo", "texto": "produto gerado; ainda sem bloco na tela"}],
-                                   colunas=[{"nome": "tipo", "tipo": "texto"}, {"nome": "densidade", "tipo": "texto"}, {"nome": "area_km2", "tipo": "float"}], dados=urbanizadas(),
-                                   extras={"fonte_rodape": FONTES["urb"], "telas": []}),
+                                   avisos=[{"tipo": "metodo", "texto": "área da parte de cada polígono dentro do limite municipal (polígonos que tocam o município, cortados pelo limite)"}],
+                                   colunas=[{"nome": "tipo", "tipo": "texto"}, {"nome": "densidade", "tipo": "texto"}, {"nome": "area_km2", "tipo": "float"}], dados=urb,
+                                   extras={"fonte_rodape": FONTES["urb"], "telas": ["territorio"], "notas": {
+                                       "ter_meta_urbanizadas": f"IBGE · 2019 · {len(urb)} classes · km²",
+                                       "ter_nota_urbanizadas": (f"Manchas de área urbanizada do IBGE (Áreas Urbanizadas do Brasil, 2019) dentro do município, por tipo e "
+                                                                f"densidade — {br(sum(r['area_km2'] for r in urb), 1, 0)} km² no total. Complementa a classe \"Área "
+                                                                "Urbanizada\" do MapBiomas acima, com outro método e outra data.")}}),
          [E["urbanizadas"]], "soma das áreas (km², EPSG:31981) por tipo e densidade"),
     ]
     out = {}

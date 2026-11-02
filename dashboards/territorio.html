@@ -61,6 +61,11 @@
     <summary data-nota="ter_resumo_uso"></summary>
     <div class="table-scroll"><table class="data-table" id="tabelaUso"></table></div>
   </details>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-head"><span class="card-title">Áreas urbanizadas (IBGE 2019) — área por classe</span><span class="card-meta" data-nota="ter_meta_urbanizadas"></span></div>
+    <p class="nota-grafico" style="margin:2px 0 8px;" data-nota="ter_nota_urbanizadas"></p>
+    <div class="card-body"><div id="chart-urbanizadas"></div><div class="chart-tooltip" id="tt-urbanizadas"></div><div id="aviso-urbanizadas"></div></div>
+  </div>
 
   <div class="section-head"><h2>Meio físico</h2><div class="section-rule"></div></div>
   <p class="section-note" data-nota="ter_nota_meio"></p>
@@ -101,10 +106,10 @@
    Nenhum número fica neste arquivo: textos e indicadores vêm de "notas" e "kpis_*". */
 const P = window.Paineis;
 const IDS = {serie: 'uso-solo_mapbiomas_1985-2024_classes', classes: 'uso-solo_mapbiomas_2024_todas-classes', meio: 'meio-fisico_ibge-bdia_atual_classes',
-             pocos: 'pocos_siagas_atual_aquifero', app: 'app-hidrica_ana-bho-mapbiomas_2024_curso'};
+             pocos: 'pocos_siagas_atual_aquifero', app: 'app-hidrica_ana-bho-mapbiomas_2024_curso', urb: 'areas-urbanizadas_ibge_2019_classe'};
 const BLOCOS = {serie: ['chart-campestre', 'chart-arroz', 'chart-urbano', 'chart-mosaico', 'chart-outras-lavouras', 'chart-florestal', 'tabelaUso'],
                 classes: ['chart-uso-solo-2024'], meio: ['chart-geologia', 'chart-geomorfologia', 'chart-vegetacao-bdia', 'chart-pedologia', 'tabelaPedologia'],
-                pocos: ['chart-pocos-aquifero'], app: ['chart-app-curso']};
+                pocos: ['chart-pocos-aquifero'], app: ['chart-app-curso'], urb: ['chart-urbanizadas']};
 
 async function iniciar(){
   const c = {};
@@ -112,7 +117,8 @@ async function iniciar(){
     c[k] = await P.carregar(id);
     if(!c[k]) BLOCOS[k].forEach(b => P.erroBloco(document.getElementById(b), id));
   }
-  const {serie, classes, meio, pocos, app} = c;
+  const {serie, classes, meio, pocos, app, urb} = c;
+  if(urb) P.aviso(document.getElementById('aviso-urbanizadas'), urb.meta.avisos);
   const anos = serie ? serie.dados.map(r => r.ano) : [];
   P.iniciarFiltros({listas: {periodo: anos.length ? {inicio: Math.min(...anos), fim: Math.max(...anos)} : undefined}});
   P.montarCabecalho();
@@ -154,6 +160,13 @@ async function iniciar(){
     if(pocos){
       renderBarChart('chart-pocos-aquifero', 'tt-pocos-aquifero', {
         labels: pocos.dados.map(r => r.aquifero), data: pocos.dados.map(r => r.pocos), color: blue, seriesName: P.dica('poços', pocos.meta.fonte_curta), height: 190, barMax: 60,
+      });
+    }
+    if(urb){
+      // rótulo: tipo e, quando difere, a densidade (ex.: "Área urbanizada (densa)")
+      renderHBarChart('chart-urbanizadas', 'tt-urbanizadas', {
+        labels: urb.dados.map(r => r.tipo === r.densidade ? r.tipo : `${r.tipo} (${r.densidade.toLowerCase()})`), data: urb.dados.map(r => r.area_km2),
+        color: blue, seriesName: P.dica('km²', urb.meta.fonte_curta), xFormat: v => fmt1(v)+' km²',
       });
     }
     if(app){

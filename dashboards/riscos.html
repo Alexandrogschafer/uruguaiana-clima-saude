@@ -63,6 +63,20 @@
   </div>
   <p class="section-note" style="margin-top:6px;" data-nota="ris_nota_s2id_2"></p>
 
+  <div class="section-head"><h2>Setorização e áreas de risco</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="ris_nota_setor"></p>
+  <div class="card">
+    <div class="card-head"><span class="card-title">Setorização de risco (SGB)</span><span class="card-meta" data-nota="ris_meta_setor"></span></div>
+    <div id="aviso-setor"></div>
+    <div class="tabela-cartoes-wrap" style="margin-top:10px;"><table class="data-table tabela-cartoes" id="tabelaSetores"></table></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="card-title">Áreas de risco do IBGE (BATER, 2018)</span><span class="card-meta" id="meta-bater"></span></div>
+    <p class="nota-grafico" style="margin:2px 0 8px;" data-nota="ris_nota_bater"></p>
+    <div id="aviso-bater"></div>
+    <div class="tabela-cartoes-wrap" style="margin-top:10px;"><table class="data-table tabela-cartoes" id="tabelaBater"></table></div>
+  </div>
+
   <div class="section-head"><h2>Continuidade de Energia — ANEEL</h2><div class="section-rule"></div></div>
   <p class="section-note" data-nota="ris_nota_aneel"></p>
   <div class="kpi-row" id="kpiRowAneel"></div>
@@ -73,6 +87,12 @@
       <div class="card-body"><div id="chart-aneel-fec"></div><div class="chart-tooltip" id="tt-aneel-fec"></div></div></div>
   </div>
   <p class="section-note" style="margin-top:-6px;" data-nota="ris_nota_aneel_2"></p>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-head"><span class="card-title">Saneamento e malha estadual: indisponíveis</span><span class="card-meta" id="meta-indisp"></span></div>
+    <p class="nota-grafico" style="margin:2px 0 8px;" data-nota="ris_nota_indisp"></p>
+    <div id="aviso-indisp"></div>
+    <div class="tabela-cartoes-wrap" style="margin-top:10px;"><table class="data-table tabela-cartoes" id="tabelaIndisp"></table></div>
+  </div>
 
   <p class="section-note" style="margin-top:28px;" data-nota="ris_leitura"></p>
   <footer id="rodape-comum"></footer>
@@ -89,8 +109,11 @@
 /* Tela de riscos, desastres e infraestrutura: lê os produtos de data/paineis/ (scripts/paineis/dados_riscos.py).
    Nenhum número fica neste arquivo: textos e indicadores vêm de "notas" e "kpis_*". */
 const P = window.Paineis;
-const IDS = {s2id: 'desastres_s2id_2014-2025_anual', cprm: 'risco-geologico_cprm_2021_classe', aneel: 'energia_aneel_2000-2026_anual'};
-const BLOCOS = {s2id: ['chart-s2id-anual'], cprm: ['chart-risco-inund', 'chart-risco-mov', 'tabelaRisco'], aneel: ['chart-aneel-dec', 'chart-aneel-fec']};
+const setText = (id, t) => { const e = document.getElementById(id); if(e) e.textContent = t; };
+const IDS = {s2id: 'desastres_s2id_2014-2025_anual', cprm: 'risco-geologico_cprm_2021_classe', aneel: 'energia_aneel_2000-2026_anual',
+             setor: 'setorizacao-risco_sgb_2014_setor', bater: 'areas-de-risco_ibge_2018_bater', indisp: 'infraestrutura_indisponivel_atual'};
+const BLOCOS = {s2id: ['chart-s2id-anual'], cprm: ['chart-risco-inund', 'chart-risco-mov', 'tabelaRisco'], aneel: ['chart-aneel-dec', 'chart-aneel-fec'],
+                setor: ['tabelaSetores'], bater: ['tabelaBater'], indisp: ['tabelaIndisp']};
 
 async function iniciar(){
   const c = {};
@@ -98,7 +121,7 @@ async function iniciar(){
     c[k] = await P.carregar(id);
     if(!c[k]) BLOCOS[k].forEach(b => P.erroBloco(document.getElementById(b), id));
   }
-  const {s2id, cprm, aneel} = c;
+  const {s2id, cprm, aneel, setor, bater, indisp} = c;
   const anos = [s2id, aneel].filter(Boolean).flatMap(p => p.dados.map(r => r.ano));
   P.iniciarFiltros({listas: {periodo: anos.length ? {inicio: Math.min(...anos), fim: Math.max(...anos)} : undefined}});
   P.montarCabecalho();
@@ -161,6 +184,31 @@ async function iniciar(){
     });
     t.appendChild(tb);
   }
+  // tabela que vira cartões no celular; contagens suprimidas pelo gerador aparecem como "<5"
+  function tabelaCartoes(id, prod, colunas){
+    if(!prod) return;
+    const t = document.getElementById(id);
+    t.innerHTML = `<thead><tr>${colunas.map(c => `<th class="${c.num ? '' : 'col-texto'}">${c.rotulo}</th>`).join('')}</tr></thead>`;
+    const tb = document.createElement('tbody');
+    prod.dados.forEach((r, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = colunas.map((c, j) => {
+        const v = c.num ? P.valor(r[c.campo], fmtInt, P.estaSuprimido(prod.meta, i, c.campo)) : P.valor(r[c.campo]);
+        return `<td class="${c.num ? '' : 'col-texto'}${j === 0 ? ' col-nome' : ''}" data-rotulo="${c.rotulo}">${v}</td>`;
+      }).join('');
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+  }
+  tabelaCartoes('tabelaSetores', setor, [{campo: 'setor', rotulo: 'Setor'}, {campo: 'local', rotulo: 'Local'}, {campo: 'tipologia', rotulo: 'Tipo de risco'},
+    {campo: 'grau_risco', rotulo: 'Grau de risco'}, {campo: 'grau_vulnerabilidade', rotulo: 'Vulnerabilidade'},
+    {campo: 'edificacoes', rotulo: 'Edificações', num: true}, {campo: 'domicilios', rotulo: 'Domicílios', num: true}, {campo: 'pessoas', rotulo: 'Pessoas', num: true}]);
+  tabelaCartoes('tabelaBater', bater, [{campo: 'area_bater', rotulo: 'Área (código BATER)'}, {campo: 'origem', rotulo: 'Origem'}, {campo: 'observacao', rotulo: 'Observação'}]);
+  tabelaCartoes('tabelaIndisp', indisp, [{campo: 'tema', rotulo: 'Tema'}, {campo: 'fonte', rotulo: 'Fonte'}, {campo: 'motivo', rotulo: 'Motivo registrado na coleta'}]);
+  if(setor) P.aviso(document.getElementById('aviso-setor'), setor.meta.avisos);
+  if(bater){ setText('meta-bater', bater.meta.fonte_curta); P.aviso(document.getElementById('aviso-bater'), bater.meta.avisos); }
+  if(indisp){ setText('meta-indisp', indisp.meta.fonte_curta); P.aviso(document.getElementById('aviso-indisp'), indisp.meta.avisos); }
+
   P.montarChips('chips-filtro', {periodo: 'Período'});
   document.addEventListener('filtros:mudou', () => { draw(); P.montarChips('chips-filtro', {periodo: 'Período'}); });
 

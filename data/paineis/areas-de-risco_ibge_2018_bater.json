@@ -19,12 +19,8 @@
  "selo": "conferido",
  "avisos": [
   {
-   "tipo": "metodo",
+   "tipo": "em_confirmacao",
    "texto": "só a lista das áreas; os totais de população publicados no documento do IBGE ficam fora até a conferência da transcrição"
-  },
-  {
-   "tipo": "metodo",
-   "texto": "produto gerado; ainda sem bloco na tela"
   }
  ],
  "supressao": {
@@ -35,7 +31,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T12:52:10Z",
+ "gerado_em": "2026-11-02T13:24:50Z",
  "script": "scripts/paineis/dados_riscos.py",
  "colunas": [
   {
@@ -52,7 +48,9 @@
   }
  ],
  "fonte_rodape": "Áreas de risco — IBGE, População em áreas de risco no Brasil (2018), base BATER",
- "telas": [],
+ "telas": [
+  "riscos"
+ ],
  "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)",
  "dados": [
   {

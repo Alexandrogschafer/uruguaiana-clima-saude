@@ -4,7 +4,7 @@ Produtos da tela de riscos, desastres e infraestrutura (T6) em data/paineis/:
     reconhecimentos federais  data/processed/desastres_s2id_2013-2026_municipal.csv (+ metadado)
     suscetibilidade CPRM      resumo por classe no metadado data/raw/vetor/risco-geologico_cprm_2021_vetorial.json
     continuidade de energia   data/raw/continuidade-energia_aneel_2000-2026_conjunto-consumidor.csv
-    setorização de risco SGB  data/raw/vetor/setorizacao-risco_sgb_atual_vetorial.geojson (2014; produto gerado, ainda sem bloco na tela)
+    setorização de risco SGB  data/raw/vetor/setorizacao-risco_sgb_atual_vetorial.geojson (2014)
     áreas de risco IBGE 2018  data/raw/vetor/populacao-areas-de-risco_ibge_2018_bater.zip (só as áreas; os totais de população
                               publicados ficam fora porque a transcrição do documento está pendente de conferência)
     indisponíveis             data/raw/saneamento_snis_indisponivel.json, data/raw/malha-viaria_daer_indisponivel.json
@@ -122,8 +122,11 @@ def bater(codigo_ibge):
 
 
 def indisponiveis():
-    return [{"tema": "saneamento", "fonte": _j(E["snis"])["fonte"], "situacao": "não baixado: sem download programático sem login gov.br"},
-            {"tema": "malha estadual", "fonte": _j(E["daer"])["fonte"], "situacao": "não baixado: sem download vetorial programático"}]
+    # "motivo" é o campo "resultado" registrado na coleta (metadado de indisponibilidade)
+    return [{"tema": "saneamento", "fonte": _j(E["snis"])["fonte"], "situacao": "não baixado: sem download programático sem login gov.br",
+             "motivo": _j(E["snis"])["resultado"]},
+            {"tema": "malha estadual", "fonte": _j(E["daer"])["fonte"], "situacao": "não baixado: sem download vetorial programático",
+             "motivo": _j(E["daer"])["resultado"]}]
 
 
 def notas_kpis(s_l, s_x, c_l, c_t, a_l, distrib):
@@ -202,6 +205,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
     c_l, c_t = cprm()
     a_l, distrib = aneel()
     st_l, ano_setor = setorizacao()
+    bat_l = bater(codigo_ibge)
     notas, kpis_s2id, kpis_aneel = notas_kpis(s_l, s_x, c_l, c_t, a_l, distrib)
     n = ids(codigo_ibge)
     c = dict(codigo_ibge=codigo_ibge, script=SCRIPT, selo="conferido")
@@ -227,22 +231,30 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
          [E["aneel"]], "por mês, média de DEC e FEC ponderada por NumCon dos conjuntos; soma dos meses no ano"),
         (n["setor"], ["RD03"], dict(titulo=f"Setores de risco do SGB ({ano_setor})", fonte_curta="SGB", fonte="SGB, setorização de risco (camada pública)", unidade_espacial="setor de risco",
                                      unidade_medida="edificações; domicílios; pessoas", periodo={"inicio": str(ano_setor), "fim": str(ano_setor)}, dados_ate=str(ano_setor),
-                                     avisos=[{"tipo": "metodo", "texto": "produto gerado; ainda sem bloco na tela"}], colunas=col(st_l), dados=st_l,
-                                     campos_contagem=["edificacoes", "domicilios", "pessoas"], extras=ext("setor", telas=[])),
+                                     avisos=[{"tipo": "metodo", "texto": "contagens do levantamento de campo do SGB por setor; valores de 1 a 4 aparecem como <5"}],
+                                     colunas=col(st_l), dados=st_l, campos_contagem=["edificacoes", "domicilios", "pessoas"],
+                                     extras=ext("setor", notas={
+                                         "ris_meta_setor": f"SGB · {ano_setor} · {len(st_l)} setores",
+                                         "ris_nota_setor": (f"Setores de risco mapeados pelo SGB em {ano_setor} na área urbana, com tipologia, grau de risco e de "
+                                                            "vulnerabilidade e as contagens de edificações, domicílios e pessoas do levantamento. Contagens de 1 "
+                                                            "a 4 aparecem como \"<5\"."),
+                                         "ris_nota_bater": (f"Áreas de risco da base territorial do IBGE (BATER, 2018) no município: {len(bat_l)} áreas. Os totais de "
+                                                            "população publicados no documento de origem estão em conferência e não aparecem aqui."),
+                                         "ris_nota_indisp": ("Saneamento (SNIS) e malha rodoviária estadual (DAER-RS) não puderam ser baixados por script; o motivo "
+                                                             "registrado na coleta aparece abaixo.")})),
          [E["setor"]], "atributos por setor, sem geometria; supressão de comum.py nas contagens"),
         (n["bater"], ["RD04"], dict(titulo="Áreas de risco do IBGE (BATER 2018) no município", fonte_curta="IBGE", fonte="IBGE, População em áreas de risco no Brasil (2018), base BATER",
                                      unidade_espacial="área de risco", unidade_medida="áreas", periodo={"inicio": "2018", "fim": "2018"}, dados_ate="2018",
-                                     avisos=[{"tipo": "metodo", "texto": "só a lista das áreas; os totais de população publicados no documento do IBGE ficam fora até a conferência da transcrição"},
-                                             {"tipo": "metodo", "texto": "produto gerado; ainda sem bloco na tela"}],
+                                     avisos=[{"tipo": "em_confirmacao", "texto": "só a lista das áreas; os totais de população publicados no documento do IBGE ficam fora até a conferência da transcrição"}],
                                      colunas=[{"nome": "area_bater", "tipo": "texto"}, {"nome": "origem", "tipo": "texto"}, {"nome": "observacao", "tipo": "texto"}],
-                                     dados=bater(codigo_ibge), extras=ext("bater", telas=[])),
+                                     dados=bat_l, extras=ext("bater")),
          [E["bater"]], "áreas BATER do município (sem geometria)"),
         (n["indisp"], ["IF09", "IF10"], dict(titulo="Saneamento e malha estadual: fontes indisponíveis", fonte_curta="SNIS; DAER-RS", fonte="SNIS e DAER-RS (situação de acesso)",
                                               unidade_espacial="município", unidade_medida="—", periodo={"inicio": "atual", "fim": "atual"}, dados_ate="2026-08-12",
-                                              avisos=[{"tipo": "lacuna", "texto": "dados não disponíveis para download programático"},
-                                                      {"tipo": "metodo", "texto": "produto gerado; ainda sem bloco na tela"}],
-                                              colunas=[{"nome": "tema", "tipo": "texto"}, {"nome": "fonte", "tipo": "texto"}, {"nome": "situacao", "tipo": "texto"}],
-                                              dados=indisponiveis(), extras=ext("indisp", telas=[])),
+                                              avisos=[{"tipo": "lacuna", "texto": "dados não disponíveis para download programático"}],
+                                              colunas=[{"nome": "tema", "tipo": "texto"}, {"nome": "fonte", "tipo": "texto"}, {"nome": "situacao", "tipo": "texto"},
+                                                       {"nome": "motivo", "tipo": "texto"}],
+                                              dados=indisponiveis(), extras=ext("indisp")),
          [E["snis"], E["daer"]], "situação registrada nos metadados de indisponibilidade"),
     ]
     out = {}

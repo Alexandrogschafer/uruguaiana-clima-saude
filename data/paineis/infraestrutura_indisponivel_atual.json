@@ -22,10 +22,6 @@
   {
    "tipo": "lacuna",
    "texto": "dados não disponíveis para download programático"
-  },
-  {
-   "tipo": "metodo",
-   "texto": "produto gerado; ainda sem bloco na tela"
   }
  ],
  "supressao": {
@@ -36,7 +32,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T12:52:10Z",
+ "gerado_em": "2026-11-02T13:24:50Z",
  "script": "scripts/paineis/dados_riscos.py",
  "colunas": [
   {
@@ -50,21 +46,29 @@
   {
    "nome": "situacao",
    "tipo": "texto"
+  },
+  {
+   "nome": "motivo",
+   "tipo": "texto"
   }
  ],
  "fonte_rodape": "Saneamento (SNIS) e malha estadual (DAER-RS) — indisponíveis para download programático",
- "telas": [],
+ "telas": [
+  "riscos"
+ ],
  "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)",
  "dados": [
   {
    "tema": "saneamento",
    "fonte": "SNIS (Sistema Nacional de Informações sobre Saneamento) — Ministério das Cidades / MDR",
-   "situacao": "não baixado: sem download programático sem login gov.br"
+   "situacao": "não baixado: sem download programático sem login gov.br",
+   "motivo": "NÃO baixado — nenhuma rota investigada permite download programático simples sem login ou sem automação de navegador"
   },
   {
    "tema": "malha estadual",
    "fonte": "DAER-RS (Departamento Autônomo de Estradas de Rodagem do Rio Grande do Sul)",
-   "situacao": "não baixado: sem download vetorial programático"
+   "situacao": "não baixado: sem download vetorial programático",
+   "motivo": "NÃO baixado — nenhuma rota investigada permite download vetorial programático"
   }
  ]
 }

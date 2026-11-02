@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-02T13:23:47Z",
+ "gerado_em": "2026-11-02T13:37:33Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_1974-2024_anual",
@@ -44,10 +44,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2018",
-   "gerado_em": "2026-11-02T12:52:10Z",
-   "telas": [],
-   "bytes": 1733,
-   "sha256": "ffacc7ab2e2560cde655de2e695212ea67ddbcf3499e29eac164419194971e97"
+   "gerado_em": "2026-11-02T13:24:50Z",
+   "telas": [
+    "riscos"
+   ],
+   "bytes": 1670,
+   "sha256": "81cf5d6e6d7f7c0516fcacec0dd5438d456148dd1d4a0195a4a7a531d9738c39"
   },
   {
    "id": "areas-urbanizadas_ibge_2019_classe",
@@ -58,10 +60,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2019",
-   "gerado_em": "2026-11-02T12:47:36Z",
-   "telas": [],
-   "bytes": 1604,
-   "sha256": "b92d05be25c8231872606af0786c452c884188ef0bbf2312335447ce4043b85b"
+   "gerado_em": "2026-11-02T13:24:50Z",
+   "telas": [
+    "territorio"
+   ],
+   "bytes": 2040,
+   "sha256": "66aadf4f3978c86afb32ccdc2487729e52dec0318c4b4b9cd60b19f9bf28d7e4"
   },
   {
    "id": "bolsa-familia_mds_2026-07_mes",
@@ -317,10 +321,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2026-08-12",
-   "gerado_em": "2026-11-02T12:52:10Z",
-   "telas": [],
-   "bytes": 1762,
-   "sha256": "7aa6c7f5b4097e0aee22000a9f911a711501334e7244e8da4cdb762f3a9f1a7e"
+   "gerado_em": "2026-11-02T13:24:50Z",
+   "telas": [
+    "riscos"
+   ],
+   "bytes": 1977,
+   "sha256": "9d782482162aee60f95000e92617c9734e69940ee5e5178e423b6602e9a7ff6f"
   },
   {
    "id": "meio-fisico_ibge-bdia_atual_classes",
@@ -527,10 +533,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2014",
-   "gerado_em": "2026-11-02T12:52:10Z",
-   "telas": [],
-   "bytes": 2530,
-   "sha256": "3cf89dcfd3cbdd620d95f2bafc3be2889815eb35e51475e864798dc60df9b42b"
+   "gerado_em": "2026-11-02T13:37:33Z",
+   "telas": [
+    "riscos"
+   ],
+   "bytes": 3274,
+   "sha256": "160bfa510043014263dbf09e13e129484be3f815f51a8b8ed228850803b5490e"
   },
   {
    "id": "uso-solo_mapbiomas_1985-2024_classes",

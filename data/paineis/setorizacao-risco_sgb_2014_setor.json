@@ -20,7 +20,7 @@
  "avisos": [
   {
    "tipo": "metodo",
-   "texto": "produto gerado; ainda sem bloco na tela"
+   "texto": "contagens do levantamento de campo do SGB por setor; valores de 1 a 4 aparecem como <5"
   }
  ],
  "supressao": {
@@ -35,7 +35,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T12:52:10Z",
+ "gerado_em": "2026-11-02T13:37:33Z",
  "script": "scripts/paineis/dados_riscos.py",
  "colunas": [
   {
@@ -75,8 +75,16 @@
   }
  ],
  "fonte_rodape": "Setorização de risco — SGB, 2014",
- "telas": [],
+ "telas": [
+  "riscos"
+ ],
  "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)",
+ "notas": {
+  "ris_meta_setor": "SGB · 2014 · 4 setores",
+  "ris_nota_setor": "Setores de risco mapeados pelo SGB em 2014 na área urbana, com tipologia, grau de risco e de vulnerabilidade e as contagens de edificações, domicílios e pessoas do levantamento. Contagens de 1 a 4 aparecem como \"<5\".",
+  "ris_nota_bater": "Áreas de risco da base territorial do IBGE (BATER, 2018) no município: 3 áreas. Os totais de população publicados no documento de origem estão em conferência e não aparecem aqui.",
+  "ris_nota_indisp": "Saneamento (SNIS) e malha rodoviária estadual (DAER-RS) não puderam ser baixados por script; o motivo registrado na coleta aparece abaixo."
+ },
  "dados": [
   {
    "setor": "RS_UR_SR_01_CPRM",

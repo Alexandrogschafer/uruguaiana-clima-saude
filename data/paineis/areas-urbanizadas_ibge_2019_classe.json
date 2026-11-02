@@ -20,7 +20,7 @@
  "avisos": [
   {
    "tipo": "metodo",
-   "texto": "produto gerado; ainda sem bloco na tela"
+   "texto": "área da parte de cada polígono dentro do limite municipal (polígonos que tocam o município, cortados pelo limite)"
   }
  ],
  "supressao": {
@@ -31,7 +31,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T12:47:36Z",
+ "gerado_em": "2026-11-02T13:24:50Z",
  "script": "scripts/paineis/dados_territorio.py",
  "colunas": [
   {
@@ -48,7 +48,13 @@
   }
  ],
  "fonte_rodape": "Áreas urbanizadas — IBGE 2019",
- "telas": [],
+ "telas": [
+  "territorio"
+ ],
+ "notas": {
+  "ter_meta_urbanizadas": "IBGE · 2019 · 6 classes · km²",
+  "ter_nota_urbanizadas": "Manchas de área urbanizada do IBGE (Áreas Urbanizadas do Brasil, 2019) dentro do município, por tipo e densidade — 32,7 km² no total. Complementa a classe \"Área Urbanizada\" do MapBiomas acima, com outro método e outra data."
+ },
  "dados": [
   {
    "tipo": "Loteamento vazio",
