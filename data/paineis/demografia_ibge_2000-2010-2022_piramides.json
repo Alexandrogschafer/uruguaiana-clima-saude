@@ -3,7 +3,7 @@
  "id": "demografia_ibge_2000-2010-2022_piramides",
  "codigo_ibge": "4322400",
  "ativos": [
-  "PD03"
+  "PD14"
  ],
  "titulo": "Pirâmides etárias dos censos",
  "fonte_curta": "IBGE, Censo",
@@ -15,7 +15,7 @@
   "fim": "2022"
  },
  "dados_ate": "2022",
- "autorizacao": "exceção por premissa: PD03 (pirâmides de 2000, 2010 e 2022 direto das tabelas SIDRA 200 e 9514 (dado oficial, já exibido no painel de demografia); a tabela de docs/ continua pendente e não é usada)",
+ "autorizacao": "livre",
  "selo": "conferido",
  "avisos": [
   {
@@ -31,7 +31,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T12:45:00Z",
+ "gerado_em": "2026-11-02T13:23:46Z",
  "script": "scripts/paineis/dados_populacao.py",
  "colunas": [
   {

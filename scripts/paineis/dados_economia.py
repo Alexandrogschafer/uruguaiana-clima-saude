@@ -46,8 +46,6 @@ CNAE = {"A": "Agropecuária", "B": "Ind. extrativa", "C": "Ind. transformação"
         "O": "Administração pública", "P": "Educação", "Q": "Saúde/ass. social", "R": "Artes/cultura", "S": "Outros serviços",
         "T": "Serviços domésticos", "U": "Organismos internacionais"}
 RAIS_TOPO = 8
-# faixa escrita à mão no painel anterior; a série tem mínimo de 13,03% (não reconstrói "14")
-TRANSCRITO_VAB = "14–27"
 FAIXAS_IDHM = [(0.800, "muito alto", "0,800–1"), (0.700, "alto", "0,700–0,799"), (0.600, "médio", "0,600–0,699"), (0.500, "baixo", "0,500–0,599"), (0.0, "muito baixo", "0–0,499")]
 FONTES = {
     "censo": "Censo — IBGE 2022 (Agregados por Setores Censitários + SIDRA)",
@@ -202,7 +200,7 @@ def notas_kpis(d: dict):
         "eco_nota_rais": (f"RAIS não tem série histórica baixada nesta rodada (só o ano mais recente — o arquivo de estabelecimentos nacional tem ~3GB "
                           "por ano) — funciona como retrato do estoque atual ao lado da série mensal de fluxo do CAGED acima, não como tendência "
                           f"própria. Participação da Agropecuária no emprego formal ({br(100 * agro_rais / total_rais, 1, 0)}%) é menor que sua "
-                          f"participação no PIB ({TRANSCRITO_VAB}%), padrão esperado: agricultura "
+                          f"participação no PIB ({br(agro_min)}–{br(agro['vab_agropecuaria_pct'])}%), padrão esperado: agricultura "
                           "mecanizada é intensiva em capital, não em mão de obra."),
         "eco_resumo_rais": f"Ver RAIS {d['rais_ano']} completa por seção CNAE ({len(rais)} seções)",
         "eco_nota_vulnerabilidade": ("Desenvolvimento humano (IDHM, Atlas Brasil/PNUD) e cobertura de assistência social (CadÚnico e Bolsa Família, "
@@ -304,8 +302,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
          [e["censo"]], "soma da população e contagem de setores por situação; indicadores municipais do mesmo arquivo; supressão de comum.py nas populações"),
         (n["pib"], ["EV01"], dict(titulo="PIB per capita e composição do VAB", fonte_curta="IBGE/SIDRA", fonte="IBGE, PIB dos Municípios (SIDRA tabela 5938)",
                                    unidade_medida="R$; % do VAB", periodo={"inicio": str(d["pib"][0]["ano"]), "fim": str(d["pib"][-1]["ano"])}, dados_ate=str(d["pib"][-1]["ano"]),
-                                   avisos=[{"tipo": "lacuna", "texto": "ano sem população não tem PIB per capita; VAB por atividade só até o último ano publicado"},
-                                           {"tipo": "metodo", "texto": "valor transcrito do painel anterior; fonte de origem ainda não regerada por script: faixa da agropecuária no VAB \"" + TRANSCRITO_VAB + "%\" na nota da RAIS (a série vai de 13,03% a 27,14%)"}],
+                                   avisos=[{"tipo": "lacuna", "texto": "ano sem população não tem PIB per capita; VAB por atividade só até o último ano publicado"}],
                                    colunas=col(d["pib"]), dados=d["pib"], extras=ext("pib", kpis_economia=kpis["kpis_economia"])),
          [e["pib_pc"], e["pib"]], "PIB per capita do CSV processado; percentuais do VAB da tabela 5938; null onde a fonte não publica"),
         (n["pam"], ["EV02"], dict(titulo="Área colhida (arroz, soja) e efetivo de rebanho (bovino, ovino)", fonte_curta="IBGE PAM/PPM", fonte="IBGE, PAM (tabela 5457) e PPM (tabela 3939)",

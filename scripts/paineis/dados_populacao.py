@@ -14,7 +14,9 @@ Grava:
     populacao_ibge_<inicio>-<fim>_anual        população total, censo ou estimativa
     demografia_ibge_<inicio>-<fim>_indicadores  crescimento, envelhecimento, dependência,
                                                urbano e rural, crianças 0-4, idosos 60+
-    demografia_ibge_<anos>_piramides           pirâmides etárias dos 3 censos com 80+ aberto
+    demografia_ibge_<anos>_piramides           pirâmides etárias dos 3 censos com 80+ aberto (ativo PD14:
+                                               pirâmides etárias oficiais do IBGE, SIDRA 200 e 9514; o PD03, tabela
+                                               do estudo de dinâmica populacional, segue pendente e fora das telas)
 
 Os textos das notas e dos indicadores vão no campo "notas"/"kpis" do produto,
 com os números calculados aqui a partir dos dados (nenhum número no HTML).
@@ -204,7 +206,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
                                             entradas=[e["indicadores"]], forcar=forcar, extras_metadado={"supressao_nota": NOTA_SUPRESSAO})
     if not so or so == nomes["piramides"]:
         p = comum.montar_produto(
-            id=nomes["piramides"], ativos=["PD03"], titulo="Pirâmides etárias dos censos", fonte_curta="IBGE, Censo",
+            id=nomes["piramides"], ativos=["PD14"], titulo="Pirâmides etárias dos censos", fonte_curta="IBGE, Censo",
             fonte="IBGE, Censos Demográficos: SIDRA tabela 200 (2000 e 2010) e tabela 9514 (2022)", unidade_medida="habitantes",
             periodo={"inicio": str(ANOS_PIRAMIDE[0]), "fim": str(ANOS_PIRAMIDE[-1])}, dados_ate=str(ANOS_PIRAMIDE[-1]),
             avisos=[{"tipo": "metodo", "texto": "célula vazia na tabela 200 do SIDRA é o \"-\" do IBGE (zero); conferido contra o total do grupo"}],

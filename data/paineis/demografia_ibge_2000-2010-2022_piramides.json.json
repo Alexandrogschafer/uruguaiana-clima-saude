@@ -18,12 +18,12 @@
   "script": "scripts/paineis/dados_populacao.py",
   "codigo_ibge": "4322400",
   "ativos": [
-    "PD03"
+    "PD14"
   ],
-  "autorizacao": "exceção por premissa: PD03 (pirâmides de 2000, 2010 e 2022 direto das tabelas SIDRA 200 e 9514 (dado oficial, já exibido no painel de demografia); a tabela de docs/ continua pendente e não é usada)",
+  "autorizacao": "livre",
   "selo": "conferido",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-02T12:45:00Z",
+  "data_processamento": "2026-11-02T13:23:46Z",
   "supressao_nota": "supressão primária não aplicada: séries municipais oficiais do IBGE, já publicadas pela fonte; nenhum agregado abaixo do município",
   "inconsistencias_da_fonte": [
     "2000, 75 a 79 anos: total 1278, homens + mulheres 1277"

@@ -29,7 +29,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T12:59:46Z",
+ "gerado_em": "2026-11-02T13:23:47Z",
  "script": "scripts/paineis/dados_economia.py",
  "colunas": [
   {
@@ -67,7 +67,7 @@
   "eco_meta_caged_saldo": "acumulado desde 2020-01",
   "eco_nota_caged": "Novo CAGED (via eSocial, a partir de 2020) — período anterior fica fora de escopo por quebra metodológica com o CAGED antigo (formulário declaratório), mesmo espírito da quebra já documentada entre Censos do IBGE. Saldo de 2026 (parcial, até junho) puxado para baixo pelo setor Agropecuária — sinal a acompanhar, não uma reversão de tendência confirmada.",
   "eco_meta_rais": "retrato em 31/12/2025 · 24.498 vínculos",
-  "eco_nota_rais": "RAIS não tem série histórica baixada nesta rodada (só o ano mais recente — o arquivo de estabelecimentos nacional tem ~3GB por ano) — funciona como retrato do estoque atual ao lado da série mensal de fluxo do CAGED acima, não como tendência própria. Participação da Agropecuária no emprego formal (12,8%) é menor que sua participação no PIB (14–27%), padrão esperado: agricultura mecanizada é intensiva em capital, não em mão de obra.",
+  "eco_nota_rais": "RAIS não tem série histórica baixada nesta rodada (só o ano mais recente — o arquivo de estabelecimentos nacional tem ~3GB por ano) — funciona como retrato do estoque atual ao lado da série mensal de fluxo do CAGED acima, não como tendência própria. Participação da Agropecuária no emprego formal (12,8%) é menor que sua participação no PIB (13–27%), padrão esperado: agricultura mecanizada é intensiva em capital, não em mão de obra.",
   "eco_resumo_rais": "Ver RAIS 2025 completa por seção CNAE (20 seções)",
   "eco_nota_vulnerabilidade": "Desenvolvimento humano (IDHM, Atlas Brasil/PNUD) e cobertura de assistência social (CadÚnico e Bolsa Família, MDS) — indicadores de contexto municipal único, sem granularidade espacial na fonte, por isso fora do geoportal.",
   "eco_meta_idhm": "Atlas Brasil · 1991–2010",

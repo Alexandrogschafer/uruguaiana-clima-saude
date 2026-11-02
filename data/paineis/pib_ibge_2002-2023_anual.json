@@ -21,10 +21,6 @@
   {
    "tipo": "lacuna",
    "texto": "ano sem população não tem PIB per capita; VAB por atividade só até o último ano publicado"
-  },
-  {
-   "tipo": "metodo",
-   "texto": "valor transcrito do painel anterior; fonte de origem ainda não regerada por script: faixa da agropecuária no VAB \"14–27%\" na nota da RAIS (a série vai de 13,03% a 27,14%)"
   }
  ],
  "supressao": {
@@ -35,7 +31,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T12:59:46Z",
+ "gerado_em": "2026-11-02T13:23:47Z",
  "script": "scripts/paineis/dados_economia.py",
  "colunas": [
   {

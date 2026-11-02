@@ -55,6 +55,10 @@
    "motivo": "bloqueada"
   },
   {
+   "id": "PD03",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
    "id": "PD06",
    "motivo": "depende de conferência no QGIS"
   },

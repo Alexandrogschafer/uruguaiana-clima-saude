@@ -32,7 +32,7 @@ TB30,bloqueada,,,
 TB31,bloqueada,,,
 PD01,livre,,data/processed/populacao-serie-temporal_ibge-sidra_1970-2025_municipal.csv,conferido
 PD02,livre,,data/processed/demografia-indicadores_ibge-sidra_1970-2022_municipal.csv,conferido
-PD03,depende de conferência no QGIS,"pirâmides de 2000, 2010 e 2022 direto das tabelas SIDRA 200 e 9514 (dado oficial, já exibido no painel de demografia); a tabela de docs/ continua pendente e não é usada",docs/dinamica_populacional/tabelas/piramide-etaria_ibge-censo_1970-2022_municipal.csv,conferido
+PD03,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/piramide-etaria_ibge-censo_1970-2022_municipal.csv,
 PD04,livre,,data/geoportal/densidade-populacional.geojson,
 PD05,livre,,data/geoportal/criancas-0-4.geojson,
 PD06,depende de conferência no QGIS,,data/processed/dinamica_populacional/populacao-setores_ibge-censo_2022_setor.gpkg,
@@ -43,6 +43,7 @@ PD10,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/domicil
 PD11,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/populacao-faixa-distancia-centro_ibge-censo_2010-2022_area-comparavel.csv,
 PD12,bloqueada,,,
 PD13,depende de conferência no QGIS,,docs/dinamica_populacional/tabelas/enderecos-qualidade_ibge-cnefe_2022_municipal.csv,
+PD14,livre,,data/raw/populacao_ibge-sidra-tabela200_1970-2010_municipal.csv;data/raw/populacao-sexo-idade_ibge-sidra-tabela9514_2022_municipal.csv,conferido
 SA01,livre,,data/geoportal/unidades-saude-esf-ubs.geojson,em_confirmacao
 SA02,depende de conferência no QGIS,"P6: só 2017 e 2023, com aviso ""em confirmação""; 2026 não publicado; sem soma nem ranking",data/geoportal/unidades-saude-esf-ubs.geojson,em_confirmacao
 SA03,livre,,data/raw/obitos_sim-datasus_2010-2024_municipal.csv,conferido

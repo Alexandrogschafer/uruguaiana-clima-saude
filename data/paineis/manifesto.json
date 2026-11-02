@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-02T12:59:46Z",
+ "gerado_em": "2026-11-02T13:23:47Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_1974-2024_anual",
@@ -105,12 +105,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2022",
-   "gerado_em": "2026-11-02T12:59:46Z",
+   "gerado_em": "2026-11-02T13:23:47Z",
    "telas": [
     "economia"
    ],
    "bytes": 8110,
-   "sha256": "bb72b649ee245e098e6e1ef370741733f36bb0d447c428010486aa42f4434c93"
+   "sha256": "6a82d73765b8aeb95862eb314dc28c0737949a8c9c5fd9df14680dfa1d9be325"
   },
   {
    "id": "clima_inmet-a809_2007-2025_anual",
@@ -199,17 +199,17 @@
    "id": "demografia_ibge_2000-2010-2022_piramides",
    "titulo": "Pirâmides etárias dos censos",
    "ativos": [
-    "PD03"
+    "PD14"
    ],
    "selo": "conferido",
-   "autorizacao": "exceção por premissa: PD03 (pirâmides de 2000, 2010 e 2022 direto das tabelas SIDRA 200 e 9514 (dado oficial, já exibido no painel de demografia); a tabela de docs/ continua pendente e não é usada)",
+   "autorizacao": "livre",
    "dados_ate": "2022",
-   "gerado_em": "2026-11-02T12:45:00Z",
+   "gerado_em": "2026-11-02T13:23:46Z",
    "telas": [
     "populacao"
    ],
-   "bytes": 8529,
-   "sha256": "3b9f7776c0f209bbd3a688f4c0460aa15e6bd6ba5937c530ed967f621c1121b5"
+   "bytes": 8331,
+   "sha256": "e939977632f599b2a6cf9401f0f36755b3fd52006b4c272bb9c4745a952f30ce"
   },
   {
    "id": "desastres_s2id_2014-2025_anual",
@@ -350,12 +350,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2023",
-   "gerado_em": "2026-11-02T12:59:46Z",
+   "gerado_em": "2026-11-02T13:23:47Z",
    "telas": [
     "economia"
    ],
-   "bytes": 7276,
-   "sha256": "9eb9c653cac224019d0e5235355a6ff12bf7f600a4d426a84d645670b47c6ea3"
+   "bytes": 7054,
+   "sha256": "9f945fc1ad8df43c959d63e3ca28763fba5e55e11e759a4ace8a829e6595cc9d"
   },
   {
    "id": "pocos_siagas_atual_aquifero",
