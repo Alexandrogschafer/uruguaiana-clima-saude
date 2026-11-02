@@ -287,6 +287,17 @@ function niceTicks(maxVal, count){
 }
 function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 
+// Centraliza a dica no ponto sem deixar que ela passe da borda do cartão.
+function posicionarDica(tooltip, pct){
+  const larguraPai = tooltip.parentElement.clientWidth, meia = tooltip.offsetWidth/2;
+  tooltip.style.left = Math.max(meia, Math.min(larguraPai - meia, larguraPai*pct/100)) + 'px';
+}
+// No toque não há "sair do ponto": a dica fica até o próximo toque fora dela.
+document.addEventListener('pointerdown', () => {
+  document.querySelectorAll('.chart-tooltip').forEach(t => { t.style.opacity = 0; });
+  document.querySelectorAll('.crosshair').forEach(l => { l.style.opacity = 0; });
+}, true);
+
 function renderLineChart(containerId, tooltipId, opts){
   const container = document.getElementById(containerId);
   const tooltip = document.getElementById(tooltipId);
@@ -379,11 +390,11 @@ function renderLineChart(containerId, tooltipId, opts){
     });
     tooltip.innerHTML = html;
     tooltip.style.opacity = 1;
-    const pct = (xAt(idx) / width) * 100;
-    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+    posicionarDica(tooltip, (xAt(idx) / width) * 100);
   }
   hit.addEventListener('pointermove', e => showAt(e.clientX));
-  hit.addEventListener('pointerleave', () => { hoverLine.style.opacity = 0; tooltip.style.opacity = 0; });
+  hit.addEventListener('pointerdown', e => showAt(e.clientX));
+  hit.addEventListener('pointerleave', e => { if(e.pointerType === 'mouse'){ hoverLine.style.opacity = 0; tooltip.style.opacity = 0; } });
 
   if(opts.legendSlot){
     const slot = document.getElementById(opts.legendSlot);
@@ -444,9 +455,14 @@ function renderBarChart(containerId, tooltipId, opts){
     const yTop = yAt(v);
     const path = roundedTopBarPath(x, yTop, barW, padT+innerH, 3);
     const color = opts.colors ? opts.colors[i] : opts.color;
+    // Área de toque na coluna inteira, para que barras baixas também respondam.
+    const coluna = el('rect', {x:padL+slot*i, y:padT, width:slot, height:innerH, fill:'transparent'}, svg);
     const bar = el('path', {d:path, fill:color, class:'bar-mark'}, svg);
-    bar.addEventListener('pointermove', e => showTip(e, i));
-    bar.addEventListener('pointerleave', hideTip);
+    [coluna, bar].forEach(alvo => {
+      alvo.addEventListener('pointermove', e => showTip(e, i));
+      alvo.addEventListener('pointerdown', e => showTip(e, i));
+      alvo.addEventListener('pointerleave', hideTip);
+    });
 
     if(i === maxIdx || i === n-1){
       const t = el('text', {x:cx, y:yTop-6, class:'bar-label', 'text-anchor':'middle'}, svg);
@@ -463,10 +479,9 @@ function renderBarChart(containerId, tooltipId, opts){
     const color = opts.colors ? opts.colors[i] : opts.color;
     tooltip.innerHTML = `<div class="tt-x">${opts.labels[i]}</div><div class="tt-row"><span class="tt-key" style="border-color:${color}"></span><span class="tt-val">${opts.yFormat ? opts.yFormat(opts.data[i]) : fmtInt(opts.data[i])}</span><span class="tt-name">${opts.seriesName || ''}</span></div>`;
     tooltip.style.opacity = 1;
-    const pct = ((e.clientX - rect.left) / rect.width) * 100;
-    tooltip.style.left = Math.min(88, Math.max(12, pct)) + '%';
+    posicionarDica(tooltip, ((e.clientX - rect.left) / rect.width) * 100);
   }
-  function hideTip(){ tooltip.style.opacity = 0; }
+  function hideTip(e){ if(e.pointerType === 'mouse') tooltip.style.opacity = 0; }
 }
 
 function sparkline(svgHost, values, color){
@@ -509,20 +524,20 @@ function draw(){
 
   renderBarChart('chart-precip-anual', 'tt-precip-anual', {
     labels: PRECIP.anual.map(r=>r.ano), data: PRECIP.anual.map(r=>r.merge_mm),
-    color: blue, seriesName: 'mm', height: 190, yFormat: v => fmtInt(v),
+    color: blue, seriesName: 'mm · MERGE/INPE', height: 190, yFormat: v => fmtInt(v),
   });
   renderBarChart('chart-calor', 'tt-calor', {
     labels: DATA.inmet_anual.map(r=>r.ano), data: DATA.inmet_anual.map(r=>r.dias_calor_extremo),
-    color: blue, seriesName: 'dias', height: 190,
+    color: blue, seriesName: 'dias · INMET A809', height: 190,
   });
   renderLineChart('chart-temp-anual', 'tt-temp-anual', {
     labels: DATA.inmet_anual.map(r=>r.ano),
-    series: [{name:'Temperatura média', color: blue, ultimoParcial: true, data: DATA.inmet_anual.map(r=>r.temp_media_anual)}],
+    series: [{name:'Temperatura média · INMET A809', color: blue, ultimoParcial: true, data: DATA.inmet_anual.map(r=>r.temp_media_anual)}],
     height: 190, yFormat: v => fmt1(v)+'°C',
   });
   renderLineChart('chart-precip-mensal', 'tt-precip-mensal', {
     labels: PRECIP.mensal.map(r=>r.periodo.slice(2)),
-    series: [{name:'Precipitação mensal', color: blue, data: PRECIP.mensal.map(r=>r.precipitacao_mm)}],
+    series: [{name:'Precipitação · MERGE/INPE', color: blue, data: PRECIP.mensal.map(r=>r.precipitacao_mm)}],
     height: 190, padL: 40, padR: 52, rotuloFinalAoLado: true, yFormat: v => fmtInt(v)+'mm',
   });
   renderLineChart('chart-comparacao', 'tt-comparacao', {
@@ -549,7 +564,7 @@ function draw(){
 
   renderBarChart('chart-queimadas', 'tt-queimadas', {
     labels: DATA.queimadas.map(r=>r.ano), data: DATA.queimadas.map(r=>r.focos),
-    color: blue, seriesName: 'focos', height: 190,
+    color: blue, seriesName: 'focos · INPE/BDQUEIMADAS', height: 190,
   });
 }
 draw();
