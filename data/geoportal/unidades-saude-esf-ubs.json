@@ -1,11 +1,11 @@
 {
-  "descricao": "Unidades de saúde da atenção primária (ESF e UBS), 22 unidades, com classe (ESF, UBS, sem classe). populacao2017/2023/2026: população da unidade informada pelos profissionais de saúde do município; o conceito (cadastrada, adscrita ou atendida) está pendente de confirmação; ausente = não informado.",
+  "descricao": "Unidades de saúde da atenção primária (ESF e UBS), 22 unidades, com classe (ESF, UBS, sem classe). populacao2017/2023: população da unidade informada pelos profissionais de saúde do município; o conceito (cadastrada, adscrita ou atendida) está pendente de confirmação; ausente = não informado. A população de 2026 não é publicada, e nenhuma soma de população.",
   "fonte": {
     "caminho_origem": "data/processed/saude/unidades-saude-esf-ubs_cnes-revisado-v4_2026_pontos.gpkg",
     "credito": "CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026"
   },
   "crs_saida": "EPSG:4326",
-  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326; só as colunas ['cnes', 'nome', 'classe', 'endereco', 'populacao2017', 'populacao2023', 'populacao2026']",
+  "transformacao_aplicada": "reprojeção EPSG:31981 -> EPSG:4326; só as colunas ['cnes', 'nome', 'classe', 'endereco', 'populacao2017', 'populacao2023'] (populacao2026 retirada da camada publicada em 2026-11-02; o gpkg de origem não foi alterado)",
   "n_features": 22,
   "colunas": [
     "cnes",
@@ -13,8 +13,7 @@
     "classe",
     "endereco",
     "populacao2017",
-    "populacao2023",
-    "populacao2026"
+    "populacao2023"
   ],
-  "data_processamento": "2026-10-03T01:35:55.440951+00:00"
+  "data_processamento": "2026-11-02T15:52:24.882637+00:00"
 }
