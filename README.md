@@ -1,6 +1,9 @@
 # uruguaiana-clima-saude
 
-🌐 **Acesse o geoportal:** [alexandrogschafer.github.io/uruguaiana-clima-saude](https://alexandrogschafer.github.io/uruguaiana-clima-saude/)
+🌐 **Geoportal (mapa):** [alexandrogschafer.github.io/uruguaiana-clima-saude](https://alexandrogschafer.github.io/uruguaiana-clima-saude/)
+
+📊 **Painéis:** [alexandrogschafer.github.io/uruguaiana-clima-saude/dashboards/sintese.html](https://alexandrogschafer.github.io/uruguaiana-clima-saude/dashboards/sintese.html)
+(a síntese leva às demais telas; lista completa em [Painéis](#painéis-dashboards))
 
 Geoportal e pipeline de dados espaciais do projeto **ClimaPampa**
 (PET-Saúde: Clima — UNIPAMPA + Secretaria Municipal de Saúde de
@@ -8,24 +11,32 @@ Uruguaiana), subsidiando o Eixo III (Comunicação e Inovação), objetivo
 específico 1: plataforma digital geoespacial para vigilância em saúde e
 tomada de decisão territorial.
 
-O repositório reúne dois blocos: os **scripts** que baixam, padronizam e
+O repositório reúne três blocos: os **scripts** que baixam, padronizam e
 cruzam dados espaciais (vetoriais e matriciais) sobre clima, território,
-vulnerabilidade socioambiental e saúde; e o **geoportal** (`index.html` +
+vulnerabilidade socioambiental e saúde; o **geoportal** (`index.html` +
 `css/` + `js/`), um mapa interativo que publica essas camadas para
-consulta por gestores, equipes de saúde e pesquisadores.
+consulta por gestores, equipes de saúde e pesquisadores; e os **painéis**
+(`dashboards/`), telas com séries e tabelas lidas de `data/paineis/`. O
+mapa e os painéis têm links nos dois sentidos.
 
 ## Camadas disponíveis
 
-O painel lateral do geoportal organiza as camadas em 11 grupos
-colapsáveis, na mesma ordem abaixo — todas já publicadas (versão
-preliminar, ainda em revisão visual):
+O painel lateral do geoportal organiza as camadas em 12 grupos
+colapsáveis (contados em `index.html`), na mesma ordem abaixo — todas já
+publicadas (versão preliminar, ainda em revisão visual). O cabeçalho do
+painel tem o link **Painéis**, para a síntese.
 
 - **Mapa base:** alternância entre mapa (OpenStreetMap) e imagem de
   satélite.
 - **Saúde:** as 22 unidades de saúde da atenção primária (ESF e UBS), com
   filtro por classe; cadastro do CNES (Ministério da Saúde) revisado e
   corrigido pela equipe do projeto com informações dos profissionais de
-  saúde do município (versão 4, 2026).
+  saúde do município (versão 4, 2026). O popup mostra a população
+  informada pelos profissionais de saúde em 2017 e 2023 (conceito em
+  confirmação; não somar nem comparar com o Censo) e o link **Ver na
+  saúde**, para a unidade na tela de saúde. A Equipe de Saúde Prisional
+  aparece com borda tracejada, no filtro "Sem classe", sem população e
+  fora das comparações.
 - **Demografia:** densidade populacional por setor censitário, com
   seletor de ano (2022/2010/2000 — 1 ano visível por vez, malhas de
   setores diferentes entre si e não comparáveis geometricamente);
@@ -37,7 +48,8 @@ preliminar, ainda em revisão visual):
   domicílios com água e com esgoto inadequados), que não variam por setor.
 - **Inundação:** cotas históricas de inundação registradas pelo Serviço
   Geológico do Brasil, com a mancha e as unidades de saúde (ESF/UBS)
-  dentro dela em cada cenário.
+  dentro dela em cada cota, e o link **Ver na cheia e saúde**, para a tela
+  dos painéis na cota escolhida.
 - **Uso do solo:** série histórica MapBiomas (1985-2024), com linha do
   tempo por ano.
 - **Hidrografia e terreno:** bacias hidrográficas por nível Otto
@@ -56,6 +68,9 @@ preliminar, ainda em revisão visual):
 - **Estrutura fundiária:** imóveis rurais do CAR (Cadastro Ambiental
   Rural), com status do imóvel (ativo, pendente, cancelado); só o polígono
   e atributos básicos.
+- **Base territorial:** densidade de edificações em grade de 250 m
+  (Overture Maps Foundation), desligada por padrão; produto provisório,
+  ainda não conferido, sem células com poucas edificações.
 - **Educação:** escolas do INEP (Catálogo de Escolas + Censo Escolar
   2024), com filtro por dependência administrativa; só as escolas com
   coordenada geocodificada na fonte aparecem no mapa.
@@ -63,12 +78,68 @@ preliminar, ainda em revisão visual):
   censitário (todas as tecnologias e operadoras), com seletor de período —
   pensada para localizar onde não há cobertura hoje.
 
-## Dados disponíveis para análise (ainda fora do geoportal)
+### Endereço do mapa com parâmetros
 
-Além das camadas espaciais acima, o pipeline já processou séries
-tabulares de saúde e clima que ainda não estão publicadas como camada de
-mapa (não são espacializáveis por bairro/setor na fonte, ou ainda faltam
-integrar):
+O geoportal lê da URL os mesmos parâmetros dos painéis
+(`js/url-estado.js`); valor que não existe no mapa é ignorado, sai da URL
+e aparece num aviso que pode ser fechado:
+
+| Parâmetro | Valores | O que faz |
+|---|---|---|
+| `cota` | uma das cotas de `data/geoportal/estatisticas-por-cota.json` (833, 952, 1205, 1252) | liga a mancha e põe o controle na cota |
+| `unidade` | CNES de 7 dígitos de uma unidade da camada de saúde | centraliza a unidade e abre o popup |
+| `camada` | chaves separadas por vírgula: `densidadePopulacional`, `densidadePopulacional2010`, `densidadePopulacional2000`, `criancas0a4`, `idosos60Mais`, `bairros`, `cotasInundacao`, `unidadesSaude`, `estacoesClima`, `redeHidrografica`, `malhaViaria`, `malhaViariaDnit`, `estruturaFundiaria`, `escolasInep`, `geologia`, `geomorfologia`, `pedologia`, `vegetacao`, `pocosSiagas`, `appHidrica`, `usoSolo`, `hipsometria`, `hillshade`, `coberturaMovel`, `densidadeEdificacoes` | liga cada camada; chave desconhecida sai da lista |
+| `periodo` | `AAAA`, `AAAA-AAAA` ou `AAAA-MM` | só o uso do solo tem controle de ano: liga a camada no ano pedido (numa faixa, o último ano disponível) |
+| `bairro` | `CD_BAIRRO` do IBGE (10 dígitos) de `data/geoportal/bairros.geojson` | liga os bairros, aproxima e destaca o bairro |
+
+`cenario` é ignorado. Quando a cota, as camadas, o ano do uso do solo ou a
+unidade aberta mudam, o estado volta para a URL (sem criar entradas no
+histórico do navegador); em `camada` vão só as camadas ligadas além das que
+já abrem ligadas. Exemplos: `index.html?camada=cotasInundacao,unidadesSaude&cota=952`,
+`index.html?unidade=2247275`.
+
+## Painéis (dashboards/)
+
+Telas estáticas que leem só os JSON de `data/paineis/`; nenhum número fica
+escrito no HTML. Endereço de cada uma (no site publicado, depois de
+`.../uruguaiana-clima-saude/`):
+
+| Tela | Endereço | Conteúdo |
+|---|---|---|
+| Síntese | `dashboards/sintese.html` | rio, cheia e acesso à saúde, clima, saúde e contexto em cartões, com a data de cada fonte |
+| Cheia e acesso à saúde | `dashboards/cheia-saude.html` | máximas anuais do rio e o último ano, manchas do SGB por cota, unidades em relação às manchas e o que falta conferir |
+| Clima | `dashboards/clima.html` | temperatura e dias de calor (INMET, estação A809), precipitação (MERGE/INPE), rio e queimadas |
+| Saúde | `dashboards/saude.html` | óbitos, internações, arboviroses e as unidades ESF/UBS |
+| População | `dashboards/populacao.html` | população, indicadores do Censo e pirâmides etárias |
+| Território | `dashboards/territorio.html` | uso do solo e meio físico |
+| Economia | `dashboards/economia.html` | PIB, agropecuária, emprego, vulnerabilidade e despesas municipais |
+| Riscos | `dashboards/riscos.html` | desastres reconhecidos, suscetibilidade, setorização de risco e energia |
+
+`dashboards/index.html` e os endereços antigos (`painel-*.html`) levam às
+telas novas. Os filtros também vão na URL (`periodo`, `unidade`, `cota`);
+os links "ver no mapa" abrem o geoportal com os parâmetros acima.
+
+**Dados dos painéis (`data/paineis/`):** cada produto é um JSON pequeno no
+esquema `climapampa-painel/1` (fonte, período, selo, avisos, supressão e
+os dados), com o metadado irmão `.json.json` (entradas com sha256, script
+e transformação). São gerados por `scripts/paineis/gerar_todos.py`, que
+roda os geradores `scripts/paineis/dados_*.py` e grava também
+`manifesto.json` e `paineis_espera.json`. Só entram ativos marcados como
+livres em `config/paineis_ativos.csv`. Os geradores leem de `data/raw/` e
+`data/processed/`; sem essas pastas não é possível regerar, mas a
+publicação continua funcionando com os JSON versionados.
+
+```bash
+python scripts/paineis/gerar_todos.py                 # só regrava o que mudou
+python scripts/paineis/gerar_todos.py --forcar        # regrava tudo
+python scripts/paineis/gerar_todos.py --so <id>       # só um produto (id = nome do JSON sem extensão)
+```
+
+## Séries tabulares (nos painéis, fora do mapa)
+
+Além das camadas espaciais acima, o pipeline processa séries tabulares de
+saúde e clima que não são camada de mapa (não são espacializáveis por
+bairro/setor na fonte) e aparecem nos painéis:
 
 - **Mortalidade (SIM/DATASUS):** óbitos por causa (CID-10), agrupados em
   respiratórias/calor extremo/afogamento — 2010 até o último ano fechado.
@@ -83,7 +154,8 @@ integrar):
 - **Precipitação mensal:** série 2010–2025 via MERGE/INPE-CPTEC, fonte da
   precipitação do painel de clima (média de uma área com margem de 18 km em
   torno do município). O script de coleta
-  (`scripts/download/precipitacao_merge.py`) usa o MERGE por padrão; com
+  (`scripts/download/precipitacao_merge.py`, antes chamado
+  `precipitacao_chirps.py`) usa o MERGE por padrão; com
   `--fonte chirps` usa só o CHIRPS/UCSB, e com `--fonte auto` tenta o CHIRPS
   e troca para o MERGE depois de 3 falhas seguidas. O registro por mês fica
   no metadado `.json` irmão. O painel recebe os dados de
@@ -97,10 +169,13 @@ integrar):
   77150000, no próprio município (`scripts/download/nivel_rio_ana.py`):
   série histórica diária da régua (desde 1940) e telemetria de 15 minutos
   por período, com idempotência e metadado `.json` irmão. Não há coleta
-  agendada: cada atualização é uma execução do script.
+  agendada: cada atualização é uma execução do script. Os painéis mostram
+  as máximas anuais e a média diária do último ano; enquanto uma cheia
+  estiver em curso, os números dela ficam em preparação e a série
+  publicada para antes do evento.
 - **Risco geológico (CPRM):** Carta de Suscetibilidade a Movimentos
-  Gravitacionais de Massa e Inundações — já processada, ainda não
-  publicada como camada do geoportal.
+  Gravitacionais de Massa e Inundações — área por classe na tela de
+  riscos; ainda não publicada como camada do geoportal.
 
 Todos os arquivos estão em `data/raw/` (ou `data/processed/`, no caso de
 produtos derivados), cada um com metadado `.json` irmão descrevendo fonte,
@@ -172,20 +247,26 @@ irmão. Estão pendentes de conferência e nenhuma delas alimenta o portal.
 uruguaiana-clima-saude/
 ├── README.md
 ├── requirements.txt
+├── index.html, css/, js/          # geoportal (js/paineis/: base comum dos painéis)
 ├── config/
-│   └── area_estudo.geojson        # limite oficial do município (referência única)
+│   ├── area_estudo.geojson        # limite oficial do município (referência única)
+│   └── paineis_ativos.csv         # autorização de cada ativo nos painéis
 ├── data/
-│   ├── raw/
+│   ├── raw/                       # fora do git
 │   │   ├── vetor/
 │   │   └── raster/
-│   ├── processed/
+│   ├── processed/                 # fora do git
+│   ├── geoportal/                 # camadas publicadas no mapa
+│   ├── paineis/                   # JSON publicados nos painéis
 │   └── catalogo_fontes.csv
 ├── scripts/
 │   ├── download/
 │   ├── processamento/
+│   ├── geoportal/                 # exportação das camadas e teste do mapa
+│   ├── paineis/                   # geradores e testes dos painéis
 │   └── utils/
 ├── notebooks/                     # exploração, não produção
-├── dashboards/
+├── dashboards/                    # telas dos painéis
 └── docs/
 ```
 
@@ -224,21 +305,37 @@ python -m http.server 8000
 # abrir http://localhost:8000
 ```
 
-### Teste automatizado (Playwright headless)
+O mesmo servidor serve os painéis: `http://localhost:8000/dashboards/sintese.html`.
+
+## Testes
 
 ```bash
 npm install
-npx playwright install chromium   # baixa o browser headless, uma vez
-npm run test:geoportal
+npx playwright install chromium        # baixa o browser headless, uma vez
+
+npm run test:geoportal                 # node scripts/geoportal/test_headless.js
+npm run test:paineis                   # node scripts/paineis/test_tela.js (todas as telas)
+node scripts/paineis/test_tela.js cheia-saude --saida /tmp/telas   # uma tela; screenshots fora do repositório
+python scripts/paineis/test_regras_publicas.py
+python -m unittest scripts/paineis/test_comum.py
+python scripts/paineis/test_rio.py
 ```
 
-O script `scripts/geoportal/test_headless.js` sobe um servidor HTTP local,
-abre o geoportal em Chromium headless e valida:
-
-- inicialização do mapa Leaflet;
-- carregamento das camadas (painel de controle, sliders de cota e uso do
-  solo, filtro de saúde);
-- ausência de erros de JS/console.
-
-Gera um screenshot em `scripts/geoportal/geoportal-headless.png` (não
-versionado) para inspeção visual rápida.
+- `scripts/geoportal/test_headless.js`: sobe um servidor HTTP local, abre o
+  geoportal em Chromium headless e confere o mapa, os grupos de camadas,
+  os controles, os parâmetros da URL, o popup das unidades, os links para
+  os painéis e a ausência de erros de JS e de console. O mapa precisa do
+  Leaflet e dos tiles pela internet. O screenshot vai para uma pasta
+  temporária do sistema (ou para a pasta da variável `SCREENSHOT_DIR`),
+  fora do repositório.
+- `scripts/paineis/test_tela.js`: cada tela em 1280 e 390 px, claro e
+  escuro; valores, dicas e tabelas iguais aos JSON, filtros na URL, links
+  e erros.
+- `scripts/paineis/test_regras_publicas.py`: regras do repositório público
+  sobre os arquivos publicados (termos barrados lidos de uma lista local
+  fora do git, caminhos locais, pontos de endereço, autorização, supressão,
+  tamanho, metadado, unidades sem 2026 nem soma, nenhum dado da cheia em
+  curso, links dos painéis com chaves de camada que existem).
+- `scripts/paineis/test_comum.py`: funções comuns dos geradores.
+- `scripts/paineis/test_rio.py`: trava da cheia em curso nos produtos do
+  rio, com leituras simuladas.
