@@ -76,11 +76,11 @@ table.tabela-cartoes a { color: var(--accent); text-decoration: none; border-bot
 .chart-svg text.cat-label { pointer-events: none; }
 
 /* lista recolhível (celular): o resumo só aparece no ponto de quebra; acima dele a lista fica aberta */
-details.detalhes-unidades > summary { cursor: pointer; font-size: 14px; font-weight: 600; padding: 10px 0 4px; list-style: none; display: flex; align-items: center; gap: 8px; }
-details.detalhes-unidades > summary::-webkit-details-marker { display: none; }
-details.detalhes-unidades > summary::before { content: "▸"; color: var(--accent); font-size: 11px; transition: transform 0.15s ease; }
-details.detalhes-unidades[open] > summary::before { transform: rotate(90deg); }
-@media (min-width: 721px) { details.detalhes-unidades > summary { display: none; } }
+details.recolhivel > summary, details.detalhes-unidades > summary { cursor: pointer; font-size: 14px; font-weight: 600; padding: 10px 0 4px; list-style: none; display: flex; align-items: center; gap: 8px; }
+details.recolhivel > summary::-webkit-details-marker, details.detalhes-unidades > summary::-webkit-details-marker { display: none; }
+details.recolhivel > summary::before, details.detalhes-unidades > summary::before { content: "▸"; color: var(--accent); font-size: 11px; transition: transform 0.15s ease; }
+details.recolhivel[open] > summary::before, details.detalhes-unidades[open] > summary::before { transform: rotate(90deg); }
+@media (min-width: 721px) { details.recolhivel > summary, details.detalhes-unidades > summary { display: none; } }
 
 /* ---------- erro de bloco ---------- */
 .erro-bloco { border: 1px dashed var(--series-orange); border-radius: 6px; padding: 14px 16px; font-size: 13px; color: var(--ink-secondary); }

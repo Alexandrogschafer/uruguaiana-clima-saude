@@ -44,11 +44,14 @@
 
   <div class="section-head"><h2>Pirâmide etária comparada</h2><div class="section-rule"></div></div>
   <p class="section-note" data-nota="pop_nota_piramide"></p>
-  <div class="status-legend">
-    <span class="item"><span class="dot" style="background:var(--series-blue)"></span>Homens</span>
-    <span class="item"><span class="dot" style="background:var(--series-orange)"></span>Mulheres</span>
-  </div>
-  <div class="chart-grid triple" id="piramideGrid"></div>
+  <details class="recolhivel" id="det-piramides" open>
+    <summary>Ver as pirâmides</summary>
+    <div class="status-legend">
+      <span class="item"><span class="dot" style="background:var(--series-blue)"></span>Homens</span>
+      <span class="item"><span class="dot" style="background:var(--series-orange)"></span>Mulheres</span>
+    </div>
+    <div class="chart-grid triple" id="piramideGrid"></div>
+  </details>
 
   <div class="section-head"><h2>Envelhecimento e dependência</h2><div class="section-rule"></div></div>
   <p class="section-note" data-nota="pop_nota_envelhecimento"></p>
@@ -147,10 +150,10 @@ async function iniciar(){
     if(serie){
       const d = noPeriodo(serie.dados, 'ano');
       const censos = d.filter(r => r.fonte === 'censo').map(r => r.ano);
-      renderTimeLineChart('chart-populacao', 'tt-populacao', {
+      if(!P.semDadosNoPeriodo('chart-populacao', d.length)) renderTimeLineChart('chart-populacao', 'tt-populacao', {
         height: 220,
         series: [{name: P.dica('População total', serie.meta.fonte_curta), color: blue, points: d.map(r => ({x: r.ano, y: r.populacao, marker: r.fonte === 'censo'}))}],
-        xTicks: censos, yFormat: v => fmtInt(v), zeroBase: false,
+        xTicks: censos.length ? censos : [d[0].ano, d[d.length-1].ano], yFormat: v => fmtInt(v), zeroBase: false, padR: 58, rotuloFinalAoLado: true,
       });
     }
     if(pir){
@@ -167,12 +170,12 @@ async function iniciar(){
     if(ind){
       const d = noPeriodo(ind.dados, 'periodo');
       const xt = d.map(r => r.periodo);
-      const linha = (id, nome, cor, campo, fmt, h) => renderTimeLineChart(`chart-${id}`, `tt-${id}`, {
+      const linha = (id, nome, cor, campo, fmt, h) => P.semDadosNoPeriodo(`chart-${id}`, d.length) || renderTimeLineChart(`chart-${id}`, `tt-${id}`, {
         height: h, series: [{name: P.dica(nome, fonteInd), color: cor, points: d.map(r => ({x: r.periodo, y: r[campo], marker: true}))}], xTicks: xt, yFormat: fmt,
       });
       linha('envelhecimento', 'Índice de envelhecimento', orange, 'indice_envelhecimento', v => fmt1(v), 190);
       linha('dependencia', 'Razão de dependência', blue, 'razao_dependencia', v => fmt1(v), 190);
-      renderStackedAreaChart('chart-urbano-rural', 'tt-urbano-rural', {
+      if(!P.semDadosNoPeriodo('chart-urbano-rural', d.length)) renderStackedAreaChart('chart-urbano-rural', 'tt-urbano-rural', {
         height: 200, years: xt, urbano: d.map(r => r.pct_urbano), rural: d.map(r => r.pct_rural), colorUrbano: aqua, colorRural: orange,
         nomeUrbano: P.dica('Urbana', fonteInd), nomeRural: P.dica('Rural', fonteInd),
       });
@@ -184,6 +187,8 @@ async function iniciar(){
   }
   draw();
   window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+  // celular: as pirâmides ficam em "Ver as pirâmides" (o filtro de período não as afeta)
+  P.recolherNoCelular('det-piramides', null, draw);
 
   function tabela(){
     if(!ind) return;

@@ -54,6 +54,8 @@
       <div class="card-body"><div id="chart-ppm-rebanho"></div><div class="chart-tooltip" id="tt-ppm-rebanho"></div></div></div>
   </div>
   <p class="section-note" style="margin-top:-6px;" data-nota="eco_nota_pam"></p>
+  <details class="recolhivel" id="det-emprego" open>
+  <summary>Ver emprego formal (CAGED e RAIS)</summary>
   <div class="chart-grid">
     <div class="card"><div class="card-head"><span class="card-title">Admissões e desligamentos — Novo CAGED</span><span class="card-meta" data-nota="eco_meta_caged_fluxo"></span></div>
       <div class="card-body"><div id="chart-caged-fluxo"></div><div class="chart-tooltip" id="tt-caged-fluxo"></div></div></div>
@@ -68,8 +70,11 @@
     <summary data-nota="eco_resumo_rais"></summary>
     <div class="table-scroll"><table class="data-table" id="tabelaRais"></table></div>
   </details>
+  </details>
 
   <div class="section-head"><h2>Vulnerabilidade e Assistência Social</h2><div class="section-rule"></div></div>
+  <details class="recolhivel" id="det-vulnerabilidade" open>
+  <summary>Ver vulnerabilidade e assistência</summary>
   <p class="section-note" data-nota="eco_nota_vulnerabilidade"></p>
   <div class="kpi-row" id="kpiRowVulnerabilidade"></div>
   <div class="chart-grid">
@@ -86,8 +91,11 @@
       <div class="card-body"><div id="chart-cadunico-taxa"></div><div class="chart-tooltip" id="tt-cadunico-taxa"></div></div></div>
   </div>
   <p class="section-note" style="margin-top:-6px;" data-nota="eco_nota_cadunico"></p>
+  </details>
 
   <div class="section-head"><h2>Despesas Municipais — SICONFI</h2><div class="section-rule"></div></div>
+  <details class="recolhivel" id="det-despesas" open>
+  <summary>Ver despesas</summary>
   <p class="section-note" data-nota="eco_nota_siconfi"></p>
   <div class="kpi-row" id="kpiRowSiconfi"></div>
   <p class="section-note" style="margin-top:-6px;" data-nota="eco_nota_saneamento"></p>
@@ -100,6 +108,7 @@
   <div class="card"><div class="card-head"><span class="card-title">Despesa em Saúde — % do PIB municipal</span><span class="card-meta" data-nota="eco_meta_siconfi_pct"></span></div>
     <div class="card-body"><div id="chart-siconfi-pct-pib"></div><div class="chart-tooltip" id="tt-siconfi-pct-pib"></div></div></div>
   <p class="section-note" style="margin-top:6px;" data-nota="eco_nota_siconfi_parcial"></p>
+  </details>
 
   <footer id="rodape-comum"></footer>
 </div>
@@ -146,7 +155,7 @@ async function iniciar(){
     return linhas.filter(r => ano(r) >= a && ano(r) <= b);
   };
   // margem esquerda maior que a padrão: rótulos como "1.500.000" e "R$ 30.000" cortavam no celular
-  const linha = (id, d, labels, series, fmt) => renderLineChart(`chart-${id}`, `tt-${id}`, {labels, series, height: 190, padL: 72, yFormat: fmt});
+  const linha = (id, d, labels, series, fmt) => P.semDadosNoPeriodo(`chart-${id}`, labels.length) || renderLineChart(`chart-${id}`, `tt-${id}`, {labels, series, height: 190, padL: 72, yFormat: fmt});
 
   function draw(){
     const blue = cssVar('--series-blue'), orange = cssVar('--series-orange'), aqua = cssVar('--series-aqua'), gray = cssVar('--series-context');
@@ -223,8 +232,11 @@ async function iniciar(){
     });
     t.appendChild(tb);
   }
+  // celular: emprego, vulnerabilidade e despesas recolhidos; abrem sozinhos com ?periodo= válido (séries no tempo)
+  const temPeriodo = () => !!P.filtros.estado.periodo;
+  const ajustes = ['det-emprego', 'det-vulnerabilidade', 'det-despesas'].map(id => P.recolherNoCelular(id, temPeriodo, draw));
   P.montarChips('chips-filtro', {periodo: 'Período'});
-  document.addEventListener('filtros:mudou', () => { draw(); P.montarChips('chips-filtro', {periodo: 'Período'}); });
+  document.addEventListener('filtros:mudou', () => { ajustes.forEach(f => f()); draw(); P.montarChips('chips-filtro', {periodo: 'Período'}); });
 
   P.montarRodape();
   document.documentElement.dataset.pronto = '1';

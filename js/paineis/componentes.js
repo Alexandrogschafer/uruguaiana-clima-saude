@@ -103,6 +103,28 @@
     });
   };
 
+  // Bloco longo recolhido só no celular (ponto de quebra da base, 720 px); aberto acima dele.
+  // abrirSe(): true quando um filtro ativo afeta o bloco (ex.: ?periodo=), que então abre sozinho.
+  // aoAbrir(): redesenho dos gráficos de dentro, que no bloco fechado não têm largura.
+  P.recolherNoCelular = function(id, abrirSe, aoAbrir){
+    const det = document.getElementById(id);
+    if(!det) return () => {};
+    const celular = window.matchMedia('(max-width: 720px)');
+    const ajustar = () => { det.open = !celular.matches || !!(abrirSe && abrirSe()); };
+    ajustar();
+    celular.addEventListener('change', ajustar);
+    if(aoAbrir) det.addEventListener('toggle', () => { if(det.open) aoAbrir(); });
+    return ajustar;
+  };
+
+  // Filtro de período sem nenhum ponto no gráfico: mensagem no lugar do gráfico. Devolve true se vazio.
+  P.semDadosNoPeriodo = function(containerId, n){
+    if(n > 0) return false;
+    const el = document.getElementById(containerId);
+    if(el) el.innerHTML = '<div class="empty-state">Sem dados no período escolhido.</div>';
+    return true;
+  };
+
   // Mostra o erro dentro do bloco, sem derrubar o resto da página.
   P.erroBloco = function(el, mensagem){
     if(!el) return;

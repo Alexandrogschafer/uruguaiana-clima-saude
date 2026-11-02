@@ -98,6 +98,15 @@ function renderHBarChart(containerId, tooltipId, opts){
 
     const lab = el('text', {x:padL-8, y:y+barH/2+4, class:'cat-label', 'text-anchor':'end'}, svg);
     lab.textContent = opts.labels[i];
+    // rótulo maior que a margem (celular): duas linhas, centradas na barra
+    if(lab.getComputedTextLength() > padL - 12 && String(opts.labels[i]).includes(' ')){
+      const p = String(opts.labels[i]).split(' '), m = Math.ceil(p.length / 2);
+      lab.textContent = '';
+      [p.slice(0, m).join(' '), p.slice(m).join(' ')].forEach((linha, k) => {
+        const ts = el('tspan', {x:padL-8, y: y + barH/2 + (k ? 10 : -2)}, lab);
+        ts.textContent = linha;
+      });
+    }
     const val = el('text', {x:xEnd+6, y:y+barH/2+4, class:'bar-label', 'text-anchor':'start'}, svg);
     val.textContent = opts.xFormat ? opts.xFormat(v) : fmtInt(v);
   });
@@ -196,7 +205,7 @@ function renderTimeLineChart(containerId, tooltipId, opts){
   const tooltip = document.getElementById(tooltipId);
   const width = container.clientWidth || 300;
   const height = opts.height || 190;
-  const padL = opts.padL || 44, padR = 14, padT = 14, padB = 24;
+  const padL = opts.padL || 44, padR = opts.padR || 14, padT = 14, padB = 24;
   const innerW = width - padL - padR;
   const innerH = height - padT - padB;
 
@@ -209,8 +218,9 @@ function renderTimeLineChart(containerId, tooltipId, opts){
 
   container.innerHTML = '';
   const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
-  const xAt = year => padL + innerW * (year - minX) / (maxX - minX);
-  const yAt = v => padT + innerH - (innerH * (v - minY) / (maxY - minY));
+  // um único ano (filtro de período estreito): ponto no meio do eixo
+  const xAt = year => maxX === minX ? padL + innerW / 2 : padL + innerW * (year - minX) / (maxX - minX);
+  const yAt = v => padT + innerH - (innerH * (v - minY) / ((maxY - minY) || 1));
 
   ticks.forEach(v => {
     const y = yAt(v);
@@ -221,9 +231,19 @@ function renderTimeLineChart(containerId, tooltipId, opts){
   el('line', {x1:padL, x2:padL+innerW, y1:padT+innerH, y2:padT+innerH, class:'baseline'}, svg);
 
   const xTicks = opts.xTicks || allYears.filter((v,i,a) => a.indexOf(v)===i).sort((a,b)=>a-b);
-  xTicks.forEach(year => {
-    const t = el('text', {x:xAt(year), y:height-6, class:'axis-label', 'text-anchor':'middle'}, svg);
+  // anos do eixo espaçados pela largura real: o último fica; o vizinho que encostaria nele sai
+  const medidor = el('text', {x:0, y:-100, class:'axis-label'}, svg);
+  medidor.textContent = String(xTicks[xTicks.length - 1]);
+  const larg = medidor.getComputedTextLength() || 28;
+  medidor.remove();
+  const ultimoX = xAt(xTicks[xTicks.length - 1]);
+  let anterior = -Infinity;
+  xTicks.forEach((year, j) => {
+    const x = xAt(year), ultimo = j === xTicks.length - 1;
+    if(!ultimo && (x - anterior < larg + 8 || ultimoX - x < larg + 8)) return;
+    const t = el('text', {x, y:height-6, class:'axis-label', 'text-anchor':'middle'}, svg);
     t.textContent = year;
+    anterior = x;
   });
 
   const hoverLine = el('line', {x1:padL, x2:padL, y1:padT, y2:padT+innerH, class:'crosshair'}, svg);
@@ -237,7 +257,10 @@ function renderTimeLineChart(containerId, tooltipId, opts){
       if(p.marker) el('circle', {cx:xAt(p.x), cy:yAt(p.y), r:5, fill:s.color, stroke:cssVar('--surface-card'), 'stroke-width':2, class:'marker-censo'}, svg);
     });
     const last = pts[pts.length-1];
-    const t = el('text', {x:xAt(last.x)-2, y:yAt(last.y) - 11, class:'end-label', fill:s.color, 'text-anchor':'end'}, svg);
+    // com rotuloFinalAoLado, o rótulo vai à direita do último ponto (na margem padR), sem cobrir a linha
+    const t = opts.rotuloFinalAoLado
+      ? el('text', {x:xAt(last.x)+8, y:yAt(last.y)+4, class:'end-label', fill:cssVar('--ink-secondary'), 'text-anchor':'start'}, svg)
+      : el('text', {x:xAt(last.x)-2, y:yAt(last.y) - 11, class:'end-label', fill:s.color, 'text-anchor':'end'}, svg);
     t.textContent = opts.yFormat ? opts.yFormat(last.y) : fmtInt(last.y);
   });
 
@@ -247,7 +270,7 @@ function renderTimeLineChart(containerId, tooltipId, opts){
   function showAt(clientX){
     const rect = svg.getBoundingClientRect();
     const mx = (clientX - rect.left) * (width / rect.width);
-    const alvo = minX + (mx - padL) / innerW * (maxX - minX);
+    const alvo = maxX === minX ? minX : minX + (mx - padL) / innerW * (maxX - minX);
     const year = anos.reduce((a, b) => Math.abs(b - alvo) < Math.abs(a - alvo) ? b : a);
     hoverLine.setAttribute('x1', xAt(year)); hoverLine.setAttribute('x2', xAt(year));
     hoverLine.style.opacity = 1;
@@ -281,7 +304,7 @@ function renderStackedAreaChart(containerId, tooltipId, opts){
 
   container.innerHTML = '';
   const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
-  const xAt = year => padL + innerW * (year - minX) / (maxX - minX);
+  const xAt = year => maxX === minX ? padL + innerW / 2 : padL + innerW * (year - minX) / (maxX - minX);
   const yAt = v => padT + innerH - (innerH * v / maxY);
 
   [0,25,50,75,100].forEach(v => {
@@ -330,13 +353,15 @@ function renderPyramidChart(containerId, tooltipId, opts){
   const n = opts.labels.length;
   const barH = 8, gap = 2.2;
   const padT = 6, padB = 20, padMid = 2;
+  // margem esquerda para os rótulos de idade, que antes ficavam sobre as barras
+  const padEsq = opts.padEsq === undefined ? 30 : opts.padEsq;
   const innerH = n * (barH + gap) - gap;
   const height = padT + innerH + padB;
-  const halfW = (width - padMid) / 2;
+  const halfW = (width - padMid - padEsq) / 2;
 
   container.innerHTML = '';
   const svg = el('svg', {viewBox:`0 0 ${width} ${height}`, width:'100%', height, class:'chart-svg'}, container);
-  const cx = width / 2;
+  const cx = padEsq + halfW + padMid / 2;
   const maxV = opts.maxValue;
   const xLeft = v => cx - padMid/2 - (halfW * v / maxV);
   const xRight = v => cx + padMid/2 + (halfW * v / maxV);
@@ -351,9 +376,10 @@ function renderPyramidChart(containerId, tooltipId, opts){
     linha.addEventListener('pointerdown', e => showTip(e, i));
     linha.addEventListener('pointerleave', ocultar);
     el('rect', {x:xLeft(h), y, width:(cx-padMid/2-xLeft(h)), height:barH, fill:opts.colorHomens, rx:1.5, class:'bar-mark'}, svg);
+    // (a marcação dos homens começa no eixo central e vai para a esquerda, até a margem dos rótulos)
     el('rect', {x:cx+padMid/2, y, width:(xRight(m)-cx-padMid/2), height:barH, fill:opts.colorMulheres, rx:1.5, class:'bar-mark'}, svg);
     if(i % 4 === 0 || i === n-1){
-      const t = el('text', {x:cx, y:y+barH-1.5, class:'axis-label', 'text-anchor':'middle', style:'font-size:9px'}, svg);
+      const t = el('text', {x:padEsq - 4, y:y+barH-1.5, class:'axis-label', 'text-anchor':'end', style:'font-size:9px'}, svg);
       t.textContent = lab.replace(' anos','').replace(' a ','-').replace('ou mais','+');
     }
   });
@@ -365,5 +391,34 @@ function renderPyramidChart(containerId, tooltipId, opts){
       `<div class="tt-row"><span class="tt-key" style="border-color:${opts.colorMulheres}"></span><span class="tt-val">${fmtInt(opts.mulheres[i])}</span><span class="tt-name">${opts.nomeMulheres}</span></div>`;
     tooltip.style.opacity = 1;
     posicionarDica(tooltip, ((e.clientX - rect.left) / rect.width) * 100);
+  }
+}
+
+// Rótulo de categoria do eixo x que passaria da borda do gráfico (comum no celular) vai em
+// 2 linhas; o gráfico ganha a altura de uma linha. Chamar depois de renderBarChart.
+function quebrarRotulosLongos(containerId){
+  const svg = document.querySelector(`#${containerId} svg`);
+  if(!svg) return;
+  const w = svg.viewBox.baseVal.width, h = +svg.getAttribute('height');
+  let quebrou = false;
+  svg.querySelectorAll('text.axis-label').forEach(t => {
+    if(Math.abs(+t.getAttribute('y') - (h - 6)) > 0.5) return;
+    const b = t.getBBox();
+    if(b.x >= 0 && b.x + b.width <= w) return;
+    const palavras = t.textContent.split(' ');
+    if(palavras.length < 2) return;
+    const meio = Math.ceil(palavras.length / 2), x = t.getAttribute('x');
+    t.textContent = '';
+    [palavras.slice(0, meio).join(' '), palavras.slice(meio).join(' ')].forEach((linha, i) => {
+      const ts = el('tspan', {x, dy: i ? '1.15em' : '0'}, t);
+      ts.textContent = linha;
+    });
+    t.classList.add('rotulo-quebrado');
+    quebrou = true;
+  });
+  if(quebrou){
+    svg.setAttribute('height', h + 12);
+    svg.setAttribute('viewBox', `0 0 ${w} ${h + 12}`);
+    svg.dataset.alturaEixo = h;  // y original da linha de rótulos, para o teste de folga
   }
 }

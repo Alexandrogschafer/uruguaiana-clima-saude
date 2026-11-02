@@ -69,6 +69,8 @@
 
   <div class="section-head"><h2>Meio físico</h2><div class="section-rule"></div></div>
   <p class="section-note" data-nota="ter_nota_meio"></p>
+  <details class="recolhivel" id="det-meio" open>
+  <summary>Ver geologia, geomorfologia, vegetação e pedologia</summary>
   <div class="card"><div class="card-head"><span class="card-title">Geologia — área por unidade</span><span class="card-meta" data-nota="ter_meta_geologia"></span></div>
     <div class="card-body"><div id="chart-geologia"></div><div class="chart-tooltip" id="tt-geologia"></div></div></div>
   <div class="card"><div class="card-head"><span class="card-title">Geomorfologia — área por unidade</span><span class="card-meta" data-nota="ter_meta_geomorfologia"></span></div>
@@ -77,6 +79,7 @@
     <div class="card-body"><div id="chart-vegetacao-bdia"></div><div class="chart-tooltip" id="tt-vegetacao-bdia"></div></div></div>
   <div class="card"><div class="card-head"><span class="card-title">Pedologia — área por classe de solo</span><span class="card-meta" data-nota="ter_meta_pedologia"></span></div>
     <div class="card-body"><div id="chart-pedologia"></div><div class="chart-tooltip" id="tt-pedologia"></div></div></div>
+  </details>
   <p class="section-note" style="margin-top:24px;" data-nota="ter_nota_pocos_app"></p>
   <div class="kpi-row" id="kpiRowMeioFisico"></div>
   <div class="chart-grid">
@@ -139,7 +142,7 @@ async function iniciar(){
       const d = noPeriodo(serie.dados), f = serie.meta.fonte_curta;
       [['campestre', 'Formação Campestre', v => fmtInt(v)], ['arroz', 'Arroz', v => fmtInt(v)], ['urbano', 'Área Urbanizada', v => fmt1(v)],
        ['mosaico', 'Mosaico de Usos', v => fmtInt(v)], ['outras-lavouras', 'Outras Lavouras Temporárias', v => fmtInt(v)], ['florestal', 'Formação Florestal', v => fmtInt(v)]]
-        .forEach(([id, classe, fmt]) => renderLineChart(`chart-${id}`, `tt-${id}`, {
+        .forEach(([id, classe, fmt]) => P.semDadosNoPeriodo(`chart-${id}`, d.length) || renderLineChart(`chart-${id}`, `tt-${id}`, {
           labels: d.map(r => r.ano), series: [{name: P.dica(id === 'urbano' ? 'Área urbanizada' : classe, f), color: blue, data: d.map(r => r[classe])}], height: 160, yFormat: fmt,
         }));
     }
@@ -156,6 +159,7 @@ async function iniciar(){
         .forEach(([id, t, extra]) => renderBarChart(`chart-${id}`, `tt-${id}`, Object.assign({
           labels: tema(t).map(r => r.rotulo), data: tema(t).map(r => r.area_km2), color: aqua, seriesName: P.dica('km²', f), height: 190, yFormat: v => fmtInt(v),
         }, extra)));
+      ['geologia', 'geomorfologia', 'vegetacao-bdia', 'pedologia'].forEach(id => quebrarRotulosLongos(`chart-${id}`));
     }
     if(pocos){
       renderBarChart('chart-pocos-aquifero', 'tt-pocos-aquifero', {
@@ -178,6 +182,8 @@ async function iniciar(){
   }
   draw();
   window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+  // celular: os 4 gráficos do meio físico ficam recolhidos (sem série no tempo, o período não os afeta)
+  P.recolherNoCelular('det-meio', null, draw);
 
   function tabelas(){
     if(serie){
