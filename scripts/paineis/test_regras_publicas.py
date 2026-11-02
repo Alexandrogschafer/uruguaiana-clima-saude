@@ -280,6 +280,71 @@ def regra_k(prods) -> list[str]:
     return falhas
 
 
+ATIVOS_ESPERA_CHEIA = {"IN09", "IN10", "IN11", "IN12", "IN15", "SA09", "SA11", "SA12", "SA13", "SA15", "SA16"}
+TERMOS_PESSOAS = ("pessoa", "populac", "domicil", "endereco", "endereço", "morador", "expost", "habitante", "cnefe")
+TERMOS_EVENTO = ("pico", "duracao", "duração", "posicao", "posição")
+
+
+def _chaves(d: dict) -> set[str]:
+    ch = {c["nome"].lower() for c in d.get("colunas", [])}
+    ch |= {k.lower() for linha in d.get("dados", []) if isinstance(linha, dict) for k in linha}
+    return ch | {k.lower() for k in d}
+
+
+def regra_l(prods) -> list[str]:
+    """Cheia e saúde: (a) ativos em conferência fora; (b) sem pessoas/endereços nos produtos de inundação;
+    (c) com evento em curso, sem pico/duração/posição, sem valor de leitura, série cortada e sem o ano do evento;
+    (d) Prisional fora da contagem; (e) imagens só mini-mapas, ≤ 300 kB, sem endereço entre as entradas."""
+    falhas = []
+    por = {p.name: d for p, d in prods}
+    for p, d in prods:
+        if set(d.get("ativos", [])) & ATIVOS_ESPERA_CHEIA:
+            falhas.append(f"(a) {p.name}: ativo em conferência {sorted(set(d['ativos']) & ATIVOS_ESPERA_CHEIA)}")
+        if p.name.startswith("inundacao_"):
+            ruins = [k for k in _chaves(d) if any(s in k for s in TERMOS_PESSOAS)]
+            if ruins:
+                falhas.append(f"(b) {p.name}: campos de pessoas ou endereços {ruins}")
+        if d.get("evento_em_curso"):
+            ruins = [k for k in _chaves(d) if any(s in k for s in TERMOS_EVENTO)]
+            if ruins:
+                falhas.append(f"(c) {p.name}: campos de pico, duração ou posição {ruins}")
+    ult = por.get("rio_ana-77150000_ultima-leitura.json")
+    if ult and ult.get("evento_em_curso"):
+        linha = ult["dados"][0]
+        if any(linha.get(k) is not None for k in ("data_hora", "nivel_cm", "vazao_m3s", "idade_dias")):
+            falhas.append("(c) última leitura com valor durante o evento em curso")
+        dia = por.get("rio_ana-77150000_ultimos-365-dias_diario.json")
+        mx = por.get("rio_ana-77150000_maximas-anuais.json")
+        ano_ev = int(ult["periodo"]["fim"][:4])
+        if dia and any(r["nivel_medio_cm"] > 800 for r in dia["dados"][-1:]):
+            falhas.append("(c) série diária não termina antes do evento")
+        if mx and any(r["ano"] >= ano_ev for r in mx["dados"]):
+            falhas.append(f"(c) máximas anuais incluem {ano_ev}, ano do evento em curso")
+    cotas, uni = por.get("inundacao_sgb_cotas.json"), por.get("inundacao_sgb_unidades-cotas.json")
+    if cotas and uni:
+        pris = [u for u in uni["dados"] if u["cnes"] == "4126947"]
+        if not pris or not pris[0]["fora_das_comparacoes"]:
+            falhas.append("(d) Equipe Prisional não marcada como fora das comparações")
+        comp = [u for u in uni["dados"] if not u["fora_das_comparacoes"]]
+        if len(comp) != 21:
+            falhas.append(f"(d) {len(comp)} unidades comparáveis (esperado 21)")
+        for r in cotas["dados"]:
+            n = sum(1 for u in comp if u[f"dentro_{r['cota_cm']}"])
+            if n != r["esf_ubs_dentro"]:
+                falhas.append(f"(d) cota {r['cota_cm']}: {r['esf_ubs_dentro']} no produto, {n} pelas 21 ESF/UBS")
+    for f in sorted((PASTA / "img").glob("*")) if (PASTA / "img").exists() else []:
+        if not re.fullmatch(r"mini-mapa_cota-\d{3,4}\.png", f.name):
+            falhas.append(f"(e) imagem inesperada: {f.name}")
+        if f.stat().st_size > 300 * 1024:
+            falhas.append(f"(e) {f.name}: {f.stat().st_size} bytes")
+    if cotas:
+        meta = json.loads((PASTA / "inundacao_sgb_cotas.json.json").read_text(encoding="utf-8"))
+        ent = json.dumps(meta.get("entradas", meta), ensure_ascii=False).lower()
+        if any(s in ent for s in ("cnefe", "endereco", "endereço")):
+            falhas.append("(e) mini-mapas gerados com entrada de endereços")
+    return falhas
+
+
 def main() -> int:
     arqs = arquivos_alvo()
     prods = produtos()
@@ -295,6 +360,7 @@ def main() -> int:
         "i premissas P5 e P6": regra_i(prods),
         "j saúde: afogamento só por quinquênio, sem soma, sem 2026, Prisional fora": regra_j(prods),
         "k IN15 fora; pirâmides no PD14 e PD03 fora; ativo não livre só com exceção registrada": regra_k(prods),
+        "l cheia e saúde: conferência fora, sem pessoas, trava do evento, Prisional fora, imagens": regra_l(prods),
     }
     print(f"arquivos varridos: {len(arqs)}; produtos: {len(prods)}")
     ok = True

@@ -121,6 +121,22 @@ def diario(t: pd.DataFrame, fim_excl: str | None) -> list:
     return [{"dia": d, "nivel_medio_cm": round(float(r.nivel), 1), "vazao_media_m3s": round(float(r.vazao), 1), "n_leituras": int(r.n)} for d, r in g.iterrows()]
 
 
+def aviso_tempo_real(t: pd.DataFrame) -> dict:
+    return {"tipo": "metodo", "texto": f"não é dado em tempo real; atualizado em {pd.Timestamp(t.iloc[-1]['data_hora']):%d/%m}"}
+
+
+def ultima_leitura(t: pd.DataFrame, ev: dict, hoje: date) -> tuple[dict, list]:
+    """Linha e avisos da última leitura. Com evento em curso: só o aviso, nenhum valor."""
+    ult = t.iloc[-1]
+    aviso_rt = aviso_tempo_real(t)
+    if ev["em_curso"]:
+        linha = {"estado": "evento_em_curso", "data_hora": None, "nivel_cm": None, "vazao_m3s": None, "idade_dias": None}
+        return linha, [{"tipo": "evento_em_curso", "texto": AVISO_PREPARACAO}, aviso_rt]
+    idade = (pd.Timestamp(hoje) - pd.Timestamp(ult["data_hora"]).normalize()).days
+    linha = {"estado": "normal", "data_hora": str(ult["data_hora"]), "nivel_cm": float(ult["nivel_cm"]), "vazao_m3s": float(ult["vazao_m3s"]), "idade_dias": int(idade)}
+    return linha, [aviso_rt] + ([{"tipo": "parcial", "texto": "leitura antiga"}] if idade > DIAS_LEITURA_ANTIGA else [])
+
+
 def ids() -> dict:
     return {"max": f"rio_ana-{ESTACAO}_maximas-anuais", "dia": f"rio_ana-{ESTACAO}_ultimos-365-dias_diario", "ult": f"rio_ana-{ESTACAO}_ultima-leitura"}
 
@@ -133,10 +149,8 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
     ano_ev = int(ev["inicio"][:4]) if ev["em_curso"] else None
     mx, ultimo_completo = maximas(e["serie"], ano_ev)
     dd = diario(t, ev["inicio"] if ev["em_curso"] else None)
-    ult = t.iloc[-1]
-    dia_ult = pd.Timestamp(ult["data_hora"])
-    idade = (pd.Timestamp(hoje) - dia_ult.normalize()).days
-    aviso_rt = {"tipo": "metodo", "texto": f"não é dado em tempo real; atualizado em {dia_ult:%d/%m}"}
+    dia_ult = pd.Timestamp(t.iloc[-1]["data_hora"])
+    aviso_rt = aviso_tempo_real(t)
     avisos_evento = [{"tipo": "evento_em_curso", "texto": AVISO_PREPARACAO}] if ev["em_curso"] else []
     n = ids()
     c = dict(codigo_ibge=codigo_ibge, script=SCRIPT, unidade_espacial="estação fluviométrica", selo="conferido")
@@ -159,12 +173,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
         colunas=[{"nome": "dia", "tipo": "texto"}, {"nome": "nivel_medio_cm", "tipo": "float"}, {"nome": "vazao_media_m3s", "tipo": "float"}, {"nome": "n_leituras", "tipo": "int"}],
         dados=dd, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["cheia-saude"], "evento_em_curso": ev["em_curso"]}),
         e["telemetria"], "média diária das leituras de 15 min, últimos 365 dias até o dia anterior ao evento em curso (se houver)"))
-    if ev["em_curso"]:
-        linha = {"estado": "evento_em_curso", "data_hora": None, "nivel_cm": None, "vazao_m3s": None, "idade_dias": None}
-        av_ult = [{"tipo": "evento_em_curso", "texto": AVISO_PREPARACAO}, aviso_rt]
-    else:
-        linha = {"estado": "normal", "data_hora": str(ult["data_hora"]), "nivel_cm": float(ult["nivel_cm"]), "vazao_m3s": float(ult["vazao_m3s"]), "idade_dias": int(idade)}
-        av_ult = [aviso_rt] + ([{"tipo": "parcial", "texto": "leitura antiga"}] if idade > DIAS_LEITURA_ANTIGA else [])
+    linha, av_ult = ultima_leitura(t, ev, hoje)
     defs.append((n["ult"], ["IN05"], dict(
         titulo="Última leitura do rio", fonte_curta=f"ANA {ESTACAO}", fonte=f"ANA, telemetria da estação {ESTACAO}", unidade_medida="cm; m³/s",
         periodo={"inicio": f"{dia_ult:%Y-%m-%d}", "fim": f"{dia_ult:%Y-%m-%d}"}, dados_ate=f"{dia_ult:%Y-%m-%d}", avisos=av_ult,

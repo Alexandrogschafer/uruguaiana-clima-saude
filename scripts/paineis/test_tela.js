@@ -30,6 +30,11 @@ const FUNDO_ESCURO = "rgb(11, 20, 20)";
 const fmtInt = (n) => Math.round(n).toLocaleString("pt-BR");
 const fmt1 = (n) => n.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
 const MARCA = { parcial: "*", lacuna: "†" };
+const dec1 = (n) => n.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const DIA = 864e5;
+const diaNum = (iso) => Math.round(Date.parse(iso + "T00:00:00Z") / DIA);
+const diaTxt = (n) => { const d = new Date(n * DIA); return `${String(d.getUTCDate()).padStart(2, "0")}/${String(d.getUTCMonth() + 1).padStart(2, "0")}/${String(d.getUTCFullYear()).slice(2)}`; };
+const dataBR = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ""); return m ? `${m[3]}/${m[2]}/${m[1]}` : iso || ""; };
 
 // ------------------------------------------------------------------ telas
 const TELAS = {
@@ -179,7 +184,8 @@ const TELAS = {
     pagina: "dashboards/territorio.html", enderecoAntigo: "dashboards/painel-territorio.html",
     produtos: { serie: "uso-solo_mapbiomas_1985-2024_classes", classes: "uso-solo_mapbiomas_2024_todas-classes", meio: "meio-fisico_ibge-bdia_atual_classes",
                 pocos: "pocos_siagas_atual_aquifero", app: "app-hidrica_ana-bho-mapbiomas_2024_curso", urb: "areas-urbanizadas_ibge_2019_classe" },
-    recolhiveis: ["det-meio"],
+    recolhiveis: ["det-uso", "det-meio"],
+    extras: async (browser, base, prod) => testePeriodoRecolhivel(browser, base, "dashboards/territorio.html", { "det-uso": true, "det-meio": false }),
     kpisCompletos: true,
     kpis: (p) => kpisTexto([...p.serie.meta.kpis_uso, ...p.serie.meta.kpis_meio]),
     graficos: (p) => {
@@ -240,7 +246,7 @@ const TELAS = {
     pagina: "dashboards/riscos.html",
     produtos: { s2id: "desastres_s2id_2014-2025_anual", cprm: "risco-geologico_cprm_2021_classe", aneel: "energia_aneel_2000-2026_anual",
                 setor: "setorizacao-risco_sgb_2014_setor", bater: "areas-de-risco_ibge_2018_bater", indisp: "infraestrutura_indisponivel_atual" },
-    recolhiveis: [], extras: async (browser, base, prod) => testeSuprimidoSetor(browser, base, prod),
+    recolhiveis: ["det-setorizacao", "det-indisponivel"], extras: async (browser, base, prod) => testeSuprimidoSetor(browser, base, prod),
     kpisCompletos: true,
     kpis: (p) => kpisTexto([...p.s2id.meta.kpis_s2id, ...p.aneel.meta.kpis_aneel]),
     graficos: (p) => {
@@ -268,6 +274,52 @@ const TELAS = {
         tabelaIndisp: p.indisp.dados.map((r) => [r.tema, r.fonte, r.motivo]),
       };
     },
+  },
+  sintese: {
+    pagina: "dashboards/sintese.html",
+    enderecoAntigo: "dashboards/index.html",
+    semGraficos: true,
+    produtos: { rio: "rio_ana-77150000_ultima-leitura", cotas: "inundacao_sgb_cotas", precip: "clima_precipitacao-merge_2010-2025_anual",
+                inmet: "clima_inmet-a809_2007-2025_anual", sim: "saude_sim_2010-2024_anual", sih: "saude_sih_2010-2025_anual",
+                sinan: "saude_sinan_2010-2026_anual", ind: "demografia_ibge_1970-2022_indicadores" },
+    recolhiveis: [],
+    kpis: () => [], graficos: () => ({}), tabelas: () => ({}),
+    extras: async (browser, base, prod) => testesExtrasSintese(browser, base, prod),
+  },
+  "cheia-saude": {
+    pagina: "dashboards/cheia-saude.html",
+    produtos: { maximas: "rio_ana-77150000_maximas-anuais", diario: "rio_ana-77150000_ultimos-365-dias_diario", cotas: "inundacao_sgb_cotas",
+                unidades: "inundacao_sgb_unidades-cotas", setor: "setorizacao-risco_sgb_2014_setor", bater: "areas-de-risco_ibge_2018_bater" },
+    recolhiveis: ["det-filtros", "det-unidades", "det-delimitacoes", "det-espera"],
+    kpis: () => [],
+    graficos: (p) => {
+      const fm = p.maximas.meta.fonte_curta, fd = p.diario.meta.fonte_curta;
+      // série diária: um ponto a cada 7 dias e o último (x explícito em dias corridos)
+      const amostra = p.diario.dados.filter((r, i, a) => i % 7 === 0 || i === a.length - 1);
+      return {
+        maximas: p.maximas.dados.map((r) => [r.ano, [[r.maximo_cm === null ? "—" : fmtInt(r.maximo_cm), `Máxima anual (cm) · ${fm}`]]]),
+        nivel: amostra.map((r) => [diaTxt(diaNum(r.dia)), [[fmtInt(r.nivel_medio_cm), `Nível médio do dia (cm) · ${fd}`]], diaNum(r.dia)]),
+        vazao: amostra.map((r) => [diaTxt(diaNum(r.dia)), [[fmtInt(r.vazao_media_m3s), `Vazão média do dia (m³/s) · ${fd}`]], diaNum(r.dia)]),
+      };
+    },
+    rotulosFinais: (p) => {
+      const u = p.diario.dados[p.diario.dados.length - 1];
+      return { nivel: [fmtInt(u.nivel_medio_cm)], vazao: [fmtInt(u.vazao_media_m3s)], maximas: [] };
+    },
+    tabelas: (p) => {
+      const sup = (pr, i, c) => (pr.meta.suprimidos || []).some((s) => s.linha === i && s.campo === c);
+      const n = (pr, r, i, c) => (sup(pr, i, c) ? "<5" : r[c] === null ? "—" : fmtInt(r[c]));
+      const tx = (v) => (v === null || v === undefined ? "—" : String(v));
+      const cotas = p.cotas.dados.map((r) => r.cota_cm);
+      return {
+        tabelaCotas: p.cotas.dados.map((r) => [`${fmtInt(r.cota_cm)} cm`, `${dec1(r.tr_anos_camada)} anos`, `${dec1(r.tr_anos_documento)} anos`,
+          `${fmt1(r.area_km2)} km²`, `${fmt1(r.area_no_municipio_km2)} km²`, r.periodo_referencia, fmtInt(r.esf_ubs_dentro)]),
+        tabelaUnidades: p.unidades.dados.filter((u) => !u.fora_das_comparacoes).map((u) => [u.nome, u.classe, ...cotas.map((k) => (u[`dentro_${k}`] ? "dentro" : "fora")), "ver na saúde →"]),
+        tabelaSetores: p.setor.dados.map((r, i) => [r.setor, r.local, r.tipologia, r.grau_risco, n(p.setor, r, i, "edificacoes"), n(p.setor, r, i, "domicilios"), n(p.setor, r, i, "pessoas")]),
+        tabelaBater: p.bater.dados.map((r) => [r.area_bater, tx(r.origem), tx(r.observacao)]),
+      };
+    },
+    extras: async (browser, base, prod) => testesExtrasCheia(browser, base, prod),
   },
 };
 
@@ -319,7 +371,8 @@ async function conferirDicas(page, esperadas, toque, falhas) {
     let ok = 0;
     const tipo = await page.evaluate((id) => document.querySelectorAll(`#chart-${id} svg rect[fill="transparent"]`).length, id);
     for (let i = 0; i < pontos.length; i++) {
-      const c = await page.evaluate(([id, i, n, tipo]) => {
+      // terceiro elemento opcional do ponto: valor de x no eixo (amostra de uma série longa)
+      const c = await page.evaluate(([id, i, n, tipo, xs]) => {
         const rects = document.querySelectorAll(`#chart-${id} svg rect[fill="transparent"]`);
         const alvo = tipo > 1 ? rects[i] : rects[0];
         if (i === 0 || tipo > 1) alvo.scrollIntoView({ block: "center" });
@@ -328,10 +381,11 @@ async function conferirDicas(page, esperadas, toque, falhas) {
         // eixo em escala real de tempo: posição pelo ano do ponto
         if (alvo.dataset.anos) {
           const anos = alvo.dataset.anos.split(",").map(Number), mn = +alvo.dataset.min, mx = +alvo.dataset.max;
-          return { x: b.left + (b.width * (anos[i] - mn)) / (mx - mn), y: b.top + b.height / 2 };
+          const xv = xs[i] !== undefined ? xs[i] : anos[i];
+          return { x: b.left + (b.width * (xv - mn)) / (mx - mn), y: b.top + b.height / 2 };
         }
         return { x: b.left + (n === 1 ? b.width / 2 : (b.width * i) / (n - 1)), y: b.top + b.height / 2 };
-      }, [id, i, pontos.length, tipo]);
+      }, [id, i, pontos.length, tipo, pontos.map((p) => p[2])]);
       if (toque) await page.touchscreen.tap(c.x, c.y); else await page.mouse.move(c.x, c.y);
       const d = await lerDica(page, id);
       const [rotulo, series] = pontos[i];
@@ -457,7 +511,7 @@ async function testeFalhaDeCarga(browser, base, def) {
   await page.waitForFunction(() => document.documentElement.dataset.pronto === "1", null, { timeout: 10000 });
   const r = await page.evaluate(() => ({ erroBloco: document.querySelectorAll(".erro-bloco").length, svgs: document.querySelectorAll('[id^="chart-"] svg').length }));
   await ctx.close();
-  return { ok: r.erroBloco > 0 && r.svgs > 0 && erros.length === 0, ...r, errosDePagina: erros.length };
+  return { ok: r.erroBloco > 0 && (r.svgs > 0 || !!def.semGraficos) && erros.length === 0, ...r, errosDePagina: erros.length };
 }
 
 async function testeRedirecionamento(browser, base, def) {
@@ -595,6 +649,156 @@ async function testeSuprimidoSetor(browser, base, prod) {
   const v = await page.evaluate(() => document.querySelector("#tabelaSetores tbody tr").cells[7].textContent);
   await ctx.close();
   return [{ nome: "setorização: contagem suprimida aparece como \"<5\" (JSON simulado)", ok: v === "<5" && erros.length === 0, detalhe: v }];
+}
+
+// ------------------------------------------------------------------ extras da síntese
+// JSON da última leitura simulado num dos três estados: (i) normal e recente, (ii) evento em curso, (iii) leitura antiga
+function leituraSimulada(meta, estado) {
+  const rt = { tipo: "metodo", texto: "não é dado em tempo real; atualizado em 20/10" };
+  if (estado === "evento") return { ...meta, evento_em_curso: true, avisos: [{ tipo: "evento_em_curso", texto: "cheia de outubro de 2026: números em preparação" }, rt],
+    dados: [{ estado: "evento_em_curso", data_hora: null, nivel_cm: null, vazao_m3s: null, idade_dias: null }] };
+  const idade = estado === "antiga" ? 5 : 1;
+  return { ...meta, evento_em_curso: false, avisos: [rt, ...(estado === "antiga" ? [{ tipo: "parcial", texto: "leitura antiga" }] : [])],
+    dados: [{ estado: "normal", data_hora: "2026-10-20 18:00:00", nivel_cm: 512.0, vazao_m3s: 5400.0, idade_dias: idade }] };
+}
+
+async function testesExtrasSintese(browser, base, prod) {
+  const res = [];
+  const pag = base + "dashboards/sintese.html";
+  {
+    const { ctx, page, erros } = await abrir(browser, pag, {});
+    const r = await page.evaluate(() => {
+      const li = (id) => [...document.querySelectorAll(`#${id} li`)].map((e) => e.innerText.replace(/\s+/g, " ").trim());
+      return { faixa: document.getElementById("faixa-rio").innerText.trim(), cheia: li("lista-cheia"), clima: li("lista-clima"), saude: li("lista-saude"),
+        contexto: li("lista-contexto"), atualizacao: li("lista-atualizacao"), aviso: document.getElementById("aviso-cheia").innerText.trim(),
+        emBreve: /em breve/i.test(document.getElementById("cabecalho-comum").innerText), marca: document.querySelector(".cabecalho-marca").getAttribute("href"),
+        nav: [...document.querySelectorAll(".cabecalho-nav a.nav-item")].map((a) => a.getAttribute("href")) };
+    });
+    const p = prod, ult = (x) => x.dados[x.dados.length - 1];
+    const tr = p.cotas.dados.map((x) => x.tr_anos_camada);
+    const inm = ult(p.inmet), parcial = p.inmet.meta.avisos.find((a) => a.tipo === "parcial" && a.onde && a.onde.ano === inm.ano);
+    const fech = p.sinan.dados.filter((x) => !x.preliminar), sn = fech[fech.length - 1], pre = p.sinan.dados.find((x) => x.preliminar);
+    const ind = ult(p.ind);
+    const fr = p.rio.dados[0];
+    const esperado = {
+      faixa: fr.estado === "evento_em_curso" ? `⚠ Rio Uruguai (${p.rio.meta.fonte_curta}): ${p.rio.meta.avisos.map((a) => a.texto).join(" · ")}` : null,
+      cheia: [`${p.cotas.dados.length} manchas do SGB (cotas ${p.cotas.dados.map((x) => fmtInt(x.cota_cm)).join(", ")} cm), tempo de retorno de ${fmt1(Math.min(...tr))} a ${fmt1(Math.max(...tr))} anos`,
+              p.cotas.meta.notas.cs_frase_unidades],
+      clima: [`Chuva em ${ult(p.precip).ano}: ${fmtInt(ult(p.precip).merge_mm)} mm (${p.precip.meta.fonte_curta})`,
+              `Dias com máxima ≥ 35 °C em ${inm.ano}: ${fmtInt(inm.dias_calor_extremo)} (${p.inmet.meta.fonte_curta})${parcial ? ` · ${parcial.texto}` : ""}`],
+      saude: [`Óbitos em ${ult(p.sim).ano}: ${fmtInt(ult(p.sim).obitos_total)}, dos quais ${fmtInt(ult(p.sim).obitos_respiratorios)} por causas respiratórias (${p.sim.meta.fonte_curta})`,
+              `Internações respiratórias em ${ult(p.sih).ano}: ${fmtInt(ult(p.sih).internacoes_respiratorias)} (${p.sih.meta.fonte_curta})`,
+              `Notificações de dengue em ${sn.ano}: ${fmtInt(sn.dengue)}${pre ? `; em ${pre.ano} (preliminar): ${fmtInt(pre.dengue)}` : ""} (${p.sinan.meta.fonte_curta})`],
+      contexto: [`População (Censo ${ind.periodo}): ${fmtInt(ind.populacao_total)} habitantes`, `${fmt1(ind.pct_urbano)}% urbana · índice de envelhecimento ${fmt1(ind.indice_envelhecimento)}`],
+    };
+    const dif = Object.entries(esperado).filter(([k, v]) => v !== null && JSON.stringify(r[k]) !== JSON.stringify(v)).map(([k, v]) => `${k}: ${JSON.stringify(r[k])} ≠ ${JSON.stringify(v)}`);
+    res.push({ nome: "síntese: faixa do rio e cartões iguais aos JSON", ok: !dif.length && erros.length === 0, detalhe: dif.join(" | ") + erros.join(" | ") });
+    const datas = Object.values(prod).every((x) => r.atualizacao.some((l) => l.endsWith(x.meta.dados_ate.length === 10 ? dataBR(x.meta.dados_ate) : x.meta.dados_ate)));
+    res.push({ nome: "síntese: datas de atualização de cada produto; aviso \"em conferência\"", ok: datas && r.atualizacao.length === Object.keys(prod).length && r.aviso === "pessoas expostas e acesso: em conferência", detalhe: JSON.stringify(r.atualizacao) });
+    res.push({ nome: "cabeçalho: Síntese e Cheia e saúde ativos, marca leva à síntese, nenhum \"em breve\"", ok: !r.emBreve && r.marca === "sintese.html" && r.nav.includes("sintese.html") && r.nav.includes("cheia-saude.html"), detalhe: JSON.stringify(r) });
+    await ctx.close();
+  }
+  // leituras simuladas na faixa "rio agora"
+  for (const [estado, nome] of [["normal", "(i) abaixo de 800 cm e recente"], ["evento", "(ii) evento em curso"], ["antiga", "(iii) leitura com mais de 3 dias"]]) {
+    const j = leituraSimulada(prod.rio.meta, estado);
+    const rotas = [[`**/data/paineis/${prod.rio.meta.id}.json`, (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(j) })]];
+    const { ctx, page, erros } = await abrir(browser, pag, { rotas });
+    const f = await page.evaluate(() => ({ texto: document.getElementById("faixa-rio").innerText.trim(), evento: document.getElementById("faixa-rio").classList.contains("faixa-evento") }));
+    await ctx.close();
+    let ok;
+    if (estado === "evento") ok = f.evento && /números em preparação/.test(f.texto) && !/\bcm\b|m³\/s|pico/.test(f.texto);
+    else ok = !f.evento && f.texto.includes("512 cm em 20/10/2026 18:00") && f.texto.includes("vazão 5.400 m³/s") && f.texto.includes("não é dado em tempo real; atualizado em 20/10") && (estado === "antiga") === f.texto.includes("leitura antiga");
+    res.push({ nome: `faixa do rio com leitura simulada ${nome}`, ok: ok && erros.length === 0, detalhe: f.texto });
+  }
+  {
+    const a = await abrir(browser, `${pag}?cota=952`, {});
+    const r1 = await a.page.evaluate(() => ({ chip: document.getElementById("chips-filtro").innerText, link: document.querySelector('#cartao-cheia a[href^="cheia-saude"]').getAttribute("href"),
+      mapa: document.querySelector('#cartao-cheia a[href^="../index"]').getAttribute("href") }));
+    await a.ctx.close();
+    const b = await abrir(browser, `${pag}?cota=950`, {});
+    const r2 = await b.page.evaluate(() => ({ avisos: [...document.querySelectorAll(".cabecalho-avisos .aviso")].map((e) => e.textContent), url: location.search, chip: document.getElementById("chips-filtro").innerText }));
+    await b.ctx.close();
+    const ok = /Cota: 952 cm/.test(r1.chip) && r1.link === "cheia-saude.html?cota=952" && r1.mapa === "../index.html?cota=952" &&
+      r2.avisos.includes("Parâmetro ignorado: cota=950") && r2.url === "" && r2.chip === "";
+    res.push({ nome: "síntese: ?cota= válido vira chip e segue nos links; inválido gera aviso e sai da URL", ok, detalhe: JSON.stringify({ r1, r2 }) });
+  }
+  return res;
+}
+
+// ------------------------------------------------------------------ extras da cheia e saúde
+async function testesExtrasCheia(browser, base, prod) {
+  const res = [];
+  const pag = base + "dashboards/cheia-saude.html";
+  const espera = JSON.parse(fs.readFileSync(path.join(RAIZ, "data", "paineis", "paineis_espera.json"), "utf8"));
+  for (const largura of [1280, 390]) {
+    const { ctx, page, erros } = await abrir(browser, `${pag}?cota=952`, { largura });
+    const r = await page.evaluate(() => {
+      const img = document.getElementById("mini-mapa");
+      return { pressionado: [...document.querySelectorAll("#seletor-cota button[aria-pressed=true]")].map((b) => b.textContent),
+        src: img.getAttribute("src"), alt: img.alt, carregada: img.complete && img.naturalWidth > 0, ativa: [...document.querySelectorAll("#tabelaCotas tr.linha-ativa")].map((tr) => tr.dataset.cota),
+        chip: document.getElementById("chips-filtro").innerText, link: document.getElementById("link-mapa").getAttribute("href"), filtrosAbertos: document.getElementById("det-filtros").open,
+        refAtiva: [...document.querySelectorAll("#chart-maximas line.linha-referencia")].map((l) => l.getAttribute("stroke")) };
+    });
+    const c = prod.cotas.dados.find((x) => x.cota_cm === 952);
+    const ok = JSON.stringify(r.pressionado) === '["952 cm"]' && r.src === `../data/paineis/${c.imagem}` && r.alt === c.alt && r.carregada &&
+      JSON.stringify(r.ativa) === '["952"]' && /Cota: 952 cm/.test(r.chip) && r.link === "../index.html?cota=952" && r.filtrosAbertos === (largura !== 390) && new Set(r.refAtiva).size === 2;
+    res.push({ nome: `?cota=952 (${largura} px): botão, mini-mapa com texto alternativo, linha da tabela, chip e link do mapa`, ok: ok && erros.length === 0, detalhe: JSON.stringify(r) });
+    if (largura === 1280) {
+      const resp = await page.request.get(new URL(r.link, page.url()).toString());
+      res.push({ nome: "\"abrir no mapa\" abre o portal", ok: resp.status() === 200, detalhe: `HTTP ${resp.status()}` });
+    }
+    await ctx.close();
+  }
+  {
+    const { ctx, page, erros } = await abrir(browser, `${pag}?cota=999`, {});
+    const r = await page.evaluate(() => ({ avisos: [...document.querySelectorAll(".cabecalho-avisos .aviso")].map((e) => e.textContent), url: location.search,
+      chip: document.getElementById("chips-filtro").innerText, pressionado: [...document.querySelectorAll("#seletor-cota button[aria-pressed=true]")].map((b) => b.textContent) }));
+    const maior = prod.cotas.dados[prod.cotas.dados.length - 1].cota_cm;
+    res.push({ nome: "?cota=999 gera aviso, sai da URL e a tela usa a maior cota", ok: r.avisos.includes("Parâmetro ignorado: cota=999") && r.url === "" && r.chip === "" && r.pressionado[0] === `${fmtInt(maior)} cm` && erros.length === 0, detalhe: JSON.stringify(r) });
+    // clique no seletor muda o filtro
+    await page.click("#seletor-cota button:first-child");
+    const depois = await page.evaluate(() => ({ url: location.search, src: document.getElementById("mini-mapa").getAttribute("src") }));
+    const menor = prod.cotas.dados[0];
+    res.push({ nome: "clicar numa cota atualiza URL e mini-mapa", ok: depois.url === `?cota=${menor.cota_cm}` && depois.src.endsWith(menor.imagem), detalhe: JSON.stringify(depois) });
+    await ctx.close();
+  }
+  {
+    const { ctx, page, erros } = await abrir(browser, pag, {});
+    const r = await page.evaluate(() => ({
+      moradores: document.getElementById("espera-moradores").innerText, acesso: document.getElementById("espera-acesso").innerText,
+      espera: [...document.querySelectorAll("#lista-espera li")].map((li) => li.innerText.replace(/\s+/g, " ").trim()),
+      prisionalNaTabela: !!document.querySelector('#tabelaUnidades tr[data-cnes="4126947"]'), notaPrisional: document.getElementById("nota-prisional").innerText,
+      frase: document.getElementById("frase-unidades").innerText, links: [...document.querySelectorAll("#tabelaUnidades a")].map((a) => a.getAttribute("href")),
+      metaDiario: document.getElementById("meta-diario").innerText, eixoMax: [...document.querySelectorAll("#chart-maximas svg text.axis-label")].map((t) => t.textContent),
+      pico: /\bpico\b/i.test(document.body.innerText), avisosEvento: [...document.querySelectorAll(".aviso-evento_em_curso")].map((e) => e.textContent) }));
+    const semNumero = (s) => !/\d/.test(s.replace(/\b[A-Z]{2}\d{2}\b/g, ""));
+    const idsM = ["IN09", "IN10", "IN11"], idsA = ["SA09", "SA11", "SA12", "SA13", "SA15"];
+    res.push({ nome: "caixas \"em conferência\" com os ids em espera e sem nenhum número", ok: idsM.every((i) => r.moradores.includes(i)) && idsA.every((i) => r.acesso.includes(i)) && semNumero(r.moradores) && semNumero(r.acesso), detalhe: `${r.moradores} | ${r.acesso}` });
+    const esp = espera.ativos.map((a) => `${a.id} ${a.nome} — ${a.motivo}`);
+    res.push({ nome: `lista "o que falta conferir" igual a paineis_espera.json (${esp.length} itens, id, nome e motivo)`, ok: JSON.stringify(r.espera) === JSON.stringify(esp), detalhe: JSON.stringify(r.espera.slice(0, 3)) });
+    const comp = prod.unidades.dados.filter((u) => !u.fora_das_comparacoes);
+    res.push({ nome: "Prisional fora da tabela e em nota; frase \"0 de 21\"; links \"ver na saúde\" com ?unidade=", ok: !r.prisionalNaTabela && r.notaPrisional.includes("4126947") && r.frase.startsWith(prod.cotas.meta.notas.cs_frase_unidades.replace(/^./, (s) => s.toUpperCase())) &&
+      JSON.stringify(r.links) === JSON.stringify(comp.map((u) => `saude.html?unidade=${u.cnes}`)) && erros.length === 0, detalhe: JSON.stringify({ n: r.links.length, nota: r.notaPrisional }) });
+    const resp = await page.request.get(new URL(r.links[0], page.url()).toString());
+    res.push({ nome: "\"ver na saúde\" abre a tela de saúde", ok: resp.status() === 200, detalhe: `HTTP ${resp.status()}` });
+    // trava do evento como está nos dados de hoje: série cortada, máximas sem o ano do evento, sem pico
+    const ev = prod.diario.meta.evento_em_curso;
+    const ultDia = prod.diario.dados[prod.diario.dados.length - 1].dia, ultAno = prod.maximas.dados[prod.maximas.dados.length - 1].ano;
+    const okEv = ev ? r.metaDiario.endsWith(dataBR(ultDia)) && r.eixoMax.includes(String(ultAno)) && !r.eixoMax.includes(String(ultAno + 1)) && !r.pico && r.avisosEvento.length >= 2
+                    : r.avisosEvento.length === 0;
+    res.push({ nome: `evento ${ev ? "em curso" : "não em curso"} nos dados: série até ${dataBR(ultDia)}, máximas até ${ultAno}, avisos ${r.avisosEvento.length}, sem pico`, ok: okEv, detalhe: JSON.stringify({ meta: r.metaDiario, avisos: r.avisosEvento }) });
+    await ctx.close();
+  }
+  {
+    // (i) leitura simulada sem evento: nenhum aviso "em preparação" nas séries do rio
+    const semEv = (pr) => ({ ...pr.meta, evento_em_curso: false, avisos: pr.meta.avisos.filter((a) => a.tipo !== "evento_em_curso"), dados: pr.dados });
+    const rotas = [prod.maximas, prod.diario].map((pr) => [`**/data/paineis/${pr.meta.id}.json`, (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(semEv(pr)) })]);
+    const { ctx, page, erros } = await abrir(browser, pag, { rotas });
+    const r = await page.evaluate(() => ({ avisos: [...document.querySelectorAll(".aviso-evento_em_curso")].length, preparacao: /em preparação/.test(document.body.innerText) }));
+    res.push({ nome: "séries simuladas sem evento em curso: nenhum aviso \"em preparação\"", ok: r.avisos === 0 && !r.preparacao && erros.length === 0, detalhe: JSON.stringify(r) });
+    await ctx.close();
+  }
+  return res;
 }
 
 async function main() {
