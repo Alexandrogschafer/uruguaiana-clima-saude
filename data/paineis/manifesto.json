@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-02T15:40:19Z",
+ "gerado_em": "2026-11-02T16:43:48Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_1974-2024_anual",
@@ -472,12 +472,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2025-12-31",
-   "gerado_em": "2026-11-02T14:09:17Z",
+   "gerado_em": "2026-11-02T16:43:46Z",
    "telas": [
     "cheia-saude"
    ],
-   "bytes": 13983,
-   "sha256": "448694c2c24858a82b9df29b72b2819b33e457ecbcd283198f4f0d49cfc83b6d"
+   "bytes": 13965,
+   "sha256": "b7ebd8648027ba4a8cbd5ed3be2456b1a2e86ac5834ecad06c81a18526e88e03"
   },
   {
    "id": "rio_ana-77150000_ultima-leitura",
@@ -487,14 +487,14 @@
    ],
    "selo": "conferido",
    "autorizacao": "livre",
-   "dados_ate": "2026-10-18",
-   "gerado_em": "2026-11-02T14:09:17Z",
+   "dados_ate": "2026-11-02",
+   "gerado_em": "2026-11-02T16:43:48Z",
    "telas": [
     "sintese",
     "cheia-saude"
    ],
    "bytes": 1577,
-   "sha256": "d204b5767b6b9884b9860b428c30e55c805dee33b45891fd433c632f482def18"
+   "sha256": "1864f203a304a39c7bf0615751c89e36062eaef094ce273fa12f147bfac7aa8c"
   },
   {
    "id": "rio_ana-77150000_ultimos-365-dias_diario",
@@ -505,12 +505,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2026-09-30",
-   "gerado_em": "2026-11-02T15:38:08Z",
+   "gerado_em": "2026-11-02T16:43:47Z",
    "telas": [
     "cheia-saude"
    ],
    "bytes": 42141,
-   "sha256": "71ad1af04b915b5e1d2ce16ba145ee85d22200992fa3c517c4e32d231a7b4c81"
+   "sha256": "b662f978bd84a3e63fae1399b68b7075fbac46c506a98886ff4f2bf8fda16446"
   },
   {
    "id": "risco-geologico_cprm_2021_classe",

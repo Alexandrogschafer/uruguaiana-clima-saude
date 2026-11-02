@@ -20,7 +20,7 @@
  "avisos": [
   {
    "tipo": "metodo",
-   "texto": "não é dado em tempo real; atualizado em 18/10"
+   "texto": "não é dado em tempo real; atualizado em 02/11"
   },
   {
    "tipo": "metodo",
@@ -39,7 +39,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T15:38:08Z",
+ "gerado_em": "2026-11-02T16:43:47Z",
  "script": "scripts/paineis/dados_rio.py",
  "colunas": [
   {

@@ -6,8 +6,9 @@ Produtos do rio (estação ANA 77150000) para as telas de síntese e de cheia, e
     rio_ana-<estacao>_ultima-leitura          última leitura (ou só o aviso, com evento em curso)
 
 Fontes (data/raw, com os metadados .json irmãos):
-    - série histórica diária: nivel-rio_ana-serie-historica-<estacao>_<inicio>-<fim>_diario.csv
-      (médias diárias e leituras das 7h e 17h, dado bruto e consistido, cota em cm);
+    - série histórica diária: nivel-rio_ana-serie-historica-<estacao>_1940-*_diario.csv
+      (médias diárias e leituras das 7h e 17h, dado bruto e consistido, cota em cm); havendo mais de uma
+      coleta da série inteira, vale a de data_acesso mais recente no .json irmão;
     - telemetria de 15 em 15 minutos (nível em cm e vazão em m³/s): os arquivos
       nivel-rio_ana-telemetria-<estacao>_*_15min.csv, concatenados sem repetir leitura.
 
@@ -61,12 +62,26 @@ AVISO_PREPARACAO = "cheia de outubro de 2026: números em preparação"
 MES_DO_EVENTO_COM_CORTE = "2026-10"
 
 
+def data_acesso(arq: Path) -> str:
+    """Data da coleta gravada no .json irmão do bruto (ISO 8601, ordenável como texto)."""
+    return json.loads(arq.with_suffix(".json").read_text(encoding="utf-8"))["data_acesso"]
+
+
+def serie_mais_recente(arqs: list[Path]) -> Path:
+    """Entre as coletas da série inteira (desde 1940), a de data_acesso mais recente.
+
+    Cada coleta nova da série inteira entra em arquivo próprio (o bruto anterior não é sobrescrito);
+    a mais recente contém a anterior e os meses que a ANA publicou depois.
+    """
+    return max(arqs, key=data_acesso)
+
+
 def entradas() -> dict:
     serie = sorted(RAW.glob(f"nivel-rio_ana-serie-historica-{ESTACAO}_1940-*_diario.csv"))
     tele = sorted(RAW.glob(f"nivel-rio_ana-telemetria-{ESTACAO}_*_15min.csv"))
-    if len(serie) != 1 or not tele:
+    if not serie or not tele:
         raise ValueError("série histórica ou telemetria da estação não encontrada em data/raw")
-    return {"serie": serie[0], "telemetria": tele}
+    return {"serie": serie_mais_recente(serie), "telemetria": tele}
 
 
 def telemetria(arqs: list[Path]) -> pd.DataFrame:

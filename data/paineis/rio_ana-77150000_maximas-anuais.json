@@ -24,9 +24,7 @@
     "anos": [
      1940,
      1941,
-     1949,
-     2024,
-     2025
+     1949
     ]
    },
    "texto": "ano com lacuna: menos de 80% dos dias com valor na série"
@@ -44,7 +42,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T14:09:17Z",
+ "gerado_em": "2026-11-02T16:43:46Z",
  "script": "scripts/paineis/dados_rio.py",
  "colunas": [
   {
@@ -666,15 +664,15 @@
    "ano": 2024,
    "maximo_cm": 1218.0,
    "origem": "leitura das 7h ou 17h",
-   "dias_com_valor_pct": 74.9,
-   "lacuna": true
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
   },
   {
    "ano": 2025,
    "maximo_cm": 1106.0,
    "origem": "leitura das 7h ou 17h",
-   "dias_com_valor_pct": 74.8,
-   "lacuna": true
+   "dias_com_valor_pct": 100.0,
+   "lacuna": false
   }
  ]
 }

@@ -11,10 +11,10 @@
  "unidade_espacial": "estação fluviométrica",
  "unidade_medida": "cm; m³/s",
  "periodo": {
-  "inicio": "2026-10-18",
-  "fim": "2026-10-18"
+  "inicio": "2026-11-02",
+  "fim": "2026-11-02"
  },
- "dados_ate": "2026-10-18",
+ "dados_ate": "2026-11-02",
  "autorizacao": "livre",
  "selo": "conferido",
  "avisos": [
@@ -24,7 +24,7 @@
   },
   {
    "tipo": "metodo",
-   "texto": "não é dado em tempo real; atualizado em 18/10"
+   "texto": "não é dado em tempo real; atualizado em 02/11"
   }
  ],
  "supressao": {
@@ -35,7 +35,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T14:09:17Z",
+ "gerado_em": "2026-11-02T16:43:48Z",
  "script": "scripts/paineis/dados_rio.py",
  "colunas": [
   {
@@ -66,7 +66,7 @@
  ],
  "evento_em_curso": true,
  "limiar_cm": 800.0,
- "atualizado_em": "2026-10-18",
+ "atualizado_em": "2026-11-02",
  "dados": [
   {
    "estado": "evento_em_curso",
