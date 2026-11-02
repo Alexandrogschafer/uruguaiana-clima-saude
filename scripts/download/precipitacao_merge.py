@@ -17,7 +17,9 @@ que isso aconteça de novo silenciosamente numa próxima coleta.
 
 Escolha da fonte (--fonte)
 --------------------------
-merge (padrão): usa só o MERGE e não consulta o CHIRPS.
+merge (padrão): usa só o MERGE e não consulta o CHIRPS. Se nenhum dia de um mês puder
+ser lido por erro de rede, 5xx ou leitura, para com o progresso salvo; 404 em todos os
+dias é registrado como dado não publicado. Meses sem valor são tentados de novo na retomada.
 chirps: usa só o CHIRPS; para depois de 3 falhas seguidas, com o progresso salvo.
 auto: tenta o CHIRPS e troca para o MERGE depois de 3 falhas seguidas.
 
@@ -127,6 +129,9 @@ LIMITE_FALHAS_CONSECUTIVAS_CHIRPS = 3
 FONTES = ("merge", "chirps", "auto")
 FONTE_PADRAO = "merge"
 ROTULO_MERGE = "merge_inpe_cptec_diario_agregado"
+MOTIVO_FALHA = "falha"
+MOTIVO_NAO_PUBLICADO = "nao_publicado"
+VALORES_VAZIOS = ("", "<NA>", "nan", "NaN")  # como um mês sem valor pode estar gravado no CSV
 
 CAMPOS_CSV = [
     "ano", "mes", "codigo_ibge", "nome_municipio", "fonte_dado",
@@ -167,6 +172,10 @@ class DescobertaAnoFimError(Exception):
 
 class ChirpsIndisponivelError(Exception):
     """Falhas seguidas no modo --fonte chirps, que não tem outra fonte para assumir."""
+
+
+class FonteIndisponivelError(Exception):
+    """Nenhum dia do mês foi lido por erro de rede, 5xx ou leitura: não é ausência de dado."""
 
 
 def url_ultimo_arquivo_do_ano(fonte: str, ano: int) -> str:
@@ -233,19 +242,36 @@ def extrair_precipitacao_mes_chirps(ano: int, mes: int, area_4326: gpd.GeoDataFr
     raise RuntimeError(f"Falha ao ler CHIRPS {ano}-{mes:02d} após {N_TENTATIVAS} tentativas: {ultimo_erro}")
 
 
+def arquivo_nao_publicado(url: str) -> bool:
+    """Separa 404 (dado não publicado) de falha, via HEAD: o servidor do MERGE aceita HEAD
+    (conferido em 2026-11-02). Se a própria consulta falhar, conta como falha, nunca como ausência."""
+    try:
+        return requests.head(url, headers=HEADERS, timeout=30, allow_redirects=True).status_code == 404
+    except requests.RequestException:
+        return False
+
+
 def extrair_precipitacao_mes_merge(ano: int, mes: int, area_4326: gpd.GeoDataFrame) -> dict | None:
     """Fallback: soma as médias espaciais diárias do MERGE/INPE (CPTEC) pra obter o total do
     mês. None se nenhum dia do mês tiver arquivo disponível na fonte."""
     n_dias_no_mes = calendar.monthrange(ano, mes)[1]
     medias_diarias, minimos_diarios, maximos_diarios = [], [], []
     n_pixels = None
+    n_dias_falha = n_dias_nao_publicados = 0
+    ultima_falha = None
 
     for dia in range(1, n_dias_no_mes + 1):
-        url_vsi = "/vsicurl/" + URL_MERGE_DIARIO.format(ano=ano, mes=mes, dia=dia)
+        url = URL_MERGE_DIARIO.format(ano=ano, mes=mes, dia=dia)
         try:
-            stats = zonal_stats(area_4326, url_vsi, stats=["mean", "min", "max", "count"], nodata=-999)[0]
-        except Exception as erro:  # noqa: BLE001 — dia sem arquivo/erro de leitura: pula, não aborta o mês inteiro
-            logger.warning("MERGE %d-%02d-%02d indisponível (%s) — dia ignorado na soma do mês.", ano, mes, dia, erro)
+            stats = zonal_stats(area_4326, "/vsicurl/" + url, stats=["mean", "min", "max", "count"], nodata=-999)[0]
+        except Exception as erro:  # noqa: BLE001 — dia com problema: classifica e segue, sem abortar o mês
+            if arquivo_nao_publicado(url):
+                n_dias_nao_publicados += 1
+                logger.warning("MERGE %d-%02d-%02d não publicado (404) — dia ignorado na soma do mês.", ano, mes, dia)
+            else:
+                n_dias_falha += 1
+                ultima_falha = erro
+                logger.warning("MERGE %d-%02d-%02d com falha (%s) — dia ignorado na soma do mês.", ano, mes, dia, erro)
             time.sleep(DELAY_ENTRE_DIAS_MERGE_S)
             continue
         if stats.get("mean") is not None:
@@ -256,7 +282,13 @@ def extrair_precipitacao_mes_merge(ano: int, mes: int, area_4326: gpd.GeoDataFra
         time.sleep(DELAY_ENTRE_DIAS_MERGE_S)
 
     if not medias_diarias:
-        logger.warning("MERGE %d-%02d: nenhum dia com dado disponível.", ano, mes)
+        if n_dias_falha:
+            raise FonteIndisponivelError(
+                f"MERGE {ano}-{mes:02d}: nenhum dia lido, {n_dias_falha} com erro de rede, 5xx ou leitura "
+                f"(último: {ultima_falha}). O mês não foi gravado e o progresso anterior está salvo; "
+                "rode de novo mais tarde para retomar."
+            )
+        logger.warning("MERGE %d-%02d: nenhum dia com dado publicado.", ano, mes)
         return None
 
     logger.info("MERGE %d-%02d: %d/%d dias com dado.", ano, mes, len(medias_diarias), n_dias_no_mes)
@@ -267,6 +299,8 @@ def extrair_precipitacao_mes_merge(ano: int, mes: int, area_4326: gpd.GeoDataFra
         "count": n_pixels,
         "n_dias_com_dado": len(medias_diarias),
         "n_dias_no_mes": n_dias_no_mes,
+        "n_dias_falha": n_dias_falha,
+        "n_dias_nao_publicados": n_dias_nao_publicados,
     }
 
 
@@ -305,8 +339,31 @@ def nomear_saida_final(caminho_trabalho: Path, ano_inicio: int, ano_fim: int, n_
 def carregar_meses_ja_processados(caminho_csv: Path) -> set[tuple[int, int]]:
     if not caminho_csv.exists():
         return set()
-    df = pd.read_csv(caminho_csv, usecols=["ano", "mes"])
+    df = pd.read_csv(caminho_csv, usecols=["ano", "mes", "precipitacao_media_mm"])
+    df = df[df["precipitacao_media_mm"].notna()]  # mês sem valor volta a ser tentado na retomada
     return set(zip(df["ano"].tolist(), df["mes"].tolist()))
+
+
+def remover_meses_sem_valor(caminho_csv: Path) -> int:
+    """Tira do CSV as linhas sem valor antes de tentá-las de novo, para não duplicar o mês. Só
+    essas linhas saem; as demais continuam byte a byte, e a troca do arquivo é atômica."""
+    if not caminho_csv.exists():
+        return 0
+    with open(caminho_csv, newline="", encoding="utf-8") as f:
+        linhas = f.read().splitlines(keepends=True)
+    if not linhas:
+        return 0
+    coluna = next(csv.reader([linhas[0]])).index("precipitacao_media_mm")
+    mantidas = [linhas[0]] + [l for l in linhas[1:] if next(csv.reader([l]))[coluna] not in VALORES_VAZIOS]
+    removidas = len(linhas) - len(mantidas)
+    if removidas:
+        temporario = caminho_csv.with_name(caminho_csv.name + ".tmp")
+        with open(temporario, "w", newline="", encoding="utf-8") as f:
+            f.writelines(mantidas)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(temporario, caminho_csv)
+    return removidas
 
 
 def escrever_linha_incremental(caminho_csv: Path, linha: dict, escrever_header: bool) -> None:
@@ -338,10 +395,11 @@ def meses_pendentes(ano_inicio: int, ano_fim: int, ja_processados: set[tuple[int
 
 
 def obter_stats_do_mes(ano: int, mes: int, fonte_pedida: str, estado: dict, area_4326, detalhes_merge: dict) -> tuple[dict | None, str | None, bool]:
-    """Devolve (estatísticas, fonte, gravar). `estado` guarda a troca de fonte e as falhas seguidas.
-    gravar=False deixa o mês fora do CSV, para ser tentado de novo na retomada."""
+    """Devolve (estatísticas, fonte, gravar). `estado` guarda a troca de fonte, as falhas seguidas
+    e o motivo dos meses sem valor. gravar=False deixa o mês fora do CSV, para nova tentativa."""
     rotulo_mes = f"{ano}-{mes:02d}"
     stats, fonte = None, None
+    motivo_sem_valor = MOTIVO_NAO_PUBLICADO
     if not estado["usando_merge"]:
         try:
             stats = extrair_precipitacao_mes_chirps(ano, mes, area_4326)
@@ -354,6 +412,7 @@ def obter_stats_do_mes(ano: int, mes: int, fonte_pedida: str, estado: dict, area
                 "CHIRPS %s falhou (%d falha(s) consecutiva(s) de %d): %s",
                 rotulo_mes, estado["falhas_chirps"], LIMITE_FALHAS_CONSECUTIVAS_CHIRPS, erro,
             )
+            motivo_sem_valor = MOTIVO_FALHA
             if estado["falhas_chirps"] >= LIMITE_FALHAS_CONSECUTIVAS_CHIRPS:
                 if fonte_pedida == "chirps":
                     raise ChirpsIndisponivelError(
@@ -369,117 +428,30 @@ def obter_stats_do_mes(ano: int, mes: int, fonte_pedida: str, estado: dict, area
                 return None, None, False
 
     if estado["usando_merge"] and stats is None:
+        motivo_sem_valor = MOTIVO_NAO_PUBLICADO  # o MERGE levanta exceção se o problema for falha
         stats_merge = extrair_precipitacao_mes_merge(ano, mes, area_4326)
         if stats_merge is not None:
             fonte = ROTULO_MERGE
             detalhes_merge[rotulo_mes] = {
-                "n_dias_com_dado": stats_merge.pop("n_dias_com_dado"),
-                "n_dias_no_mes": stats_merge.pop("n_dias_no_mes"),
+                chave: stats_merge.pop(chave)
+                for chave in ("n_dias_com_dado", "n_dias_no_mes", "n_dias_falha", "n_dias_nao_publicados")
             }
             stats = stats_merge
+    if stats is None:
+        estado["motivos_sem_valor"][rotulo_mes] = motivo_sem_valor
+    else:
+        estado["motivos_sem_valor"].pop(rotulo_mes, None)
     return stats, fonte, True
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Baixa série mensal de precipitação (MERGE/INPE por padrão; CHIRPS opcional) para a área de estudo estendida.")
-    parser.add_argument("--codigo-ibge", default="4322400", help="Código IBGE do município (só para rótulo/metadado — a área usada é --area-bacias)")
-    parser.add_argument("--area-bacias", type=Path, default=CAMINHO_AREA_BACIAS_DEFAULT)
-    parser.add_argument("--ano-inicio", type=int, default=ANO_INICIO_DEFAULT)
-    parser.add_argument("--ano-fim", type=int, default=None, help="Default: último ano calendário completo disponível na fonte escolhida")
-    parser.add_argument(
-        "--fonte", choices=FONTES, default=FONTE_PADRAO,
-        help="merge: só MERGE/INPE (padrão). chirps: só CHIRPS. auto: CHIRPS primeiro, com troca ao MERGE depois de 3 falhas seguidas",
-    )
-    parser.add_argument("--forcar", action="store_true", help="Ignora progresso incremental salvo e recomeça do zero")
-    args = parser.parse_args()
-
-    if not args.area_bacias.exists():
-        raise FileNotFoundError(
-            f"{args.area_bacias} não encontrado. Rode primeiro: python scripts/processamento/area_estudo_bacias.py"
-        )
-
-    nome_municipio, uf = obter_uf_sigla(args.codigo_ibge)
-    area_estudo_bacias = gpd.read_file(args.area_bacias)
-    area_4326 = area_estudo_bacias.to_crs("EPSG:4326")
-
-    try:
-        ano_fim = args.ano_fim or descobrir_ultimo_ano_completo(args.fonte, args.ano_inicio)
-    except DescobertaAnoFimError as erro:
-        parser.error(str(erro))
-    logger.info("Município de referência: %s (%s) — janela: %d-%d", nome_municipio, uf, args.ano_inicio, ano_fim)
-
-    caminho_saida = localizar_arquivo_trabalho(args.ano_inicio, ano_fim, args.forcar)
-    caminho_saida.parent.mkdir(parents=True, exist_ok=True)
-
-    ja_processados = carregar_meses_ja_processados(caminho_saida)
-    if ja_processados:
-        logger.info("Retomando: %d mês(es) já processado(s) em %s — pulando esses.", len(ja_processados), caminho_saida)
-    escrever_header = not caminho_saida.exists()
-
-    # Sem mês pendente, nada muda: nem o nome do arquivo final nem o metadado.
-    pendentes = meses_pendentes(args.ano_inicio, ano_fim, ja_processados)
-    if not pendentes:
-        logger.info("Coleta já completa em %s — nada a fazer (use --forcar para refazer).", caminho_saida)
-        return
-
-    estado = {"usando_merge": args.fonte == "merge", "falhas_chirps": 0}
-    detalhes_merge: dict[str, dict] = {}
-    # Na retomada, mantém os detalhes dos meses de execuções anteriores.
-    caminho_metadados_anterior = caminho_saida.with_suffix(".json")
-    if caminho_metadados_anterior.exists():
-        detalhes_merge = json.loads(caminho_metadados_anterior.read_text(encoding="utf-8")).get("detalhes_merge_por_mes", {})
-
-    for ano in range(args.ano_inicio, ano_fim + 1):
-        for mes in range(1, 13):
-            if (ano, mes) in ja_processados:
-                continue
-
-            rotulo_mes = f"{ano}-{mes:02d}"
-            try:
-                stats, fonte, gravar = obter_stats_do_mes(ano, mes, args.fonte, estado, area_4326, detalhes_merge)
-            except ChirpsIndisponivelError as erro:
-                logger.error("%s", erro)
-                sys.exit(1)
-            if not gravar:
-                continue
-
-            if stats is None or stats.get("mean") is None:
-                linha = {
-                    "ano": ano, "mes": mes, "codigo_ibge": args.codigo_ibge, "nome_municipio": nome_municipio,
-                    "fonte_dado": pd.NA,
-                    "precipitacao_media_mm": pd.NA, "precipitacao_min_mm": pd.NA, "precipitacao_max_mm": pd.NA,
-                    "n_pixels": pd.NA,
-                }
-            else:
-                linha = {
-                    "ano": ano, "mes": mes, "codigo_ibge": args.codigo_ibge, "nome_municipio": nome_municipio,
-                    "fonte_dado": fonte,
-                    "precipitacao_media_mm": round(stats["mean"], 2),
-                    "precipitacao_min_mm": round(stats["min"], 2),
-                    "precipitacao_max_mm": round(stats["max"], 2),
-                    "n_pixels": stats["count"],
-                }
-
-            escrever_linha_incremental(caminho_saida, linha, escrever_header)
-            escrever_header = False
-            time.sleep(DELAY_ENTRE_MESES_S)
-
-        logger.info("Ano %d processado.", ano)
-
-    if not caminho_saida.exists():
-        logger.error("Nenhum mês foi gravado; nada a concluir.")
-        sys.exit(1)
-    meses_por_fonte, meses_sem_arquivo = resumir_csv(caminho_saida)
+def gravar_metadados(caminho_saida: Path, args, ano_fim: int, nome_municipio: str, uf: str, detalhes_merge: dict, estado: dict) -> None:
+    """Grava o metadado irmão, também nas paradas, para não perder a contagem de dias já feita."""
+    meses_por_fonte, meses_sem_valor = resumir_csv(caminho_saida)
     n_meses_por_fonte = {fonte: len(meses) for fonte, meses in meses_por_fonte.items()}
-    caminho_saida = nomear_saida_final(caminho_saida, args.ano_inicio, ano_fim, n_meses_por_fonte)
-
-    tabela = pd.read_csv(caminho_saida)
-    logger.info(
-        "Concluído: %s (%d meses no total; %d via CHIRPS, %d via MERGE/INPE, %d sem arquivo em nenhuma fonte)",
-        caminho_saida, len(tabela), len(meses_por_fonte["chirps"]), len(meses_por_fonte[ROTULO_MERGE]),
-        len(meses_sem_arquivo),
-    )
-
+    # Linha sem motivo conhecido vem de coleta antiga: conta como falha, nunca como dado ausente.
+    motivos = estado["motivos_sem_valor"]
+    meses_nao_publicados = [m for m in meses_sem_valor if motivos.get(m) == MOTIVO_NAO_PUBLICADO]
+    meses_por_falha = [m for m in meses_sem_valor if motivos.get(m) != MOTIVO_NAO_PUBLICADO]
     metadados = {
         "fonte_solicitada": args.fonte,
         "fonte_chirps": "CHIRPS v2.0 (Climate Hazards Group InfraRed Precipitation with Station data, UCSB) — https://data.chc.ucsb.edu/products/CHIRPS-2.0/global_monthly/tifs/",
@@ -525,7 +497,12 @@ def main() -> None:
         "n_meses_por_fonte": n_meses_por_fonte,
         "meses_por_fonte": meses_por_fonte,
         "detalhes_merge_por_mes": detalhes_merge,
-        "meses_sem_arquivo_disponivel": meses_sem_arquivo,
+        "meses_sem_arquivo_disponivel": meses_nao_publicados,
+        "meses_nao_publicados": meses_nao_publicados,
+        "meses_sem_valor_por_falha": meses_por_falha,
+        "meses_com_dias_parciais": sorted(
+            m for m, d in detalhes_merge.items() if d.get("n_dias_com_dado", 0) < d.get("n_dias_no_mes", 0)
+        ),
         "data_processamento": datetime.now(timezone.utc).isoformat(),
     }
     caminho_metadados = caminho_saida.with_suffix(".json")
@@ -533,6 +510,124 @@ def main() -> None:
         json.dumps(metadados, indent=2, ensure_ascii=False, default=str), encoding="utf-8"
     )
     logger.info("Metadados salvos em %s", caminho_metadados)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Baixa série mensal de precipitação (MERGE/INPE por padrão; CHIRPS opcional) para a área de estudo estendida.")
+    parser.add_argument("--codigo-ibge", default="4322400", help="Código IBGE do município (só para rótulo/metadado — a área usada é --area-bacias)")
+    parser.add_argument("--area-bacias", type=Path, default=CAMINHO_AREA_BACIAS_DEFAULT)
+    parser.add_argument("--ano-inicio", type=int, default=ANO_INICIO_DEFAULT)
+    parser.add_argument("--ano-fim", type=int, default=None, help="Default: último ano calendário completo disponível na fonte escolhida")
+    parser.add_argument(
+        "--fonte", choices=FONTES, default=FONTE_PADRAO,
+        help="merge: só MERGE/INPE (padrão). chirps: só CHIRPS. auto: CHIRPS primeiro, com troca ao MERGE depois de 3 falhas seguidas",
+    )
+    parser.add_argument("--forcar", action="store_true", help="Ignora progresso incremental salvo e recomeça do zero")
+    args = parser.parse_args()
+
+    if not args.area_bacias.exists():
+        raise FileNotFoundError(
+            f"{args.area_bacias} não encontrado. Rode primeiro: python scripts/processamento/area_estudo_bacias.py"
+        )
+
+    nome_municipio, uf = obter_uf_sigla(args.codigo_ibge)
+    area_estudo_bacias = gpd.read_file(args.area_bacias)
+    area_4326 = area_estudo_bacias.to_crs("EPSG:4326")
+
+    try:
+        ano_fim = args.ano_fim or descobrir_ultimo_ano_completo(args.fonte, args.ano_inicio)
+    except DescobertaAnoFimError as erro:
+        parser.error(str(erro))
+    logger.info("Município de referência: %s (%s) — janela: %d-%d", nome_municipio, uf, args.ano_inicio, ano_fim)
+
+    caminho_saida = localizar_arquivo_trabalho(args.ano_inicio, ano_fim, args.forcar)
+    caminho_saida.parent.mkdir(parents=True, exist_ok=True)
+
+    ja_processados = carregar_meses_ja_processados(caminho_saida)
+    if ja_processados:
+        logger.info("Retomando: %d mês(es) já processado(s) em %s — pulando esses.", len(ja_processados), caminho_saida)
+
+    # Sem mês pendente, nada muda: nem o nome do arquivo final nem o metadado.
+    pendentes = meses_pendentes(args.ano_inicio, ano_fim, ja_processados)
+    if not pendentes:
+        logger.info("Coleta já completa em %s — nada a fazer (use --forcar para refazer).", caminho_saida)
+        return
+
+    removidas = remover_meses_sem_valor(caminho_saida)
+    if removidas:
+        logger.info("%d mês(es) sem valor serão tentados de novo.", removidas)
+    escrever_header = not caminho_saida.exists()
+
+    # Na retomada, mantém os detalhes dos meses de execuções anteriores.
+    caminho_metadados_anterior = caminho_saida.with_suffix(".json")
+    anterior = json.loads(caminho_metadados_anterior.read_text(encoding="utf-8")) if caminho_metadados_anterior.exists() else {}
+    detalhes_merge: dict[str, dict] = anterior.get("detalhes_merge_por_mes", {})
+    estado = {
+        "usando_merge": args.fonte == "merge",
+        "falhas_chirps": 0,
+        "motivos_sem_valor": {
+            **{m: MOTIVO_FALHA for m in anterior.get("meses_sem_valor_por_falha", [])},
+            **{m: MOTIVO_NAO_PUBLICADO for m in anterior.get("meses_nao_publicados", [])},
+        },
+    }
+
+    for ano in range(args.ano_inicio, ano_fim + 1):
+        for mes in range(1, 13):
+            if (ano, mes) in ja_processados:
+                continue
+
+            rotulo_mes = f"{ano}-{mes:02d}"
+            try:
+                stats, fonte, gravar = obter_stats_do_mes(ano, mes, args.fonte, estado, area_4326, detalhes_merge)
+            except (ChirpsIndisponivelError, FonteIndisponivelError) as erro:
+                logger.error("%s", erro)
+                if caminho_saida.exists():
+                    gravar_metadados(caminho_saida, args, ano_fim, nome_municipio, uf, detalhes_merge, estado)
+                sys.exit(1)
+            if not gravar:
+                continue
+
+            if stats is None or stats.get("mean") is None:
+                linha = {
+                    "ano": ano, "mes": mes, "codigo_ibge": args.codigo_ibge, "nome_municipio": nome_municipio,
+                    "fonte_dado": pd.NA,
+                    "precipitacao_media_mm": pd.NA, "precipitacao_min_mm": pd.NA, "precipitacao_max_mm": pd.NA,
+                    "n_pixels": pd.NA,
+                }
+            else:
+                linha = {
+                    "ano": ano, "mes": mes, "codigo_ibge": args.codigo_ibge, "nome_municipio": nome_municipio,
+                    "fonte_dado": fonte,
+                    "precipitacao_media_mm": round(stats["mean"], 2),
+                    "precipitacao_min_mm": round(stats["min"], 2),
+                    "precipitacao_max_mm": round(stats["max"], 2),
+                    "n_pixels": stats["count"],
+                }
+
+            escrever_linha_incremental(caminho_saida, linha, escrever_header)
+            escrever_header = False
+            time.sleep(DELAY_ENTRE_MESES_S)
+
+        logger.info("Ano %d processado.", ano)
+
+    if not caminho_saida.exists():
+        logger.error("Nenhum mês foi gravado; nada a concluir.")
+        sys.exit(1)
+    meses_por_fonte, _ = resumir_csv(caminho_saida)
+    n_meses_por_fonte = {fonte: len(meses) for fonte, meses in meses_por_fonte.items()}
+    caminho_trabalho = caminho_saida
+    caminho_saida = nomear_saida_final(caminho_saida, args.ano_inicio, ano_fim, n_meses_por_fonte)
+    if caminho_saida != caminho_trabalho:
+        caminho_trabalho.with_suffix(".json").unlink(missing_ok=True)
+
+    tabela = pd.read_csv(caminho_saida)
+    meses_por_fonte, meses_sem_arquivo = resumir_csv(caminho_saida)
+    logger.info(
+        "Concluído: %s (%d meses no total; %d via CHIRPS, %d via MERGE/INPE, %d sem valor)",
+        caminho_saida, len(tabela), len(meses_por_fonte["chirps"]), len(meses_por_fonte[ROTULO_MERGE]),
+        len(meses_sem_arquivo),
+    )
+    gravar_metadados(caminho_saida, args, ano_fim, nome_municipio, uf, detalhes_merge, estado)
 
 
 if __name__ == "__main__":
