@@ -1,12 +1,9 @@
 """
 Precipitação do painel de clima: gera o produto anual e mensal do MERGE/INPE,
-com a A809 só para comparação, e injeta os dados no HTML do painel.
-
-Só o bloco entre os marcadores de comentário é substituído no HTML, então
-nenhum valor de precipitação do painel é digitado à mão.
-
-Também publica os produtos dos painéis em data/paineis/ (esquema
-climapampa-painel/1, via scripts/paineis/comum.py):
+com a A809 só para comparação, e publica os produtos dos painéis em
+data/paineis/ (esquema climapampa-painel/1, via scripts/paineis/comum.py),
+lidos por dashboards/clima.html. Nenhum valor é injetado no HTML (a injeção
+no painel antigo saiu quando ele passou a ler os JSON):
     clima_precipitacao-merge_<inicio>-<fim>_anual  (com a A809 para comparação)
     clima_precipitacao-merge_<inicio>-<fim>_mensal (todos os meses)
 
@@ -39,12 +36,8 @@ import comum  # noqa: E402
 ENTRADA_MERGE = RAIZ / "data/raw/precipitacao_merge-inpe_2010-2025_mensal.csv"
 ENTRADA_ESTACAO = RAIZ / "data/raw/clima_inmet_historico-completo_horario.parquet"
 SAIDA = RAIZ / "data/processed/precipitacao_merge-inpe_2010-2025_mensal-anual.json"
-PAINEL = RAIZ / "dashboards/painel-clima-ambiental.html"
 FONTE_ESPERADA = "merge_inpe_cptec_diario_agregado"
 LIMIAR_HORAS_VALIDAS = 90.0
-MESES_NO_PAINEL = 60
-MARCA_INICIO = "// <precipitacao-merge:inicio>"
-MARCA_FIM = "// <precipitacao-merge:fim>"
 SCRIPT = "scripts/processamento/precipitacao_painel_clima.py"
 # período no nome do produto = período do arquivo de entrada
 _PERIODO = re.search(r"_(\d{4}-\d{4})_mensal", ENTRADA_MERGE.name).group(1)
@@ -137,24 +130,6 @@ def gravar_metadado(dados: dict) -> None:
     SAIDA.with_name(SAIDA.name + ".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def injetar(dados: dict, painel: Path) -> bool:
-    bloco = {
-        "anual": dados["anual"],
-        "mensal": dados["mensal"][-MESES_NO_PAINEL:],
-        "media_referencia": dados["media_referencia"],
-    }
-    texto = painel.read_text(encoding="utf-8")
-    padrao = re.compile(re.escape(MARCA_INICIO) + r".*?" + re.escape(MARCA_FIM), re.S)
-    if len(padrao.findall(texto)) != 1:
-        raise ValueError(f"marcadores de precipitação ausentes ou repetidos em {painel.name}")
-    novo_bloco = f"{MARCA_INICIO}\nconst PRECIP = {json.dumps(bloco, ensure_ascii=False)};\n{MARCA_FIM}"
-    novo = padrao.sub(lambda _: novo_bloco, texto)
-    if novo == texto:
-        return False
-    painel.write_text(novo, encoding="utf-8", newline="")
-    return True
-
-
 def publicar_paineis(dados: dict, forcar: bool = False, so: str | None = None) -> dict[str, bool]:
     """Grava os produtos anual e mensal em data/paineis/ (idempotente)."""
     anual, mensal = dados["anual"], dados["mensal"]
@@ -222,7 +197,6 @@ def main() -> int:
     args = ap.parse_args()
     try:
         dados = obter_dados(args.codigo_ibge, args.forcar)
-        print("painel atualizado" if injetar(dados, PAINEL) else "painel já estava atualizado")
         for pid, gravou in publicar_paineis(dados, args.forcar).items():
             print(f"{pid}: {'gravado' if gravou else 'sem mudança'}")
     except (OSError, ValueError, KeyError) as erro:

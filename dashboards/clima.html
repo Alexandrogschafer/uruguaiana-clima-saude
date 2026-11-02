@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="pt-BR" data-tela="clima" data-raiz="..">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Clima e Ambiente — ClimaPampa, Uruguaiana/RS</title>
+<link rel="stylesheet" href="../css/paineis.css">
+<link rel="stylesheet" href="../css/paineis-componentes.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <header id="cabecalho-comum"></header>
+
+  <div class="masthead">
+    <svg class="masthead-contour" viewBox="0 0 800 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
+      <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
+    </svg>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 2 de 4</span>
+    <h1>Painel de clima e monitoramento ambiental</h1>
+    <p>Temperatura (INMET A809) e precipitação (MERGE/INPE), focos de queimada (INPE) e nível/vazão do Rio Uruguai (ANA) — as séries que respondem a evento, atualizadas continuamente.</p>
+    <div class="masthead-meta">
+      <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
+      <span><b>Janela</b> <span id="meta-janela"></span></span>
+      <span><b>Coleta</b> 2026-08-07/09</span>
+      <span><b>Ver também</b> <a href="painel-saude.html">Saúde</a> · <a href="painel-territorio.html">Território e Vulnerabilidade</a> · <a href="painel-demografia.html">Demografia</a> · <a href="../index.html">Geoportal</a></span>
+    </div>
+  </div>
+
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="section-head"><h2>Clima</h2><div class="section-rule"></div></div>
+  <p class="section-note"><b>Temperatura:</b> série horária da estação automática INMET A809 (Uruguaiana), agregada por dia e por ano. A temperatura tem de 0,5% a 1,7% de horas sem registro por ano em 2021–2024 (até 11,4% em um mês). Antes disso, os anos com mais falhas são 2016 (29,9%), 2012 (9,8%) e 2020 (7,5%). Em 2025 faltam 55,0% das horas, porque a estação parou de registrar em 18/08/2025.</p>
+  <p class="section-note"><b>Precipitação:</b> MERGE/INPE, a média de uma área com margem de 18 km em torno do município. Não é um ponto nem o limite municipal, e a média suaviza extremos locais.</p>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Precipitação total por ano</span><span class="card-meta" id="meta-precip-anual"></span></div>
+      <div class="card-body"><div id="chart-precip-anual"></div><div class="chart-tooltip" id="tt-precip-anual"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Dias com calor extremo (≥ 35°C) por ano</span><span class="card-meta" id="meta-calor"></span></div>
+      <div class="card-body"><div id="chart-calor"></div><div class="chart-tooltip" id="tt-calor"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Temperatura média anual</span><span class="card-meta" id="meta-temp-anual"></span></div>
+    <div class="card-body"><div id="chart-temp-anual"></div><div class="chart-tooltip" id="tt-temp-anual"></div><p class="nota-grafico" id="nota-temp-anual"></p></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Precipitação mensal — últimos 5 anos</span><span class="card-meta" id="meta-precip-mensal"></span></div>
+    <div class="card-body"><div id="chart-precip-mensal"></div><div class="chart-tooltip" id="tt-precip-mensal"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Precipitação anual: MERGE × A809</span><span class="card-meta" id="meta-comparacao"></span></div>
+    <div class="card-body"><div class="chart-legend-slot" id="legend-comparacao"></div><div id="chart-comparacao"></div><div class="chart-tooltip" id="tt-comparacao"></div><p class="nota-grafico" id="nota-comparacao"></p></div>
+  </div>
+
+  <div class="section-head"><h2>Hidrologia</h2><div class="section-rule"></div></div>
+  <p class="section-note">Leituras telemétricas da estação 77150000 (Rio Uruguai, operada por SGB-CPRM) — amostra recente de exemplo, não um histórico longo.</p>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Nível do Rio Uruguai</span><span class="card-meta">ANA · 15 em 15 min</span></div>
+      <div class="card-body"><div id="chart-nivel"></div><div class="chart-tooltip" id="tt-nivel"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Vazão do Rio Uruguai</span><span class="card-meta">ANA · m³/s</span></div>
+      <div class="card-body"><div id="chart-vazao"></div><div class="chart-tooltip" id="tt-vazao"></div></div>
+    </div>
+  </div>
+
+  <div class="section-head"><h2>Queimadas</h2><div class="section-rule"></div></div>
+  <p class="section-note">Focos de calor por satélite (todos os satélites, não só o de referência), dentro do limite municipal.</p>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">Focos de queimada por ano</span><span class="card-meta" id="meta-queimadas"></span></div>
+    <div class="card-body"><div id="chart-queimadas"></div><div class="chart-tooltip" id="tt-queimadas"></div></div>
+  </div>
+
+  <details class="table-wrap">
+    <summary>Ver dados climáticos anuais em tabela</summary>
+    <p class="section-note" style="padding:0 20px;" id="nota-tabela-anual"></p>
+    <div class="table-scroll"><table class="data-table" id="tabelaAnual"></table></div>
+  </details>
+
+  <details class="table-wrap" style="margin-top:10px;">
+    <summary>Ver leituras do nível do rio (amostra, 15 em 15 min)</summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaNivel"></table></div>
+  </details>
+
+  <footer id="rodape-comum"></footer>
+
+</div>
+
+<script src="../js/paineis/componentes.js"></script>
+<script src="../js/paineis/graficos.js"></script>
+<script src="../js/paineis/dados.js"></script>
+<script src="../js/paineis/filtros.js"></script>
+<script src="../js/paineis/cabecalho.js"></script>
+<script src="../js/paineis/rodape.js"></script>
+<script>
+/* Painel de clima: lê os produtos de data/paineis/ (gerados por
+   scripts/paineis/gerar_todos.py). Nenhum valor de dado fica neste arquivo;
+   os textos de aviso vêm do campo "avisos" de cada produto. */
+const P = window.Paineis;
+const IDS = {
+  anual:   'clima_inmet-a809_2007-2025_anual',
+  precip:  'clima_precipitacao-merge_2010-2025_anual',
+  mensal:  'clima_precipitacao-merge_2010-2025_mensal',
+  queim:   'queimadas_inpe_2010-2025_anual',
+  rio:     'rio_ana-77150000_2026-08-06-a-2026-08-07_15min',
+  tabela:  'clima_tabela-anual_2007-2025',
+};
+const MESES_NO_GRAFICO = 60;
+
+// Blocos que dependem de cada produto: se o produto faltar, o erro aparece neles.
+const BLOCOS = {
+  anual:  ['chart-calor', 'chart-temp-anual'],
+  precip: ['chart-precip-anual', 'chart-comparacao'],
+  mensal: ['chart-precip-mensal'],
+  queim:  ['chart-queimadas'],
+  rio:    ['chart-nivel', 'chart-vazao', 'tabelaNivel'],
+  tabela: ['tabelaAnual'],
+};
+
+const setText = (id, texto) => { const e = document.getElementById(id); if(e) e.textContent = texto; };
+const periodo = m => `${m.periodo.inicio}–${m.periodo.fim}`;
+// Aviso com ano ("parcial" ou "lacuna"): "2025: dados até 18/08/2025" ou o texto como vem.
+const avisoNoCartao = a => a.tipo === 'parcial' && a.onde && a.onde.ano ? `${a.onde.ano}: ${a.texto}` : a.texto;
+
+async function iniciar(){
+  P.iniciarFiltros();
+  P.montarCabecalho();
+  const c = {};
+  for(const [chave, id] of Object.entries(IDS)){
+    c[chave] = await P.carregar(id);
+    if(!c[chave]) BLOCOS[chave].forEach(b => P.erroBloco(document.getElementById(b), id));
+  }
+  const {anual, precip, mensal, queim, rio, tabela} = c;
+
+  /* ================= textos que vêm dos metadados ================= */
+  if(anual && precip) setText('meta-janela', `temperatura ${periodo(anual.meta)} · precipitação ${periodo(precip.meta)}`);
+  if(precip) setText('meta-precip-anual', `${precip.meta.fonte_curta} · ${periodo(precip.meta)}`);
+  if(mensal) setText('meta-precip-mensal', `${mensal.meta.fonte_curta} · mm/mês`);
+  if(precip) setText('meta-comparacao', `mm · ${periodo(precip.meta)}`);
+  if(queim) setText('meta-queimadas', `${queim.meta.fonte_curta} · ${periodo(queim.meta)}`);
+  let avisosAnual = [], parcial = null, lacunas = [];
+  if(anual){
+    avisosAnual = anual.meta.avisos.filter(a => ['parcial', 'lacuna'].includes(a.tipo));
+    parcial = avisosAnual.find(a => a.tipo === 'parcial');
+    lacunas = avisosAnual.filter(a => a.tipo === 'lacuna');
+    const sufixo = avisosAnual.map(avisoNoCartao).join(' · ');
+    setText('meta-calor', [anual.meta.fonte_curta, sufixo].filter(Boolean).join(' · '));
+    setText('meta-temp-anual', [anual.meta.fonte_curta, '°C', sufixo].filter(Boolean).join(' · '));
+    if(parcial) setText('nota-temp-anual', `Ponto vazado e trecho tracejado: ${parcial.onde.ano} é parcial (${parcial.texto}).`);
+  }
+  if(tabela && precip && anual){
+    const ini = +precip.meta.periodo.inicio, t0 = +tabela.meta.periodo.inicio;
+    let nota = `Precipitação pelo ${precip.meta.fonte_curta}, que começa em ${ini} (— em ${t0}–${ini-1}); as demais colunas climáticas são da ${precip.meta.fonte_curta_comparacao}.`;
+    if(parcial) nota += ` * ${parcial.onde.ano}: temperatura, dias ≥35°C e dias de geada com ${parcial.texto}.`;
+    lacunas.forEach(l => { nota += ` † ${l.texto}.`; });
+    setText('nota-tabela-anual', nota);
+  }
+
+  /* ================= KPI row ================= */
+  const kpis = [];
+  if(precip){
+    const ult = precip.dados[precip.dados.length-1], ref = precip.meta.media_referencia;
+    kpis.push({label:`Precipitação total · ${ult.ano}`, value: ult.merge_mm, unit:'mm', sub:`${precip.meta.fonte_curta} · média ${ref.ano_inicio}–${ref.ano_fim}: ${fmtInt(ref.precipitacao_mm)} mm`, spark: precip.dados.map(r=>r.merge_mm)});
+  }
+  if(anual){
+    const ult = anual.dados[anual.dados.length-1];
+    const anteriores = anual.dados.slice(0,-1);
+    const recorde = Math.max(...anteriores.map(r=>r.dias_calor_extremo));
+    const anoRecorde = anteriores.find(r => r.dias_calor_extremo === recorde).ano;
+    const sub = [...avisosAnual.map(a => a.texto), `recorde: ${recorde} dias (${anoRecorde})`].join(' · ');
+    kpis.push({label:`Dias de calor ≥35°C · ${ult.ano}`, value: ult.dias_calor_extremo, unit:'dias', sub, spark: anual.dados.map(r=>r.dias_calor_extremo)});
+  }
+  if(queim){
+    const ult = queim.dados[queim.dados.length-1];
+    const pico = Math.max(...queim.dados.map(r=>r.focos));
+    const anoPico = queim.dados.find(r => r.focos === pico).ano;
+    kpis.push({label:`Focos de queimada · ${ult.ano}`, value: ult.focos, unit:'focos', sub:`pico ${anoPico}: ${fmtInt(pico)}`, spark: queim.dados.map(r=>r.focos)});
+  }
+  if(rio){
+    const ult = rio.dados[rio.dados.length-1];
+    kpis.push({label:`Nível do rio agora`, value: Math.round(ult.nivel_cm), unit:'cm', sub:`vazão ${fmtInt(ult.vazao_m3s)} m³/s`, spark: rio.dados.map(r=>r.nivel_cm)});
+  }
+  const kpiRow = document.getElementById('kpiRow');
+  kpis.forEach(k => {
+    const tile = document.createElement('div'); tile.className = 'kpi-tile';
+    tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${fmtInt(k.value)}<span class="kpi-unit">${k.unit}</span></div><div class="kpi-sub">${k.sub}</div><div class="kpi-spark"></div>`;
+    kpiRow.appendChild(tile);
+    sparkline(tile.querySelector('.kpi-spark'), k.spark, cssVar('--series-blue'));
+  });
+
+  /* ================= charts ================= */
+  function draw(){
+    const blue = cssVar('--series-blue');
+    if(precip){
+      renderBarChart('chart-precip-anual', 'tt-precip-anual', {
+        labels: precip.dados.map(r=>r.ano), data: precip.dados.map(r=>r.merge_mm),
+        color: blue, seriesName: P.dica('mm', precip.meta.fonte_curta), height: 190, yFormat: v => fmtInt(v),
+      });
+    }
+    if(anual){
+      renderBarChart('chart-calor', 'tt-calor', {
+        labels: anual.dados.map(r=>r.ano), data: anual.dados.map(r=>r.dias_calor_extremo),
+        color: blue, seriesName: P.dica('dias', anual.meta.fonte_curta), height: 190,
+      });
+      renderLineChart('chart-temp-anual', 'tt-temp-anual', {
+        labels: anual.dados.map(r=>r.ano),
+        series: [{name: P.dica('Temperatura média', anual.meta.fonte_curta), color: blue, ultimoParcial: !!parcial, data: anual.dados.map(r=>r.temp_media_anual)}],
+        height: 190, yFormat: v => fmt1(v)+'°C',
+      });
+    }
+    if(mensal){
+      const meses = mensal.dados.slice(-MESES_NO_GRAFICO);
+      renderLineChart('chart-precip-mensal', 'tt-precip-mensal', {
+        labels: meses.map(r=>r.periodo.slice(2)),
+        series: [{name: P.dica('Precipitação', mensal.meta.fonte_curta), color: blue, data: meses.map(r=>r.precipitacao_mm)}],
+        height: 190, padL: 40, padR: 52, rotuloFinalAoLado: true, yFormat: v => fmtInt(v)+'mm',
+      });
+    }
+    if(precip){
+      renderLineChart('chart-comparacao', 'tt-comparacao', {
+        labels: precip.dados.map(r=>r.ano),
+        series: [
+          {name: P.dica('', precip.meta.fonte_curta), color: blue, data: precip.dados.map(r=>r.merge_mm)},
+          {name: P.dica('', precip.meta.fonte_curta_comparacao), color: cssVar('--series-orange'), data: precip.dados.map(r=>r.a809_mm)},
+        ],
+        faixas: precip.dados.map((r,i)=>r.a809_abaixo_de_90_pct ? i : -1).filter(i=>i>=0),
+        height: 220, padR: 48, rotuloFinalAoLado: true, legendSlot: 'legend-comparacao', yFormat: v => fmtInt(v),
+      });
+    }
+    if(rio){
+      const nivelLabels = rio.dados.map(r => r.data_hora_utc.slice(5,16));
+      renderLineChart('chart-nivel', 'tt-nivel', {
+        labels: nivelLabels,
+        series: [{name: P.dica('Nível', rio.meta.fonte_curta), color: blue, data: rio.dados.map(r=>r.nivel_cm)}],
+        height: 190, yFormat: v => fmtInt(v)+' cm',
+      });
+      renderLineChart('chart-vazao', 'tt-vazao', {
+        labels: nivelLabels,
+        series: [{name: P.dica('Vazão (m³/s)', rio.meta.fonte_curta), color: blue, data: rio.dados.map(r=>r.vazao_m3s)}],
+        height: 190, yFormat: v => fmtInt(v),
+      });
+    }
+    if(queim){
+      renderBarChart('chart-queimadas', 'tt-queimadas', {
+        labels: queim.dados.map(r=>r.ano), data: queim.dados.map(r=>r.focos),
+        color: blue, seriesName: P.dica('focos', queim.meta.fonte_curta), height: 190,
+      });
+    }
+  }
+  draw();
+  if(precip){
+    const anosAbaixo = precip.dados.filter(r=>r.a809_abaixo_de_90_pct).map(r=>r.ano);
+    setText('nota-comparacao', `Faixas cinza: anos em que a ${precip.meta.fonte_curta_comparacao} tem menos de 90% das horas válidas (${anosAbaixo.join(' e ')}), o que reduz o total da estação. A diferença entre as curvas não indica qual fonte está certa: a ${precip.meta.fonte_curta_comparacao} mede um ponto, e o MERGE é a média de uma área.`);
+  }
+  window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+
+  /* ================= tables ================= */
+  if(tabela){
+    const table = document.getElementById('tabelaAnual');
+    const head = document.createElement('thead');
+    head.innerHTML = '<tr><th>Ano</th><th>Precipitação MERGE (mm)</th><th>Temp. média (°C)</th><th>Temp. máx (°C)</th><th>Temp. mín (°C)</th><th>Dias ≥35°C</th><th>Dias de geada</th><th>Focos de queimada</th></tr>';
+    table.appendChild(head);
+    const tbody = document.createElement('tbody');
+    const MARCA = {parcial: '*', lacuna: '†'}; // * ano final parcial; † ano com menos de 90% das horas válidas
+    tabela.dados.forEach(r => {
+      const m = MARCA[r.nota] || '';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${r.ano}</td><td>${P.valor(r.precipitacao_merge_mm, fmtInt)}</td><td>${P.valor(r.temp_media_anual, fmt1)}${m}</td><td>${P.valor(r.temp_max_anual, fmt1)}${m}</td><td>${P.valor(r.temp_min_anual, fmt1)}${m}</td><td>${P.valor(r.dias_calor_extremo)}${m}</td><td>${P.valor(r.dias_geada)}${m}</td><td>${P.valor(r.focos, fmtInt)}</td>`;
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+  }
+  if(rio){
+    const tabelaNivel = document.getElementById('tabelaNivel');
+    const head2 = document.createElement('thead');
+    head2.innerHTML = '<tr><th>Data/hora (UTC)</th><th>Nível (cm)</th><th>Vazão (m³/s)</th></tr>';
+    tabelaNivel.appendChild(head2);
+    const tbody2 = document.createElement('tbody');
+    rio.dados.slice().reverse().forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${r.data_hora_utc}</td><td>${P.valor(r.nivel_cm, fmtInt)}</td><td>${P.valor(r.vazao_m3s, fmt1)}</td>`;
+      tbody2.appendChild(tr);
+    });
+    tabelaNivel.appendChild(tbody2);
+  }
+
+  P.montarRodape();
+  document.documentElement.dataset.pronto = '1';
+}
+iniciar();
+</script>
+</body>
+</html>

@@ -8,7 +8,8 @@
     if(!host) return;
     const vistas = [];
     (P.produtosCarregados || []).forEach(m => {
-      const t = (m.fonte_rodape || m.fonte || '').trim();
+      // fonte_rodape vazio = produto que só junta fontes já citadas (ex.: tabela)
+      const t = ('fonte_rodape' in m ? m.fonte_rodape : (m.fonte || '')).trim();
       if(t && !vistas.includes(t)) vistas.push(t);
     });
     host.innerHTML = '';
