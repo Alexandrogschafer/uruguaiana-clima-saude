@@ -28,9 +28,21 @@
 
   P.filtros = {estado: {}, avisos: [], listas: {}, cenariosDistintos: false};
 
+  // anos de um período (AAAA, AAAA-AAAA ou AAAA-MM) → [início, fim]
+  P.anosDoPeriodo = function(v){
+    const m = /^(\d{4})(?:-(\d{4}))?/.exec(v || '');
+    if(!m) return null;
+    return [+m[1], m[2] && v.length === 9 ? +m[2] : +m[1]];
+  };
+
   function validar(nome, valor){
     if(!FORMATO[nome](valor)) return false;
     const lista = P.filtros.listas[nome];
+    // período: a tela passa {inicio, fim} em anos e o período precisa caber nele
+    if(nome === 'periodo' && lista && !Array.isArray(lista)){
+      const [a, b] = P.anosDoPeriodo(valor);
+      return a >= lista.inicio && b <= lista.fim;
+    }
     if(lista && nome !== 'camada' && valor !== 'municipio' && !lista.map(String).includes(valor)) return false;
     if(lista && nome === 'camada') return valor.split(',').every(c => lista.includes(c));
     return true;

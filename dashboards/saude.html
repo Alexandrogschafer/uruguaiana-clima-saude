@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="pt-BR" data-tela="saude" data-raiz="..">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Saúde — ClimaPampa, Uruguaiana/RS</title>
+<link rel="stylesheet" href="../css/paineis.css">
+<link rel="stylesheet" href="../css/paineis-componentes.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <header id="cabecalho-comum"></header>
+
+  <div class="masthead">
+    <svg class="masthead-contour" viewBox="0 0 800 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
+      <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
+    </svg>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 1 de 4</span>
+    <h1>Painel de vigilância em saúde</h1>
+    <p>Óbitos por causa, notificações de arboviroses e internações respiratórias — microdados do DATASUS (SIM, SINAN, SIH) filtrados para Uruguaiana.</p>
+    <div class="masthead-meta">
+      <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
+      <span><b>Janela</b> <span id="meta-janela"></span> (por fonte, ver cada gráfico)</span>
+      <span><b>Coleta</b> 2026-08-07</span>
+      <span><b>Ver também</b> <a href="clima.html">Clima e Ambiente</a> · <a href="painel-territorio.html">Território e Vulnerabilidade</a> · <a href="painel-demografia.html">Demografia</a> · <a href="../index.html">Geoportal</a></span>
+    </div>
+  </div>
+
+  <div class="chips-filtro" id="chips-filtro"></div>
+
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="section-head"><h2>Saúde</h2><div class="section-rule"></div></div>
+  <p class="section-note">Microdados do DATASUS (SIM, SINAN, SIH) filtrados para Uruguaiana. As séries anuais mostram as contagens da fonte, inclusive as pequenas; os óbitos por afogamento ou enchente aparecem somados por 5 anos.</p>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Óbitos por ano — total e por causas respiratórias</span>
+      <span class="card-meta" id="meta-obitos"></span>
+    </div>
+    <div class="chart-legend-slot" id="legend-obitos"></div>
+    <div class="card-body">
+      <div id="chart-obitos"></div>
+      <div class="chart-tooltip" id="tt-obitos"></div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Óbitos por afogamento / relacionados a enchente</span>
+        <span class="card-meta">SIM · W65–W74, X38 · por quinquênio</span>
+      </div>
+      <div class="card-body">
+        <div id="chart-afogamento"></div>
+        <div class="chart-tooltip" id="tt-afogamento"></div>
+        <div id="aviso-afogamento"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Internações e internações respiratórias por ano</span>
+        <span class="card-meta" id="meta-sih"></span>
+      </div>
+      <div class="chart-legend-slot" id="legend-sih"></div>
+      <div class="card-body">
+        <div id="chart-sih"></div>
+        <div class="chart-tooltip" id="tt-sih"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Notificações de arboviroses por ano</span>
+      <span class="card-meta" id="meta-sinan"></span>
+    </div>
+    <p class="section-note" style="margin:2px 0 12px;" id="nota-sinan"></p>
+    <div class="chart-grid triple">
+      <div class="card-body"><div style="font-size:12px;color:var(--ink-secondary);margin-bottom:6px;">Dengue</div><div id="chart-dengue"></div><div class="chart-tooltip" id="tt-dengue"></div></div>
+      <div class="card-body"><div style="font-size:12px;color:var(--ink-secondary);margin-bottom:6px;">Chikungunya</div><div id="chart-chik"></div><div class="chart-tooltip" id="tt-chik"></div></div>
+      <div class="card-body"><div style="font-size:12px;color:var(--ink-secondary);margin-bottom:6px;">Zika</div><div id="chart-zika"></div><div class="chart-tooltip" id="tt-zika"></div></div>
+    </div>
+  </div>
+
+  <p class="section-note"><b>Leitura recomendada:</b> os agrupamentos por causa (respiratórias, afogamento/enchente) são aproximações por CID-10 documentadas nos metadados de cada arquivo — ainda sujeitas a validação pela equipe de saúde.</p>
+
+  <details class="table-wrap">
+    <summary>Ver dados anuais em tabela</summary>
+    <p class="section-note" style="padding:0 20px;" id="nota-tabela-anual"></p>
+    <div class="table-scroll">
+      <table class="data-table" id="tabelaAnual"></table>
+    </div>
+  </details>
+
+  <div class="section-head"><h2>Unidades de saúde (ESF/UBS)</h2><div class="section-rule"></div></div>
+  <p class="section-note" id="nota-unidades"></p>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Unidades e população informada por unidade</span>
+      <span class="card-meta" id="meta-unidades"></span>
+    </div>
+    <div id="aviso-unidades"></div>
+    <div class="tabela-cartoes-wrap" style="margin-top:10px;">
+      <table class="data-table tabela-cartoes" id="tabelaUnidades"></table>
+    </div>
+  </div>
+
+  <footer id="rodape-comum"></footer>
+
+</div>
+
+<script src="../js/paineis/componentes.js"></script>
+<script src="../js/paineis/graficos.js"></script>
+<script src="../js/paineis/graficos-extra.js"></script>
+<script src="../js/paineis/dados.js"></script>
+<script src="../js/paineis/filtros.js"></script>
+<script src="../js/paineis/cabecalho.js"></script>
+<script src="../js/paineis/rodape.js"></script>
+<script>
+/* Tela de saúde: lê os produtos de data/paineis/ (gerados por
+   scripts/paineis/gerar_todos.py). Nenhum valor de dado fica neste arquivo.
+   Regras: sem total de população, sem ranking, sem ordenar por população;
+   a Equipe de Saúde Prisional fica na última linha, fora das comparações. */
+const P = window.Paineis;
+const IDS = {
+  sim:      'saude_sim_2010-2024_anual',
+  afog:     'saude_sim-afogamento-enchente_2010-2024_quinquenal',
+  sih:      'saude_sih_2010-2025_anual',
+  sinan:    'saude_sinan_2010-2026_anual',
+  unidades: 'saude_unidades-esf-ubs_2026',
+};
+const BLOCOS = {
+  sim: ['chart-obitos'], afog: ['chart-afogamento'], sih: ['chart-sih'],
+  sinan: ['chart-dengue', 'chart-chik', 'chart-zika'], unidades: ['tabelaUnidades'],
+};
+const setText = (id, t) => { const e = document.getElementById(id); if(e) e.textContent = t; };
+const dataBR = iso => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso); return m ? `${m[3]}/${m[2]}/${m[1]}` : iso; };
+const fmtNulo = v => v === null || v === undefined ? '—' : fmtInt(v);
+
+async function iniciar(){
+  const c = {};
+  for(const [chave, id] of Object.entries(IDS)){
+    c[chave] = await P.carregar(id);
+    if(!c[chave]) BLOCOS[chave].forEach(b => P.erroBloco(document.getElementById(b), id));
+  }
+  const {sim, afog, sih, sinan, unidades} = c;
+
+  // filtros: listas de valores válidos vêm dos próprios produtos
+  const anosTodos = [sim, sih, sinan].filter(Boolean).flatMap(p => p.dados.map(r => r.ano));
+  P.iniciarFiltros({listas: {
+    unidade: unidades ? unidades.dados.map(u => u.cnes) : [],
+    periodo: anosTodos.length ? {inicio: Math.min(...anosTodos), fim: Math.max(...anosTodos)} : undefined,
+  }});
+  P.montarCabecalho();
+
+  /* ================= textos dos metadados ================= */
+  if(anosTodos.length) setText('meta-janela', `${Math.min(...anosTodos)}–${Math.max(...anosTodos)}`);
+  const per = m => `${m.periodo.inicio}–${m.periodo.fim}`;
+  if(sim) setText('meta-obitos', `SIM · ${per(sim.meta)}`);
+  if(sih) setText('meta-sih', `SIH · ${per(sih.meta)}`);
+  if(afog) P.aviso(document.getElementById('aviso-afogamento'), afog.meta.avisos.filter(a => a.texto.startsWith('somado')));
+  let prelim = null;
+  if(sinan){
+    prelim = sinan.dados.find(r => r.preliminar) || null;
+    setText('meta-sinan', `SINAN · ${per(sinan.meta)}${prelim ? ` · ${prelim.ano} preliminar` : ''} · escalas independentes`);
+    const ini = sinan.meta.inicio_serie || {};
+    let nota = `Chikungunya e zika só passaram a ter arquivo próprio no SINAN a partir de ${ini.chikungunya} e ${ini.zika} — os anos anteriores não têm barra porque a série ainda não existia, não porque a contagem foi zero (— na tabela).`;
+    if(prelim) nota += ` ${prelim.ano} é parcial (preliminar, barra tracejada): dengue ${fmtNulo(prelim.dengue)}, chikungunya ${fmtNulo(prelim.chikungunya)}, zika ${fmtNulo(prelim.zika)} até ${dataBR(sinan.meta.dados_ate)}.`;
+    setText('nota-sinan', nota);
+    setText('nota-tabela-anual', `Óbitos por afogamento ou enchente não aparecem por ano (ver o gráfico por quinquênio).${prelim ? ` * ${prelim.ano}: notificações preliminares do SINAN.` : ''}`);
+  }
+
+  /* ================= KPI row (sempre o último ano, sem filtro de período) ================= */
+  const kpis = [];
+  if(sim){
+    const u = sim.dados[sim.dados.length-1];
+    kpis.push({label:`Óbitos totais · ${u.ano}`, value: u.obitos_total, sub:`dos quais ${fmtInt(u.obitos_respiratorios)} respiratórios`, spark: sim.dados.map(r=>r.obitos_total)});
+    kpis.push({label:`Óbitos respiratórios · ${u.ano}`, value: u.obitos_respiratorios, sub:`de ${fmtInt(u.obitos_total)} óbitos totais`, spark: sim.dados.map(r=>r.obitos_respiratorios)});
+  }
+  if(sinan){
+    const fechados = sinan.dados.filter(r => !r.preliminar);
+    const u = fechados[fechados.length-1], ant = fechados[fechados.length-2];
+    kpis.push({label:`Notificações de dengue · ${u.ano}`, value: u.dengue, sub:`${ant.ano}${ant.ano === 2024 ? ' (epidemia nacional)' : ''}: ${fmtInt(ant.dengue)}`, spark: fechados.map(r=>r.dengue)});
+  }
+  if(sih){
+    const u = sih.dados[sih.dados.length-1];
+    kpis.push({label:`Internações respiratórias · ${u.ano}`, value: u.internacoes_respiratorias, sub:`${fmt1(100*u.internacoes_respiratorias/u.internacoes_total)}% das internações`, spark: sih.dados.map(r=>r.internacoes_respiratorias)});
+  }
+  const kpiRow = document.getElementById('kpiRow');
+  kpis.forEach(k => {
+    const tile = document.createElement('div'); tile.className = 'kpi-tile';
+    tile.innerHTML = `<div class="kpi-label">${k.label}</div><div class="kpi-value">${fmtInt(k.value)}</div><div class="kpi-sub">${k.sub}</div><div class="kpi-spark"></div>`;
+    kpiRow.appendChild(tile);
+    sparkline(tile.querySelector('.kpi-spark'), k.spark, cssVar('--series-blue'));
+  });
+
+  /* ================= período ================= */
+  function noPeriodo(linhas){
+    const p = P.filtros.estado.periodo;
+    if(!p) return linhas;
+    const [a, b] = P.anosDoPeriodo(p);
+    return linhas.filter(r => r.ano >= a && r.ano <= b);
+  }
+
+  /* ================= gráficos ================= */
+  function draw(){
+    const blue = cssVar('--series-blue'), orange = cssVar('--series-orange'), aqua = cssVar('--series-aqua'), ctx = cssVar('--series-context');
+    if(sim){
+      const d = noPeriodo(sim.dados);
+      renderLineChart('chart-obitos', 'tt-obitos', {
+        labels: d.map(r=>r.ano),
+        series: [
+          {name: P.dica('Óbitos totais', sim.meta.fonte_curta), color: ctx, data: d.map(r=>r.obitos_total), emphasis:false},
+          {name: P.dica('Óbitos por causas respiratórias', sim.meta.fonte_curta), color: blue, data: d.map(r=>r.obitos_respiratorios)},
+        ],
+        height: 220, legendSlot: 'legend-obitos',
+      });
+    }
+    if(afog){
+      renderBarChart('chart-afogamento', 'tt-afogamento', {
+        labels: afog.dados.map(r=>r.periodo), data: afog.dados.map(r=>r.obitos),
+        color: blue, seriesName: P.dica('óbitos', afog.meta.fonte_curta), height: 190,
+        yFormat: formatoComNulos(afog.meta, 'obitos', afog.dados),
+      });
+    }
+    if(sih){
+      const d = noPeriodo(sih.dados);
+      renderLineChart('chart-sih', 'tt-sih', {
+        labels: d.map(r=>r.ano),
+        series: [
+          {name: P.dica('Internações totais', sih.meta.fonte_curta), color: ctx, data: d.map(r=>r.internacoes_total), emphasis:false},
+          {name: P.dica('Internações respiratórias', sih.meta.fonte_curta), color: blue, data: d.map(r=>r.internacoes_respiratorias)},
+        ],
+        height: 190, legendSlot: 'legend-sih',
+      });
+    }
+    if(sinan){
+      const d = noPeriodo(sinan.dados);
+      const rotulos = d.map(r => r.preliminar ? `${r.ano}*` : String(r.ano));
+      const vazadas = d.map((r, i) => r.preliminar ? i : -1).filter(i => i >= 0);
+      [['chart-dengue', 'tt-dengue', 'dengue', blue], ['chart-chik', 'tt-chik', 'chikungunya', orange], ['chart-zika', 'tt-zika', 'zika', aqua]].forEach(([ch, tt, ag, cor]) => {
+        renderBarChart(ch, tt, {
+          labels: rotulos, data: d.map(r => r[ag]),
+          color: cor, seriesName: P.dica('notificações', sinan.meta.fonte_curta), height: 170, tickCount: 3,
+          yFormat: formatoComNulos(sinan.meta, ag, sinan.dados),
+        });
+        marcarBarrasVazadas(ch, vazadas);
+      });
+    }
+  }
+  draw();
+  window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+
+  /* ================= tabela anual ================= */
+  function tabelaAnual(){
+    const table = document.getElementById('tabelaAnual');
+    table.innerHTML = '';
+    const porAno = (p) => p ? Object.fromEntries(noPeriodo(p.dados).map(r => [r.ano, r])) : {};
+    const s = porAno(sim), sn = porAno(sinan), h = porAno(sih);
+    const anos = Array.from(new Set([...Object.keys(s), ...Object.keys(sn), ...Object.keys(h)].map(Number))).sort((a,b)=>a-b);
+    const head = document.createElement('thead');
+    head.innerHTML = '<tr><th>Ano</th><th>Óbitos totais</th><th>Óbitos resp.</th><th>Dengue</th><th>Chikungunya</th><th>Zika</th><th>Internações totais</th><th>Internações resp.</th></tr>';
+    table.appendChild(head);
+    const tbody = document.createElement('tbody');
+    anos.forEach(ano => {
+      const a = s[ano], b = sn[ano], c2 = h[ano];
+      const m = b && b.preliminar ? '*' : '';
+      const cel = v => P.valor(v, fmtInt);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${ano}${m}</td><td>${cel(a && a.obitos_total)}</td><td>${cel(a && a.obitos_respiratorios)}</td><td>${cel(b && b.dengue)}</td><td>${cel(b && b.chikungunya)}</td><td>${cel(b && b.zika)}</td><td>${cel(c2 && c2.internacoes_total)}</td><td>${cel(c2 && c2.internacoes_respiratorias)}</td>`;
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+  }
+  tabelaAnual();
+
+  /* ================= unidades ================= */
+  function tabelaUnidades(){
+    if(!unidades) return;
+    const meta = unidades.meta;
+    const anos = meta.colunas.map(c => c.nome).filter(n => n.startsWith('populacao_informada_')).map(n => n.slice(-4));
+    const comparaveis = unidades.dados.filter(u => !u.fora_das_comparacoes).length;
+    setText('nota-unidades', `${comparaveis} unidades ESF/UBS do cadastro do CNES revisado pela equipe do projeto (versão 4, ${meta.dados_ate}), mais a Equipe de Saúde Prisional, que fica fora das comparações. A localização de cada unidade está no mapa.`);
+    const metaEl = document.getElementById('meta-unidades');
+    metaEl.textContent = `${meta.fonte_curta} · população ${anos.join(' e ')} · `;
+    metaEl.appendChild(P.selo(meta.selo));
+    const av = document.getElementById('aviso-unidades');
+    av.innerHTML = '';
+    P.aviso(av, meta.avisos.filter(a => a.tipo === 'em_confirmacao'));
+
+    const table = document.getElementById('tabelaUnidades');
+    table.innerHTML = '';
+    const head = document.createElement('thead');
+    head.innerHTML = `<tr><th class="col-texto">Unidade</th><th class="col-texto">Classe</th><th class="col-texto col-curta">Zona</th><th class="col-texto">Bairro</th>${anos.map(a => `<th>Pop. informada ${a} ◐</th>`).join('')}<th class="col-texto col-curta">Mapa</th></tr>`;
+    table.appendChild(head);
+    const tbody = document.createElement('tbody');
+    const destaque = P.filtros.estado.unidade;
+    unidades.dados.forEach((u, i) => {
+      const tr = document.createElement('tr');
+      tr.dataset.cnes = u.cnes;
+      if(u.fora_das_comparacoes) tr.classList.add('fora-comparacao');
+      if(destaque === u.cnes){ tr.classList.add('destacado'); tr.setAttribute('aria-current', 'true'); }
+      const classe = u.fora_das_comparacoes ? `${u.classe} · fora das comparações` : u.classe;
+      const pops = anos.map(a => {
+        const campo = `populacao_informada_${a}`;
+        const txt = P.valor(u[campo], fmtInt, P.estaSuprimido(meta, i, campo));
+        return `<td data-rotulo="Pop. informada ${a} ◐">${txt}</td>`;
+      }).join('');
+      const mapa = `${P.raiz()}/index.html?camada=unidades&unidade=${encodeURIComponent(u.cnes)}`;
+      tr.innerHTML = `<td class="col-texto col-nome" data-rotulo="Unidade">${u.nome}</td><td class="col-texto" data-rotulo="Classe">${classe}</td><td class="col-texto col-curta" data-rotulo="Zona">${P.valor(u.zona)}</td><td class="col-texto" data-rotulo="Bairro">${P.valor(u.bairro)}</td>${pops}<td class="col-texto col-curta" data-rotulo="Mapa"><a href="${mapa}">ver no mapa</a></td>`;
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+  }
+  tabelaUnidades();
+
+  /* ================= chips de filtro ================= */
+  function chips(){
+    const host = document.getElementById('chips-filtro');
+    host.innerHTML = '';
+    const rot = {periodo: 'Período', unidade: 'Unidade'};
+    Object.entries(P.filtros.estado).filter(([k]) => rot[k]).forEach(([k, v]) => {
+      const u = k === 'unidade' && unidades ? unidades.dados.find(x => x.cnes === v) : null;
+      const chip = document.createElement('span');
+      chip.className = 'chip-filtro';
+      chip.textContent = `${rot[k]}: ${u ? u.nome : v} `;
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = '✕'; b.setAttribute('aria-label', `remover filtro ${rot[k]}`);
+      b.addEventListener('click', () => P.definirFiltro(k, undefined));
+      chip.appendChild(b);
+      host.appendChild(chip);
+    });
+  }
+  chips();
+  document.addEventListener('filtros:mudou', () => { draw(); tabelaAnual(); tabelaUnidades(); chips(); });
+
+  P.montarRodape();
+  document.documentElement.dataset.pronto = '1';
+}
+iniciar();
+</script>
+</body>
+</html>

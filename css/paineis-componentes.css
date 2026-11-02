@@ -13,6 +13,7 @@ a.nav-item:hover { color: var(--ink); border-color: var(--border-strong); }
 .nav-desativado small { font-size: 10.5px; margin-left: 2px; }
 .nav-mapa { color: var(--accent); border-color: var(--border-strong); }
 .cabecalho-avisos { flex-basis: 100%; }
+.cabecalho-atualizado { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11px; color: var(--ink-muted); margin-right: auto; }
 
 .menu-explorar { position: relative; }
 .menu-explorar summary { list-style: none; cursor: pointer; color: var(--ink-secondary); padding: 5px 9px; border-radius: 5px; border: 1px solid transparent; }
@@ -43,10 +44,34 @@ a.nav-item:hover { color: var(--ink); border-color: var(--border-strong); }
 .chip-filtro { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-card); color: var(--ink-secondary); }
 .chip-filtro button { border: 0; background: none; color: var(--ink-muted); cursor: pointer; font-size: 12px; padding: 0; }
 
+/* ---------- tabela que vira cartões no celular ---------- */
+.tabela-cartoes-wrap { overflow-x: auto; }
+table.tabela-cartoes { min-width: 0; }
+table.tabela-cartoes td.col-texto, table.tabela-cartoes th.col-texto { text-align: left; white-space: normal; }
+table.tabela-cartoes .col-curta { white-space: nowrap; }
+table.tabela-cartoes tr.destacado td { background: var(--accent-soft); font-weight: 600; }
+table.tabela-cartoes tr.fora-comparacao td { color: var(--ink-muted); }
+table.tabela-cartoes a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+.barra-vazada { cursor: pointer; }
+/* rótulos de valor e de eixo não capturam o cursor nem o toque: numa barra baixa,
+   o rótulo fica sobre a área da coluna e impedia a dica de abrir */
+.chart-svg text.bar-label, .chart-svg text.end-label, .chart-svg text.axis-label { pointer-events: none; }
+
 /* ---------- erro de bloco ---------- */
 .erro-bloco { border: 1px dashed var(--series-orange); border-radius: 6px; padding: 14px 16px; font-size: 13px; color: var(--ink-secondary); }
 
 @media (max-width: 720px) {
   .cabecalho-comum { font-size: 12.5px; }
   .menu-explorar-lista { left: 0; right: auto; }
+  /* um cartão por linha da tabela; o rótulo da coluna vem de data-rotulo */
+  table.tabela-cartoes thead { display: none; }
+  table.tabela-cartoes, table.tabela-cartoes tbody { display: block; }
+  table.tabela-cartoes tr { display: block; border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; margin-bottom: 10px; }
+  table.tabela-cartoes td { display: flex; justify-content: space-between; gap: 12px; border: 0; padding: 3px 0; white-space: normal; text-align: right; }
+  table.tabela-cartoes td.col-texto { text-align: right; }
+  table.tabela-cartoes td::before { content: attr(data-rotulo); color: var(--ink-muted); text-align: left; font-weight: 400; }
+  table.tabela-cartoes td.col-nome { font-weight: 600; justify-content: flex-start; text-align: left; }
+  table.tabela-cartoes td.col-nome::before { content: none; }
+  table.tabela-cartoes tr.destacado { border-color: var(--accent); background: var(--accent-soft); }
+  table.tabela-cartoes tr.destacado td { background: none; }
 }

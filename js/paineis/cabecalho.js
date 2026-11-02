@@ -1,7 +1,7 @@
 /* Cabeçalho comum: navegação entre as telas e avisos de filtro.
    Telas que ainda não existem aparecem desativadas, com "em breve".
    Os painéis antigos de saúde, demografia e território seguem no menu
-   "Explorar" até serem migrados. A tela atual vem de <html data-tela="...">. */
+   "Explorar" até serem migrados. Mostra "Atualizado em" com a data do manifesto. A tela atual vem de <html data-tela="...">. */
 (function(){
   const P = window.Paineis = window.Paineis || {};
 
@@ -11,7 +11,7 @@
   ];
   const EXPLORAR = [
     {tela: 'clima', rotulo: 'Clima e ambiente', href: 'clima.html'},
-    {tela: 'saude', rotulo: 'Saúde', href: 'painel-saude.html'},
+    {tela: 'saude', rotulo: 'Saúde', href: 'saude.html'},
     {tela: 'demografia', rotulo: 'Demografia', href: 'painel-demografia.html'},
     {tela: 'territorio', rotulo: 'Território e vulnerabilidade', href: 'painel-territorio.html'},
   ];
@@ -43,6 +43,18 @@
     marca.className = 'cabecalho-marca';
     marca.textContent = 'ClimaPampa · Uruguaiana';
     host.appendChild(marca);
+
+    // "Atualizado em": data de geração do manifesto de data/paineis/
+    const atualizado = document.createElement('span');
+    atualizado.className = 'cabecalho-atualizado';
+    host.appendChild(atualizado);
+    fetch(`${P.raiz ? P.raiz() : '..'}/data/paineis/manifesto.json`)
+      .then(r => r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))
+      .then(m => {
+        const d = /^(\d{4})-(\d{2})-(\d{2})/.exec(m.gerado_em || '');
+        if(d) atualizado.textContent = `Atualizado em ${d[3]}/${d[2]}/${d[1]}`;
+      })
+      .catch(e => console.warn(`manifesto: ${e.message}`));
 
     const nav = document.createElement('nav');
     nav.className = 'cabecalho-nav';
