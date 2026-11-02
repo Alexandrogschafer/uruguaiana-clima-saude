@@ -1,0 +1,313 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "clima_tabela-anual_2007-2025",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "CA01",
+  "CA04",
+  "CA06"
+ ],
+ "titulo": "Dados climáticos anuais em tabela",
+ "fonte_curta": "INMET A809; MERGE/INPE; INPE/BDQUEIMADAS",
+ "fonte": "INMET, estação automática A809 (portal de dados históricos), série horária; MERGE (CPTEC/INPE); INPE, BDQueimadas",
+ "unidade_espacial": "estação; área; município",
+ "unidade_medida": "mm; °C; dias; focos",
+ "periodo": {
+  "inicio": "2007",
+  "fim": "2025"
+ },
+ "dados_ate": "2025-08-18",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "parcial",
+   "onde": {
+    "ano": 2025
+   },
+   "texto": "dados até 18/08/2025"
+  },
+  {
+   "tipo": "lacuna",
+   "onde": {
+    "ano": 2016
+   },
+   "texto": "70,1% das horas válidas em 2016"
+  },
+  {
+   "tipo": "lacuna",
+   "texto": "precipitação pelo MERGE, que começa em 2010"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T11:37:59Z",
+ "script": "scripts/paineis/dados_clima.py",
+ "colunas": [
+  {
+   "nome": "ano",
+   "tipo": "int"
+  },
+  {
+   "nome": "precipitacao_merge_mm",
+   "tipo": "float",
+   "casas": 2
+  },
+  {
+   "nome": "temp_media_anual",
+   "tipo": "float",
+   "casas": 2
+  },
+  {
+   "nome": "temp_max_anual",
+   "tipo": "float",
+   "casas": 1
+  },
+  {
+   "nome": "temp_min_anual",
+   "tipo": "float",
+   "casas": 1
+  },
+  {
+   "nome": "dias_calor_extremo",
+   "tipo": "int"
+  },
+  {
+   "nome": "dias_geada",
+   "tipo": "int"
+  },
+  {
+   "nome": "focos",
+   "tipo": "int"
+  },
+  {
+   "nome": "nota",
+   "tipo": "texto",
+   "valores": [
+    "parcial",
+    "lacuna"
+   ]
+  }
+ ],
+ "fonte_rodape": "",
+ "telas": [
+  "clima"
+ ],
+ "dados": [
+  {
+   "ano": 2007,
+   "precipitacao_merge_mm": null,
+   "temp_media_anual": 19.36,
+   "temp_max_anual": 37.7,
+   "temp_min_anual": -1.8,
+   "dias_calor_extremo": 23,
+   "dias_geada": 2,
+   "focos": null,
+   "nota": null
+  },
+  {
+   "ano": 2008,
+   "precipitacao_merge_mm": null,
+   "temp_media_anual": 19.82,
+   "temp_max_anual": 39.7,
+   "temp_min_anual": 0.0,
+   "dias_calor_extremo": 36,
+   "dias_geada": 1,
+   "focos": null,
+   "nota": null
+  },
+  {
+   "ano": 2009,
+   "precipitacao_merge_mm": null,
+   "temp_media_anual": 19.55,
+   "temp_max_anual": 39.3,
+   "temp_min_anual": -1.9,
+   "dias_calor_extremo": 23,
+   "dias_geada": 3,
+   "focos": null,
+   "nota": null
+  },
+  {
+   "ano": 2010,
+   "precipitacao_merge_mm": 1075.98,
+   "temp_media_anual": 19.44,
+   "temp_max_anual": 36.8,
+   "temp_min_anual": -0.4,
+   "dias_calor_extremo": 9,
+   "dias_geada": 1,
+   "focos": 18,
+   "nota": null
+  },
+  {
+   "ano": 2011,
+   "precipitacao_merge_mm": 980.08,
+   "temp_media_anual": 19.57,
+   "temp_max_anual": 40.9,
+   "temp_min_anual": -1.5,
+   "dias_calor_extremo": 15,
+   "dias_geada": 3,
+   "focos": 18,
+   "nota": null
+  },
+  {
+   "ano": 2012,
+   "precipitacao_merge_mm": 1170.12,
+   "temp_media_anual": 20.5,
+   "temp_max_anual": 41.0,
+   "temp_min_anual": -3.3,
+   "dias_calor_extremo": 41,
+   "dias_geada": 2,
+   "focos": 57,
+   "nota": null
+  },
+  {
+   "ano": 2013,
+   "precipitacao_merge_mm": 1163.46,
+   "temp_media_anual": 19.4,
+   "temp_max_anual": 39.5,
+   "temp_min_anual": -0.1,
+   "dias_calor_extremo": 24,
+   "dias_geada": 1,
+   "focos": 60,
+   "nota": null
+  },
+  {
+   "ano": 2014,
+   "precipitacao_merge_mm": 1526.83,
+   "temp_media_anual": 20.07,
+   "temp_max_anual": 38.7,
+   "temp_min_anual": 0.8,
+   "dias_calor_extremo": 25,
+   "dias_geada": 0,
+   "focos": 53,
+   "nota": null
+  },
+  {
+   "ano": 2015,
+   "precipitacao_merge_mm": 1641.53,
+   "temp_media_anual": 20.07,
+   "temp_max_anual": 35.8,
+   "temp_min_anual": 0.2,
+   "dias_calor_extremo": 3,
+   "dias_geada": 0,
+   "focos": 66,
+   "nota": null
+  },
+  {
+   "ano": 2016,
+   "precipitacao_merge_mm": 1349.76,
+   "temp_media_anual": 21.54,
+   "temp_max_anual": 38.6,
+   "temp_min_anual": 2.8,
+   "dias_calor_extremo": 20,
+   "dias_geada": 0,
+   "focos": 37,
+   "nota": "lacuna"
+  },
+  {
+   "ano": 2017,
+   "precipitacao_merge_mm": 1354.73,
+   "temp_media_anual": 20.4,
+   "temp_max_anual": 39.6,
+   "temp_min_anual": -0.5,
+   "dias_calor_extremo": 18,
+   "dias_geada": 1,
+   "focos": 66,
+   "nota": null
+  },
+  {
+   "ano": 2018,
+   "precipitacao_merge_mm": 1254.77,
+   "temp_media_anual": 19.96,
+   "temp_max_anual": 37.5,
+   "temp_min_anual": -0.5,
+   "dias_calor_extremo": 19,
+   "dias_geada": 1,
+   "focos": 63,
+   "nota": null
+  },
+  {
+   "ano": 2019,
+   "precipitacao_merge_mm": 1601.2,
+   "temp_media_anual": 19.98,
+   "temp_max_anual": 38.0,
+   "temp_min_anual": -1.7,
+   "dias_calor_extremo": 22,
+   "dias_geada": 1,
+   "focos": 147,
+   "nota": null
+  },
+  {
+   "ano": 2020,
+   "precipitacao_merge_mm": 938.66,
+   "temp_media_anual": 20.18,
+   "temp_max_anual": 39.6,
+   "temp_min_anual": -0.6,
+   "dias_calor_extremo": 27,
+   "dias_geada": 2,
+   "focos": 391,
+   "nota": null
+  },
+  {
+   "ano": 2021,
+   "precipitacao_merge_mm": 1006.58,
+   "temp_media_anual": 19.71,
+   "temp_max_anual": 38.6,
+   "temp_min_anual": 0.0,
+   "dias_calor_extremo": 18,
+   "dias_geada": 1,
+   "focos": 315,
+   "nota": null
+  },
+  {
+   "ano": 2022,
+   "precipitacao_merge_mm": 755.34,
+   "temp_media_anual": 19.79,
+   "temp_max_anual": 42.9,
+   "temp_min_anual": -0.1,
+   "dias_calor_extremo": 49,
+   "dias_geada": 1,
+   "focos": 404,
+   "nota": null
+  },
+  {
+   "ano": 2023,
+   "precipitacao_merge_mm": 1042.57,
+   "temp_media_anual": 20.86,
+   "temp_max_anual": 40.7,
+   "temp_min_anual": 1.4,
+   "dias_calor_extremo": 51,
+   "dias_geada": 0,
+   "focos": 138,
+   "nota": null
+  },
+  {
+   "ano": 2024,
+   "precipitacao_merge_mm": 1158.54,
+   "temp_media_anual": 20.32,
+   "temp_max_anual": 40.1,
+   "temp_min_anual": -1.8,
+   "dias_calor_extremo": 27,
+   "dias_geada": 3,
+   "focos": 85,
+   "nota": null
+  },
+  {
+   "ano": 2025,
+   "precipitacao_merge_mm": 1254.54,
+   "temp_media_anual": 20.15,
+   "temp_max_anual": 41.3,
+   "temp_min_anual": 1.9,
+   "dias_calor_extremo": 36,
+   "dias_geada": 0,
+   "focos": 311,
+   "nota": "parcial"
+  }
+ ]
+}

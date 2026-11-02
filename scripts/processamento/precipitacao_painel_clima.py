@@ -5,6 +5,11 @@ com a A809 só para comparação, e injeta os dados no HTML do painel.
 Só o bloco entre os marcadores de comentário é substituído no HTML, então
 nenhum valor de precipitação do painel é digitado à mão.
 
+Também publica os produtos dos painéis em data/paineis/ (esquema
+climapampa-painel/1, via scripts/paineis/comum.py):
+    clima_precipitacao-merge_<inicio>-<fim>_anual  (com a A809 para comparação)
+    clima_precipitacao-merge_<inicio>-<fim>_mensal (todos os meses)
+
 Decisões:
     - o MERGE é a média de uma área com margem de 18 km em torno do município,
       não um ponto nem o limite municipal; CRS não se aplica (série tabular);
@@ -28,6 +33,9 @@ from pathlib import Path
 import pandas as pd
 
 RAIZ = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(RAIZ / "scripts" / "paineis"))
+import comum  # noqa: E402
+
 ENTRADA_MERGE = RAIZ / "data/raw/precipitacao_merge-inpe_2010-2025_mensal.csv"
 ENTRADA_ESTACAO = RAIZ / "data/raw/clima_inmet_historico-completo_horario.parquet"
 SAIDA = RAIZ / "data/processed/precipitacao_merge-inpe_2010-2025_mensal-anual.json"
@@ -37,6 +45,12 @@ LIMIAR_HORAS_VALIDAS = 90.0
 MESES_NO_PAINEL = 60
 MARCA_INICIO = "// <precipitacao-merge:inicio>"
 MARCA_FIM = "// <precipitacao-merge:fim>"
+SCRIPT = "scripts/processamento/precipitacao_painel_clima.py"
+# período no nome do produto = período do arquivo de entrada
+_PERIODO = re.search(r"_(\d{4}-\d{4})_mensal", ENTRADA_MERGE.name).group(1)
+PRODUTOS = [f"clima_precipitacao-merge_{_PERIODO}_anual", f"clima_precipitacao-merge_{_PERIODO}_mensal"]
+FONTE_RODAPE = "Precipitação — MERGE/INPE-CPTEC, média de área com margem de 18 km; a A809 aparece só na comparação anual"
+AVISO_AREA = {"tipo": "metodo", "texto": "média de uma área com margem de 18 km em torno do município; não é um ponto nem o limite municipal"}
 
 
 def ler_merge(codigo_ibge: str) -> pd.DataFrame:
@@ -141,25 +155,76 @@ def injetar(dados: dict, painel: Path) -> bool:
     return True
 
 
+def publicar_paineis(dados: dict, forcar: bool = False, so: str | None = None) -> dict[str, bool]:
+    """Grava os produtos anual e mensal em data/paineis/ (idempotente)."""
+    anual, mensal = dados["anual"], dados["mensal"]
+    a0, a1 = anual[0]["ano"], anual[-1]["ano"]
+    abaixo = [a["ano"] for a in anual if a["a809_abaixo_de_90_pct"]]
+    avisos_anual = [AVISO_AREA]
+    if abaixo:
+        avisos_anual.append({"tipo": "lacuna", "onde": {"anos": abaixo},
+                             "texto": "A809 com menos de 90% das horas válidas em " + " e ".join(map(str, abaixo))})
+    comuns = dict(codigo_ibge=dados["codigo_ibge"], fonte_curta="MERGE/INPE",
+                  fonte="MERGE (CPTEC/INPE), grade diária agregada para total mensal",
+                  unidade_espacial="área (município + margem de 18 km)", unidade_medida="mm",
+                  dados_ate=f"{a1}-12-31", selo="conferido", script=SCRIPT)
+    entradas = [ENTRADA_MERGE, ENTRADA_ESTACAO]
+    prod_anual = comum.montar_produto(
+        id=f"clima_precipitacao-merge_{a0}-{a1}_anual", ativos=["CA04", "CA01"],
+        titulo="Precipitação total por ano (MERGE) e comparação com a A809",
+        periodo={"inicio": str(a0), "fim": str(a1)}, avisos=avisos_anual,
+        colunas=[{"nome": "ano", "tipo": "int"}, {"nome": "merge_mm", "tipo": "float", "casas": 2},
+                 {"nome": "a809_mm", "tipo": "float", "casas": 1},
+                 {"nome": "a809_horas_validas_precipitacao_pct", "tipo": "float", "casas": 1},
+                 {"nome": "a809_horas_validas_temperatura_pct", "tipo": "float", "casas": 1},
+                 {"nome": "a809_abaixo_de_90_pct", "tipo": "bool"}],
+        dados=anual,
+        extras={"fonte_rodape": FONTE_RODAPE, "fonte_curta_comparacao": "A809",
+                "media_referencia": dados["media_referencia"], "telas": ["clima"]},
+        **comuns)
+    prod_mensal = comum.montar_produto(
+        id=f"clima_precipitacao-merge_{a0}-{a1}_mensal", ativos=["CA04"],
+        titulo="Precipitação mensal (MERGE)",
+        periodo={"inicio": mensal[0]["periodo"], "fim": mensal[-1]["periodo"]}, avisos=[AVISO_AREA],
+        colunas=[{"nome": "periodo", "tipo": "texto"}, {"nome": "precipitacao_mm", "tipo": "float", "casas": 2}],
+        dados=mensal, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["clima"]}, **comuns)
+    transf = ("soma dos meses do MERGE por ano; média de referência sem o último ano; total anual da A809 e "
+              "percentual de horas válidas sobre as horas do calendário, em UTC")
+    return {p["id"]: comum.gravar_produto(p, transformacao=transf, entradas=entradas, forcar=forcar)
+            for p in (prod_anual, prod_mensal) if not so or p["id"] == so}
+
+
+def obter_dados(codigo_ibge: str, forcar: bool) -> dict:
+    if SAIDA.exists() and not forcar:
+        dados = json.loads(SAIDA.read_text(encoding="utf-8"))
+        if dados.get("codigo_ibge") != codigo_ibge:
+            raise ValueError("o produto existente é de outro município; use --forcar")
+        print(f"produto já existe, sem recalcular: {SAIDA.name}")
+    else:
+        dados = gerar(codigo_ibge)
+        SAIDA.parent.mkdir(parents=True, exist_ok=True)
+        SAIDA.write_text(json.dumps(dados, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        gravar_metadado(dados)
+        print(f"gerado: {SAIDA.name} ({SAIDA.stat().st_size} bytes)")
+    conferir(dados)
+    return dados
+
+
+def gerar_paineis(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = None) -> dict[str, bool]:
+    """Entrada usada por scripts/paineis/gerar_todos.py."""
+    return publicar_paineis(obter_dados(codigo_ibge, forcar), forcar, so)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--codigo-ibge", default="4322400")
     ap.add_argument("--forcar", action="store_true", help="recalcula mesmo se o produto já existir")
     args = ap.parse_args()
     try:
-        if SAIDA.exists() and not args.forcar:
-            dados = json.loads(SAIDA.read_text(encoding="utf-8"))
-            if dados.get("codigo_ibge") != args.codigo_ibge:
-                raise ValueError("o produto existente é de outro município; use --forcar")
-            print(f"produto já existe, sem recalcular: {SAIDA.name}")
-        else:
-            dados = gerar(args.codigo_ibge)
-            SAIDA.parent.mkdir(parents=True, exist_ok=True)
-            SAIDA.write_text(json.dumps(dados, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-            gravar_metadado(dados)
-            print(f"gerado: {SAIDA.name} ({SAIDA.stat().st_size} bytes)")
-        conferir(dados)
+        dados = obter_dados(args.codigo_ibge, args.forcar)
         print("painel atualizado" if injetar(dados, PAINEL) else "painel já estava atualizado")
+        for pid, gravou in publicar_paineis(dados, args.forcar).items():
+            print(f"{pid}: {'gravado' if gravou else 'sem mudança'}")
     except (OSError, ValueError, KeyError) as erro:
         print(f"erro: {erro}", file=sys.stderr)
         return 1

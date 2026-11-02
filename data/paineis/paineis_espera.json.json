@@ -1,0 +1,10 @@
+{
+  "produto": "paineis_espera.json",
+  "esquema": "climapampa-espera/1",
+  "fonte": "config/paineis_ativos.csv",
+  "transformacao_aplicada": "ativos sem autorização 'livre' e sem exceção por premissa; só id e motivo",
+  "script": "scripts/paineis/manifesto.py",
+  "codigo_ibge": "4322400",
+  "data_processamento": null,
+  "sha256_entrada": "e0445e8f70591dbcf01838e5fe2351bf64ede466415cadd9f684e3b399a4f64a"
+}

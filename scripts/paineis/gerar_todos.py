@@ -2,7 +2,7 @@
 Roda todos os geradores de dados dos painéis e, no fim, o manifesto.
 
 Cada gerador é um módulo com PRODUTOS (ids que ele grava) e
-gerar(codigo_ibge, forcar, so) -> {id: True se gravou | False se já estava igual}.
+uma função de entrada (codigo_ibge, forcar, so) -> {id: True se gravou | False se já estava igual}.
 Idempotente: sem --forcar, nada é regravado se entradas e conteúdo não mudaram.
 
 Uso:
@@ -21,8 +21,11 @@ RAIZ = AQUI.parents[1]
 sys.path.insert(0, str(AQUI))
 import manifesto  # noqa: E402
 
-# Ordem importa: a tabela anual do clima lê o produto da precipitação.
-GERADORES: list[Path] = []
+# (script, função de entrada). Ordem importa: a tabela anual do clima lê o produto da precipitação.
+GERADORES: list[tuple[Path, str]] = [
+    (RAIZ / "scripts" / "processamento" / "precipitacao_painel_clima.py", "gerar_paineis"),
+    (AQUI / "dados_clima.py", "gerar"),
+]
 
 
 def carregar(caminho: Path):
@@ -39,14 +42,14 @@ def main() -> int:
     ap.add_argument("--so", help="gera só este produto (id)")
     args = ap.parse_args()
     try:
-        modulos = [carregar(g) for g in GERADORES]
-        todos = [p for m in modulos for p in m.PRODUTOS]
+        modulos = [(carregar(g), f) for g, f in GERADORES]
+        todos = [p for m, _ in modulos for p in m.PRODUTOS]
         if args.so and args.so not in todos:
             raise ValueError(f"produto desconhecido: {args.so}; conhecidos: {', '.join(todos)}")
-        for m in modulos:
+        for m, funcao in modulos:
             if args.so and args.so not in m.PRODUTOS:
                 continue
-            for pid, gravou in m.gerar(args.codigo_ibge, args.forcar, args.so).items():
+            for pid, gravou in getattr(m, funcao)(args.codigo_ibge, args.forcar, args.so).items():
                 print(f"{pid}: {'gravado' if gravou else 'sem mudança'}")
         mf, esp = manifesto.gerar(args.codigo_ibge)
         print(f"manifesto: {'gravado' if mf else 'sem mudança'}; espera: {'gravada' if esp else 'sem mudança'}")

@@ -1,0 +1,217 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "clima_precipitacao-merge_2010-2025_anual",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "CA04",
+  "CA01"
+ ],
+ "titulo": "Precipitação total por ano (MERGE) e comparação com a A809",
+ "fonte_curta": "MERGE/INPE",
+ "fonte": "MERGE (CPTEC/INPE), grade diária agregada para total mensal",
+ "unidade_espacial": "área (município + margem de 18 km)",
+ "unidade_medida": "mm",
+ "periodo": {
+  "inicio": "2010",
+  "fim": "2025"
+ },
+ "dados_ate": "2025-12-31",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "média de uma área com margem de 18 km em torno do município; não é um ponto nem o limite municipal"
+  },
+  {
+   "tipo": "lacuna",
+   "onde": {
+    "anos": [
+     2016,
+     2025
+    ]
+   },
+   "texto": "A809 com menos de 90% das horas válidas em 2016 e 2025"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T11:37:58Z",
+ "script": "scripts/processamento/precipitacao_painel_clima.py",
+ "colunas": [
+  {
+   "nome": "ano",
+   "tipo": "int"
+  },
+  {
+   "nome": "merge_mm",
+   "tipo": "float",
+   "casas": 2
+  },
+  {
+   "nome": "a809_mm",
+   "tipo": "float",
+   "casas": 1
+  },
+  {
+   "nome": "a809_horas_validas_precipitacao_pct",
+   "tipo": "float",
+   "casas": 1
+  },
+  {
+   "nome": "a809_horas_validas_temperatura_pct",
+   "tipo": "float",
+   "casas": 1
+  },
+  {
+   "nome": "a809_abaixo_de_90_pct",
+   "tipo": "bool"
+  }
+ ],
+ "fonte_rodape": "Precipitação — MERGE/INPE-CPTEC, média de área com margem de 18 km; a A809 aparece só na comparação anual",
+ "fonte_curta_comparacao": "A809",
+ "media_referencia": {
+  "ano_inicio": 2010,
+  "ano_fim": 2024,
+  "precipitacao_mm": 1201.34
+ },
+ "telas": [
+  "clima"
+ ],
+ "dados": [
+  {
+   "ano": 2010,
+   "merge_mm": 1075.98,
+   "a809_mm": 1292.2,
+   "a809_horas_validas_precipitacao_pct": 99.9,
+   "a809_horas_validas_temperatura_pct": 99.9,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2011,
+   "merge_mm": 980.08,
+   "a809_mm": 1104.0,
+   "a809_horas_validas_precipitacao_pct": 99.9,
+   "a809_horas_validas_temperatura_pct": 99.9,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2012,
+   "merge_mm": 1170.12,
+   "a809_mm": 981.0,
+   "a809_horas_validas_precipitacao_pct": 90.2,
+   "a809_horas_validas_temperatura_pct": 90.2,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2013,
+   "merge_mm": 1163.46,
+   "a809_mm": 1310.2,
+   "a809_horas_validas_precipitacao_pct": 99.8,
+   "a809_horas_validas_temperatura_pct": 99.8,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2014,
+   "merge_mm": 1526.83,
+   "a809_mm": 1899.4,
+   "a809_horas_validas_precipitacao_pct": 100.0,
+   "a809_horas_validas_temperatura_pct": 100.0,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2015,
+   "merge_mm": 1641.53,
+   "a809_mm": 1864.4,
+   "a809_horas_validas_precipitacao_pct": 100.0,
+   "a809_horas_validas_temperatura_pct": 100.0,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2016,
+   "merge_mm": 1349.76,
+   "a809_mm": 963.6,
+   "a809_horas_validas_precipitacao_pct": 70.1,
+   "a809_horas_validas_temperatura_pct": 70.1,
+   "a809_abaixo_de_90_pct": true
+  },
+  {
+   "ano": 2017,
+   "merge_mm": 1354.73,
+   "a809_mm": 1578.2,
+   "a809_horas_validas_precipitacao_pct": 99.1,
+   "a809_horas_validas_temperatura_pct": 99.1,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2018,
+   "merge_mm": 1254.77,
+   "a809_mm": 1138.8,
+   "a809_horas_validas_precipitacao_pct": 97.7,
+   "a809_horas_validas_temperatura_pct": 97.7,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2019,
+   "merge_mm": 1601.2,
+   "a809_mm": 1766.2,
+   "a809_horas_validas_precipitacao_pct": 99.8,
+   "a809_horas_validas_temperatura_pct": 99.8,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2020,
+   "merge_mm": 938.66,
+   "a809_mm": 1027.6,
+   "a809_horas_validas_precipitacao_pct": 92.5,
+   "a809_horas_validas_temperatura_pct": 92.5,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2021,
+   "merge_mm": 1006.58,
+   "a809_mm": 1111.6,
+   "a809_horas_validas_precipitacao_pct": 98.9,
+   "a809_horas_validas_temperatura_pct": 98.9,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2022,
+   "merge_mm": 755.34,
+   "a809_mm": 858.4,
+   "a809_horas_validas_precipitacao_pct": 99.5,
+   "a809_horas_validas_temperatura_pct": 99.5,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2023,
+   "merge_mm": 1042.57,
+   "a809_mm": 1234.0,
+   "a809_horas_validas_precipitacao_pct": 98.7,
+   "a809_horas_validas_temperatura_pct": 98.8,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2024,
+   "merge_mm": 1158.54,
+   "a809_mm": 1588.0,
+   "a809_horas_validas_precipitacao_pct": 98.3,
+   "a809_horas_validas_temperatura_pct": 98.3,
+   "a809_abaixo_de_90_pct": false
+  },
+  {
+   "ano": 2025,
+   "merge_mm": 1254.54,
+   "a809_mm": 669.2,
+   "a809_horas_validas_precipitacao_pct": 45.0,
+   "a809_horas_validas_temperatura_pct": 45.0,
+   "a809_abaixo_de_90_pct": true
+  }
+ ]
+}

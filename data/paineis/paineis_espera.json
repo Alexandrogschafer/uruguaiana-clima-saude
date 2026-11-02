@@ -1,0 +1,258 @@
+{
+ "esquema": "climapampa-espera/1",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  {
+   "id": "TB18",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "TB20",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "TB21",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "TB22",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "TB23",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "TB24",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "TB25",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "TB26",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "TB27",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "TB28",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "TB29",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "TB30",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "TB31",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "PD03",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "PD06",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "PD07",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "PD08",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "PD09",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "PD10",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "PD11",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "PD12",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "PD13",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "SA06",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "SA07",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "SA08",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "SA09",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "SA10",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "SA11",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "SA12",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "SA13",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "SA15",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "SA16",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN06",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN07",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN08",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN09",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN10",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN11",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN12",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN13",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "IN14",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN15",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN16",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN18",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN19",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN20",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN21",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN22",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN23",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN24",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IN25",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "IN26",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "IN27",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "IN28",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "IN29",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "IN30",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "IN31",
+   "motivo": "bloqueada"
+  },
+  {
+   "id": "CA16",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "CA17",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IF06",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "IF07",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "RD06",
+   "motivo": "depende de conferência no QGIS"
+  },
+  {
+   "id": "RD07",
+   "motivo": "bloqueada"
+  }
+ ]
+}

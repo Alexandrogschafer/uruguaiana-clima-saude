@@ -1,0 +1,106 @@
+{
+ "esquema": "climapampa-manifesto/1",
+ "codigo_ibge": "4322400",
+ "gerado_em": "2026-11-02T11:37:59Z",
+ "produtos": [
+  {
+   "id": "clima_inmet-a809_2007-2025_anual",
+   "titulo": "Temperatura, calor extremo e geada por ano",
+   "ativos": [
+    "CA01"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2025-08-18",
+   "gerado_em": "2026-11-02T11:37:59Z",
+   "telas": [
+    "clima"
+   ],
+   "bytes": 4462,
+   "sha256": "d241e1402bb7b793c31e9489d99a09c11768de15cdd78485427cd18a4ec7fe0a"
+  },
+  {
+   "id": "clima_precipitacao-merge_2010-2025_anual",
+   "titulo": "Precipitação total por ano (MERGE) e comparação com a A809",
+   "ativos": [
+    "CA04",
+    "CA01"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2025-12-31",
+   "gerado_em": "2026-11-02T11:37:58Z",
+   "telas": [
+    "clima"
+   ],
+   "bytes": 5055,
+   "sha256": "3808d8db893072b31068b3ace8cb4a5450ec86ddd3bb0f12c8c3616fae917491"
+  },
+  {
+   "id": "clima_precipitacao-merge_2010-2025_mensal",
+   "titulo": "Precipitação mensal (MERGE)",
+   "ativos": [
+    "CA04"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2025-12-31",
+   "gerado_em": "2026-11-02T11:37:58Z",
+   "telas": [
+    "clima"
+   ],
+   "bytes": 13188,
+   "sha256": "b6d54e39b4157a64f6067b6f42847b217c70a57966b4be51459287970d9a9c12"
+  },
+  {
+   "id": "clima_tabela-anual_2007-2025",
+   "titulo": "Dados climáticos anuais em tabela",
+   "ativos": [
+    "CA01",
+    "CA04",
+    "CA06"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2025-08-18",
+   "gerado_em": "2026-11-02T11:37:59Z",
+   "telas": [
+    "clima"
+   ],
+   "bytes": 6141,
+   "sha256": "b0a174f97ee02ce2bc1b4351a917671d2dcf25e793b48a56afee10f8e9f7e5dc"
+  },
+  {
+   "id": "queimadas_inpe_2010-2025_anual",
+   "titulo": "Focos de queimada por ano",
+   "ativos": [
+    "CA06"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2025-12-31",
+   "gerado_em": "2026-11-02T11:37:59Z",
+   "telas": [
+    "clima"
+   ],
+   "bytes": 1678,
+   "sha256": "07e780b10b710f7238a732392d1e36637b24079d2299642869cd54bead260894"
+  },
+  {
+   "id": "rio_ana-77150000_2026-08-06-a-2026-08-07_15min",
+   "titulo": "Nível e vazão do rio, leituras de 15 em 15 minutos (amostra)",
+   "ativos": [
+    "IN04"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2026-08-07 21:30:00",
+   "gerado_em": "2026-11-02T11:37:59Z",
+   "telas": [
+    "clima"
+   ],
+   "bytes": 19355,
+   "sha256": "fb4651deb1556eef0a9ef5114e1503de1581ff35c665650f62f91f578663630a"
+  }
+ ]
+}
