@@ -118,6 +118,21 @@ class ProdutoPublicado(unittest.TestCase):
         self.assertLess(m["dados"][-1]["ano"], 2026)
 
 
+class EscolhaDaSerie(unittest.TestCase):
+    def test_vale_a_coleta_mais_recente_da_serie_inteira(self):
+        """Duas coletas da série inteira em arquivos próprios: o gerador usa a de data_acesso mais recente."""
+        with tempfile.TemporaryDirectory() as tmp:
+            antiga = Path(tmp) / f"nivel-rio_ana-serie-historica-{R.ESTACAO}_1940-2026_diario.csv"
+            nova = Path(tmp) / f"nivel-rio_ana-serie-historica-{R.ESTACAO}_1940-01-01-a-2026-11-02_diario.csv"
+            for arq, quando in ((antiga, "2026-10-06T19:33:55+00:00"), (nova, "2026-11-02T16:41:34+00:00")):
+                arq.write_text("x\n", encoding="utf-8")
+                arq.with_suffix(".json").write_text(json.dumps({"data_acesso": quando}), encoding="utf-8")
+            # a ordem alfabética poria a antiga por último; a escolha é pela data da coleta
+            self.assertEqual(sorted([antiga, nova])[-1], antiga)
+            self.assertEqual(R.serie_mais_recente([antiga, nova]), nova)
+            self.assertEqual(R.serie_mais_recente([nova, antiga]), nova)
+
+
 class Maximas(unittest.TestCase):
     def test_ano_do_evento_fora_e_lacuna_null(self):
         linhas = []

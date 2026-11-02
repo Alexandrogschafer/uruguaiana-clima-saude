@@ -51,27 +51,29 @@ const TELAS = {
       precip: "clima_precipitacao-merge_2010-2025_anual",
       mensal: "clima_precipitacao-merge_2010-2025_mensal",
       queim: "queimadas_inpe_2010-2025_anual",
-      rio: "rio_ana-77150000_2026-08-06-a-2026-08-07_15min",
+      rio: "rio_ana-77150000_ultimos-365-dias_diario",
       tabela: "clima_tabela-anual_2007-2025",
     },
     // dica esperada em cada ponto: [rótulo do eixo, [[valor, nome da série], ...]]
     graficos: (p) => {
       const fc = (k) => p[k].meta.fonte_curta;
       const meses = p.mensal.dados.slice(-60);
+      // rio: série diária de 365 dias, como na cheia e saúde: um ponto a cada 7 dias e o último (x em dias corridos)
+      const amostraRio = p.rio.dados.filter((r, i, a) => i % 7 === 0 || i === a.length - 1);
       return {
         "precip-anual": p.precip.dados.map((r) => [r.ano, [[fmtInt(r.merge_mm), `mm · ${fc("precip")}`]]]),
         calor: p.anual.dados.map((r) => [r.ano, [[fmtInt(r.dias_calor_extremo), `dias · ${fc("anual")}`]]]),
         "temp-anual": p.anual.dados.map((r) => [r.ano, [[fmt1(r.temp_media_anual) + "°C", `Temperatura média · ${fc("anual")}`]]]),
         "precip-mensal": meses.map((r) => [r.periodo.slice(2), [[fmtInt(r.precipitacao_mm) + "mm", `Precipitação · ${fc("mensal")}`]]]),
         comparacao: p.precip.dados.map((r) => [r.ano, [[fmtInt(r.merge_mm), fc("precip")], [fmtInt(r.a809_mm), p.precip.meta.fonte_curta_comparacao]]]),
-        nivel: p.rio.dados.map((r) => [r.data_hora_utc.slice(5, 16), [[fmtInt(r.nivel_cm) + " cm", `Nível · ${fc("rio")}`]]]),
-        vazao: p.rio.dados.map((r) => [r.data_hora_utc.slice(5, 16), [[fmtInt(r.vazao_m3s), `Vazão (m³/s) · ${fc("rio")}`]]]),
+        nivel: amostraRio.map((r) => [diaTxt(diaNum(r.dia)), [[fmtInt(r.nivel_medio_cm), `Nível médio do dia (cm) · ${fc("rio")}`]], diaNum(r.dia)]),
+        vazao: amostraRio.map((r) => [diaTxt(diaNum(r.dia)), [[fmtInt(r.vazao_media_m3s), `Vazão média do dia (m³/s) · ${fc("rio")}`]], diaNum(r.dia)]),
         queimadas: p.queim.dados.map((r) => [r.ano, [[fmtInt(r.focos), `focos · ${fc("queim")}`]]]),
       };
     },
     kpis: (p) => {
       const u = (k) => p[k].dados[p[k].dados.length - 1];
-      return [fmtInt(u("precip").merge_mm) + "mm", fmtInt(u("anual").dias_calor_extremo) + "dias", fmtInt(u("queim").focos) + "focos", fmtInt(Math.round(u("rio").nivel_cm)) + "cm"];
+      return [fmtInt(u("precip").merge_mm) + "mm", fmtInt(u("anual").dias_calor_extremo) + "dias", fmtInt(u("queim").focos) + "focos", fmtInt(Math.round(u("rio").nivel_medio_cm)) + "cm"];
     },
     tabelas: (p) => ({
       tabelaAnual: p.tabela.dados.map((r) => {
@@ -79,7 +81,7 @@ const TELAS = {
         const v = (x, f) => (x === null || x === undefined ? "—" : f ? f(x) : String(x));
         return [String(r.ano), v(r.precipitacao_merge_mm, fmtInt), v(r.temp_media_anual, fmt1) + m, v(r.temp_max_anual, fmt1) + m, v(r.temp_min_anual, fmt1) + m, v(r.dias_calor_extremo) + m, v(r.dias_geada) + m, v(r.focos, fmtInt)];
       }),
-      tabelaNivel: p.rio.dados.slice().reverse().map((r) => [r.data_hora_utc, fmtInt(r.nivel_cm), fmt1(r.vazao_m3s)]),
+      tabelaNivel: p.rio.dados.slice().reverse().map((r) => [dataBR(r.dia), fmtInt(r.nivel_medio_cm), fmt1(r.vazao_media_m3s), String(r.n_leituras)]),
     }),
     // rótulo final dos gráficos de linha (série em destaque) e rótulos de barra (máximo e último)
     rotulosFinais: (p) => {
@@ -89,13 +91,14 @@ const TELAS = {
         "temp-anual": [fmt1(ult(p.anual.dados).temp_media_anual) + "°C"],
         "precip-mensal": [fmtInt(ult(p.mensal.dados).precipitacao_mm) + "mm"],
         comparacao: [fmtInt(ult(p.precip.dados).merge_mm), fmtInt(ult(p.precip.dados).a809_mm)],
-        nivel: [fmtInt(ult(p.rio.dados).nivel_cm) + " cm"],
-        vazao: [fmtInt(ult(p.rio.dados).vazao_m3s)],
+        nivel: [fmtInt(ult(p.rio.dados).nivel_medio_cm)],
+        vazao: [fmtInt(ult(p.rio.dados).vazao_media_m3s)],
         "precip-anual": barras(p.precip.dados.map((r) => r.merge_mm), fmtInt),
         calor: barras(p.anual.dados.map((r) => r.dias_calor_extremo), fmtInt),
         queimadas: barras(p.queim.dados.map((r) => r.focos), fmtInt),
       };
     },
+    extras: async (browser, base, prod) => testesExtrasClima(browser, base, prod),
   },
   saude: {
     pagina: "dashboards/saude.html",
@@ -530,6 +533,48 @@ async function testeRedirecionamento(browser, base, def) {
   return { ok: url.pathname.split("/").pop() === def.pagina.split("/").pop() && url.search === "?origem=redirecionamento", destino: url.pathname + url.search };
 }
 
+
+// ------------------------------------------------------------------ extras do clima (cartões do rio)
+// Textos do rio iguais ao JSON da média diária; "atualizado em" igual ao da última leitura; nada de amostra;
+// com evento em curso, nenhum dia de 01/10/2026 em diante e o aviso do corte visível.
+async function testesExtrasClima(browser, base, prod) {
+  const res = [];
+  const rio = prod.rio, m = rio.meta;
+  const ult = JSON.parse(fs.readFileSync(path.join(RAIZ, "data", "paineis", "rio_ana-77150000_ultima-leitura.json"), "utf8"));
+  const atualizado = (ult.atualizado_em || "").replace(/^\d{4}-(\d{2})-(\d{2})$/, "$2/$1");
+  const janela = `${m.fonte_curta} · ${dataBR(m.periodo.inicio)} a ${dataBR(m.periodo.fim)}`;
+  const avisosEsperados = m.avisos.filter((a) => a.tipo === "evento_em_curso" || a.texto.startsWith("não é dado")).map((a) => a.texto);
+  const d = rio.dados[rio.dados.length - 1];
+  for (const largura of [1280, 390]) {
+    const { ctx, page, erros } = await abrir(browser, base + "dashboards/clima.html", { largura });
+    const r = await page.evaluate(() => {
+      const t = (id) => (document.getElementById(id) || {}).innerText || "";
+      const tiles = [...document.querySelectorAll(".kpi-tile")];
+      const rioTile = tiles[tiles.length - 1];
+      const dias = [...document.querySelectorAll("#tabelaNivel tbody tr td:first-child")].map((td) => td.textContent);
+      const caixa = document.getElementById("aviso-rio").getBoundingClientRect();
+      return { nota: t("nota-rio"), metaNivel: t("meta-nivel"), metaVazao: t("meta-vazao"), avisos: t("aviso-rio"), avisoVisivel: caixa.height > 0,
+               kpiLabel: rioTile.querySelector(".kpi-label").innerText, kpiSub: rioTile.querySelector(".kpi-sub").innerText,
+               amostra: /amostra/i.test(document.body.innerText), resumo: document.querySelector("details:has(#tabelaNivel) summary").innerText, dias };
+    });
+    const iso = (br) => br.replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$2-$1");
+    const falhas = [];
+    if (r.nota !== `${m.titulo}. ${m.fonte}.`) falhas.push(`nota: ${r.nota}`);
+    if (r.metaNivel !== janela || r.metaVazao !== janela) falhas.push(`janela: ${r.metaNivel} | ${r.metaVazao}`);
+    for (const a of avisosEsperados) if (!r.avisos.includes(a)) falhas.push(`aviso ausente: ${a}`);
+    if (!r.avisoVisivel) falhas.push("caixa de aviso sem altura");
+    if (!atualizado || !r.avisos.includes(`atualizado em ${atualizado}`)) falhas.push(`"atualizado em" diferente da última leitura (${atualizado})`);
+    if (m.evento_em_curso && !r.avisos.includes(`série até ${dataBR(m.dados_ate)}`)) falhas.push("aviso do corte ausente");
+    if (r.kpiLabel !== `Nível médio · ${dataBR(d.dia)}` || r.kpiSub !== `vazão ${fmtInt(d.vazao_media_m3s)} m³/s`) falhas.push(`indicador: ${r.kpiLabel} | ${r.kpiSub}`);
+    if (r.amostra) falhas.push("texto de amostra na página");
+    if (r.resumo !== "Ver médias diárias do nível e da vazão do rio") falhas.push(`resumo da tabela: ${r.resumo}`);
+    if (r.dias.length !== rio.dados.length || iso(r.dias[0]) !== m.dados_ate) falhas.push(`tabela: ${r.dias.length} linhas, primeira ${r.dias[0]}`);
+    if (m.evento_em_curso && r.dias.some((x) => iso(x) >= "2026-10-01")) falhas.push("dia de 01/10/2026 em diante na tabela");
+    res.push({ nome: `clima: cartões do rio iguais ao JSON diário, aviso e "atualizado em ${atualizado}" (${largura} px)`, ok: !falhas.length && erros.length === 0, detalhe: falhas.concat(erros).join(" | ") });
+    await ctx.close();
+  }
+  return res;
+}
 
 // ------------------------------------------------------------------ extras da tela de saúde
 async function abrir(browser, url, opcoes) {
