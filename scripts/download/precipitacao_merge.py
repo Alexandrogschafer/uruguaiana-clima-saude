@@ -67,8 +67,8 @@ CHIRPS (mesmo critério usado no SIH/SINAN) — detectado verificando a
 existência do arquivo de dezembro via HTTP HEAD, não hardcoded.
 
 Uso:
-    python scripts/download/precipitacao_chirps.py
-    python scripts/download/precipitacao_chirps.py --codigo-ibge 4314902 --forcar
+    python scripts/download/precipitacao_merge.py
+    python scripts/download/precipitacao_merge.py --codigo-ibge 4314902 --forcar
 """
 
 import argparse
