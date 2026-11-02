@@ -1,0 +1,170 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "cadunico_mds_2012-2026_anual",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "EV05"
+ ],
+ "titulo": "Famílias no CadÚnico e taxa de atualização",
+ "fonte_curta": "MDS",
+ "fonte": "MDS, Relatório de Informações (RIv3)",
+ "unidade_espacial": "município",
+ "unidade_medida": "famílias; %",
+ "periodo": {
+  "inicio": "2012",
+  "fim": "2026"
+ },
+ "dados_ate": "2026-07",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "parcial",
+   "texto": "último ponto não é dezembro"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:50:06Z",
+ "script": "scripts/paineis/dados_economia.py",
+ "colunas": [
+  {
+   "nome": "ano",
+   "tipo": "int"
+  },
+  {
+   "nome": "mes",
+   "tipo": "int"
+  },
+  {
+   "nome": "rotulo",
+   "tipo": "texto"
+  },
+  {
+   "nome": "familias_cadastradas",
+   "tipo": "int"
+  },
+  {
+   "nome": "taxa_atualizacao_pct",
+   "tipo": "float"
+  }
+ ],
+ "fonte_rodape": "CadÚnico e Bolsa Família — Ministério do Desenvolvimento Social (MDS), Relatório de Informações (RIv3)",
+ "telas": [
+  "economia"
+ ],
+ "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município",
+ "dados": [
+  {
+   "ano": 2012,
+   "mes": 12,
+   "rotulo": "2012",
+   "familias_cadastradas": 14382,
+   "taxa_atualizacao_pct": 0.0
+  },
+  {
+   "ano": 2013,
+   "mes": 12,
+   "rotulo": "2013",
+   "familias_cadastradas": 15555,
+   "taxa_atualizacao_pct": 0.0
+  },
+  {
+   "ano": 2014,
+   "mes": 12,
+   "rotulo": "2014",
+   "familias_cadastradas": 16577,
+   "taxa_atualizacao_pct": 0.0
+  },
+  {
+   "ano": 2015,
+   "mes": 12,
+   "rotulo": "2015",
+   "familias_cadastradas": 14287,
+   "taxa_atualizacao_pct": 56.8
+  },
+  {
+   "ano": 2016,
+   "mes": 12,
+   "rotulo": "2016",
+   "familias_cadastradas": 13234,
+   "taxa_atualizacao_pct": 61.4
+  },
+  {
+   "ano": 2017,
+   "mes": 12,
+   "rotulo": "2017",
+   "familias_cadastradas": 13254,
+   "taxa_atualizacao_pct": 73.0
+  },
+  {
+   "ano": 2018,
+   "mes": 12,
+   "rotulo": "2018",
+   "familias_cadastradas": 12845,
+   "taxa_atualizacao_pct": 85.6
+  },
+  {
+   "ano": 2019,
+   "mes": 12,
+   "rotulo": "2019",
+   "familias_cadastradas": 14538,
+   "taxa_atualizacao_pct": 80.7
+  },
+  {
+   "ano": 2020,
+   "mes": 12,
+   "rotulo": "2020",
+   "familias_cadastradas": 15306,
+   "taxa_atualizacao_pct": 66.4
+  },
+  {
+   "ano": 2021,
+   "mes": 12,
+   "rotulo": "2021",
+   "familias_cadastradas": 17679,
+   "taxa_atualizacao_pct": 59.5
+  },
+  {
+   "ano": 2022,
+   "mes": 12,
+   "rotulo": "2022",
+   "familias_cadastradas": 21948,
+   "taxa_atualizacao_pct": 72.7
+  },
+  {
+   "ano": 2023,
+   "mes": 12,
+   "rotulo": "2023",
+   "familias_cadastradas": 22810,
+   "taxa_atualizacao_pct": 70.9
+  },
+  {
+   "ano": 2024,
+   "mes": 12,
+   "rotulo": "2024",
+   "familias_cadastradas": 22650,
+   "taxa_atualizacao_pct": 66.4
+  },
+  {
+   "ano": 2025,
+   "mes": 12,
+   "rotulo": "2025",
+   "familias_cadastradas": 21033,
+   "taxa_atualizacao_pct": 88.3
+  },
+  {
+   "ano": 2026,
+   "mes": 7,
+   "rotulo": "jul/26",
+   "familias_cadastradas": 21162,
+   "taxa_atualizacao_pct": 86.7
+  }
+ ]
+}

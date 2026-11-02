@@ -1,0 +1,28 @@
+{
+  "produto": "pib_ibge_2002-2023_anual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "IBGE, PIB dos Municípios (SIDRA tabela 5938)",
+  "transformacao_aplicada": "PIB per capita do CSV processado; percentuais do VAB da tabela 5938; null onde a fonte não publica",
+  "entradas": [
+    {
+      "arquivo": "data/processed/pib-per-capita_ibge-sidra_2002-2023_municipal.csv",
+      "sha256": "207c664b7463252a72e28d906b27ba7a8ebde490ae8b489edb152806cb5c0dcd",
+      "bytes": 928
+    },
+    {
+      "arquivo": "data/raw/pib-municipal_ibge-sidra-tabela5938_2002-2023_municipal.csv",
+      "sha256": "89556a8bb53ce2ab08d88125bbed99047784e0dd1f3f201f6cd38b053522c015",
+      "bytes": 15917
+    }
+  ],
+  "script": "scripts/paineis/dados_economia.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "EV01"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:59:46Z",
+  "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município"
+}

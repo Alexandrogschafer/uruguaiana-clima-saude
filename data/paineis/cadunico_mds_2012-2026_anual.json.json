@@ -1,0 +1,23 @@
+{
+  "produto": "cadunico_mds_2012-2026_anual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "MDS, Relatório de Informações (RIv3)",
+  "transformacao_aplicada": "dezembro de cada ano; último ponto no mês mais recente publicado",
+  "entradas": [
+    {
+      "arquivo": "data/raw/cadunico_mds-ri_2012-2026_municipal.csv",
+      "sha256": "89e8e186858c4c255397a233de4b9449643593a8e826df88d42fc470863a00e8",
+      "bytes": 788
+    }
+  ],
+  "script": "scripts/paineis/dados_economia.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "EV05"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:50:06Z",
+  "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município"
+}

@@ -1,0 +1,33 @@
+{
+  "produto": "despesas_siconfi_2015-2026_anual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "Tesouro Nacional, SICONFI, RREO-Anexo 02 (despesas liquidadas)",
+  "transformacao_aplicada": "valor da função / população do SICONFI; % do PIB com o PIB a preços correntes do mesmo ano",
+  "entradas": [
+    {
+      "arquivo": "data/raw/despesas-por-funcao_siconfi_2015-2026_municipal.csv",
+      "sha256": "a7c0b8a3f02898dd6f482863ce6e2a1ae532da40483a20d14f3bb98201844a84",
+      "bytes": 1634
+    },
+    {
+      "arquivo": "data/raw/despesas-por-funcao_siconfi_2015-2026_municipal.json",
+      "sha256": "d0f99367a67df13374b55ceb95573515d4c58af80a63cd587612f0cc7edd1c92",
+      "bytes": 1913
+    },
+    {
+      "arquivo": "data/raw/pib-municipal_ibge-sidra-tabela5938_2002-2023_municipal.csv",
+      "sha256": "89556a8bb53ce2ab08d88125bbed99047784e0dd1f3f201f6cd38b053522c015",
+      "bytes": 15917
+    }
+  ],
+  "script": "scripts/paineis/dados_economia.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "EV07"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:50:06Z",
+  "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município"
+}

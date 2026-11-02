@@ -1,0 +1,132 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "censo_ibge_2022_situacao-setor",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "EV08",
+  "TB03"
+ ],
+ "titulo": "População e setores por situação (Censo 2022)",
+ "fonte_curta": "IBGE, Censo 2022",
+ "fonte": "IBGE, Censo 2022, agregados por setor",
+ "unidade_espacial": "município",
+ "unidade_medida": "habitantes; setores",
+ "periodo": {
+  "inicio": "2022",
+  "fim": "2022"
+ },
+ "dados_ate": "2022",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [],
+ "supressao": {
+  "limiar": 5,
+  "campos": [
+   "populacao"
+  ],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-02T12:59:46Z",
+ "script": "scripts/paineis/dados_economia.py",
+ "colunas": [
+  {
+   "nome": "situacao",
+   "tipo": "texto"
+  },
+  {
+   "nome": "setores",
+   "tipo": "int"
+  },
+  {
+   "nome": "populacao",
+   "tipo": "int",
+   "contagem": true
+  }
+ ],
+ "fonte_rodape": "Censo — IBGE 2022 (Agregados por Setores Censitários + SIDRA)",
+ "telas": [
+  "economia"
+ ],
+ "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município",
+ "notas": {
+  "eco_meta_censo": "2022",
+  "eco_meta_economia": "PIB 2002–2022 · PAM/PPM 1974–2024 · CAGED 2020–2026",
+  "eco_meta_vulnerabilidade": "IDHM 1991–2010 · CadÚnico 2012–2026",
+  "eco_nota_censo": "Censo 2022 (179 setores censitários). Renda, água e esgoto só existem no nível municipal para este censo — não variam por setor no produto do IBGE.",
+  "eco_nota_economia": "PIB municipal e composição setorial (IBGE/SIDRA), produção agropecuária (PAM/PPM) e emprego formal (RAIS/Novo CAGED) — indicadores de contexto socioeconômico municipal, sem granularidade espacial abaixo do município na fonte (ao contrário das demais camadas deste painel, por isso não aparecem no geoportal).",
+  "eco_meta_pib_pc": "IBGE/SIDRA · 2002–2022",
+  "eco_meta_vab": "% do VAB total · 2002–2021",
+  "eco_nota_pib": "2007 não tem PIB per capita (sem fonte de população nesse ano) e 2022/2023 não têm detalhamento setorial (a fonte só publica VAB por atividade até 2021, mesmo com o PIB total mais recente). O pico da agropecuária no VAB em 2021 (27,1%) é um choque de **preço** do arroz, não de volume — a área colhida (abaixo) fica estável no mesmo período.",
+  "eco_meta_pam": "PAM · 1974–2024 · hectares",
+  "eco_meta_ppm": "PPM · 1974–2024 · cabeças",
+  "eco_nota_pam": "Arroz irrigado domina a lavoura do município (~94% da área colhida em 2024); soja começou a crescer a partir de meados dos anos 2010, ainda pequena. Rebanho ovino em queda estrutural de longo prazo (de 1,43 milhão de cabeças em 1974 para 137,8 mil em 2024), mesmo padrão já visto em outros municípios do Pampa gaúcho — bovino oscila, sem tendência clara. PAM/PPM não têm versão por setor censitário nem geolocalizada na fonte (decisão confirmada com o usuário) — por isso ficam só como indicador tabular, sem virar camada no geoportal.",
+  "eco_meta_caged_fluxo": "mensal · 2020-01 a 2026-06",
+  "eco_meta_caged_saldo": "acumulado desde 2020-01",
+  "eco_nota_caged": "Novo CAGED (via eSocial, a partir de 2020) — período anterior fica fora de escopo por quebra metodológica com o CAGED antigo (formulário declaratório), mesmo espírito da quebra já documentada entre Censos do IBGE. Saldo de 2026 (parcial, até junho) puxado para baixo pelo setor Agropecuária — sinal a acompanhar, não uma reversão de tendência confirmada.",
+  "eco_meta_rais": "retrato em 31/12/2025 · 24.498 vínculos",
+  "eco_nota_rais": "RAIS não tem série histórica baixada nesta rodada (só o ano mais recente — o arquivo de estabelecimentos nacional tem ~3GB por ano) — funciona como retrato do estoque atual ao lado da série mensal de fluxo do CAGED acima, não como tendência própria. Participação da Agropecuária no emprego formal (12,8%) é menor que sua participação no PIB (14–27%), padrão esperado: agricultura mecanizada é intensiva em capital, não em mão de obra.",
+  "eco_resumo_rais": "Ver RAIS 2025 completa por seção CNAE (20 seções)",
+  "eco_nota_vulnerabilidade": "Desenvolvimento humano (IDHM, Atlas Brasil/PNUD) e cobertura de assistência social (CadÚnico e Bolsa Família, MDS) — indicadores de contexto municipal único, sem granularidade espacial na fonte, por isso fora do geoportal.",
+  "eco_meta_idhm": "Atlas Brasil · 1991–2010",
+  "eco_meta_idhm_brasil": "1991–2010",
+  "eco_nota_idhm": "IDHM 2022 não existe em nível municipal na fonte (nem via Censo, não computado; nem via PNAD Contínua, testada e confirmada vazia para município — inclusive Porto Alegre, usada como controle de sanidade) — a série para em 2010. Evolução acima da média do Brasil nos 3 censos, puxada principalmente pela Longevidade (0,715→0,863) e por uma forte recuperação da Educação (0,357→0,661, o componente que mais cresceu proporcionalmente).",
+  "eco_meta_cadunico": "dezembro de cada ano · 2012–2026",
+  "eco_meta_cadunico_taxa": "% das famílias · 2012–2026",
+  "eco_nota_cadunico": "Taxa de atualização 0% em 2012–2014 é valor real da fonte (métrica aparentemente não rastreada pelo MDS nesse período), não falha de extração. Último ponto (2026) é julho, não dezembro como os demais — comparar com cautela, ano ainda não fechado. Bolsa Família (ver KPIs acima) não tem série histórica confiável nesta ferramenta antes de 2023 (o módulo consultado referencia especificamente o \"Novo Bolsa Família\", Lei 14.601/2023), por isso não vira gráfico de série temporal, só o retrato do mês mais recente.",
+  "eco_nota_siconfi": "Execução orçamentária por função (RREO-Anexo 02, Tesouro Nacional) — despesas liquidadas acumuladas no ano, indicador de contexto municipal único, sem granularidade espacial na fonte.",
+  "eco_nota_saneamento": "**Sobre o KPI \"Saneamento\" acima:** a função \"Saneamento\" não aparecer no orçamento por função NÃO significa ausência de investimento no serviço — água e esgoto de Uruguaiana são operados pela CORSAN (concessionária estadual), fora do orçamento municipal direto. O gasto existe, só não passa por essa peça orçamentária específica.",
+  "eco_meta_siconfi_saude": "2015–2025 · R$/hab",
+  "eco_meta_siconfi_assist": "2015–2025 · R$/hab",
+  "eco_meta_siconfi_pct": "2015–2023 · anos com PIB disponível",
+  "eco_nota_siconfi_parcial": "2026 (parcial, só bimestre 3 publicado até agora) fica fora dos gráficos — R$ 418,80/hab em Saúde e R$ 19,79/hab em Assistência Social acumulados até junho não são comparáveis a um ano fechado; incluir sugeriria uma queda de investimento que não é real. % do PIB só existe até 2023 (mesma lacuna já documentada na seção de Economia — a fonte do PIB não publica detalhamento mais recente). Despesa em Saúde per capita cresce de forma monotônica desde 2015 (+193,3% entre 2015 e 2025), estável entre 1,5% e 2,3% do PIB (esperado — o piso constitucional de 15% da EC 29/86 é sobre receita própria municipal, não sobre o PIB)."
+ },
+ "kpis_censo": [
+  {
+   "rotulo": "População total",
+   "valor": "117.210",
+   "unidade": "hab",
+   "sub": "111.272 urbana · 5.938 rural"
+  },
+  {
+   "rotulo": "Renda média domiciliar per capita",
+   "prefixo": "R$ ",
+   "valor": "1.566,2",
+   "unidade": "",
+   "sub": "nível municipal (Censo 2022)"
+  },
+  {
+   "rotulo": "Domicílios com água inadequada",
+   "valor": "7,9",
+   "unidade": "%",
+   "sub": "sem ligação à rede geral"
+  },
+  {
+   "rotulo": "Domicílios com esgoto inadequado",
+   "valor": "11,1",
+   "unidade": "%",
+   "sub": "fora de rede/fossa ligada"
+  }
+ ],
+ "municipal": {
+  "populacao_total": 117210,
+  "renda_media": 1566.17,
+  "pct_agua_inadequada": 7.94,
+  "pct_esgoto_inadequado": 11.11,
+  "n_setores": 179
+ },
+ "dados": [
+  {
+   "situacao": "Urbana",
+   "setores": 152,
+   "populacao": 111272
+  },
+  {
+   "situacao": "Rural",
+   "setores": 27,
+   "populacao": 5938
+  }
+ ]
+}

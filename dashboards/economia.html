@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="pt-BR" data-tela="economia" data-raiz="..">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Economia e Vulnerabilidade — ClimaPampa, Uruguaiana/RS</title>
+<link rel="stylesheet" href="../css/paineis.css">
+<link rel="stylesheet" href="../css/paineis-componentes.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header id="cabecalho-comum"></header>
+
+  <div class="masthead">
+    <svg class="masthead-contour" viewBox="0 0 800 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M -20 110 Q 100 70 220 100 T 460 90 T 700 105 T 900 85" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.35"/>
+      <path d="M -20 128 Q 120 95 240 120 T 480 112 T 720 126 T 900 108" fill="none" style="stroke:var(--accent)" stroke-width="1" opacity="0.22"/>
+    </svg>
+    <span class="eyebrow">ClimaPampa · PET-Saúde Clima · Uruguaiana / RS · Painel 3 de 4 · Economia</span>
+    <h1>Painel de território e vulnerabilidade</h1>
+    <p>Indicadores do Censo e contexto socioeconômico (PIB, PAM/PPM, RAIS/CAGED), desenvolvimento humano, assistência social e despesas municipais — o retrato estrutural do município, que muda devagar. Uso do solo e meio físico estão no painel de <a href="territorio.html">Território</a>; risco geológico, desastres e energia, no de <a href="riscos.html">Riscos</a>.</p>
+    <div class="masthead-meta">
+      <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
+      <span><b>Censo</b> <span data-nota="eco_meta_censo"></span></span>
+      <span><b>Economia</b> <span data-nota="eco_meta_economia"></span></span>
+      <span><b>Vulnerabilidade</b> <span data-nota="eco_meta_vulnerabilidade"></span></span>
+      <span><b>Ver também</b> <a href="saude.html">Saúde</a> · <a href="clima.html">Clima e Ambiente</a> · <a href="populacao.html">Demografia</a> · <a href="../index.html">Geoportal</a></span>
+    </div>
+  </div>
+
+  <div class="chips-filtro" id="chips-filtro"></div>
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="section-head"><h2>Perfil censitário</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="eco_nota_censo"></p>
+  <div class="card"><div class="card-head"><span class="card-title">População por situação do setor</span></div>
+    <div class="card-body"><div id="chart-pop-situacao"></div><div class="chart-tooltip" id="tt-pop-situacao"></div></div></div>
+
+  <div class="section-head"><h2>Economia e Território</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="eco_nota_economia"></p>
+  <div class="kpi-row" id="kpiRowEconomia"></div>
+  <div class="chart-grid">
+    <div class="card"><div class="card-head"><span class="card-title">PIB per capita</span><span class="card-meta" data-nota="eco_meta_pib_pc"></span></div>
+      <div class="card-body"><div id="chart-pib-per-capita"></div><div class="chart-tooltip" id="tt-pib-per-capita"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Composição setorial do VAB</span><span class="card-meta" data-nota="eco_meta_vab"></span></div>
+      <div class="card-body"><div id="chart-pib-composicao"></div><div class="chart-tooltip" id="tt-pib-composicao"></div></div></div>
+  </div>
+  <p class="section-note" style="margin-top:-6px;" data-nota="eco_nota_pib"></p>
+  <div class="chart-grid">
+    <div class="card"><div class="card-head"><span class="card-title">Área colhida — arroz e soja</span><span class="card-meta" data-nota="eco_meta_pam"></span></div>
+      <div class="card-body"><div id="chart-pam-area"></div><div class="chart-tooltip" id="tt-pam-area"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Efetivo de rebanho — bovino e ovino</span><span class="card-meta" data-nota="eco_meta_ppm"></span></div>
+      <div class="card-body"><div id="chart-ppm-rebanho"></div><div class="chart-tooltip" id="tt-ppm-rebanho"></div></div></div>
+  </div>
+  <p class="section-note" style="margin-top:-6px;" data-nota="eco_nota_pam"></p>
+  <div class="chart-grid">
+    <div class="card"><div class="card-head"><span class="card-title">Admissões e desligamentos — Novo CAGED</span><span class="card-meta" data-nota="eco_meta_caged_fluxo"></span></div>
+      <div class="card-body"><div id="chart-caged-fluxo"></div><div class="chart-tooltip" id="tt-caged-fluxo"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Saldo acumulado de vínculos — Novo CAGED</span><span class="card-meta" data-nota="eco_meta_caged_saldo"></span></div>
+      <div class="card-body"><div id="chart-caged-saldo"></div><div class="chart-tooltip" id="tt-caged-saldo"></div></div></div>
+  </div>
+  <p class="section-note" style="margin-top:-6px;" data-nota="eco_nota_caged"></p>
+  <div class="card"><div class="card-head"><span class="card-title">Vínculos formais ativos por seção CNAE — RAIS</span><span class="card-meta" data-nota="eco_meta_rais"></span></div>
+    <div class="card-body"><div id="chart-rais-setor"></div><div class="chart-tooltip" id="tt-rais-setor"></div></div></div>
+  <p class="section-note" style="margin-top:6px;" data-nota="eco_nota_rais"></p>
+  <details class="table-wrap" style="margin-top:10px;">
+    <summary data-nota="eco_resumo_rais"></summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaRais"></table></div>
+  </details>
+
+  <div class="section-head"><h2>Vulnerabilidade e Assistência Social</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="eco_nota_vulnerabilidade"></p>
+  <div class="kpi-row" id="kpiRowVulnerabilidade"></div>
+  <div class="chart-grid">
+    <div class="card"><div class="card-head"><span class="card-title">IDHM e componentes</span><span class="card-meta" data-nota="eco_meta_idhm"></span></div>
+      <div class="card-body"><div id="chart-idhm-componentes"></div><div class="chart-tooltip" id="tt-idhm-componentes"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">IDHM — Uruguaiana x Brasil</span><span class="card-meta" data-nota="eco_meta_idhm_brasil"></span></div>
+      <div class="card-body"><div id="chart-idhm-brasil"></div><div class="chart-tooltip" id="tt-idhm-brasil"></div></div></div>
+  </div>
+  <p class="section-note" style="margin-top:-6px;" data-nota="eco_nota_idhm"></p>
+  <div class="chart-grid">
+    <div class="card"><div class="card-head"><span class="card-title">Famílias cadastradas — CadÚnico</span><span class="card-meta" data-nota="eco_meta_cadunico"></span></div>
+      <div class="card-body"><div id="chart-cadunico-familias"></div><div class="chart-tooltip" id="tt-cadunico-familias"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Taxa de atualização cadastral (2 anos)</span><span class="card-meta" data-nota="eco_meta_cadunico_taxa"></span></div>
+      <div class="card-body"><div id="chart-cadunico-taxa"></div><div class="chart-tooltip" id="tt-cadunico-taxa"></div></div></div>
+  </div>
+  <p class="section-note" style="margin-top:-6px;" data-nota="eco_nota_cadunico"></p>
+
+  <div class="section-head"><h2>Despesas Municipais — SICONFI</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="eco_nota_siconfi"></p>
+  <div class="kpi-row" id="kpiRowSiconfi"></div>
+  <p class="section-note" style="margin-top:-6px;" data-nota="eco_nota_saneamento"></p>
+  <div class="chart-grid">
+    <div class="card"><div class="card-head"><span class="card-title">Despesa em Saúde per capita</span><span class="card-meta" data-nota="eco_meta_siconfi_saude"></span></div>
+      <div class="card-body"><div id="chart-siconfi-saude-pc"></div><div class="chart-tooltip" id="tt-siconfi-saude-pc"></div></div></div>
+    <div class="card"><div class="card-head"><span class="card-title">Despesa em Assistência Social per capita</span><span class="card-meta" data-nota="eco_meta_siconfi_assist"></span></div>
+      <div class="card-body"><div id="chart-siconfi-assist-pc"></div><div class="chart-tooltip" id="tt-siconfi-assist-pc"></div></div></div>
+  </div>
+  <div class="card"><div class="card-head"><span class="card-title">Despesa em Saúde — % do PIB municipal</span><span class="card-meta" data-nota="eco_meta_siconfi_pct"></span></div>
+    <div class="card-body"><div id="chart-siconfi-pct-pib"></div><div class="chart-tooltip" id="tt-siconfi-pct-pib"></div></div></div>
+  <p class="section-note" style="margin-top:6px;" data-nota="eco_nota_siconfi_parcial"></p>
+
+  <footer id="rodape-comum"></footer>
+</div>
+
+<script src="../js/paineis/componentes.js"></script>
+<script src="../js/paineis/graficos.js"></script>
+<script src="../js/paineis/graficos-extra.js"></script>
+<script src="../js/paineis/dados.js"></script>
+<script src="../js/paineis/filtros.js"></script>
+<script src="../js/paineis/cabecalho.js"></script>
+<script src="../js/paineis/rodape.js"></script>
+<script>
+/* Tela de economia e vulnerabilidade: lê os produtos de data/paineis/ (scripts/paineis/dados_economia.py).
+   Nenhum número fica neste arquivo: textos e indicadores vêm de "notas" e "kpis_*". */
+const P = window.Paineis;
+const IDS = {censo: 'censo_ibge_2022_situacao-setor', pib: 'pib_ibge_2002-2023_anual', pam: 'agropecuaria_ibge_1974-2024_anual', caged: 'emprego_caged_2020-2026_mensal',
+             rais: 'emprego_rais_2025_secao', idhm: 'idhm_atlas_1991-2010_censos', cadunico: 'cadunico_mds_2012-2026_anual', bf: 'bolsa-familia_mds_2026-07_mes',
+             siconfi: 'despesas_siconfi_2015-2026_anual'};
+const BLOCOS = {censo: ['chart-pop-situacao'], pib: ['chart-pib-per-capita', 'chart-pib-composicao'], pam: ['chart-pam-area', 'chart-ppm-rebanho'],
+                caged: ['chart-caged-fluxo', 'chart-caged-saldo'], rais: ['chart-rais-setor', 'tabelaRais'], idhm: ['chart-idhm-componentes', 'chart-idhm-brasil'],
+                cadunico: ['chart-cadunico-familias', 'chart-cadunico-taxa'], bf: [], siconfi: ['chart-siconfi-saude-pc', 'chart-siconfi-assist-pc', 'chart-siconfi-pct-pib']};
+const fmt3 = v => v.toLocaleString('pt-BR', {minimumFractionDigits:3, maximumFractionDigits:3});
+
+async function iniciar(){
+  const c = {};
+  for(const [k, id] of Object.entries(IDS)){
+    c[k] = await P.carregar(id);
+    if(!c[k]) BLOCOS[k].forEach(b => P.erroBloco(document.getElementById(b), id));
+  }
+  const {censo, pib, pam, caged, rais, idhm, cadunico, siconfi} = c;
+  const anos = [pib, pam, idhm, cadunico, siconfi].filter(Boolean).flatMap(p => p.dados.map(r => r.ano));
+  P.iniciarFiltros({listas: {periodo: anos.length ? {inicio: Math.min(...anos), fim: Math.max(...anos)} : undefined}});
+  P.montarCabecalho();
+  P.preencherNotas();
+  if(censo) P.montarKpis('kpiRow', censo.meta.kpis_censo);
+  if(pib) P.montarKpis('kpiRowEconomia', pib.meta.kpis_economia);
+  if(idhm) P.montarKpis('kpiRowVulnerabilidade', idhm.meta.kpis_vulnerabilidade);
+  if(siconfi) P.montarKpis('kpiRowSiconfi', siconfi.meta.kpis_siconfi);
+
+  const noPeriodo = (linhas, ano = r => r.ano) => {
+    const p = P.filtros.estado.periodo;
+    if(!p) return linhas;
+    const [a, b] = P.anosDoPeriodo(p);
+    return linhas.filter(r => ano(r) >= a && ano(r) <= b);
+  };
+  // margem esquerda maior que a padrão: rótulos como "1.500.000" e "R$ 30.000" cortavam no celular
+  const linha = (id, d, labels, series, fmt) => renderLineChart(`chart-${id}`, `tt-${id}`, {labels, series, height: 190, padL: 72, yFormat: fmt});
+
+  function draw(){
+    const blue = cssVar('--series-blue'), orange = cssVar('--series-orange'), aqua = cssVar('--series-aqua'), gray = cssVar('--series-context');
+    if(censo){
+      renderBarChart('chart-pop-situacao', 'tt-pop-situacao', {
+        labels: censo.dados.map(r => r.situacao), data: censo.dados.map(r => r.populacao), color: blue,
+        seriesName: P.dica('habitantes', censo.meta.fonte_curta), height: 170, barMax: 60, yFormat: formatoComNulos(censo.meta, 'populacao', censo.dados),
+      });
+    }
+    if(pib){
+      const f = pib.meta.fonte_curta;
+      const pc = noPeriodo(pib.dados.filter(r => r.pib_per_capita !== null));
+      const cp = noPeriodo(pib.dados.filter(r => r.vab_agropecuaria_pct !== null));
+      linha('pib-per-capita', pc, pc.map(r => r.ano), [{name: P.dica('PIB per capita', f), color: blue, data: pc.map(r => r.pib_per_capita)}], v => 'R$ '+fmtInt(v));
+      linha('pib-composicao', cp, cp.map(r => r.ano), [
+        {name: P.dica('Serviços', f), color: blue, data: cp.map(r => r.vab_servicos_pct)},
+        {name: P.dica('Adm. pública', f), color: gray, data: cp.map(r => r.vab_administracao_publica_pct)},
+        {name: P.dica('Agropecuária', f), color: orange, data: cp.map(r => r.vab_agropecuaria_pct)},
+        {name: P.dica('Indústria', f), color: aqua, data: cp.map(r => r.vab_industria_pct)},
+      ], v => fmt1(v)+'%');
+    }
+    if(pam){
+      const d = noPeriodo(pam.dados), f = pam.meta.fonte_curta;
+      linha('pam-area', d, d.map(r => r.ano), [{name: P.dica('Arroz', f), color: orange, data: d.map(r => r.arroz_area_colhida_ha)},
+                                              {name: P.dica('Soja', f), color: aqua, data: d.map(r => r.soja_area_colhida_ha)}], v => fmtInt(v)+' ha');
+      linha('ppm-rebanho', d, d.map(r => r.ano), [{name: P.dica('Bovino', f), color: blue, data: d.map(r => r.bovino_cabecas)},
+                                                 {name: P.dica('Ovino', f), color: orange, data: d.map(r => r.ovino_cabecas)}], v => fmtInt(v));
+    }
+    if(caged){
+      const d = noPeriodo(caged.dados, r => Math.floor(r.competencia / 100)), f = caged.meta.fonte_curta;
+      linha('caged-fluxo', d, d.map(r => r.rotulo), [{name: P.dica('Admissões', f), color: blue, data: d.map(r => r.admissoes)},
+                                                    {name: P.dica('Desligamentos', f), color: orange, data: d.map(r => r.desligamentos)}], v => fmtInt(v));
+      linha('caged-saldo', d, d.map(r => r.rotulo), [{name: P.dica('Saldo acumulado', f), color: aqua, data: d.map(r => r.saldo_acumulado)}], v => fmtInt(v));
+    }
+    if(rais){
+      renderHBarChart('chart-rais-setor', 'tt-rais-setor', {
+        labels: rais.meta.grafico.map(r => r.rotulo), data: rais.meta.grafico.map(r => r.vinculos), color: blue,
+        seriesName: P.dica('vínculos', rais.meta.fonte_curta), xFormat: v => fmtInt(v),
+      });
+    }
+    if(idhm){
+      const d = noPeriodo(idhm.dados), f = idhm.meta.fonte_curta;
+      linha('idhm-componentes', d, d.map(r => r.ano), [
+        {name: P.dica('IDHM', f), color: blue, data: d.map(r => r.idhm)}, {name: P.dica('Longevidade', f), color: aqua, data: d.map(r => r.idhm_longevidade)},
+        {name: P.dica('Renda', f), color: orange, data: d.map(r => r.idhm_renda)}, {name: P.dica('Educação', f), color: gray, data: d.map(r => r.idhm_educacao)},
+      ], fmt3);
+      linha('idhm-brasil', d, d.map(r => r.ano), [{name: P.dica('Uruguaiana', f), color: blue, data: d.map(r => r.idhm)},
+                                                 {name: P.dica('Brasil', f), color: gray, data: d.map(r => r.idhm_brasil)}], fmt3);
+    }
+    if(cadunico){
+      const d = noPeriodo(cadunico.dados), f = cadunico.meta.fonte_curta;
+      linha('cadunico-familias', d, d.map(r => r.rotulo), [{name: P.dica('Famílias cadastradas', f), color: blue, data: d.map(r => r.familias_cadastradas)}], v => fmtInt(v));
+      linha('cadunico-taxa', d, d.map(r => r.rotulo), [{name: P.dica('Taxa de atualização', f), color: orange, data: d.map(r => r.taxa_atualizacao_pct)}], v => fmt1(v)+'%');
+    }
+    if(siconfi){
+      const d = noPeriodo(siconfi.dados.filter(r => !r.parcial)), f = siconfi.meta.fonte_curta;
+      const pp = d.filter(r => r.saude_pct_pib !== null);
+      linha('siconfi-saude-pc', d, d.map(r => r.ano), [{name: P.dica('Saúde per capita', f), color: blue, data: d.map(r => r.saude_per_capita_reais)}], v => 'R$ '+fmtInt(v));
+      linha('siconfi-assist-pc', d, d.map(r => r.ano), [{name: P.dica('Assistência Social per capita', f), color: orange, data: d.map(r => r.assistencia_social_per_capita_reais)}], v => 'R$ '+fmt1(v));
+      linha('siconfi-pct-pib', pp, pp.map(r => r.ano), [{name: P.dica('Saúde — % do PIB', f), color: aqua, data: pp.map(r => r.saude_pct_pib)}], v => fmt1(v)+'%');
+    }
+  }
+  draw();
+  window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
+
+  if(rais){
+    const t = document.getElementById('tabelaRais');
+    t.innerHTML = '<thead><tr><th>Seção CNAE</th><th>Vínculos ativos</th><th>% do total</th></tr></thead>';
+    const tb = document.createElement('tbody');
+    rais.dados.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${r.rotulo}</td><td>${fmtInt(r.vinculos)}</td><td>${fmt1(100 * r.vinculos / rais.meta.total)}%</td>`;
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+  }
+  P.montarChips('chips-filtro', {periodo: 'Período'});
+  document.addEventListener('filtros:mudou', () => { draw(); P.montarChips('chips-filtro', {periodo: 'Período'}); });
+
+  P.montarRodape();
+  document.documentElement.dataset.pronto = '1';
+}
+iniciar();
+</script>
+</body>
+</html>

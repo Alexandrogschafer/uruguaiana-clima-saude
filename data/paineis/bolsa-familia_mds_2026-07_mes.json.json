@@ -1,0 +1,23 @@
+{
+  "produto": "bolsa-familia_mds_2026-07_mes.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "MDS, Relatório de Informações (RIv3)",
+  "transformacao_aplicada": "linha única do mês de referência",
+  "entradas": [
+    {
+      "arquivo": "data/raw/bolsa-familia_mds-ri_atual_municipal.csv",
+      "sha256": "3e96b1b1966cfbdaa0ba002038283fa07aa51ddb836dc2fa187e13f642957c9d",
+      "bytes": 202
+    }
+  ],
+  "script": "scripts/paineis/dados_economia.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "EV06"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:50:06Z",
+  "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município"
+}

@@ -1,0 +1,28 @@
+{
+  "produto": "emprego_rais_2025_secao.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "Ministério do Trabalho e Emprego, RAIS (estabelecimentos)",
+  "transformacao_aplicada": "vínculos por seção em ordem decrescente; gráfico com as 8 maiores e o resto somado",
+  "entradas": [
+    {
+      "arquivo": "data/raw/rais-vinculos_mte_2025_municipal.csv",
+      "sha256": "bc838d0f8b1eca8e169074b949fce3457c8b684b1ed1de81fe6f6fa220d3ec92",
+      "bytes": 149
+    },
+    {
+      "arquivo": "data/raw/rais-vinculos_mte_2025_municipal.json",
+      "sha256": "b7d87861e11f6d4618473a15d67c67e16c2d0846574dbd44897859dd5003251f",
+      "bytes": 1310
+    }
+  ],
+  "script": "scripts/paineis/dados_economia.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "EV03"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:50:43Z",
+  "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município"
+}

@@ -1,7 +1,7 @@
 id,autorizacao,excecao_premissa,arquivo_origem,selo
 TB01,livre,,data/geoportal/limite-municipal.geojson,
 TB02,livre,,data/geoportal/bairros.geojson,
-TB03,livre,,data/processed/setores-censitarios_vulnerabilidade_unido.gpkg,
+TB03,livre,,data/processed/setores-censitarios_vulnerabilidade_unido.gpkg,conferido
 TB04,livre,,data/geoportal/densidade-populacional-2010.geojson,
 TB05,livre,,data/geoportal/terreno/hipsometria.png,
 TB06,livre,,data/processed/declividade_anadem_atual_30m.tif,
@@ -108,14 +108,14 @@ CA15,livre,,data/processed/lst/ndvi-mediana_landsat-c2l2-principal_verao-2013-20
 CA16,depende de conferência no QGIS,,data/processed/lst_exposicao/exposicao-calor-bairros_ibge-censo-landsat-c2l2_2022-verao-2013-2026_bairro.gpkg,
 CA17,depende de conferência no QGIS,,data/processed/lst_exposicao/validacao-lst-ar-resumo_landsat-c2l2-inmet-a809_verao-2013-2026.csv,
 CA18,livre,,data/raw/modis,
-EV01,livre,,data/processed/pib-per-capita_ibge-sidra_2002-2023_municipal.csv,
-EV02,livre,,data/raw/producao-agricola_ibge-sidra-tabela5457_1974-2024_municipal.csv,
-EV03,livre,,data/raw/caged-movimentacao_mte_2020-202606_municipal.csv,
-EV04,livre,,data/raw/idhm_atlas-brasil_1991-2010_municipal.csv,
-EV05,livre,,data/raw/cadunico_mds-ri_2012-2026_municipal.csv,
-EV06,livre,,data/raw/bolsa-familia_mds-ri_atual_municipal.csv,
-EV07,livre,,data/raw/despesas-por-funcao_siconfi_2015-2026_municipal.csv,
-EV08,livre,,data/geoportal/indicadores-municipais.json,
+EV01,livre,,data/processed/pib-per-capita_ibge-sidra_2002-2023_municipal.csv,conferido
+EV02,livre,,data/raw/producao-agricola_ibge-sidra-tabela5457_1974-2024_municipal.csv,conferido
+EV03,livre,,data/raw/caged-movimentacao_mte_2020-202606_municipal.csv,conferido
+EV04,livre,,data/raw/idhm_atlas-brasil_1991-2010_municipal.csv,conferido
+EV05,livre,,data/raw/cadunico_mds-ri_2012-2026_municipal.csv,conferido
+EV06,livre,,data/raw/bolsa-familia_mds-ri_atual_municipal.csv,conferido
+EV07,livre,,data/raw/despesas-por-funcao_siconfi_2015-2026_municipal.csv,conferido
+EV08,livre,,data/geoportal/indicadores-municipais.json,conferido
 EV09,livre,,data/geoportal/estrutura-fundiaria.geojson,
 IF01,livre,,data/raw/continuidade-energia_aneel_2000-2026_conjunto-consumidor.csv,
 IF02,livre,,data/geoportal/cobertura-movel-anatel.geojson,

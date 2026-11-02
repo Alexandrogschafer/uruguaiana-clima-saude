@@ -1,0 +1,24 @@
+{
+  "produto": "censo_ibge_2022_situacao-setor.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "IBGE, Censo 2022, agregados por setor",
+  "transformacao_aplicada": "soma da população e contagem de setores por situação; indicadores municipais do mesmo arquivo; supressão de comum.py nas populações",
+  "entradas": [
+    {
+      "arquivo": "data/raw/vulnerabilidade-censo_ibge_2022.csv",
+      "sha256": "b8ac64dcabefe7b9bed7ef4a5c0cc51203529ff2b9689e581f7ec2bbf2e3cfb1",
+      "bytes": 17414
+    }
+  ],
+  "script": "scripts/paineis/dados_economia.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "EV08",
+    "TB03"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-02T12:59:46Z",
+  "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município"
+}
