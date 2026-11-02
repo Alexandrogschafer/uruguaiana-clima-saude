@@ -14,6 +14,11 @@
 
 let cotasDisponiveis = [];
 let estatisticasPorCota = {};
+const ouvintesCota = [];
+
+// url-estado.js espera esta promessa para validar ?cota= contra cotas_disponiveis_cm e mover o controle
+let resolverCotaPronta;
+window.App.cotaPronta = new Promise((resolve) => { resolverCotaPronta = resolve; });
 
 const ESTILO_MANCHA_VISIVEL = { color: "#1d4ed8", weight: 1.5, fillColor: "#2563eb", fillOpacity: 0.35 };
 const ESTILO_MANCHA_OCULTA = { color: "#1d4ed8", weight: 0, fillColor: "#2563eb", fillOpacity: 0, opacity: 0 };
@@ -46,6 +51,18 @@ function atualizarCota(indice) {
   document.getElementById("stat-unidades-saude").textContent = stats
     ? formatarNumero(stats.unidades_saude.n_na_mancha)
     : "—";
+
+  // link para a tela "Cheia e acesso à saúde" na mesma cota (caminho relativo)
+  const link = document.getElementById("link-cheia-saude");
+  if (link) link.href = `dashboards/cheia-saude.html?cota=${cota}`;
+}
+
+function definirCota(cota) {
+  const indice = cotasDisponiveis.indexOf(cota);
+  if (indice < 0) return false;
+  document.getElementById("slider-cota").value = String(indice);
+  atualizarCota(indice);
+  return true;
 }
 
 async function iniciarSliderInundacao() {
@@ -56,6 +73,7 @@ async function iniciarSliderInundacao() {
     cotasDisponiveis = estatisticasPorCota.cotas_disponiveis_cm || [];
   } catch (erro) {
     console.error("Erro ao carregar estatísticas por cota:", erro);
+    resolverCotaPronta({ cotas: [], definir: () => false, aoMudar: () => {} });
     return;
   }
 
@@ -64,9 +82,13 @@ async function iniciarSliderInundacao() {
   slider.disabled = cotasDisponiveis.length === 0;
   slider.value = "0";
 
-  slider.addEventListener("input", (evento) => atualizarCota(Number(evento.target.value)));
+  slider.addEventListener("input", (evento) => {
+    atualizarCota(Number(evento.target.value));
+    ouvintesCota.forEach((f) => f(cotasDisponiveis[Number(evento.target.value)]));
+  });
 
   atualizarCota(0);
+  resolverCotaPronta({ cotas: cotasDisponiveis.slice(), definir: definirCota, aoMudar: (f) => ouvintesCota.push(f) });
 }
 
 window.addEventListener("climapampa:camadas-prontas", iniciarSliderInundacao);

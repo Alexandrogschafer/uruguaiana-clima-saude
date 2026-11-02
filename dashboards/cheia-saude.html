@@ -211,7 +211,7 @@ async function iniciar(){
     img.alt = r.alt;
     setText('titulo-mapa', `Mancha da cota ${fmtInt(r.cota_cm)} cm`);
     setText('meta-mapa', `${cotas.meta.fonte_curta} · tempo de retorno ${trFrase(r, cotas.meta.dif_tr_cerca_anos)}`);
-    document.getElementById('link-mapa').href = `${P.raiz ? P.raiz() : '..'}/index.html?cota=${r.cota_cm}`;
+    document.getElementById('link-mapa').href = `${P.raiz ? P.raiz() : '..'}/index.html?camada=cotasInundacao,unidadesSaude&cota=${r.cota_cm}`;
     document.querySelectorAll('#tabelaCotas tbody tr').forEach(tr => tr.classList.toggle('linha-ativa', +tr.dataset.cota === r.cota_cm));
   }
   if(cotas){

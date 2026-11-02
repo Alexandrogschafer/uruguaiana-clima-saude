@@ -30,7 +30,7 @@
       <div class="card-head"><span class="card-title">Cheia e acesso à saúde</span><span class="card-meta" id="selo-cheia"></span></div>
       <ul class="lista-sintese" id="lista-cheia"></ul>
       <div id="aviso-cheia"></div>
-      <p class="links-sintese"><a href="cheia-saude.html">abrir →</a> · <a href="../index.html">ver no mapa →</a></p>
+      <p class="links-sintese"><a href="cheia-saude.html">abrir →</a> · <a id="link-mapa-cheia" href="../index.html?camada=cotasInundacao,unidadesSaude">ver no mapa →</a></p>
     </div>
     <div class="card cartao-sintese" id="cartao-clima">
       <div class="card-head"><span class="card-title">Clima</span><span class="card-meta" id="selo-clima"></span></div>
@@ -86,7 +86,7 @@ async function iniciar(){
   const cota = P.filtros.estado.cota;
   if(cota){
     document.querySelector('#cartao-cheia a[href="cheia-saude.html"]').href = `cheia-saude.html?cota=${cota}`;
-    document.querySelector('#cartao-cheia a[href="../index.html"]').href = `../index.html?cota=${cota}`;
+    document.getElementById('link-mapa-cheia').href = `../index.html?camada=cotasInundacao,unidadesSaude&cota=${cota}`;
     const chip = document.createElement('span');
     chip.className = 'chip-filtro';
     chip.textContent = `Cota: ${fmtInt(+cota)} cm `;

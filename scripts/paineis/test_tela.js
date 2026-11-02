@@ -622,7 +622,7 @@ async function testesExtrasSaude(browser, base, prod) {
       return { ultimaCnes: ult.dataset.cnes, classe: ult.cells[1].textContent, numeros: [ult.cells[4].textContent, ult.cells[5].textContent], n: linhas.length,
         palavraCobertura: /cobertura/i.test(document.body.innerText), mapa: ult.querySelector("a").getAttribute("href") };
     });
-    const ok = r.ultimaCnes === "4126947" && /fora das comparações/.test(r.classe) && r.numeros.every((x) => !/\d/.test(x)) && r.n === 22 && !r.palavraCobertura && r.mapa === "../index.html?camada=unidades&unidade=4126947";
+    const ok = r.ultimaCnes === "4126947" && /fora das comparações/.test(r.classe) && r.numeros.every((x) => !/\d/.test(x)) && r.n === 22 && !r.palavraCobertura && r.mapa === "../index.html?camada=unidadesSaude&unidade=4126947";
     res.push({ nome: "Prisional na última linha, sem números; 22 linhas; sem a palavra \"cobertura\"; link do mapa", ok, detalhe: JSON.stringify(r) });
     // o link do mapa abre o portal mesmo sem o portal ler o parâmetro
     const resp = await page.request.get(new URL(r.mapa, page.url()).toString());
@@ -724,7 +724,7 @@ async function testesExtrasSintese(browser, base, prod) {
     const b = await abrir(browser, `${pag}?cota=950`, {});
     const r2 = await b.page.evaluate(() => ({ avisos: [...document.querySelectorAll(".cabecalho-avisos .aviso")].map((e) => e.textContent), url: location.search, chip: document.getElementById("chips-filtro").innerText }));
     await b.ctx.close();
-    const ok = /Cota: 952 cm/.test(r1.chip) && r1.link === "cheia-saude.html?cota=952" && r1.mapa === "../index.html?cota=952" &&
+    const ok = /Cota: 952 cm/.test(r1.chip) && r1.link === "cheia-saude.html?cota=952" && r1.mapa === "../index.html?camada=cotasInundacao,unidadesSaude&cota=952" &&
       r2.avisos.includes("Parâmetro ignorado: cota=950") && r2.url === "" && r2.chip === "";
     res.push({ nome: "síntese: ?cota= válido vira chip e segue nos links; inválido gera aviso e sai da URL", ok, detalhe: JSON.stringify({ r1, r2 }) });
   }
@@ -747,7 +747,7 @@ async function testesExtrasCheia(browser, base, prod) {
     });
     const c = prod.cotas.dados.find((x) => x.cota_cm === 952);
     const ok = JSON.stringify(r.pressionado) === '["952 cm"]' && r.src === `../data/paineis/${c.imagem}` && r.alt === c.alt && r.carregada &&
-      JSON.stringify(r.ativa) === '["952"]' && /Cota: 952 cm/.test(r.chip) && r.link === "../index.html?cota=952" && r.filtrosAbertos === (largura !== 390) && new Set(r.refAtiva).size === 2;
+      JSON.stringify(r.ativa) === '["952"]' && /Cota: 952 cm/.test(r.chip) && r.link === "../index.html?camada=cotasInundacao,unidadesSaude&cota=952" && r.filtrosAbertos === (largura !== 390) && new Set(r.refAtiva).size === 2;
     res.push({ nome: `?cota=952 (${largura} px): botão, mini-mapa com texto alternativo, linha da tabela, chip e link do mapa`, ok: ok && erros.length === 0, detalhe: JSON.stringify(r) });
     if (largura === 1280) {
       const resp = await page.request.get(new URL(r.link, page.url()).toString());

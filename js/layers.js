@@ -130,14 +130,14 @@ const CAMPOS_LEGIVEIS = {
     municipio: "Município",
     estado: "Estado",
   },
+  // população por unidade: só 2017 e 2023 (2026 não é publicado; sem total nem variação)
   unidadesSaude: {
     nome: "Nome",
     classe: "Classe",
     cnes: "Código CNES",
     endereco: "Endereço",
-    populacao2017: "População da unidade informada pelos profissionais de saúde do município (2017)",
-    populacao2023: "População da unidade informada pelos profissionais de saúde do município (2023)",
-    populacao2026: "População da unidade informada pelos profissionais de saúde do município (2026)",
+    populacao2017: "População informada (2017)",
+    populacao2023: "População informada (2023)",
   },
   estacoesClima: {
     nome_estacao: "Nome da estação",
@@ -337,10 +337,16 @@ const AVISO_MALHA_HISTORICA =
   "Malha do Censo histórico — NÃO comparar/sobrepor geometricamente com a de outro ano " +
   "(setores mudam de configuração a cada Censo; ver metodologia em data/raw/vetor/).";
 
+// unidade "sem classe" (a Equipe de Saúde Prisional): sem população e fora das comparações de cobertura
+const unidadeSemClasse = (p) => p.classe === "sem classe";
+const AVISO_POPULACAO_UNIDADE =
+  "Número informado pelos profissionais de saúde; o conceito está em confirmação; não somar nem comparar com o Censo.";
+
 const NOTAS_POPUP = {
-  unidadesSaude: () =>
-    "População: número informado pelos profissionais de saúde do município; o conceito (cadastrada, adscrita " +
-    "ou atendida) está pendente de confirmação. " + CREDITO_SAUDE,
+  unidadesSaude: (p) =>
+    (unidadeSemClasse(p)
+      ? `${/prisional/i.test(p.nome || "") ? "Equipe de Saúde Prisional · " : ""}sem classe · não entra em comparações de cobertura. `
+      : `${AVISO_POPULACAO_UNIDADE} `) + CREDITO_SAUDE,
   densidadePopulacional2010: (p) =>
     p.sem_dado ? "Sem dado atributivo na fonte para este setor. " + AVISO_MALHA_HISTORICA : AVISO_MALHA_HISTORICA,
   densidadePopulacional2000: (p) =>
@@ -384,8 +390,20 @@ function formatarValor(chave, valor) {
   return String(valor);
 }
 
+// campos omitidos do popup em casos específicos (a unidade sem classe não mostra população)
+const CAMPOS_OMITIDOS = {
+  unidadesSaude: (p) => (unidadeSemClasse(p) ? ["populacao2017", "populacao2023"] : []),
+};
+
+// link no fim do popup, para a tela correspondente dos painéis (caminho relativo)
+const LINK_POPUP = {
+  unidadesSaude: (p) =>
+    p.cnes ? `<p class="popup-link" style="margin:0 0 6px;font-size:0.8rem;font-weight:600;"><a href="dashboards/saude.html?unidade=${encodeURIComponent(p.cnes)}">Ver na saúde →</a></p>` : "",
+};
+
 function construirPopup(chaveCamada, propriedades) {
-  const campos = CAMPOS_LEGIVEIS[chaveCamada] || {};
+  const omitidos = CAMPOS_OMITIDOS[chaveCamada] ? CAMPOS_OMITIDOS[chaveCamada](propriedades) : [];
+  const campos = Object.fromEntries(Object.entries(CAMPOS_LEGIVEIS[chaveCamada] || {}).filter(([chave]) => !omitidos.includes(chave)));
   const titulo = (CAMPO_TITULO[chaveCamada] || (() => "Feição"))(propriedades);
   const mostrarSemDado = CAMPOS_MOSTRAR_SEM_DADO.has(chaveCamada);
 
@@ -408,12 +426,29 @@ function construirPopup(chaveCamada, propriedades) {
   const textoNota = funcaoNota ? funcaoNota(propriedades) : null;
   const nota = textoNota ? `<p class="popup-nota">${textoNota}</p>` : "";
 
-  return `<div class="popup-titulo">${titulo}</div><table class="popup-tabela">${linhas}</table>${nota}`;
+  const link = LINK_POPUP[chaveCamada] ? LINK_POPUP[chaveCamada](propriedades) : "";
+  // o link vai logo abaixo do título: o conteúdo do popup tem altura máxima e rola (css/style.css)
+  return `<div class="popup-titulo">${titulo}</div>${link}<table class="popup-tabela">${linhas}</table>${nota}`;
 }
+
+// altura máxima do conteúdo do popup por camada, acima dos 260 px de css/style.css: nas unidades, para o
+// aviso da população aparecer sem rolagem
+const ALTURA_MAX_POPUP = { unidadesSaude: "400px" };
 
 function onEachFeatureComPopup(chaveCamada) {
   return (feature, layer) => {
-    layer.bindPopup(() => construirPopup(chaveCamada, feature.properties || {}));
+    // nas unidades, folga no topo para o popup não ficar sob o zoom e o botão "Camadas e filtros"
+    layer.bindPopup(() => construirPopup(chaveCamada, feature.properties || {}),
+      ALTURA_MAX_POPUP[chaveCamada] ? { autoPanPaddingTopLeft: L.point(12, 72) } : {});
+    if (ALTURA_MAX_POPUP[chaveCamada]) {
+      layer.on("popupopen", (evento) => {
+        const conteudo = evento.popup.getElement() && evento.popup.getElement().querySelector(".leaflet-popup-content");
+        if (conteudo && conteudo.style.maxHeight !== ALTURA_MAX_POPUP[chaveCamada]) {
+          conteudo.style.maxHeight = ALTURA_MAX_POPUP[chaveCamada];
+          evento.popup.update();
+        }
+      });
+    }
   };
 }
 
@@ -730,7 +765,8 @@ function montarControleDensidadeHistorica(camadasPorAno) {
  * então um checkbox HTML normal dá controle total sobre onde ele aparece,
  * ao contrário do widget único do Leaflet que só suporta uma lista plana).
  *
- * `definicoes`: array de { layer, rotulo, ligado, aoAlternar? } — aplica o
+ * `definicoes`: array de { chave, layer, rotulo, ligado, aoAlternar? } — `chave` é a de window.App.layers,
+ * gravada em data-camada (url-estado.js usa para ?camada=); aplica o
  * estado inicial (`ligado`) no mapa imediatamente, e chama `aoAlternar()`
  * (se houver) a cada mudança, além de add/removeLayer.
  */
@@ -742,7 +778,7 @@ function montarTogglesCamadas(idContainer, definicoes) {
   container.innerHTML = definicoes
     .map((def, indice) => `
       <label class="checkbox-linha">
-        <input type="checkbox" data-indice="${indice}" ${def.ligado ? "checked" : ""} />
+        <input type="checkbox" id="caixa-camada-${def.chave}" data-camada="${def.chave}" data-indice="${indice}" ${def.ligado ? "checked" : ""} />
         ${def.rotulo}
       </label>`)
     .join("");
@@ -803,7 +839,8 @@ async function iniciarCamadas() {
       style: { color: "#123c26", weight: 2, dashArray: "4 4", fill: false },
       interactive: false,
     }).addTo(mapa);
-    mapa.fitBounds(limiteMunicipal.getBounds(), { padding: [16, 16] });
+    // sem animação: url-estado.js pode mudar a vista logo em seguida (?unidade=, ?bairro=) e a animação a desfaria
+    mapa.fitBounds(limiteMunicipal.getBounds(), { padding: [16, 16], animate: false });
     garantirPatternSemDado(mapa);
 
     // só "Densidade populacional" começa visível — as 3 camadas cobrem a
@@ -928,9 +965,9 @@ async function iniciarCamadas() {
     // para 2022 (a fonte de 2000/2010 não traz distribuição etária por
     // setor — ver scripts/download/setores_censitarios_historico.py)
     montarTogglesCamadas("container-camadas-demografia", [
-      { layer: criancas0a4, rotulo: "Crianças (0-4 anos) — 2022", ligado: false, aoAlternar: atualizarLegendaDemografia },
-      { layer: idosos60Mais, rotulo: "Idosos (60+ anos) — 2022", ligado: false, aoAlternar: atualizarLegendaDemografia },
-      { layer: bairros, rotulo: "Bairros (IBGE, Censo 2022)", ligado: false },
+      { chave: "criancas0a4", layer: criancas0a4, rotulo: "Crianças (0-4 anos) — 2022", ligado: false, aoAlternar: atualizarLegendaDemografia },
+      { chave: "idosos60Mais", layer: idosos60Mais, rotulo: "Idosos (60+ anos) — 2022", ligado: false, aoAlternar: atualizarLegendaDemografia },
+      { chave: "bairros", layer: bairros, rotulo: "Bairros (IBGE, Censo 2022)", ligado: false },
     ]);
     montarControleDensidadeHistorica({
       2022: densidadePopulacional,
@@ -942,24 +979,24 @@ async function iniciarCamadas() {
     // grupo "Inundação" — só a mancha por cota; a camada "Setores expostos à inundação"
     // (população estimada preliminar por área do setor) foi retirada em 2026-10-02
     montarTogglesCamadas("container-camadas-inundacao", [
-      { layer: cotasInundacao, rotulo: "Mancha de inundação (contorno real)", ligado: true },
+      { chave: "cotasInundacao", layer: cotasInundacao, rotulo: "Mancha de inundação (contorno real)", ligado: true },
     ]);
 
     // grupo "Hidrografia e terreno" — subseção "Contexto"
     montarTogglesCamadas("container-camadas-hidro-contexto", [
-      { layer: redeHidrografica, rotulo: "Rede hidrográfica", ligado: false },
-      { layer: estacoesClima, rotulo: "Estações climatológicas (INMET)", ligado: true },
+      { chave: "redeHidrografica", layer: redeHidrografica, rotulo: "Rede hidrográfica", ligado: false },
+      { chave: "estacoesClima", layer: estacoesClima, rotulo: "Estações climatológicas (INMET)", ligado: true },
     ]);
 
     // grupo "Malha viária"
     montarTogglesCamadas("container-camadas-malha-viaria", [
-      { layer: malhaViaria, rotulo: "OpenStreetMap (contexto)", ligado: false },
-      { layer: malhaViariaDnit, rotulo: "DNIT — malha federal oficial", ligado: false },
+      { chave: "malhaViaria", layer: malhaViaria, rotulo: "OpenStreetMap (contexto)", ligado: false },
+      { chave: "malhaViariaDnit", layer: malhaViariaDnit, rotulo: "DNIT — malha federal oficial", ligado: false },
     ]);
 
     // grupo "Estrutura fundiária" — toggle único (sem categorias)
     montarTogglesCamadas("container-camadas-estrutura-fundiaria", [
-      { layer: estruturaFundiaria, rotulo: "Imóveis rurais (CAR)", ligado: false },
+      { chave: "estruturaFundiaria", layer: estruturaFundiaria, rotulo: "Imóveis rurais (CAR)", ligado: false },
     ]);
 
     window.dispatchEvent(new CustomEvent("climapampa:camadas-prontas"));

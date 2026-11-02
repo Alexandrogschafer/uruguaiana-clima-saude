@@ -33,6 +33,11 @@ const LEGENDA_USO_SOLO = [
 let anosDisponiveis = [];
 let boundsPorAno = {};
 let overlayAtual = null;
+const ouvintesAno = [];
+
+// url-estado.js espera esta promessa para aplicar ?periodo= (o único controle de ano do portal)
+let resolverUsoSoloPronto;
+window.App.usoSoloPronto = new Promise((resolve) => { resolverUsoSoloPronto = resolve; });
 
 function preencherLegenda() {
   const lista = document.getElementById("legenda-uso-solo");
@@ -73,6 +78,7 @@ async function iniciarTimelineUsoSolo() {
     boundsPorAno = dados.bounds || {};
   } catch (erro) {
     console.error("Erro ao carregar bounds do uso do solo:", erro);
+    resolverUsoSoloPronto({ anos: [], definirAno: () => false, aoMudar: () => {} });
     return;
   }
 
@@ -83,10 +89,22 @@ async function iniciarTimelineUsoSolo() {
   slider.disabled = anosDisponiveis.length === 0;
   slider.value = String(anosDisponiveis.length - 1); // começa no ano mais recente
 
-  slider.addEventListener("input", (evento) => exibirAno(Number(evento.target.value)));
+  slider.addEventListener("input", (evento) => {
+    exibirAno(Number(evento.target.value));
+    ouvintesAno.forEach((f) => f(anosDisponiveis[Number(evento.target.value)]));
+  });
   document.getElementById("checkbox-uso-solo").addEventListener("change", () => exibirAno(Number(slider.value)));
 
   exibirAno(anosDisponiveis.length - 1);
+
+  const definirAno = (ano) => {
+    const indice = anosDisponiveis.indexOf(ano);
+    if (indice < 0) return false;
+    slider.value = String(indice);
+    exibirAno(indice);
+    return true;
+  };
+  resolverUsoSoloPronto({ anos: anosDisponiveis.slice(), definirAno, aoMudar: (f) => ouvintesAno.push(f) });
 }
 
 iniciarTimelineUsoSolo();
