@@ -46,7 +46,15 @@ Regras:
     s) fontes e identidade (rodada A1): nenhum @import nem link a fonts.googleapis.com /
        fonts.gstatic.com em css, js ou html versionados; os woff2 de config/identidade.json
        existem com o sha256 registrado, junto do OFL.txt; os tokens de cor de
-       config/identidade.json batem com os 3 blocos de css/paineis.css.
+       config/identidade.json batem com os 3 blocos de css/paineis.css;
+    t) CSV (rodada A2): cada data/paineis/csv/<id>.csv vem de um produto publicado (sha256 do JSON igual ao
+       registrado no metadado irmão, mesmas linhas); sem coluna de coordenada fora dos ativos de ponto; sem
+       contagem de 1 a 4 nas colunas suprimidas; linha datada de 01/10/2026 em diante sem número, fora a
+       telemetria provisória;
+    u) catálogo (rodada A2): catalogo_dados.json sem a coluna observacao, sem url, caminho de dado bruto nem
+       script; toda linha ligada a produto ou camada publicados; downloads só para arquivos que existem;
+    v) início (rodada A2): inicio_resumo.json sem nenhum produto do rio; index.html sem número na marcação
+       (fora os <script>); textos de config/textos_inicio.json sem número fora de "Eixo 3".
 
 Uso:
     python scripts/paineis/test_regras_publicas.py
@@ -69,7 +77,8 @@ import manifesto  # noqa: E402
 
 RAIZ = comum.RAIZ
 PASTA = comum.PASTA_PUBLICACAO
-ALVOS = [RAIZ / "data" / "paineis", RAIZ / "dashboards", RAIZ / "css", RAIZ / "js", RAIZ / "index.html", RAIZ / "mapa.html"]
+ALVOS = [RAIZ / "data" / "paineis", RAIZ / "dashboards", RAIZ / "css", RAIZ / "js", RAIZ / "index.html", RAIZ / "mapa.html",
+         RAIZ / "config" / "textos_inicio.json", RAIZ / "config" / "catalogo_ligacao.csv"]
 EXT_TEXTO = {".html", ".js", ".css", ".json", ".geojson", ".csv", ".md", ".txt"}
 ARQ_PADROES = RAIZ / ".git" / "info" / "padroes_proibidos.txt"
 HOOK = RAIZ / "scripts" / "git_hooks" / "pre-commit"
@@ -669,6 +678,98 @@ def regra_s() -> list[str]:
     return falhas
 
 
+# ------------------------------------------------------------------ início, catálogo e CSV (rodada A2)
+def regra_t(prods) -> list[str]:
+    import csv as _csv
+    falhas = []
+    por = {p.stem: (p, d) for p, d in prods}
+    pasta = PASTA / "csv"
+    for f in sorted(pasta.glob("*.csv")) if pasta.exists() else []:
+        pid = f.stem
+        if pid not in por:
+            falhas.append(f"csv/{f.name}: sem produto publicado")
+            continue
+        p, d = por[pid]
+        m = f.with_name(f.name + ".json")
+        if not m.exists():
+            falhas.append(f"csv/{f.name}: sem metadado irmão")
+            continue
+        meta = json.loads(m.read_text(encoding="utf-8"))
+        if meta.get("sha256_fonte") != comum.sha256_arquivo(p):
+            falhas.append(f"csv/{f.name}: derivado de outra versão do JSON (rode exportar_csv.py)")
+        with f.open(encoding="utf-8", newline="") as fh:
+            linhas = list(_csv.DictReader(fh))
+        if len(linhas) != len(d.get("dados", [])):
+            falhas.append(f"csv/{f.name}: {len(linhas)} linhas, o JSON tem {len(d.get('dados', []))}")
+        cols = {c.lower() for c in (linhas[0].keys() if linhas else [])}
+        if cols & CAMPOS_COORDENADA and not set(d.get("ativos", [])) <= ATIVOS_PONTO_PERMITIDOS:
+            falhas.append(f"csv/{f.name}: coluna de coordenada {sorted(cols & CAMPOS_COORDENADA)}")
+        for c in d.get("supressao", {}).get("campos", []):
+            ruins = [r[c] for r in linhas if r.get(c) not in (None, "") and re.fullmatch(r"[1-4](\.0)?", r[c])]
+            if ruins:
+                falhas.append(f"csv/{f.name}: contagem de 1 a 4 em {c}")
+        if f"{pid}.json" not in TELEMETRIA_PROVISORIA:
+            for i, r in enumerate(linhas):
+                datas = [str(r.get(c, ""))[:10] for c in CAMPOS_DATA_LINHA if RE_DATA_ISO.match(str(r.get(c) or ""))]
+                if any(x >= INICIO_EVENTO for x in datas) and any(re.fullmatch(r"-?\d+(\.\d+)?", v or "") for k, v in r.items() if k not in CAMPOS_DATA_LINHA):
+                    falhas.append(f"csv/{f.name}: linha {i} de {max(datas)} com número")
+                    break
+    return falhas
+
+
+def regra_u() -> list[str]:
+    falhas = []
+    arq = PASTA / "catalogo_dados.json"
+    if not arq.exists():
+        return ["catalogo_dados.json ausente"]
+    cat = json.loads(arq.read_text(encoding="utf-8"))
+    nomes = {c["nome"] for c in cat["colunas"]}
+    if "observacao" in nomes or any("observacao" in r for r in cat["dados"]):
+        falhas.append("catálogo publica a coluna observacao")
+    texto = json.dumps(cat["dados"], ensure_ascii=False)
+    for padrao, o_que in [(r"https?://", "url"), (r"data/(raw|processed)/", "caminho de dado bruto"), (r"scripts/", "script")]:
+        if re.search(padrao, texto):
+            falhas.append(f"catálogo publica {o_que}")
+    publicados = {i["id"] for i in json.loads((PASTA / "manifesto.json").read_text(encoding="utf-8"))["produtos"]}
+    for r in cat["dados"]:
+        prods = (r.get("produtos") or "").split()
+        if not prods and not r.get("camadas"):
+            falhas.append(f"catálogo: {r['tema']} sem produto nem camada")
+        for pid in prods:
+            if pid not in publicados:
+                falhas.append(f"catálogo: {r['tema']} → {pid} não publicado")
+        for arqc in (r.get("downloads_camadas") or "").split():
+            if not (RAIZ / arqc).exists():
+                falhas.append(f"catálogo: download inexistente {arqc}")
+    for pid, s in cat.get("sobre_produtos", {}).items():
+        if s.get("csv") and not (RAIZ / "data" / "paineis" / s["csv"].split("data/paineis/")[-1]).exists():
+            falhas.append(f"catálogo: CSV inexistente para {pid}")
+    return falhas
+
+
+def regra_v() -> list[str]:
+    falhas = []
+    arq = PASTA / "inicio_resumo.json"
+    if not arq.exists():
+        return ["inicio_resumo.json ausente"]
+    d = json.loads(arq.read_text(encoding="utf-8"))
+    rio = sorted({r["produto"] for r in d["dados"] if r["produto"].startswith("rio_")} | {x for x in d.get("produtos_usados", []) if x.startswith("rio_")})
+    if rio:
+        falhas.append(f"inicio_resumo.json com produto do rio {rio}")
+    html = (RAIZ / "index.html").read_text(encoding="utf-8")
+    marcacao = re.sub(r"<script\b.*?</script>|<!--.*?-->", "", html, flags=re.S)
+    numeros = re.findall(r"\d+", re.sub(r"<[^>]+>", " ", marcacao))
+    if numeros:
+        falhas.append(f"index.html: número na marcação {numeros[:5]}")
+    tx = json.loads((RAIZ / "config" / "textos_inicio.json").read_text(encoding="utf-8"))
+    tx.pop("descricao", None)  # comentário do arquivo, não aparece na página
+    textos = json.dumps(tx, ensure_ascii=False)
+    sobra = re.findall(r"\d+", re.sub(r"https?://[^\"]+|Eixo 3", "", textos))
+    if sobra:
+        falhas.append(f"config/textos_inicio.json: número fora de \"Eixo 3\" {sobra[:5]}")
+    return falhas
+
+
 def main() -> int:
     arqs = arquivos_alvo()
     prods = produtos()
@@ -692,6 +793,9 @@ def main() -> int:
         "q nenhum JSON órfão em data/paineis/": regra_q(prods),
         "r nenhuma imagem de logo enquanto as marcas não forem liberadas": regra_r(),
         "s fontes sem serviço externo; fonte íntegra; tokens da identidade iguais aos do CSS": regra_s(),
+        "t CSV derivados dos JSON publicados, sem coordenada, supressão mantida, sem número do evento": regra_t(prods),
+        "u catálogo sem observacao, url, caminho bruto nem script; só linhas publicadas": regra_u(),
+        "v início sem produto do rio e sem número na marcação": regra_v(),
     }
     print(f"arquivos varridos: {len(arqs)}; produtos: {len(prods)}")
     ok = True

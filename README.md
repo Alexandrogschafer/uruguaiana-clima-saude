@@ -122,6 +122,7 @@ escrito no HTML. Endereço de cada uma (no site publicado, depois de
 | Território | `dashboards/territorio.html` | uso do solo e meio físico |
 | Economia | `dashboards/economia.html` | PIB, agropecuária, emprego, vulnerabilidade e despesas municipais |
 | Riscos | `dashboards/riscos.html` | desastres reconhecidos, suscetibilidade, setorização de risco e energia |
+| Catálogo de dados | `dashboards/catalogo.html` | fontes dos produtos e das camadas, licença, resolução, acesso, selo e downloads; "Como ler" os selos e avisos |
 
 `dashboards/index.html` e `dashboards/sintese.html` levam ao início; os
 endereços antigos (`painel-*.html`) levam às telas novas. Os filtros também vão na URL (`periodo`, `unidade`, `cota`);
@@ -136,6 +137,36 @@ roda os geradores `scripts/paineis/dados_*.py` e grava também
 livres em `config/paineis_ativos.csv`. Os geradores leem de `data/raw/` e
 `data/processed/`; sem essas pastas não é possível regerar, mas a
 publicação continua funcionando com os JSON versionados.
+
+**Início, catálogo e downloads (desde a rodada A2):** três geradores rodam no
+fim do `gerar_todos.py`, lendo só o que já está publicado:
+
+- `dados_catalogo.py` → `catalogo_dados.json`, lido por
+  `dashboards/catalogo.html` (tabela filtrável por dimensão e "Como ler").
+  Entram só as linhas de `data/catalogo_fontes.csv` ligadas, em
+  `config/catalogo_ligacao.csv`, a um produto de `data/paineis/` ou a uma
+  camada de `data/geoportal/`; a ligação é conferida contra o que está
+  publicado. Não vão a público a coluna `observacao`, a url de acesso nem o
+  script. Licença não identificada aparece como "ver fonte". Para listar as
+  linhas sem ligação: `python scripts/paineis/dados_catalogo.py --conferencia`.
+- `dados_inicio.py` → `inicio_resumo.json`: os indicadores do topo de cada
+  tela, as cotas da cheia e as contagens da página inicial. Os textos do
+  início ficam em `config/textos_inicio.json`. Nenhum número do rio entra no
+  resumo: a faixa do rio lê a telemetria recente no navegador.
+- `exportar_csv.py` → `data/paineis/csv/<id>.csv` para todo produto com
+  `dados` tabular, com o metadado irmão `<id>.csv.json` (sha256 do JSON de
+  origem). O CSV é derivado do JSON publicado, com a supressão já aplicada:
+  UTF-8, separador vírgula, ponto decimal, cabeçalho com os nomes das colunas
+  do produto, célula vazia para valor ausente ou suprimido e lógico como
+  `sim`/`não`. O manifesto aponta o CSV de cada produto (campo `csv`).
+
+Cada tela (e o início) tem no rodapé o bloco recolhível **Dados desta tela**:
+título, período e selo de cada produto, com "Baixar CSV", "Baixar JSON" e
+"Sobre este dado" (fonte, período, selo, licença, data de coleta e método).
+
+Para regerar tudo: `python scripts/paineis/gerar_todos.py` (idempotente; uma
+segunda execução não grava nada). `--forcar` regrava; `--so <id>` gera um
+produto.
 
 **Ids estáveis (desde a rodada 120):** o id do produto (nome do JSON) não
 carrega o período. Convenção `{tema}_{fonte}_{serie|atual}_{resolucao}`:

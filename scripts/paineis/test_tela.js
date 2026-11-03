@@ -328,6 +328,30 @@ const TELAS = {
     },
     extras: async (browser, base, prod) => testesExtrasCheia(browser, base, prod),
   },
+  inicio: {
+    pagina: "index.html",
+    semGraficos: true,
+    produtos: { resumo: "inicio_resumo", rio: "rio_ana-77150000_telemetria-recente_diario" },
+    recolhiveis: [],
+    // a etiqueta do início vem de config/textos_inicio.json (rodada A2), não do padrão das telas
+    eyebrow: () => TEXTOS_INICIO().etiqueta,
+    // indicadores na ordem dos cartões: dimensões (ordem de textos_inicio.json) e depois os cruzamentos
+    kpis: (p) => {
+      const tx = TEXTOS_INICIO(), ordem = [...tx.dimensoes, ...tx.cruzamentos].map((d) => d.id);
+      return ordem.flatMap((id) => p.resumo.dados.filter((r) => r.dimensao === id).sort((x, y) => x.ordem - y.ordem)
+        .map((r) => `${r.prefixo || ""}${r.valor}${r.unidade || ""}`));
+    },
+    graficos: () => ({}), tabelas: () => ({}),
+    extras: async (browser, base, prod) => testesExtrasInicio(browser, base, prod),
+  },
+  catalogo: {
+    pagina: "dashboards/catalogo.html",
+    semGraficos: true,
+    produtos: { catalogo: "catalogo_dados" },
+    recolhiveis: [],
+    kpis: () => [], graficos: () => ({}), tabelas: () => ({}),
+    extras: async (browser, base, prod) => testesExtrasCatalogo(browser, base, prod),
+  }
 };
 
 // Texto completo esperado de cada indicador vindo do JSON (rótulo, valor, unidade e subtítulo).
@@ -490,14 +514,16 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
   {
     const id = r.identidade, data = /^Atualizado em \d{2}\/\d{2}\/\d{4}$/;
     if (id.fonteCorpo !== "Plus Jakarta Sans" || !id.fonteCarregada) falhas.push(`fonte do corpo ${id.fonteCorpo}, carregada: ${id.fonteCarregada}`);
-    if (id.marcaHref !== "../index.html" || id.marcaTexto !== "ClimaPampa" || id.marcaImg !== 0) falhas.push(`marca: ${JSON.stringify(id)}`);
+    const marcaEsperada = def.pagina.startsWith("dashboards/") ? "../index.html" : "./index.html";
+    if (id.marcaHref !== marcaEsperada || id.marcaTexto !== "ClimaPampa" || id.marcaImg !== 0) falhas.push(`marca: ${JSON.stringify(id)}`);
     if (largura === 1280 && !id.umaLinha) falhas.push("cabeçalho não cabe numa linha a 1280 px");
     if (JSON.stringify(id.menu) !== JSON.stringify(MENU)) falhas.push(`menu: ${JSON.stringify(id.menu)}`);
     if (!id.menuLinks.every((h) => !/sintese\.html|\/index\.html\?|^\.\.\/index\.html\?/.test(h))) falhas.push(`link do menu para endereço antigo: ${JSON.stringify(id.menuLinks)}`);
     if (!data.test(id.linhaTela)) falhas.push(`"Atualizado em" fora da linha da tela: "${id.linhaTela}"`);
     if (id.herdado) falhas.push(`texto herdado no masthead: "${id.herdado}"`);
     // grafia única do programa (Parte 0 da rodada A2) e eyebrow terminado no nome da tela
-    if (!/^ClimaPampa · PET-Saúde: Clima · Uruguaiana \/ RS · \S/.test(id.eyebrow)) falhas.push(`eyebrow fora do padrão: "${id.eyebrow}"`);
+    const eyebrowOk = def.eyebrow ? id.eyebrow === def.eyebrow() : /^ClimaPampa · PET-Saúde: Clima · Uruguaiana \/ RS · \S/.test(id.eyebrow);
+    if (!eyebrowOk) falhas.push(`eyebrow fora do padrão: "${id.eyebrow}"`);
     const rod = r.rodape.split("\n").map((l) => l.trim()).filter(Boolean);
     if (rod[0] !== "Realização: ClimaPampa — PET-Saúde: Clima · Unipampa e Secretaria Municipal de Saúde de Uruguaiana" || !rod[1].startsWith("Fontes:") || !data.test(rod[rod.length - 1]) || /Outros painéis/.test(r.rodape))
       falhas.push(`rodapé: ${JSON.stringify(rod)}`);
@@ -923,11 +949,120 @@ async function testeIdAntigo(browser, base, def) {
   return { ok: okAntigo && okInexistente, n: ids.length, detalhe: JSON.stringify({ antigo: a, inexistente: b.erroBloco }) };
 }
 
+// ------------------------------------------------------------------ início e catálogo (rodada A2)
+const TEXTOS_INICIO = () => JSON.parse(fs.readFileSync(path.join(RAIZ, "config", "textos_inicio.json"), "utf8"));
+const dataDados = (s) => { const m = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/.exec(String(s || "")); return !m ? String(s) : m[3] ? `${m[3]}/${m[2]}/${m[1]}` : m[2] ? `${m[2]}/${m[1]}` : m[1]; };
+
+async function linksRespondem(page, seletor) {
+  const hrefs = await page.evaluate((s) => [...new Set([...document.querySelectorAll(s)].map((a) => a.href).filter((h) => h.startsWith(location.origin)))], seletor);
+  const ruins = [];
+  for (const h of hrefs) { const st = (await page.request.get(h)).status(); if (st !== 200) ruins.push(`${st} ${h}`); }
+  return { n: hrefs.length, ruins };
+}
+
+async function testesExtrasInicio(browser, base, prod) {
+  const res = [];
+  const tx = TEXTOS_INICIO(), resumo = prod.resumo, rio = prod.rio;
+  const { ctx, page, erros } = await abrir(browser, base + "index.html", {});
+  const r = await page.evaluate(() => ({
+    textos: Object.fromEntries([...document.querySelectorAll("[data-texto]")].map((e) => [e.dataset.texto, e.textContent])),
+    cartoes: [...document.querySelectorAll(".cartao-inicio[id^=cartao-]")].map((c) => ({ id: c.id.replace("cartao-", ""), titulo: (c.querySelector(".cartao-inicio-titulo") || {}).textContent || "",
+      rotulos: [...c.querySelectorAll(".indicador-inicio .kpi-label")].map((e) => e.textContent), metas: [...c.querySelectorAll(".indicador-meta")].map((e) => e.textContent.replace(/\s+/g, " ").trim()),
+      avisos: [...c.querySelectorAll(".indicador-aviso")].map((e) => e.textContent), data: (c.querySelector(".cartao-inicio-data") || {}).textContent || "" })),
+    faixa: document.getElementById("faixa-rio").innerText.replace(/\s+/g, " ").trim(),
+    provisorio: !!document.querySelector("#faixa-rio .rotulo-provisorio"),
+    contagens: [...document.querySelectorAll(".cartao-inicio-contagem")].map((e) => e.textContent),
+    projeto: [...document.querySelectorAll("#cartao-projeto a")].map((a) => [a.getAttribute("href"), a.target]),
+  }));
+  // textos iguais ao arquivo
+  const tOk = ["etiqueta", "titulo", "frase", "paragrafo", "aviso_escopo"].every((k) => r.textos[k] === tx[k]);
+  res.push({ nome: "início: textos iguais a config/textos_inicio.json (etiqueta, título, frase, parágrafo, aviso de escopo)", ok: tOk, detalhe: JSON.stringify(r.textos).slice(0, 300) });
+  // cartões iguais ao JSON
+  const dif = [];
+  for (const d of [...tx.dimensoes, ...tx.cruzamentos]) {
+    const c = r.cartoes.find((x) => x.id === d.id), linhas = resumo.dados.filter((x) => x.dimensao === d.id).sort((a, b) => a.ordem - b.ordem);
+    if (!c) { dif.push(`${d.id}: cartão ausente`); continue; }
+    if (c.titulo !== d.nome) dif.push(`${d.id}: título ${c.titulo}`);
+    if (JSON.stringify(c.rotulos) !== JSON.stringify(linhas.map((x) => x.rotulo))) dif.push(`${d.id}: rótulos ${JSON.stringify(c.rotulos)}`);
+    const metas = linhas.map((x) => `${x.fonte_curta} · ${x.periodo}`);
+    if (!c.metas.every((m, i) => m.startsWith(metas[i]))) dif.push(`${d.id}: fonte/período ${JSON.stringify(c.metas)}`);
+    if (JSON.stringify(c.avisos) !== JSON.stringify(linhas.filter((x) => x.aviso).map((x) => x.aviso))) dif.push(`${d.id}: avisos ${JSON.stringify(c.avisos)}`);
+    if (linhas.length && c.data !== `dados até ${dataDados(linhas.map((x) => String(x.dados_ate)).sort().pop())}`) dif.push(`${d.id}: data ${c.data}`);
+  }
+  res.push({ nome: `início: ${tx.dimensoes.length + tx.cruzamentos.length} cartões iguais a inicio_resumo.json (rótulo, valor, fonte, período, aviso e data)`, ok: !dif.length && erros.length === 0, detalhe: dif.join(" | ") + erros.join(" | ") });
+  // faixa do rio: última leitura da telemetria, provisória, sem pico/duração/posição/tempo de retorno
+  const u = rio.dados[rio.dados.length - 1], dh = rio.meta.ultima_leitura;
+  const esperado = `nível ${fmtInt(u.nivel_ultimo_cm)} cm em ${dataBR(dh)} ${dh.slice(11, 16)} · vazão ${fmtInt(u.vazao_ultima_m3s)} m³/s`;
+  const fOk = r.faixa.includes(esperado) && r.provisorio && /não é dado em tempo real/.test(r.faixa) && !/pico|duração|posição|retorno|recorde/i.test(r.faixa);
+  res.push({ nome: "início: faixa do rio com a última leitura da telemetria, rótulo \"provisório\" e \"não é dado em tempo real\"; sem pico nem tempo de retorno", ok: fOk, detalhe: r.faixa });
+  // contagens do gerador
+  const c = resumo.meta.contagens;
+  const cOk = r.contagens.some((x) => x.includes(`${c.telas} telas`) && x.includes(`${c.conjuntos_dados} conjuntos de dados`) && x.includes(`${c.fontes} fontes`)) && r.contagens.some((x) => x.includes(`${c.grupos_camadas} grupos de camadas`));
+  res.push({ nome: `início: contagens do gerador (${c.telas} telas, ${c.conjuntos_dados} conjuntos, ${c.fontes} fontes, ${c.grupos_camadas} grupos de camadas)`, ok: cOk, detalhe: JSON.stringify(r.contagens) });
+  // links internos respondem 200; os do projeto abrem em nova aba
+  const l = await linksRespondem(page, "a[href]");
+  res.push({ nome: `início: ${l.n} links internos respondem 200; ${tx.projeto.links.length} links do projeto em nova aba`, ok: !l.ruins.length && r.projeto.length === tx.projeto.links.length && r.projeto.every(([, alvo]) => alvo === "_blank"), detalhe: l.ruins.join(" | ") });
+  await ctx.close();
+  // nenhum número no HTML-fonte (fora dos <script>)
+  const html = fs.readFileSync(path.join(RAIZ, "index.html"), "utf8").replace(/<script\b[\s\S]*?<\/script>|<!--[\s\S]*?-->/g, "");
+  const nums = html.replace(/<[^>]+>/g, " ").match(/\d+/g) || [];
+  res.push({ nome: "início: nenhum número no HTML-fonte (fora dos scripts)", ok: !nums.length, detalhe: JSON.stringify(nums) });
+  return res;
+}
+
+async function testesExtrasCatalogo(browser, base, prod) {
+  const res = [];
+  const cat = prod.catalogo;
+  const { ctx, page, erros } = await abrir(browser, base + "dashboards/catalogo.html", {});
+  const r = await page.evaluate(() => ({ n: document.querySelectorAll("#tabelaCatalogo tbody tr").length,
+    fontes: [...document.querySelectorAll("#tabelaCatalogo .catalogo-fonte")].map((e) => e.textContent),
+    botoes: [...document.querySelectorAll("#seletor-dimensao button")].map((b) => b.textContent),
+    supressao: document.getElementById("como-ler-supressao").textContent, atual: (document.querySelector('#cabecalho-nav [aria-current="page"]') || {}).textContent }));
+  const ok1 = r.n === cat.dados.length && JSON.stringify(r.fontes) === JSON.stringify(cat.dados.map((x) => x.fonte)) &&
+    JSON.stringify(r.botoes) === JSON.stringify(["Todas", ...cat.meta.dimensoes]) && r.supressao.includes(`"<${cat.meta.limiar_supressao}"`) && r.atual === "Dados";
+  res.push({ nome: `catálogo: ${cat.dados.length} linhas iguais a catalogo_dados.json, filtro com ${cat.meta.dimensoes.length} dimensões, "Como ler" com o limiar, "Dados" marcado no menu`, ok: ok1 && erros.length === 0, detalhe: JSON.stringify({ ...r, fontes: r.fontes.length }) + erros.join(" | ") });
+  // filtro: cada dimensão mostra só as linhas dela
+  const difs = [];
+  for (const d of cat.meta.dimensoes) {
+    await page.click(`#seletor-dimensao button[data-dim="${d}"]`);
+    const vis = await page.evaluate(() => [...document.querySelectorAll("#tabelaCatalogo tbody tr")].filter((tr) => !tr.hidden).length);
+    const esp = cat.dados.filter((x) => x.dimensoes.split(" · ").includes(d)).length;
+    if (vis !== esp) difs.push(`${d}: ${vis} ≠ ${esp}`);
+  }
+  res.push({ nome: "catálogo: filtro por dimensão mostra só as linhas da dimensão", ok: !difs.length, detalhe: difs.join(" | ") });
+  // downloads e links respondem 200
+  await page.click('#seletor-dimensao button[data-dim=""]');
+  const l = await linksRespondem(page, "#tabelaCatalogo a[href], #rodape-comum a[href]");
+  res.push({ nome: `catálogo: ${l.n} links e downloads respondem 200`, ok: !l.ruins.length, detalhe: l.ruins.join(" | ") });
+  await ctx.close();
+  return res;
+}
+
+// "Dados desta tela" no rodapé (rodada A2): um item por produto da tela, CSV e JSON respondendo 200
+async function testeDadosDaTela(browser, base, def) {
+  const { ctx, page, erros } = await abrir(browser, base + def.pagina, {});
+  await page.waitForSelector("#dados-tela summary", { timeout: 10000 }).catch(() => null);
+  const tela = await page.evaluate(() => document.documentElement.dataset.tela);
+  const r = await page.evaluate(() => ({ itens: [...document.querySelectorAll("#dados-tela .lista-dados-tela > li")].map((li) => ({
+    titulo: li.querySelector(".dado-titulo").textContent, links: [...li.querySelectorAll(".dado-baixar a")].map((a) => a.textContent),
+    sobre: [...li.querySelectorAll(".sobre-dado dt")].map((e) => e.textContent) })) }));
+  const man = MANIFESTO();
+  const esperados = man.produtos.filter((i) => (i.telas || []).includes(tela) || Object.values(def.produtos).includes(i.id));
+  const l = await linksRespondem(page, "#dados-tela a[href]");
+  await ctx.close();
+  const ok = r.itens.length === esperados.length && r.itens.every((x) => x.links.includes("Baixar JSON") && x.sobre.includes("Licença") && x.sobre.includes("Método")) &&
+    esperados.every((i) => r.itens.some((x) => x.titulo === i.titulo) && (!i.csv || r.itens.find((x) => x.titulo === i.titulo).links.includes("Baixar CSV"))) && !l.ruins.length && erros.length === 0;
+  return { ok, n: r.itens.length, links: l.n, detalhe: JSON.stringify({ itens: r.itens.length, esperados: esperados.length, ruins: l.ruins }) };
+}
+
 // itens do menu, na ordem (rodada A2)
 const MENU = ["Início", "Mapa", "Cheia e saúde", "Clima", "Saúde", "Mais temas", "População", "Território", "Economia", "Riscos", "Dados", "ClimaPampa ↗"];
 
 // endereços que redirecionam (rodada A2): síntese incorporada ao início; pasta dashboards/ leva ao início
 const REDIRECIONAMENTOS = [
+  ["index.html?cota=952#x", "/mapa.html?cota=952#x"],
+  ["index.html?origem=t", "/index.html?origem=t"],
+  ["index.html#x", "/index.html#x"],
   ["dashboards/sintese.html?cota=952&origem=r#x", "/dashboards/cheia-saude.html?cota=952&origem=r#x"],
   ["dashboards/sintese.html?origem=r", "/index.html?origem=r"],
   ["dashboards/sintese.html?cota=950", "/index.html"],
@@ -985,6 +1120,9 @@ async function main() {
       console.log(`[${ia.ok ? "ok" : "FALHA"}] ${ia.n} id(s) antigo(s) resolvem pelo "substitui"; id inexistente vira erro no bloco`);
       if (!ia.ok) { total++; console.log(`    - ${ia.detalhe}`); }
     }
+    const dt = await testeDadosDaTela(browser, base, def);
+    console.log(`[${dt.ok ? "ok" : "FALHA"}] "Dados desta tela": ${dt.n} produtos com CSV/JSON e "Sobre este dado"; ${dt.links} downloads respondem 200`);
+    if (!dt.ok) { total++; console.log(`    - ${dt.detalhe}`); }
     const fc = await testeFalhaDeCarga(browser, base, def);
     console.log(`[${fc.ok ? "ok" : "FALHA"}] produto indisponível vira erro no bloco (${fc.erroBloco} bloco(s) com erro, ${fc.svgs} gráficos desenhados)`);
     if (!fc.ok) total++;
