@@ -341,6 +341,7 @@ node scripts/paineis/test_tela.js cheia-saude --saida /tmp/telas   # uma tela; s
 python scripts/paineis/test_regras_publicas.py
 python -m unittest scripts/paineis/test_comum.py
 python scripts/paineis/test_rio.py
+python scripts/paineis/test_contraste.py   # contraste dos tokens de texto (claro e escuro)
 ```
 
 - `scripts/geoportal/test_headless.js`: sobe um servidor HTTP local, abre o
@@ -361,6 +362,9 @@ python scripts/paineis/test_rio.py
 - `scripts/paineis/test_comum.py`: funções comuns dos geradores.
 - `scripts/paineis/test_rio.py`: trava da cheia em curso nos produtos do
   rio, com leituras simuladas.
+- `scripts/paineis/test_contraste.py`: contraste WCAG dos tokens de texto
+  e de destaque de `css/paineis.css` contra cartão e página, claro e
+  escuro (texto ≥ 4,5; marca em texto e elemento gráfico ≥ 3).
 
 ## Créditos
 
