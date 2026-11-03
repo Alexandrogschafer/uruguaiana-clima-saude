@@ -65,7 +65,12 @@ Regras:
        js/ (fora comentários e console.*), nos textos de config/textos_inicio.json e do nome_sistema de
        config/identidade.json e nos textos dos JSON de data/paineis/ e dos metadados de data/geoportal/;
        permitido em caminhos, nomes de arquivo, URLs e código. O <title> do início, do mapa, das telas e do
-       catálogo segue nome_sistema.titulos; cabecalho.js repete nome e linha da marca de identidade.json.
+       catálogo segue nome_sistema.titulos; cabecalho.js repete nome e linha da marca de identidade.json;
+    x) linguagem interna (rodada A6): "com o usuário", "decisão confirmada", "decisão do responsável", "rodada",
+       "prompt" e "Claude" proibidos no texto visível das páginas (mesma leitura da regra w: <title>, texto fora de
+       script/style/comentário, meta, aria-label/title), em strings de js/ (fora comentários e console.*), nos textos
+       de config/textos_inicio.json e do nome_sistema de identidade.json e em todo JSON de data/paineis/ ("geoportal"
+       fora de caminho e URL é a regra w).
 
 Uso:
     python scripts/paineis/test_regras_publicas.py
@@ -922,6 +927,50 @@ def regra_w() -> list[str]:
     return falhas
 
 
+# ------------------------------------------------------------------ linguagem interna (rodada A6)
+RE_INTERNO = re.compile(r"com o usu[aá]rio|decis[aã]o confirmada|decis[aã]o do respons[aá]vel|\brodadas?\b|\bprompts?\b|\bclaude\b", re.I)
+
+
+def regra_x() -> list[str]:
+    falhas = []
+    trecho = lambda s, m: " ".join(s[max(0, m.start() - 40):m.end() + 30].split())
+    for arq in [RAIZ / "index.html", RAIZ / "mapa.html", *sorted((RAIZ / "dashboards").glob("*.html"))]:
+        for s in textos_html(arq.read_text(encoding="utf-8")):
+            for m in RE_INTERNO.finditer(s):
+                falhas.append(f"{arq.relative_to(RAIZ)}: linguagem interna em texto visível: {trecho(s, m)!r}")
+    for arq in sorted((RAIZ / "js").rglob("*.js")):
+        cod = re.sub(r"/\*.*?\*/", " ", arq.read_text(encoding="utf-8"), flags=re.S)
+        for lin in cod.splitlines():
+            lin = re.sub(r"^\s*//.*|\s//\s.*$", "", lin)
+            if "console." in lin:
+                continue
+            for s in re.findall(r"'([^']*)'|\"([^\"]*)\"|`([^`]*)`", lin):
+                s = "".join(s)
+                if RE_INTERNO.search(s):
+                    falhas.append(f"{arq.relative_to(RAIZ)}: linguagem interna em string: {s[:80]!r}")
+    tx = json.loads((RAIZ / "config" / "textos_inicio.json").read_text(encoding="utf-8"))
+    tx.pop("descricao", None)
+    ns = json.loads((RAIZ / "config" / "identidade.json").read_text(encoding="utf-8")).get("nome_sistema", {})
+    ns = {k: v for k, v in ns.items() if k != "observacao"}
+    for nome, d in (("config/textos_inicio.json", tx), ("config/identidade.json", ns)):
+        for s in strings_json(d):
+            for m in RE_INTERNO.finditer(s):
+                falhas.append(f"{nome}: linguagem interna: {trecho(s, m)!r}")
+    for arq in sorted(PASTA.rglob("*.json")):
+        if "_orfaos" in arq.parts:  # fora do git e da publicação
+            continue
+        try:
+            d = json.loads(arq.read_text(encoding="utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            continue
+        for s in strings_json(d):
+            m = RE_INTERNO.search(s)
+            if m:
+                falhas.append(f"{arq.relative_to(RAIZ)}: linguagem interna: {trecho(s, m)!r}")
+                break
+    return falhas
+
+
 def main() -> int:
     arqs = arquivos_alvo()
     prods = produtos()
@@ -949,6 +998,7 @@ def main() -> int:
         "u catálogo sem observacao, url, caminho bruto nem script; só linhas publicadas": regra_u(),
         "v início sem produto do rio e sem número na marcação": regra_v(),
         "w nome do sistema: \"geoportal\" só em caminhos, URLs e código; <title> no padrão": regra_w(),
+        "x sem linguagem interna do projeto em texto visível nem em data/paineis/": regra_x(),
     }
     print(f"arquivos varridos: {len(arqs)}; produtos: {len(prods)}")
     ok = True

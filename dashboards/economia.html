@@ -30,11 +30,7 @@
 
   <div class="chips-filtro" id="chips-filtro"></div>
   <div class="kpi-row" id="kpiRow"></div>
-
-  <div class="section-head"><h2>Perfil censitário</h2><div class="section-rule"></div></div>
   <p class="section-note" data-nota="eco_nota_censo"></p>
-  <div class="card"><div class="card-head"><span class="card-title">População por situação do setor</span></div>
-    <div class="card-body"><div id="chart-pop-situacao"></div><div class="chart-tooltip" id="tt-pop-situacao"></div></div></div>
 
   <div class="section-head"><h2>Economia e Território</h2><div class="section-rule"></div></div>
   <p class="section-note" data-nota="eco_nota_economia"></p>
@@ -126,7 +122,7 @@ const P = window.Paineis;
 const IDS = {censo: 'censo_ibge_2022_situacao-setor', pib: 'pib_ibge_serie_anual', pam: 'agropecuaria_ibge_serie_anual', caged: 'emprego_caged_serie_mensal',
              rais: 'emprego_rais_atual_secao', idhm: 'idhm_atlas_censos', cadunico: 'cadunico_mds_serie_anual', bf: 'bolsa-familia_mds_atual_mes',
              siconfi: 'despesas_siconfi_serie_anual'};
-const BLOCOS = {censo: ['chart-pop-situacao'], pib: ['chart-pib-per-capita', 'chart-pib-composicao'], pam: ['chart-pam-area', 'chart-ppm-rebanho'],
+const BLOCOS = {censo: ['kpiRow'], pib: ['chart-pib-per-capita', 'chart-pib-composicao'], pam: ['chart-pam-area', 'chart-ppm-rebanho'],
                 caged: ['chart-caged-fluxo', 'chart-caged-saldo'], rais: ['chart-rais-setor', 'tabelaRais'], idhm: ['chart-idhm-componentes', 'chart-idhm-brasil'],
                 cadunico: ['chart-cadunico-familias', 'chart-cadunico-taxa'], bf: [], siconfi: ['chart-siconfi-saude-pc', 'chart-siconfi-assist-pc', 'chart-siconfi-pct-pib']};
 const fmt3 = v => v.toLocaleString('pt-BR', {minimumFractionDigits:3, maximumFractionDigits:3});
@@ -137,7 +133,7 @@ async function iniciar(){
     c[k] = await P.carregar(id);
     if(!c[k]) BLOCOS[k].forEach(b => P.erroBloco(document.getElementById(b), id));
   }
-  const {censo, pib, pam, caged, rais, idhm, cadunico, siconfi} = c;
+  const {censo, pib, pam, caged, rais, idhm, cadunico, siconfi} = c;  // censo: só indicadores do topo e notas (o gráfico por situação saiu)
   const anos = [pib, pam, idhm, cadunico, siconfi].filter(Boolean).flatMap(p => p.dados.map(r => r.ano));
   P.iniciarFiltros({listas: {periodo: anos.length ? {inicio: Math.min(...anos), fim: Math.max(...anos)} : undefined}});
   P.montarCabecalho();
@@ -163,12 +159,6 @@ async function iniciar(){
 
   function draw(){
     const blue = cssVar('--series-blue'), orange = cssVar('--series-orange'), aqua = cssVar('--series-aqua'), gray = cssVar('--series-context');
-    if(censo){
-      renderBarChart('chart-pop-situacao', 'tt-pop-situacao', {
-        labels: censo.dados.map(r => r.situacao), data: censo.dados.map(r => r.populacao), color: blue,
-        seriesName: P.dica('habitantes', censo.meta.fonte_curta), height: 170, barMax: 60, yFormat: formatoComNulos(censo.meta, 'populacao', censo.dados),
-      });
-    }
     if(pib){
       const f = pib.meta.fonte_curta;
       const pc = noPeriodo(pib.dados.filter(r => r.pib_per_capita !== null));

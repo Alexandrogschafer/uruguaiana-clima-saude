@@ -51,8 +51,8 @@
     },
     {
       "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json",
-      "sha256": "fec875e7e0d6d6e1f13f60b73eb10bbc895e616be582a6476f5624b93d5af8a6",
-      "bytes": 8097
+      "sha256": "8bcc6e9197855b739a23ec175883efe4db43b706d9783bbdd3d049ad0f98b98b",
+      "bytes": 7975
     },
     {
       "arquivo": "data/paineis/clima_inmet-a809_serie_anual.json",
@@ -251,7 +251,7 @@
     },
     {
       "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json.json",
-      "sha256": "fbd395c250a705643d644663250ffd25952226f97e0e0b96c3a1a47d6724270f",
+      "sha256": "82f8e4e29740a00e9721bc2c8887cb4d51293644fba0c4fe9900e899b3ae6ea8",
       "bytes": 929
     },
     {
@@ -466,5 +466,5 @@
   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T23:52:01Z"
+  "data_processamento": "2026-11-03T23:52:21Z"
 }

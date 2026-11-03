@@ -1,5 +1,5 @@
 {
-  "descricao": "Identidade visual das telas dos painéis (rodada A1): marca em texto, tokens de cor, fonte e marcas institucionais liberadas. Os tokens valem para css/paineis.css (blocos :root, prefers-color-scheme e [data-theme=\"dark\"]); test_regras_publicas.py confere que batem. O portal (index.html, css/style.css) ainda não usa esta identidade.",
+  "descricao": "Identidade visual das telas dos painéis: marca em texto, tokens de cor, fonte e marcas institucionais liberadas. Os tokens valem para css/paineis.css (blocos :root, prefers-color-scheme e [data-theme=\"dark\"]); test_regras_publicas.py confere que batem. O portal (index.html, css/style.css) ainda não usa esta identidade.",
   "marca_texto": {
     "texto": "ClimaPampa",
     "partes": [
@@ -22,7 +22,7 @@
       "tela": "{tela} — {nome}",
       "catalogo": "Dados — {nome}"
     },
-    "observacao": "Decisão da rodada A4: o sistema se chama Painéis ClimaPampa e a tela do mapa, só Mapa; a palavra geoportal sai de texto visível, <title> e metadados (fica só em caminhos, URLs e código). <tela> = nome da dimensão ou do cruzamento em config/textos_inicio.json. As páginas são HTML estático e o cabeçalho não lê este arquivo (uma requisição a mais por tela); test_regras_publicas.py e test_tela.js conferem <title>, linha da marca e parágrafo do início contra este bloco."
+    "observacao": "O sistema se chama Painéis ClimaPampa e a tela do mapa, só Mapa; a palavra geoportal sai de texto visível, <title> e metadados (fica só em caminhos, URLs e código). <tela> = nome da dimensão ou do cruzamento em config/textos_inicio.json. As páginas são HTML estático e o cabeçalho não lê este arquivo (uma requisição a mais por tela); test_regras_publicas.py e test_tela.js conferem <title>, linha da marca e parágrafo do início contra este bloco."
   },
   "realizacao_texto": "ClimaPampa — PET-Saúde: Clima · Unipampa e Secretaria Municipal de Saúde de Uruguaiana",
   "cores": {

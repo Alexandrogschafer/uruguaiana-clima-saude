@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-03T23:52:01Z",
+ "gerado_em": "2026-11-03T23:52:21Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_serie_anual",
@@ -156,12 +156,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
    "dados_ate": "2026-11-03",
-   "gerado_em": "2026-11-03T23:52:01Z",
+   "gerado_em": "2026-11-03T23:52:21Z",
    "telas": [
     "catalogo"
    ],
    "bytes": 51105,
-   "sha256": "235b4e7f11bee8b65707ca13c08c1279f5829acfe1b06c104ad5d273ba458e58",
+   "sha256": "32cc1e9cf554608cda4f84cf366371a2d9a84d942ecd4ad418b7f2e601fc0dbe",
    "csv": "csv/catalogo_dados.csv"
   },
   {
@@ -174,12 +174,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2022",
-   "gerado_em": "2026-11-03T23:52:00Z",
+   "gerado_em": "2026-11-03T23:52:20Z",
    "telas": [
     "economia"
    ],
-   "bytes": 8097,
-   "sha256": "fec875e7e0d6d6e1f13f60b73eb10bbc895e616be582a6476f5624b93d5af8a6",
+   "bytes": 7975,
+   "sha256": "8bcc6e9197855b739a23ec175883efe4db43b706d9783bbdd3d049ad0f98b98b",
    "csv": "csv/censo_ibge_2022_situacao-setor.csv"
   },
   {
@@ -445,12 +445,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2026-10-25",
-   "gerado_em": "2026-11-03T23:52:01Z",
+   "gerado_em": "2026-11-03T23:52:21Z",
    "telas": [
     "inicio"
    ],
    "bytes": 11447,
-   "sha256": "02234249ea0a34ee48597cf6cfe8ef8c6290bf21400df361637293212f6831bf",
+   "sha256": "8fb18baca9c6402b8ad6aaa0e9e0c13c7ac61c6692a0e175f3c800ca1ad63105",
    "csv": "csv/inicio_resumo.csv"
   },
   {

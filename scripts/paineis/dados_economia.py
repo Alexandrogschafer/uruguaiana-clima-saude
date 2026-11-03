@@ -183,8 +183,7 @@ def notas_kpis(d: dict):
         "eco_meta_censo": "2022",
         "eco_meta_economia": f"PIB {pc[0]['ano']}–{pc[-1]['ano']} · PAM/PPM {p0['ano']}–{p1['ano']} · CAGED {c0['competencia'] // 100}–{ult_ano_cg}",
         "eco_meta_vulnerabilidade": f"IDHM {i0['ano']}–{i1['ano']} · CadÚnico {cu[0]['ano']}–{cu_ult['ano']}",
-        "eco_nota_censo": (f"Censo 2022 ({cm['n_setores']} setores censitários). Renda, água e esgoto só existem no nível municipal para este censo — "
-                           "não variam por setor no produto do IBGE."),
+        "eco_nota_censo": ("Renda, água e esgoto do Censo 2022 existem só no nível municipal: não variam por setor no produto do IBGE."),
         "eco_nota_economia": ("PIB municipal e composição setorial (IBGE/SIDRA), produção agropecuária (PAM/PPM) e emprego formal (RAIS/Novo CAGED) — "
                               "indicadores de contexto socioeconômico municipal, sem granularidade espacial abaixo do município na fonte (ao contrário "
                               "das demais camadas deste painel, por isso não aparecem no mapa)."),
@@ -200,7 +199,7 @@ def notas_kpis(d: dict):
                          "partir de meados dos anos 2010, ainda pequena. Rebanho ovino em queda estrutural de longo prazo (de "
                          f"{mi(p0['ovino_cabecas'])} de cabeças em {p0['ano']} para {mi(p1['ovino_cabecas'])} em {p1['ano']}), mesmo padrão já visto em "
                          "outros municípios do Pampa gaúcho — bovino oscila, sem tendência clara. PAM/PPM não têm versão por setor censitário nem "
-                         "geolocalizada na fonte (decisão confirmada com o usuário) — por isso ficam só como indicador tabular, sem virar camada no mapa."),
+                         "georreferenciada na fonte; por isso ficam como indicador tabular, sem camada no mapa."),
         "eco_meta_caged_fluxo": f"mensal · {rot_c(c0['competencia'])} a {rot_c(c1['competencia'])}",
         "eco_meta_caged_saldo": f"acumulado desde {rot_c(c0['competencia'])}",
         "eco_nota_caged": ("Novo CAGED (via eSocial, a partir de 2020) — período anterior fica fora de escopo por quebra metodológica com o CAGED antigo "
@@ -208,8 +207,8 @@ def notas_kpis(d: dict):
                            f"Saldo de {ult_ano_cg} (parcial, até {MES_LONGO[c1['competencia'] % 100]}) puxado para baixo pelo setor {CNAE[setor_neg]} — "
                            "sinal a acompanhar, não uma reversão de tendência confirmada."),
         "eco_meta_rais": f"retrato em 31/12/{d['rais_ano']} · {br(total_rais)} vínculos",
-        "eco_nota_rais": (f"RAIS não tem série histórica baixada nesta rodada (só o ano mais recente — o arquivo de estabelecimentos nacional tem ~3GB "
-                          "por ano) — funciona como retrato do estoque atual ao lado da série mensal de fluxo do CAGED acima, não como tendência "
+        "eco_nota_rais": (f"A RAIS entra só com o ano mais recente (o arquivo nacional de estabelecimentos tem cerca de 3 GB por ano) "
+                          "— funciona como retrato do estoque atual ao lado da série mensal de fluxo do CAGED acima, não como tendência "
                           f"própria. Participação da Agropecuária no emprego formal ({br(100 * agro_rais / total_rais, 1, 0)}%) é menor que sua "
                           f"participação no PIB ({br(agro_min)}–{br(agro['vab_agropecuaria_pct'])}%), padrão esperado: agricultura "
                           "mecanizada é intensiva em capital, não em mão de obra."),

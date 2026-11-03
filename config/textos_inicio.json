@@ -1,5 +1,5 @@
 {
-  "descricao": "Textos da página inicial (index.html), num arquivo só para troca sem mexer no HTML. Provisórios (rodada A2). Os números da página não ficam aqui: vêm de data/paineis/inicio_resumo.json, gerado por scripts/paineis/dados_inicio.py.",
+  "descricao": "Textos da página inicial (index.html), num arquivo só para troca sem mexer no HTML. Provisórios. Os números da página não ficam aqui: vêm de data/paineis/inicio_resumo.json, gerado por scripts/paineis/dados_inicio.py.",
   "etiqueta": "ClimaPampa · PET-Saúde: Clima · Eixo 3",
   "titulo": "Clima, território e saúde de Uruguaiana em um só lugar",
   "frase": "Dados abertos sobre Uruguaiana, para consulta rápida, com fonte e data em cada número.",
