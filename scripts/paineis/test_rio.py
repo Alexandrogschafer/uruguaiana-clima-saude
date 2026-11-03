@@ -5,12 +5,18 @@ Testes da trava do evento em curso e da última leitura (dados_rio.py), com leit
 30/09/2026 (MES_DO_EVENTO_COM_CORTE); o produto publicado não tem nenhum valor de outubro. Também confere que as máximas anuais excluem o ano do evento e que ano
 sem valor fica null (nunca 0).
 
+Rodada 118: a trava vale só para os produtos consolidados. A telemetria recente (rio_ana-<estacao>_telemetria-
+recente_diario) é publicada sem corte, com "provisorio": true: aqui se confere que ela inclui outubro e novembro
+de 2026, que o consolidado continua terminando em 30/09/2026, que nenhuma máxima anual muda, que o rótulo
+provisório está no produto e que o JSON tem menos de 100 kB.
+
 Uso: python scripts/paineis/test_rio.py
 """
 
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -157,6 +163,87 @@ class Maximas(unittest.TestCase):
         self.assertEqual(por[2023]["maximo_cm"], 310.0 + 365)
         self.assertEqual(por[2023]["origem"], "leitura das 7h ou 17h")
         self.assertFalse(por[2025]["lacuna"])
+
+
+class TelemetriaRecente(unittest.TestCase):
+    """Produto de telemetria: sem a trava, provisório, com a máxima do período só como leitura."""
+
+    def test_sem_corte_no_evento(self):
+        # mesmo cenário do evento de outubro (850 cm desde 04/10/2026): o consolidado corta, a telemetria não
+        t = telemetria(dias("2025-09-01", "2026-11-02", lambda d: 850.0 if pd.Timestamp("2026-10-04") <= d <= pd.Timestamp("2026-10-20") else 500.0))
+        t.loc[t["data_hora"] == "2026-10-16 12:00:00", "nivel_cm"] = 1004.0
+        ev = R.evento(t)
+        self.assertTrue(ev["em_curso"])
+        dd = R.diario(t, R.fim_da_serie(ev))
+        self.assertEqual(dd[-1]["dia"], "2026-09-30")
+        tel = R.telemetria_recente(t, dd[0]["dia"])
+        self.assertEqual((tel[0]["dia"], tel[-1]["dia"]), ("2025-10-01", "2026-11-02"))
+        self.assertTrue(any(r["dia"].startswith("2026-10") for r in tel) and any(r["dia"].startswith("2026-11") for r in tel))
+        dia16 = next(r for r in tel if r["dia"] == "2026-10-16")
+        self.assertEqual((dia16["nivel_max_cm"], dia16["nivel_ultimo_cm"], dia16["hora_ultima"], dia16["n_leituras"]), (1004.0, 850.0, "18:00", 4))
+        mx = R.maxima_periodo(t, dd[0]["dia"])
+        self.assertEqual((mx["nivel_cm"], mx["nivel_data_hora"]), (1004.0, "2026-10-16 12:00"))
+        self.assertEqual(mx["vazao_m3s"], 8500.0)  # vazão simulada não acompanha o ajuste do nível às 12h
+        texto = json.dumps([tel, mx])
+        self.assertFalse(any(c in texto for c in CAMPOS_PROIBIDOS + ("retorno", "recorr")))
+
+    def test_maximas_iguais_com_ou_sem_telemetria(self):
+        """A máxima anual só lê a série histórica: a telemetria nova não muda nenhuma linha."""
+        mx_a, _ = R.maximas(R.entradas()["serie"], 2026)
+        pub = json.loads((R.RAIZ / "data" / "paineis" / f"{R.ids()['max']}.json").read_text(encoding="utf-8"))
+        self.assertEqual(pub["dados"], json.loads(json.dumps(mx_a)))
+
+
+class TelemetriaPublicada(unittest.TestCase):
+    pasta = R.RAIZ / "data" / "paineis"
+
+    def ler(self, chave):
+        return json.loads((self.pasta / f"{R.ids()[chave]}.json").read_text(encoding="utf-8"))
+
+    def test_telemetria_com_outubro_e_novembro_e_rotulo(self):
+        d = self.ler("tel")
+        self.assertIs(d["provisorio"], True)
+        self.assertEqual(d["fonte_tipo"], "ANA telemetria")
+        self.assertIn({"tipo": "preliminar", "texto": R.AVISO_PROVISORIO}, d["avisos"])
+        self.assertEqual(R.AVISO_PROVISORIO, "dados de telemetria, não consolidados")
+        self.assertRegex(d["ultima_leitura"], r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$")
+        self.assertEqual(d["dados"][-1]["dia"], d["ultima_leitura"][:10])
+        self.assertEqual(d["dados"][0]["dia"], "2025-10-01")
+        dias_pub = [r["dia"] for r in d["dados"]]
+        self.assertTrue(any(x.startswith("2026-10") for x in dias_pub))
+        if d["dados_ate"] >= "2026-11-01":
+            self.assertTrue(any(x.startswith("2026-11") for x in dias_pub))
+        mx = d["maxima_periodo"]
+        self.assertEqual(mx["nivel_cm"], max(r["nivel_max_cm"] for r in d["dados"] if r["nivel_max_cm"] is not None))
+        chaves = {c["nome"] for c in d["colunas"]} | set(d) | set(mx)
+        self.assertFalse([k for k in chaves if any(t in k for t in CAMPOS_PROIBIDOS + ("retorno", "recorr"))])
+        meta = json.loads((self.pasta / f"{R.ids()['tel']}.json.json").read_text(encoding="utf-8"))
+        self.assertEqual(meta["script"], R.SCRIPT)
+
+    def test_consolidado_continua_cortado(self):
+        d = self.ler("dia")
+        if not d["evento_em_curso"]:
+            self.skipTest("sem evento em curso nos dados")
+        self.assertEqual(d["dados_ate"], "2026-09-30")
+        self.assertFalse(any(r["dia"] >= "2026-10-01" for r in d["dados"]))
+        self.assertNotIn("clima", d["telas"])  # a tela de clima lê a telemetria
+
+    def test_nenhuma_maxima_anual_muda(self):
+        """Máximas anuais publicadas iguais às do último commit (se houver git) e sem 2026."""
+        m = self.ler("max")
+        self.assertLess(m["dados"][-1]["ano"], 2026)
+        rel = f"data/paineis/{R.ids()['max']}.json"
+        try:
+            antigo = subprocess.run(["git", "-C", str(R.RAIZ), "show", f"HEAD:{rel}"], capture_output=True, text=True, check=True).stdout
+        except (OSError, subprocess.CalledProcessError):
+            self.skipTest("sem git para comparar")
+        self.assertEqual(json.loads(antigo)["dados"], m["dados"])
+
+    def test_tamanho_abaixo_de_100_kb(self):
+        tam = (self.pasta / f"{R.ids()['tel']}.json").stat().st_size
+        self.assertLess(tam, 100 * 1024)
+        # teto da janela: com 450 dias, ~200 bytes por dia, ainda abaixo do limite
+        self.assertLess(R.DIAS_MAX_TELEMETRIA * 205 + 6000, 100 * 1024)
 
 
 if __name__ == "__main__":

@@ -39,6 +39,9 @@ const trNaFrase = (r, lim) => {
   const c = r.tr_anos_camada, d = r.tr_anos_documento;
   return d != null && c !== d && Math.abs(c - d) < lim ? `cerca de ${fmtInt(Math.round((c + d) / 2))} anos` : `${dec1(c)} anos`;
 };
+// telemetria do rio na tela de clima: últimos 365 dias corridos até o último dia; provisório = depois de consolidado_ate
+const rioJanela = (pr) => { const fim = diaNum(pr.meta.dados_ate); return pr.dados.filter((r) => diaNum(r.dia) > fim - 365); };
+const rioProvisorio = (pr, r) => pr.meta.provisorio === true && (!pr.meta.consolidado_ate || r.dia > pr.meta.consolidado_ate);
 const dataBR = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ""); return m ? `${m[3]}/${m[2]}/${m[1]}` : iso || ""; };
 
 // ------------------------------------------------------------------ telas
@@ -51,29 +54,32 @@ const TELAS = {
       precip: "clima_precipitacao-merge_2010-2025_anual",
       mensal: "clima_precipitacao-merge_2010-2025_mensal",
       queim: "queimadas_inpe_2010-2025_anual",
-      rio: "rio_ana-77150000_ultimos-365-dias_diario",
+      rio: "rio_ana-77150000_telemetria-recente_diario",
       tabela: "clima_tabela-anual_2007-2025",
     },
     // dica esperada em cada ponto: [rótulo do eixo, [[valor, nome da série], ...]]
     graficos: (p) => {
       const fc = (k) => p[k].meta.fonte_curta;
       const meses = p.mensal.dados.slice(-60);
-      // rio: série diária de 365 dias, como na cheia e saúde: um ponto a cada 7 dias e o último (x em dias corridos)
-      const amostraRio = p.rio.dados.filter((r, i, a) => i % 7 === 0 || i === a.length - 1);
+      // rio: telemetria, últimos 365 dias até a última leitura: um ponto a cada 7 dias e o último (x em dias corridos);
+      // a dica de dia provisório termina com "provisório"
+      const rio = rioJanela(p.rio);
+      const amostraRio = rio.filter((r, i, a) => i % 7 === 0 || i === a.length - 1);
+      const prov = (r) => (rioProvisorio(p.rio, r) ? " provisório" : "");
       return {
         "precip-anual": p.precip.dados.map((r) => [r.ano, [[fmtInt(r.merge_mm), `mm · ${fc("precip")}`]]]),
         calor: p.anual.dados.map((r) => [r.ano, [[fmtInt(r.dias_calor_extremo), `dias · ${fc("anual")}`]]]),
         "temp-anual": p.anual.dados.map((r) => [r.ano, [[fmt1(r.temp_media_anual) + "°C", `Temperatura média · ${fc("anual")}`]]]),
         "precip-mensal": meses.map((r) => [r.periodo.slice(2), [[fmtInt(r.precipitacao_mm) + "mm", `Precipitação · ${fc("mensal")}`]]]),
         comparacao: p.precip.dados.map((r) => [r.ano, [[fmtInt(r.merge_mm), fc("precip")], [fmtInt(r.a809_mm), p.precip.meta.fonte_curta_comparacao]]]),
-        nivel: amostraRio.map((r) => [diaTxt(diaNum(r.dia)), [[fmtInt(r.nivel_medio_cm), `Nível médio do dia (cm) · ${fc("rio")}`]], diaNum(r.dia)]),
-        vazao: amostraRio.map((r) => [diaTxt(diaNum(r.dia)), [[fmtInt(r.vazao_media_m3s), `Vazão média do dia (m³/s) · ${fc("rio")}`]], diaNum(r.dia)]),
+        nivel: amostraRio.map((r) => [diaTxt(diaNum(r.dia)), [[fmtInt(r.nivel_max_cm), `Nível máximo do dia (cm) · ${fc("rio")}${prov(r)}`]], diaNum(r.dia)]),
+        vazao: amostraRio.map((r) => [diaTxt(diaNum(r.dia)), [[fmtInt(r.vazao_max_m3s), `Vazão máxima do dia (m³/s) · ${fc("rio")}${prov(r)}`]], diaNum(r.dia)]),
         queimadas: p.queim.dados.map((r) => [r.ano, [[fmtInt(r.focos), `focos · ${fc("queim")}`]]]),
       };
     },
     kpis: (p) => {
       const u = (k) => p[k].dados[p[k].dados.length - 1];
-      return [fmtInt(u("precip").merge_mm) + "mm", fmtInt(u("anual").dias_calor_extremo) + "dias", fmtInt(u("queim").focos) + "focos", fmtInt(Math.round(u("rio").nivel_medio_cm)) + "cm"];
+      return [fmtInt(u("precip").merge_mm) + "mm", fmtInt(u("anual").dias_calor_extremo) + "dias", fmtInt(u("queim").focos) + "focos", fmtInt(Math.round(u("rio").nivel_ultimo_cm)) + "cm"];
     },
     tabelas: (p) => ({
       tabelaAnual: p.tabela.dados.map((r) => {
@@ -81,7 +87,7 @@ const TELAS = {
         const v = (x, f) => (x === null || x === undefined ? "—" : f ? f(x) : String(x));
         return [String(r.ano), v(r.precipitacao_merge_mm, fmtInt), v(r.temp_media_anual, fmt1) + m, v(r.temp_max_anual, fmt1) + m, v(r.temp_min_anual, fmt1) + m, v(r.dias_calor_extremo) + m, v(r.dias_geada) + m, v(r.focos, fmtInt)];
       }),
-      tabelaNivel: p.rio.dados.slice().reverse().map((r) => [dataBR(r.dia), fmtInt(r.nivel_medio_cm), fmt1(r.vazao_media_m3s), String(r.n_leituras)]),
+      tabelaNivel: rioJanela(p.rio).slice().reverse().map((r) => [dataBR(r.dia), fmtInt(r.nivel_max_cm), fmtInt(r.nivel_ultimo_cm), fmt1(r.vazao_max_m3s), fmt1(r.vazao_ultima_m3s), r.hora_ultima, String(r.n_leituras), rioProvisorio(p.rio, r) ? "provisório" : "consolidado"]),
     }),
     // rótulo final dos gráficos de linha (série em destaque) e rótulos de barra (máximo e último)
     rotulosFinais: (p) => {
@@ -91,8 +97,8 @@ const TELAS = {
         "temp-anual": [fmt1(ult(p.anual.dados).temp_media_anual) + "°C"],
         "precip-mensal": [fmtInt(ult(p.mensal.dados).precipitacao_mm) + "mm"],
         comparacao: [fmtInt(ult(p.precip.dados).merge_mm), fmtInt(ult(p.precip.dados).a809_mm)],
-        nivel: [fmtInt(ult(p.rio.dados).nivel_medio_cm)],
-        vazao: [fmtInt(ult(p.rio.dados).vazao_media_m3s)],
+        nivel: [fmtInt(ult(p.rio.dados).nivel_max_cm)],
+        vazao: [fmtInt(ult(p.rio.dados).vazao_max_m3s)],
         "precip-anual": barras(p.precip.dados.map((r) => r.merge_mm), fmtInt),
         calor: barras(p.anual.dados.map((r) => r.dias_calor_extremo), fmtInt),
         queimadas: barras(p.queim.dados.map((r) => r.focos), fmtInt),
@@ -535,16 +541,23 @@ async function testeRedirecionamento(browser, base, def) {
 
 
 // ------------------------------------------------------------------ extras do clima (cartões do rio)
-// Textos do rio iguais ao JSON da média diária; "atualizado em" igual ao da última leitura; nada de amostra;
-// com evento em curso, nenhum dia de 01/10/2026 em diante e o aviso do corte visível.
+// Rodada 118: os cartões do rio leem a telemetria recente (provisória, sem a trava do evento). Textos iguais ao JSON;
+// data/hora da última leitura visível; rótulo "provisório" nos cartões, na tabela, nas faixas dos gráficos e na dica
+// (cursor e toque); máxima do período só como leitura (sem "pico", "recorde" nem tempo de retorno); a tabela chega à
+// última leitura, inclusive em outubro e novembro de 2026.
 async function testesExtrasClima(browser, base, prod) {
   const res = [];
   const rio = prod.rio, m = rio.meta;
-  const ult = JSON.parse(fs.readFileSync(path.join(RAIZ, "data", "paineis", "rio_ana-77150000_ultima-leitura.json"), "utf8"));
-  const atualizado = (ult.atualizado_em || "").replace(/^\d{4}-(\d{2})-(\d{2})$/, "$2/$1");
-  const janela = `${m.fonte_curta} · ${dataBR(m.periodo.inicio)} a ${dataBR(m.periodo.fim)}`;
-  const avisosEsperados = m.avisos.filter((a) => a.tipo === "evento_em_curso" || a.texto.startsWith("não é dado")).map((a) => a.texto);
+  const janelaDias = rioJanela(rio);
+  const atualizado = (m.ultima_leitura || "").replace(/^\d{4}-(\d{2})-(\d{2}).*$/, "$2/$1");
+  const dh = (s) => (s ? `${dataBR(s)} ${s.slice(11, 16)}` : "—");
+  const janela = `${m.fonte_curta} · ${dataBR(janelaDias[0].dia)} a ${dataBR(janelaDias[janelaDias.length - 1].dia)}`;
+  const avisosEsperados = m.avisos.filter((a) => ["preliminar", "evento_em_curso"].includes(a.tipo) || a.texto.startsWith("não é dado")).map((a) => a.texto);
   const d = rio.dados[rio.dados.length - 1];
+  const mx = m.maxima_periodo;
+  const maximaEsperada = `Máxima do período (${dataBR(m.periodo.inicio)} a ${dataBR(m.periodo.fim)}), leitura de telemetria: nível ${fmtInt(mx.nivel_cm)} cm em ${dh(mx.nivel_data_hora)} · vazão ${fmtInt(mx.vazao_m3s)} m³/s em ${dh(mx.vazao_data_hora)} · provisório`;
+  const ultimaEsperada = `Última leitura: ${dh(m.ultima_leitura)} · nível ${fmtInt(d.nivel_ultimo_cm)} cm · vazão ${fmtInt(d.vazao_ultima_m3s)} m³/s · provisório`;
+  const nProv = janelaDias.filter((r) => rioProvisorio(rio, r)).length;
   for (const largura of [1280, 390]) {
     const { ctx, page, erros } = await abrir(browser, base + "dashboards/clima.html", { largura });
     const r = await page.evaluate(() => {
@@ -552,25 +565,47 @@ async function testesExtrasClima(browser, base, prod) {
       const tiles = [...document.querySelectorAll(".kpi-tile")];
       const rioTile = tiles[tiles.length - 1];
       const dias = [...document.querySelectorAll("#tabelaNivel tbody tr td:first-child")].map((td) => td.textContent);
+      const situacao = [...document.querySelectorAll("#tabelaNivel tbody tr td:last-child")].map((td) => td.textContent);
       const caixa = document.getElementById("aviso-rio").getBoundingClientRect();
+      const rotulos = [...document.querySelectorAll(".card-title .rotulo-provisorio")].filter((e) => e.getBoundingClientRect().height > 0).map((e) => e.textContent);
+      const faixas = ["nivel", "vazao"].map((g) => [...document.querySelectorAll(`#chart-${g} svg text.trecho-rotulo`)].map((e) => e.textContent).join(","));
+      const secao = [...document.querySelectorAll("#nota-rio, #aviso-rio, #ultima-leitura-rio, #maxima-rio")].map((e) => e.innerText).join(" ");
       return { nota: t("nota-rio"), metaNivel: t("meta-nivel"), metaVazao: t("meta-vazao"), avisos: t("aviso-rio"), avisoVisivel: caixa.height > 0,
+               ultima: t("ultima-leitura-rio"), maxima: t("maxima-rio"), rotulos, faixas, secao,
                kpiLabel: rioTile.querySelector(".kpi-label").innerText, kpiSub: rioTile.querySelector(".kpi-sub").innerText,
-               amostra: /amostra/i.test(document.body.innerText), resumo: document.querySelector("details:has(#tabelaNivel) summary").innerText, dias };
+               amostra: /amostra/i.test(document.body.innerText), resumo: document.querySelector("details:has(#tabelaNivel) summary").innerText, dias, situacao };
     });
+    // dica no último dia (provisório) por toque a 390 px e por cursor a 1280 px
+    const pos = await page.evaluate(() => {
+      const h = document.querySelector("#chart-nivel svg rect[fill='transparent']");
+      h.scrollIntoView({ block: "center" });
+      const b = h.getBoundingClientRect();
+      return { x: b.right - 1, y: b.top + b.height / 2 };
+    });
+    if (largura === 390) await page.touchscreen.tap(pos.x, pos.y); else await page.mouse.move(pos.x, pos.y);
+    const dica = await lerDica(page, "nivel");
     const iso = (br) => br.replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$2-$1");
     const falhas = [];
     if (r.nota !== `${m.titulo}. ${m.fonte}.`) falhas.push(`nota: ${r.nota}`);
     if (r.metaNivel !== janela || r.metaVazao !== janela) falhas.push(`janela: ${r.metaNivel} | ${r.metaVazao}`);
     for (const a of avisosEsperados) if (!r.avisos.includes(a)) falhas.push(`aviso ausente: ${a}`);
+    if (!r.avisos.includes("dados de telemetria, não consolidados")) falhas.push("aviso de telemetria ausente");
     if (!r.avisoVisivel) falhas.push("caixa de aviso sem altura");
     if (!atualizado || !r.avisos.includes(`atualizado em ${atualizado}`)) falhas.push(`"atualizado em" diferente da última leitura (${atualizado})`);
-    if (m.evento_em_curso && !r.avisos.includes(`série até ${dataBR(m.dados_ate)}`)) falhas.push("aviso do corte ausente");
-    if (r.kpiLabel !== `Nível médio · ${dataBR(d.dia)}` || r.kpiSub !== `vazão ${fmtInt(d.vazao_media_m3s)} m³/s`) falhas.push(`indicador: ${r.kpiLabel} | ${r.kpiSub}`);
+    if (/em preparação|série até/.test(r.avisos)) falhas.push("aviso da trava do consolidado na telemetria");
+    if (r.ultima !== ultimaEsperada) falhas.push(`última leitura: ${r.ultima}`);
+    if (r.maxima !== maximaEsperada) falhas.push(`máxima do período: ${r.maxima}`);
+    if (/\bpico\b|recorde|tempo de retorno|anos de retorno|históric/i.test(r.secao)) falhas.push("texto interpretativo na seção do rio");
+    if (JSON.stringify(r.rotulos) !== JSON.stringify(["provisório", "provisório"])) falhas.push(`rótulos nos cartões: ${JSON.stringify(r.rotulos)}`);
+    if (nProv && r.faixas.some((f) => f !== "provisório")) falhas.push(`faixa provisória nos gráficos: ${JSON.stringify(r.faixas)}`);
+    if (!dica.visivel || !dica.texto.endsWith(" provisório")) falhas.push(`dica do último dia (${largura === 390 ? "toque" : "cursor"}): "${dica.texto}"`);
+    if (r.kpiLabel !== `Nível · ${dh(m.ultima_leitura)}` || r.kpiSub !== `vazão ${fmtInt(d.vazao_ultima_m3s)} m³/s · provisório`) falhas.push(`indicador: ${r.kpiLabel} | ${r.kpiSub}`);
     if (r.amostra) falhas.push("texto de amostra na página");
-    if (r.resumo !== "Ver médias diárias do nível e da vazão do rio") falhas.push(`resumo da tabela: ${r.resumo}`);
-    if (r.dias.length !== rio.dados.length || iso(r.dias[0]) !== m.dados_ate) falhas.push(`tabela: ${r.dias.length} linhas, primeira ${r.dias[0]}`);
-    if (m.evento_em_curso && r.dias.some((x) => iso(x) >= "2026-10-01")) falhas.push("dia de 01/10/2026 em diante na tabela");
-    res.push({ nome: `clima: cartões do rio iguais ao JSON diário, aviso e "atualizado em ${atualizado}" (${largura} px)`, ok: !falhas.length && erros.length === 0, detalhe: falhas.concat(erros).join(" | ") });
+    if (r.resumo !== "Ver nível e vazão diários do rio (telemetria, provisório)") falhas.push(`resumo da tabela: ${r.resumo}`);
+    if (r.dias.length !== janelaDias.length || iso(r.dias[0]) !== m.dados_ate) falhas.push(`tabela: ${r.dias.length} linhas, primeira ${r.dias[0]}`);
+    if (r.situacao.filter((x) => x === "provisório").length !== nProv) falhas.push("coluna Situação difere de consolidado_ate");
+    if (m.dados_ate >= "2026-11-01" && !(r.dias.some((x) => iso(x).startsWith("2026-10")) && r.dias.some((x) => iso(x).startsWith("2026-11")))) falhas.push("tabela sem outubro e novembro de 2026");
+    res.push({ nome: `clima: cartões do rio na telemetria provisória, última leitura ${dh(m.ultima_leitura)}, máxima do período, rótulo e dica "provisório" (${largura} px)`, ok: !falhas.length && erros.length === 0, detalhe: falhas.concat(erros).join(" | ") });
     await ctx.close();
   }
   return res;

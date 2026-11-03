@@ -361,6 +361,25 @@ RE_DATA_ISO = re.compile(r"^(\d{4}-\d{2}-\d{2})")
 # datas que só registram quando o arquivo foi gerado ou lido (não são dado do evento)
 CHAVES_DATA_DE_REGISTRO = {"data_processamento", "gerado_em", "data_acesso", "data_consulta", "atualizado_em", "dados_ate"}
 CAMPOS_DATA_LINHA = ("dia", "data", "data_hora", "inicio", "fim")
+# rodada 118: a telemetria recente do rio é publicada todo dia, inclusive durante o evento, rotulada como
+# provisória; é a única exceção à regra n, e só enquanto tiver "provisorio": true e o aviso de telemetria
+TELEMETRIA_PROVISORIA = {"rio_ana-77150000_telemetria-recente_diario.json"}
+AVISO_TELEMETRIA = "dados de telemetria, não consolidados"
+TERMOS_RECORRENCIA = ("retorno", "recorr", "recorde", "histor")
+
+
+def telemetria_provisoria_ok(nome: str, d: dict) -> list[str]:
+    """Exceção da telemetria: provisória declarada, aviso presente, sem pico/duração/posição nem recorrência."""
+    falhas = []
+    if d.get("provisorio") is not True:
+        falhas.append(f"{nome}: telemetria sem \"provisorio\": true")
+    if AVISO_TELEMETRIA not in [a.get("texto") for a in d.get("avisos", [])]:
+        falhas.append(f"{nome}: telemetria sem o aviso \"{AVISO_TELEMETRIA}\"")
+    chaves = _chaves(d) | {k.lower() for k in (d.get("maxima_periodo") or {})}
+    ruins = sorted(k for k in chaves if any(t in k for t in TERMOS_EVENTO + TERMOS_RECORRENCIA))
+    if ruins:
+        falhas.append(f"{nome}: campos de pico, duração, posição ou recorrência {ruins}")
+    return falhas
 
 
 def regra_m() -> list[str]:
@@ -396,6 +415,9 @@ def regra_n(prods) -> list[str]:
     falhas = []
     # painéis: linhas datadas de 01/10/2026 em diante não podem ter número; nenhum campo de pico/duração/posição
     for p, d in prods:
+        if p.name in TELEMETRIA_PROVISORIA:
+            falhas += telemetria_provisoria_ok(p.name, d)
+            continue
         for i, linha in enumerate(d.get("dados", [])):
             if not isinstance(linha, dict):
                 continue
