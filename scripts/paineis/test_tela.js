@@ -480,6 +480,8 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
           umaLinha: !!(bm && bn && bn.top < bm.bottom && bm.top < bn.bottom),
           linhaTela: (document.querySelector(".masthead .linha-tela .atualizado-tela") || {}).textContent || "",
           eyebrow: (document.querySelector(".masthead .eyebrow") || {}).textContent || "",
+          menu: [...document.querySelectorAll("#cabecalho-nav a.nav-item, #cabecalho-nav summary")].map((a) => a.textContent),
+          menuLinks: [...document.querySelectorAll("#cabecalho-comum a")].map((a) => a.getAttribute("href")),
           herdado: masthead ? (/Painel \d de \d|\bColeta\b|Ver também/.exec(masthead.innerText) || [""])[0] : "",
         };
       })(),
@@ -490,6 +492,8 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
     if (id.fonteCorpo !== "Plus Jakarta Sans" || !id.fonteCarregada) falhas.push(`fonte do corpo ${id.fonteCorpo}, carregada: ${id.fonteCarregada}`);
     if (id.marcaHref !== "../index.html" || id.marcaTexto !== "ClimaPampa" || id.marcaImg !== 0) falhas.push(`marca: ${JSON.stringify(id)}`);
     if (largura === 1280 && !id.umaLinha) falhas.push("cabeçalho não cabe numa linha a 1280 px");
+    if (JSON.stringify(id.menu) !== JSON.stringify(MENU)) falhas.push(`menu: ${JSON.stringify(id.menu)}`);
+    if (!id.menuLinks.every((h) => !/sintese\.html|\/index\.html\?|^\.\.\/index\.html\?/.test(h))) falhas.push(`link do menu para endereço antigo: ${JSON.stringify(id.menuLinks)}`);
     if (!data.test(id.linhaTela)) falhas.push(`"Atualizado em" fora da linha da tela: "${id.linhaTela}"`);
     if (id.herdado) falhas.push(`texto herdado no masthead: "${id.herdado}"`);
     // grafia única do programa (Parte 0 da rodada A2) e eyebrow terminado no nome da tela
@@ -531,14 +535,15 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
   }
   await page.screenshot({ path: path.join(saida, `${def.pagina.split("/").pop().replace(".html", "")}_${largura}_${tema}.png`), fullPage: true });
   if (largura === 390) {
-    // menu "Explorar" aberto no celular: lista dentro da tela e sem rolagem lateral (rodada A1)
+    // menu no celular (rodada A2): o ☰ abre a lista inteira (com "Mais temas"), dentro da tela e sem rolagem lateral
     await page.evaluate(() => window.scrollTo(0, 0));
-    await page.click(".menu-explorar summary");
+    await page.click(".menu-celular");
     await page.waitForTimeout(150);
-    const m = await page.evaluate(() => { const l = document.querySelector(".menu-explorar-lista").getBoundingClientRect();
-      return { esq: l.left, dir: l.right, larg: document.documentElement.clientWidth, rolagem: document.documentElement.scrollWidth > document.documentElement.clientWidth }; });
-    if (m.esq < 0 || m.dir > m.larg || m.rolagem) falhas.push(`menu Explorar aberto passa da tela: ${JSON.stringify(m)}`);
-    await page.evaluate(() => { document.querySelector(".menu-explorar").open = false; });
+    const m = await page.evaluate(() => { const l = document.getElementById("cabecalho-nav").getBoundingClientRect();
+      const itens = [...document.querySelectorAll("#cabecalho-nav a.nav-item")].filter((a) => a.getBoundingClientRect().height > 0).map((a) => a.textContent);
+      return { esq: l.left, dir: l.right, larg: document.documentElement.clientWidth, rolagem: document.documentElement.scrollWidth > document.documentElement.clientWidth, itens }; });
+    if (m.esq < 0 || m.dir > m.larg || m.rolagem || m.itens.length !== MENU.length - 1) falhas.push(`menu do celular: ${JSON.stringify(m)}`);
+    await page.click(".menu-celular");
   }
   falhas.unshift(...erros.map((e) => `erro: ${e}`));
   await ctx.close();
@@ -917,6 +922,9 @@ async function testeIdAntigo(browser, base, def) {
   const okInexistente = b.erroBloco.length > 0 && b.erros.some((t) => t.includes("não está no manifesto"));
   return { ok: okAntigo && okInexistente, n: ids.length, detalhe: JSON.stringify({ antigo: a, inexistente: b.erroBloco }) };
 }
+
+// itens do menu, na ordem (rodada A2)
+const MENU = ["Início", "Mapa", "Cheia e saúde", "Clima", "Saúde", "Mais temas", "População", "Território", "Economia", "Riscos", "Dados", "ClimaPampa ↗"];
 
 // endereços que redirecionam (rodada A2): síntese incorporada ao início; pasta dashboards/ leva ao início
 const REDIRECIONAMENTOS = [

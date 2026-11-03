@@ -195,3 +195,17 @@ details.sobre-dado dd { margin: 0; color: var(--ink-secondary); overflow-wrap: a
 .catalogo-rotulo { color: var(--ink-muted); }
 .catalogo-downloads { margin-top: 4px; display: block; }
 @media (max-width: 720px) { .tabela-catalogo .col-fonte, .tabela-catalogo .col-resolucao { width: auto; } }
+
+/* ---------- menu (rodada A2): "Mais temas" e ☰ no celular ---------- */
+.menu-explorar summary.nav-atual { color: var(--ink); background: var(--accent-soft); font-weight: 600; }
+.nav-site { color: var(--accent); }
+.menu-celular { display: none; font: inherit; font-size: 13px; padding: 5px 11px; border-radius: 5px; border: 1px solid var(--border-strong); background: var(--surface-card); color: var(--ink); cursor: pointer; }
+@media (max-width: 720px) {
+  .menu-celular { display: inline-flex; gap: 6px; align-items: center; }
+  .cabecalho-comum .cabecalho-nav { display: none; }
+  .cabecalho-comum.menu-aberto .cabecalho-nav { display: flex; flex-direction: column; align-items: stretch; flex-basis: 100%; gap: 2px; padding: 6px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-card); }
+  .cabecalho-comum.menu-aberto .nav-item { padding: 8px 10px; }
+  .cabecalho-comum.menu-aberto .menu-explorar summary { pointer-events: none; color: var(--ink-muted); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 10px 2px; border: 0; background: none; }
+  .cabecalho-comum.menu-aberto .menu-explorar summary::after { content: ""; }
+  .cabecalho-comum.menu-aberto .menu-explorar-lista { position: static; border: 0; box-shadow: none; padding: 0 0 0 10px; min-width: 0; background: none; }
+}

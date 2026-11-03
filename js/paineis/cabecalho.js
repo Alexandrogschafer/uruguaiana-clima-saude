@@ -1,23 +1,33 @@
 /* Cabeçalho comum: navegação entre as telas e avisos de filtro.
-   Telas que ainda não existirem aparecem desativadas, com "em breve" (hoje, nenhuma).
-   O menu "Explorar" leva às seis telas temáticas. A marca em texto ("Clima" em --marca-1, "Pampa" em
-   --marca-2; nenhum logo até haver autorização, ver config/identidade.json) leva à página inicial. "Atualizado em"
-   (data do manifesto) fica na linha da tela, acima do título. A tela atual vem de <html data-tela="...">. */
+   Menu (rodada A2): Início · Mapa · Cheia e saúde · Clima · Saúde · Mais temas ▾ (População, Território,
+   Economia, Riscos) · Dados · ClimaPampa ↗ (site do projeto, nova aba). No celular (até 720 px) o botão ☰
+   abre a lista inteira, com os "Mais temas" abertos. Os caminhos são da raiz do site (data-raiz), para
+   valer no início (index.html) e nas telas (dashboards/). A marca em texto ("Clima" em --marca-1, "Pampa"
+   em --marca-2; nenhum logo até haver autorização, ver config/identidade.json) leva à página inicial.
+   "Atualizado em" (data do manifesto) fica na linha da tela, acima do título. A tela atual vem de
+   <html data-tela="...">. */
 (function(){
   const P = window.Paineis = window.Paineis || {};
 
+  // caminho a partir da raiz do site; `mapa` = o link leva os filtros da tela ao mapa
   const PRINCIPAIS = [
-    {tela: 'inicio', rotulo: 'Início', href: '../index.html'},
-    {tela: 'cheia-saude', rotulo: 'Cheia e saúde', href: 'cheia-saude.html'},
+    {tela: 'inicio', rotulo: 'Início', caminho: 'index.html'},
+    {tela: 'mapa', rotulo: 'Mapa', caminho: 'mapa.html', mapa: true},
+    {tela: 'cheia-saude', rotulo: 'Cheia e saúde', caminho: 'dashboards/cheia-saude.html'},
+    {tela: 'clima', rotulo: 'Clima', caminho: 'dashboards/clima.html'},
+    {tela: 'saude', rotulo: 'Saúde', caminho: 'dashboards/saude.html'},
   ];
-  const EXPLORAR = [
-    {tela: 'clima', rotulo: 'Clima e ambiente', href: 'clima.html'},
-    {tela: 'saude', rotulo: 'Saúde', href: 'saude.html'},
-    {tela: 'populacao', rotulo: 'População', href: 'populacao.html'},
-    {tela: 'territorio', rotulo: 'Território e meio físico', href: 'territorio.html'},
-    {tela: 'economia', rotulo: 'Economia e vulnerabilidade', href: 'economia.html'},
-    {tela: 'riscos', rotulo: 'Riscos, desastres e infraestrutura', href: 'riscos.html'},
+  const MAIS_TEMAS = [
+    {tela: 'populacao', rotulo: 'População', caminho: 'dashboards/populacao.html'},
+    {tela: 'territorio', rotulo: 'Território', caminho: 'dashboards/territorio.html'},
+    {tela: 'economia', rotulo: 'Economia', caminho: 'dashboards/economia.html'},
+    {tela: 'riscos', rotulo: 'Riscos', caminho: 'dashboards/riscos.html'},
   ];
+  const FINAIS = [
+    {tela: 'catalogo', rotulo: 'Dados', caminho: 'dashboards/catalogo.html'},
+  ];
+  // site do projeto: lido de config/textos_inicio.json seria uma requisição a mais em toda tela; fica aqui
+  const SITE_PROJETO = {rotulo: 'ClimaPampa ↗', href: 'https://pet-saude-climapampa.github.io/'};
 
   // linha pequena da marca (o município entra aqui; o resto da marca não muda entre municípios)
   const LINHA_MARCA = 'Geoportal · Uruguaiana/RS';
@@ -32,7 +42,7 @@
   };
 
   function item(def, atual){
-    if(!def.href){
+    if(!def.href && !def.caminho){
       const s = document.createElement('span');
       s.className = 'nav-item nav-desativado';
       s.setAttribute('aria-disabled', 'true');
@@ -41,7 +51,8 @@
     }
     const a = document.createElement('a');
     a.className = 'nav-item';
-    a.href = def.href;
+    const raiz = P.raiz ? P.raiz() : '..';
+    a.href = def.href || (def.mapa && P.urlCom ? P.urlCom(`${raiz}/${def.caminho}`, ['bairro', 'unidade', 'cota', 'camada']) : `${raiz}/${def.caminho}`);
     a.textContent = def.rotulo;
     if(def.tela === atual) a.setAttribute('aria-current', 'page');
     return a;
@@ -79,30 +90,46 @@
 
     const nav = document.createElement('nav');
     nav.className = 'cabecalho-nav';
-    nav.setAttribute('aria-label', 'Painéis');
+    nav.id = 'cabecalho-nav';
+    nav.setAttribute('aria-label', 'Telas do geoportal');
     PRINCIPAIS.forEach(d => nav.appendChild(item(d, atual)));
 
     const menu = document.createElement('details');
     menu.className = 'menu-explorar';
     const sum = document.createElement('summary');
-    sum.textContent = 'Explorar';
+    sum.textContent = 'Mais temas';
+    if(MAIS_TEMAS.some(d => d.tela === atual)) sum.classList.add('nav-atual');
     menu.appendChild(sum);
     const lista = document.createElement('div');
     lista.className = 'menu-explorar-lista';
-    EXPLORAR.forEach(d => lista.appendChild(item(d, atual)));
+    MAIS_TEMAS.forEach(d => lista.appendChild(item(d, atual)));
     menu.appendChild(lista);
     nav.appendChild(menu);
+    FINAIS.forEach(d => nav.appendChild(item(d, atual)));
+    const site = item(SITE_PROJETO, atual);
+    site.classList.add('nav-site');
+    site.target = '_blank';
+    site.rel = 'noopener';
+    nav.appendChild(site);
 
-    const mapa = document.createElement('a');
-    mapa.className = 'nav-item nav-mapa';
-    mapa.href = P.urlCom ? P.urlCom(`${P.raiz ? P.raiz() : '..'}/mapa.html`, ['bairro', 'unidade', 'cota', 'camada']) : '../mapa.html';
-    mapa.textContent = 'Mapa';
-    nav.appendChild(mapa);
+    // celular: ☰ abre e fecha a lista inteira (com "Mais temas" aberto)
+    const botao = document.createElement('button');
+    botao.type = 'button';
+    botao.className = 'menu-celular';
+    botao.setAttribute('aria-controls', 'cabecalho-nav');
+    botao.setAttribute('aria-expanded', 'false');
+    botao.innerHTML = '<span aria-hidden="true">☰</span> Menu';
+    botao.addEventListener('click', () => {
+      const aberto = host.classList.toggle('menu-aberto');
+      botao.setAttribute('aria-expanded', String(aberto));
+      menu.open = aberto;
+    });
+    host.appendChild(botao);
     host.appendChild(nav);
     if(!eyebrow) host.appendChild(atualizado);
 
-    // fecha o menu ao tocar fora dele
-    document.addEventListener('pointerdown', e => { if(!menu.contains(e.target)) menu.open = false; });
+    // fecha o "Mais temas" ao tocar fora dele (com o ☰ aberto, ele fica aberto dentro da lista)
+    document.addEventListener('pointerdown', e => { if(!menu.contains(e.target) && !host.classList.contains('menu-aberto')) menu.open = false; });
 
     const avisos = (P.filtros && P.filtros.avisos) || [];
     if(avisos.length){
