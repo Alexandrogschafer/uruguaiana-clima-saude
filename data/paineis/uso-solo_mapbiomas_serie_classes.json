@@ -27,7 +27,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:06Z",
+ "gerado_em": "2026-11-03T23:18:24Z",
  "script": "scripts/paineis/dados_territorio.py",
  "colunas": [
   {
@@ -68,19 +68,12 @@
   "ter_nota_uso": "Série MapBiomas (Coleção 10), anos disponíveis 1985–2024. Escalas independentes por classe — a Formação Campestre nativa é ~100× maior que a área urbanizada, numa escala só a urbanização não apareceria.",
   "ter_nota_uso_classes": "As 12 classes da área de estudo em 2024, não só as 3 em destaque acima — para dar visibilidade equivalente a lavoura, mosaico de usos e área urbana, não só vegetação nativa. O MapBiomas diferencia Soja e Arroz especificamente, mas agrupa os demais cultivos anuais em \"Outras Lavouras Temporárias\"; não há classe de pastagem isolada nesta série. \"Mosaico de Usos\" não é vegetação nem lavoura específica — é a classe do MapBiomas para áreas onde agricultura/pastagem/vegetação se misturam no pixel.",
   "ter_meta_uso_2024": "2024 · 12 classes",
-  "ter_nota_meio": "Geologia, geomorfologia, pedologia e vegetação nativa vêm do Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000 — leitura regional/contextual, não decisão em nível de microárea; versão preliminar, ainda em revisão. \"Vegetação nativa\" aqui é diferente do \"Uso do solo\" (MapBiomas) acima: classifica fitofisionomias remanescentes, não uso genérico da terra — por isso aparece quase toda como \"Agropecuária\" (nenhuma fitofisionomia nativa primária é detectável nessa escala dentro do município, coerente com um Pampa intensamente ocupado).",
-  "ter_meta_geologia": "6 classes",
-  "ter_meta_geomorfologia": "3 classes",
-  "ter_meta_vegetacao": "4 classes",
-  "ter_meta_pedologia": "top 7 de 13 classes, resto agrupado em \"Outras\"",
   "ter_nota_pocos_app": "Poços de água subterrânea (SIAGAS/CPRM) e Área de Preservação Permanente (APP) hídrica calculada a partir da rede de drenagem (ANA/BHO) — a APP é uma **aproximação metodológica** (largura do rio Uruguai estimada, rede local assumida <10m), útil para leitura exploratória, não para fiscalização/licenciamento.",
   "ter_meta_pocos": "SIAGAS/CPRM · 340 poços",
   "ter_meta_app": "aproximação metodológica",
-  "ter_resumo_pedologia": "Ver pedologia completa em tabela (13 classes)",
   "ter_resumo_uso": "Ver uso do solo em tabela (km² por ano)",
   "ter_meta_masthead_uso": "1985–2024",
-  "ter_meta_masthead_meio": "escala 1:250.000, versão preliminar",
-  "ter_leitura": "**Leitura recomendada:** a classificação de suscetibilidade (risco geológico) é um produto de modelagem validado por campo, não medição direta — use como triagem territorial, não como laudo pontual. As camadas de meio físico do BDiA (geologia/geomorfologia/pedologia/vegetação) são leitura regional (1:250.000), não decisão em nível de microárea; a APP hídrica é uma aproximação exploratória, não uma delimitação técnica para fiscalização ou licenciamento."
+  "ter_leitura": "**Leitura recomendada:** a classificação de suscetibilidade (risco geológico) é um produto de modelagem validado por campo, não medição direta — use como triagem territorial, não como laudo pontual. A APP hídrica é uma aproximação exploratória, não uma delimitação técnica para fiscalização ou licenciamento."
  },
  "kpis_uso": [
   {

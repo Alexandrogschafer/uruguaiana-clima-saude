@@ -120,7 +120,7 @@ escrito no HTML. Endereço de cada uma (no site publicado, depois de
 | Clima | `dashboards/clima.html` | temperatura e dias de calor (INMET, estação A809), precipitação (MERGE/INPE), rio e queimadas |
 | Saúde | `dashboards/saude.html` | óbitos, internações, arboviroses e as unidades ESF/UBS |
 | População | `dashboards/populacao.html` | população, indicadores do Censo e pirâmides etárias |
-| Território | `dashboards/territorio.html` | uso do solo e meio físico |
+| Território | `dashboards/territorio.html` | uso do solo, áreas urbanizadas, poços e APP hídrica (o meio físico do BDiA fica só no catálogo, nos downloads e no mapa) |
 | Economia | `dashboards/economia.html` | PIB, agropecuária, emprego, vulnerabilidade e despesas municipais |
 | Riscos | `dashboards/riscos.html` | desastres reconhecidos, suscetibilidade, setorização de risco e energia |
 | Catálogo de dados | `dashboards/catalogo.html` | fontes dos produtos e das camadas, licença, resolução, acesso, selo e downloads; "Como ler" os selos e avisos |

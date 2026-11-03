@@ -26,8 +26,8 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json",
-      "sha256": "d3400019e443ad8c1b11312c2634857e358489c94c69b27e085a2cb4024e6402",
-      "bytes": 7437
+      "sha256": "8a9bcc36dd255575aa0c37aa952cf3483bf8a284dc725a22c876e139ebd40298",
+      "bytes": 7281
     },
     {
       "arquivo": "data/paineis/energia_aneel_serie_anual.json",
@@ -76,8 +76,8 @@
     },
     {
       "arquivo": "data/paineis/uso-solo_mapbiomas_serie_classes.json",
-      "sha256": "c41fb39dde9f02c82a61fd1d9d75cca6d58e29ddb8ead466ec62e37d147ca202",
-      "bytes": 7526
+      "sha256": "469b6bf79881beabcafd1a6612b691b564c6133bba33fc2069cda7dc09ddea67",
+      "bytes": 6423
     },
     {
       "arquivo": "mapa.html",
@@ -86,8 +86,8 @@
     },
     {
       "arquivo": "data/paineis/catalogo_dados.json",
-      "sha256": "390862aa887912bc1990bfb96d46f228ffff9b0506ca1028b95d1b6c91976603",
-      "bytes": 51156
+      "sha256": "4881b6bab9341766a921897646939b8962f4f007d99a8532780fb571f7d7bc34",
+      "bytes": 51064
     }
   ],
   "script": "scripts/paineis/dados_inicio.py",
@@ -115,5 +115,5 @@
   "autorizacao": "livre",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T22:43:20Z"
+  "data_processamento": "2026-11-03T23:23:27Z"
 }

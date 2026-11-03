@@ -72,9 +72,8 @@ FONTES = {
     "indisp": "Saneamento (SNIS) e malha estadual (DAER-RS) — indisponíveis para download programático",
 }
 LEITURA = ("**Leitura recomendada:** a classificação de suscetibilidade (risco geológico) é um produto de modelagem validado por campo, "
-           "não medição direta — use como triagem territorial, não como laudo pontual. As camadas de meio físico do BDiA "
-           "(geologia/geomorfologia/pedologia/vegetação) são leitura regional (1:250.000), não decisão em nível de microárea; a APP "
-           "hídrica é uma aproximação exploratória, não uma delimitação técnica para fiscalização ou licenciamento.")
+           "não medição direta — use como triagem territorial, não como laudo pontual. A APP hídrica é uma aproximação exploratória, "
+           "não uma delimitação técnica para fiscalização ou licenciamento.")
 
 
 def _j(p):

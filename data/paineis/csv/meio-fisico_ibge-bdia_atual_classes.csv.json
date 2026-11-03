@@ -2,7 +2,7 @@
   "produto": "meio-fisico_ibge-bdia_atual_classes.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/meio-fisico_ibge-bdia_atual_classes.json",
-  "sha256_fonte": "0cf49e8507be54be2b7c066e465d3e64c9d87df6cc17c49f7f07f84fddb08439",
+  "sha256_fonte": "aecd6f66a81ba60487566ec6d8c81b2e517c067a2d20499aa73ccb6f31b76127",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "tema",
@@ -16,5 +16,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-02T12:47:36Z"
+  "data_processamento": "2026-11-03T23:18:24Z"
 }

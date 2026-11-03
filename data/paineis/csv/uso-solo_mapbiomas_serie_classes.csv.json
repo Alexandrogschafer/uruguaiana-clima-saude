@@ -2,7 +2,7 @@
   "produto": "uso-solo_mapbiomas_serie_classes.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/uso-solo_mapbiomas_serie_classes.json",
-  "sha256_fonte": "c41fb39dde9f02c82a61fd1d9d75cca6d58e29ddb8ead466ec62e37d147ca202",
+  "sha256_fonte": "469b6bf79881beabcafd1a6612b691b564c6133bba33fc2069cda7dc09ddea67",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "ano",
@@ -18,5 +18,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T16:33:06Z"
+  "data_processamento": "2026-11-03T23:18:24Z"
 }

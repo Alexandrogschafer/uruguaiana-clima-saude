@@ -34,7 +34,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T12:47:36Z",
+ "gerado_em": "2026-11-03T23:18:24Z",
  "script": "scripts/paineis/dados_territorio.py",
  "colunas": [
   {
@@ -59,9 +59,7 @@
   }
  ],
  "fonte_rodape": "Geologia, geomorfologia, pedologia e vegetação nativa — Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000",
- "telas": [
-  "territorio"
- ],
+ "telas": [],
  "dados": [
   {
    "tema": "geologia",

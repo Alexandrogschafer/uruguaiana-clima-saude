@@ -32,7 +32,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T22:43:19Z",
+ "gerado_em": "2026-11-03T23:23:26Z",
  "script": "scripts/paineis/dados_riscos.py",
  "colunas": [
   {
@@ -85,7 +85,7 @@
   "ris_meta_dec": "acumulado anual · horas",
   "ris_meta_fec": "acumulado anual · nº de interrupções",
   "ris_nota_aneel_2": "2026 (parcial, só até agosto) fica fora do gráfico pelo mesmo motivo do SICONFI acima — DEC de 5,66h/FEC de 2,58 acumulados em 8 meses pareceriam uma melhora dramática frente a um ano fechado, mas são só 8 dos 12 meses. A quebra de comparabilidade real na divisão interna de \"conjuntos\" ao longo do tempo (a década 2010–2019 tinha nomes diferentes dos atuais \"Uruguaiana 1\"/\"Uruguaiana 7\") não afeta este agregado — ele soma todas as unidades consumidoras do município em cada mês, independente de como a distribuidora dividiu internamente naquele período.",
-  "ris_leitura": "**Leitura recomendada:** a classificação de suscetibilidade (risco geológico) é um produto de modelagem validado por campo, não medição direta — use como triagem territorial, não como laudo pontual. As camadas de meio físico do BDiA (geologia/geomorfologia/pedologia/vegetação) são leitura regional (1:250.000), não decisão em nível de microárea; a APP hídrica é uma aproximação exploratória, não uma delimitação técnica para fiscalização ou licenciamento."
+  "ris_leitura": "**Leitura recomendada:** a classificação de suscetibilidade (risco geológico) é um produto de modelagem validado por campo, não medição direta — use como triagem territorial, não como laudo pontual. A APP hídrica é uma aproximação exploratória, não uma delimitação técnica para fiscalização ou licenciamento."
  },
  "kpis_s2id": [
   {

@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-03T22:43:20Z",
+ "gerado_em": "2026-11-03T23:23:27Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_serie_anual",
@@ -156,12 +156,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
    "dados_ate": "2026-11-03",
-   "gerado_em": "2026-11-03T22:43:20Z",
+   "gerado_em": "2026-11-03T23:23:27Z",
    "telas": [
     "catalogo"
    ],
-   "bytes": 51156,
-   "sha256": "390862aa887912bc1990bfb96d46f228ffff9b0506ca1028b95d1b6c91976603",
+   "bytes": 51064,
+   "sha256": "4881b6bab9341766a921897646939b8962f4f007d99a8532780fb571f7d7bc34",
    "csv": "csv/catalogo_dados.csv"
   },
   {
@@ -303,12 +303,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2025",
-   "gerado_em": "2026-11-03T22:43:19Z",
+   "gerado_em": "2026-11-03T23:23:26Z",
    "telas": [
     "riscos"
    ],
-   "bytes": 7437,
-   "sha256": "d3400019e443ad8c1b11312c2634857e358489c94c69b27e085a2cb4024e6402",
+   "bytes": 7281,
+   "sha256": "8a9bcc36dd255575aa0c37aa952cf3483bf8a284dc725a22c876e139ebd40298",
    "csv": "csv/desastres_s2id_serie_anual.csv"
   },
   {
@@ -445,12 +445,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2026-10-25",
-   "gerado_em": "2026-11-03T22:43:20Z",
+   "gerado_em": "2026-11-03T23:23:27Z",
    "telas": [
     "inicio"
    ],
    "bytes": 11447,
-   "sha256": "9372b936b159527a13efb6a805f18f6bd5858c8453e8a1c752a3c339874eae04",
+   "sha256": "dfbc8756435ff1c88fd8a9fec99a33aa35e2fe6d39641706924ba8efe0f91c47",
    "csv": "csv/inicio_resumo.csv"
   },
   {
@@ -503,12 +503,10 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2026-08-09",
-   "gerado_em": "2026-11-02T12:47:36Z",
-   "telas": [
-    "territorio"
-   ],
-   "bytes": 6488,
-   "sha256": "0cf49e8507be54be2b7c066e465d3e64c9d87df6cc17c49f7f07f84fddb08439",
+   "gerado_em": "2026-11-03T23:18:24Z",
+   "telas": [],
+   "bytes": 6471,
+   "sha256": "aecd6f66a81ba60487566ec6d8c81b2e517c067a2d20499aa73ccb6f31b76127",
    "csv": "csv/meio-fisico_ibge-bdia_atual_classes.csv"
   },
   {
@@ -803,12 +801,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2024",
-   "gerado_em": "2026-11-03T16:33:06Z",
+   "gerado_em": "2026-11-03T23:18:24Z",
    "telas": [
     "territorio"
    ],
-   "bytes": 7526,
-   "sha256": "c41fb39dde9f02c82a61fd1d9d75cca6d58e29ddb8ead466ec62e37d147ca202",
+   "bytes": 6423,
+   "sha256": "469b6bf79881beabcafd1a6612b691b564c6133bba33fc2069cda7dc09ddea67",
    "csv": "csv/uso-solo_mapbiomas_serie_classes.csv"
   }
  ]

@@ -4,7 +4,8 @@ mesmos arquivos que alimentavam o painel de território:
 
     - uso do solo: data/processed/uso-solo_mapbiomas_serie-temporal_area-por-classe.csv
     - meio físico (BDiA): resumos por classe nos metadados data/raw/vetor/{geologia,
-      geomorfologia,vegetacao,pedologia}_ibge-bdia_atual_vetorial.json
+      geomorfologia,vegetacao,pedologia}_ibge-bdia_atual_vetorial.json — produto
+      gerado e no catálogo/downloads, mas fora da tela desde a rodada A5 (telas vazio)
     - poços: data/raw/vetor/pocos-agua-subterranea_siagas-cprm_atual_vetorial.gpkg
     - APP hídrica: data/processed/app-hidrica_calculado_atual_vetorial.json e
       data/processed/app-ocupacao_calculado_2024.json
@@ -73,9 +74,8 @@ FONTES = {
     "urb": "Áreas urbanizadas — IBGE 2019",
 }
 LEITURA = ("**Leitura recomendada:** a classificação de suscetibilidade (risco geológico) é um produto de modelagem validado por campo, "
-           "não medição direta — use como triagem territorial, não como laudo pontual. As camadas de meio físico do BDiA "
-           "(geologia/geomorfologia/pedologia/vegetação) são leitura regional (1:250.000), não decisão em nível de microárea; a APP "
-           "hídrica é uma aproximação exploratória, não uma delimitação técnica para fiscalização ou licenciamento.")
+           "não medição direta — use como triagem territorial, não como laudo pontual. A APP hídrica é uma aproximação exploratória, "
+           "não uma delimitação técnica para fiscalização ou licenciamento.")
 
 
 def _j(p: Path) -> dict:
@@ -146,7 +146,7 @@ def urbanizadas() -> list[dict]:
     return [{"tipo": r.Tipo, "densidade": r.Densidade, "area_km2": round(float(r.area_km2), 2)} for r in s.itertuples()]
 
 
-def notas_kpis(anos, serie, classes, meio, poc_l, poc_r, app_l, app_r):
+def notas_kpis(anos, serie, classes, poc_l, poc_r, app_l, app_r):
     a24 = classes
     total = sum(c["area_km2"] for c in a24)
     soma = lambda t: sum(c["area_km2"] for c in a24 if c["tipo"] == t)
@@ -154,7 +154,6 @@ def notas_kpis(anos, serie, classes, meio, poc_l, poc_r, app_l, app_r):
     ult = serie[-1]
     razao = ult["Formação Campestre"] / ult["Área Urbanizada"]
     ordem_grandeza = 10 ** round(math.log10(razao))
-    n_tema = lambda t: sum(1 for r in meio if r["tema"] == t)
     top2 = poc_l[:2]
     notas = {
         "ter_meta_uso": f"{anos[0]}–{anos[-1]}",
@@ -166,24 +165,13 @@ def notas_kpis(anos, serie, classes, meio, poc_l, poc_r, app_l, app_r):
                                  "de pastagem isolada nesta série. \"Mosaico de Usos\" não é vegetação nem lavoura específica — é a classe do "
                                  "MapBiomas para áreas onde agricultura/pastagem/vegetação se misturam no pixel."),
         "ter_meta_uso_2024": f"{anos[-1]} · {len(a24)} classes",
-        "ter_nota_meio": ("Geologia, geomorfologia, pedologia e vegetação nativa vêm do Banco de Dados de Informações Ambientais do IBGE (BDiA), "
-                          "escala 1:250.000 — leitura regional/contextual, não decisão em nível de microárea; versão preliminar, ainda em "
-                          "revisão. \"Vegetação nativa\" aqui é diferente do \"Uso do solo\" (MapBiomas) acima: classifica fitofisionomias "
-                          "remanescentes, não uso genérico da terra — por isso aparece quase toda como \"Agropecuária\" (nenhuma fitofisionomia "
-                          "nativa primária é detectável nessa escala dentro do município, coerente com um Pampa intensamente ocupado)."),
-        "ter_meta_geologia": f"{n_tema('geologia')} classes",
-        "ter_meta_geomorfologia": f"{n_tema('geomorfologia')} classes",
-        "ter_meta_vegetacao": f"{n_tema('vegetacao')} classes",
-        "ter_meta_pedologia": f"top {PEDOLOGIA_TOPO} de {n_tema('pedologia')} classes, resto agrupado em \"Outras\"",
         "ter_nota_pocos_app": ("Poços de água subterrânea (SIAGAS/CPRM) e Área de Preservação Permanente (APP) hídrica calculada a partir da "
                                "rede de drenagem (ANA/BHO) — a APP é uma **aproximação metodológica** (largura do rio Uruguai estimada, rede "
                                "local assumida <10m), útil para leitura exploratória, não para fiscalização/licenciamento."),
         "ter_meta_pocos": f"SIAGAS/CPRM · {poc_r['total']} poços",
         "ter_meta_app": "aproximação metodológica",
-        "ter_resumo_pedologia": f"Ver pedologia completa em tabela ({n_tema('pedologia')} classes)",
         "ter_resumo_uso": "Ver uso do solo em tabela (km² por ano)",
         "ter_meta_masthead_uso": f"{anos[0]}–{anos[-1]}",
-        "ter_meta_masthead_meio": "escala 1:250.000, versão preliminar",
         "ter_leitura": LEITURA,
     }
     kpis_uso = [
@@ -221,7 +209,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
     meio = meio_fisico()
     poc_l, poc_r = pocos()
     app_l, app_r = app()
-    notas, kpis_uso, kpis_meio = notas_kpis(anos, serie, classes, meio, poc_l, poc_r, app_l, app_r)
+    notas, kpis_uso, kpis_meio = notas_kpis(anos, serie, classes, poc_l, poc_r, app_l, app_r)
     urb = urbanizadas()
     n = ids()
     c = dict(codigo_ibge=codigo_ibge, script=SCRIPT, selo="conferido")
@@ -242,7 +230,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
                                                             unidade_medida="km²", periodo={"inicio": "atual", "fim": "atual"}, dados_ate="2026-08-09",
                                                             avisos=[{"tipo": "metodo", "texto": "escala 1:250.000: leitura regional, não decisão em nível de microárea"}],
                                                             colunas=[{"nome": k, "tipo": t} for k, t in (("tema", "texto"), ("rotulo", "texto"), ("classe", "texto"), ("area_km2", "float"), ("n_feicoes", "int"))],
-                                                            dados=meio, extras={"fonte_rodape": FONTES["bdia"], "telas": ["territorio"]}),
+                                                            dados=meio, extras={"fonte_rodape": FONTES["bdia"], "telas": []}),  # fora da tela (rodada A5); catálogo e downloads seguem
          [E["geologia"], E["geomorfologia"], E["vegetacao"], E["pedologia"]], "área por classe dos metadados de cada tema; pedologia_grafico = 7 maiores e o resto somado"),
         (n["pocos"], ["TB14"], dict(titulo="Poços de água subterrânea por aquífero", fonte_curta="SIAGAS/CPRM", fonte="SGB/CPRM, SIAGAS", unidade_espacial="município",
                                      unidade_medida="poços", periodo={"inicio": "atual", "fim": "atual"}, dados_ate="2026-08-09", avisos=[],

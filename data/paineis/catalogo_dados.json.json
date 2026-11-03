@@ -86,8 +86,8 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json",
-      "sha256": "d3400019e443ad8c1b11312c2634857e358489c94c69b27e085a2cb4024e6402",
-      "bytes": 7437
+      "sha256": "8a9bcc36dd255575aa0c37aa952cf3483bf8a284dc725a22c876e139ebd40298",
+      "bytes": 7281
     },
     {
       "arquivo": "data/paineis/despesas_siconfi_serie_anual.json",
@@ -131,8 +131,8 @@
     },
     {
       "arquivo": "data/paineis/meio-fisico_ibge-bdia_atual_classes.json",
-      "sha256": "0cf49e8507be54be2b7c066e465d3e64c9d87df6cc17c49f7f07f84fddb08439",
-      "bytes": 6488
+      "sha256": "aecd6f66a81ba60487566ec6d8c81b2e517c067a2d20499aa73ccb6f31b76127",
+      "bytes": 6471
     },
     {
       "arquivo": "data/paineis/pib_ibge_serie_anual.json",
@@ -216,8 +216,8 @@
     },
     {
       "arquivo": "data/paineis/uso-solo_mapbiomas_serie_classes.json",
-      "sha256": "c41fb39dde9f02c82a61fd1d9d75cca6d58e29ddb8ead466ec62e37d147ca202",
-      "bytes": 7526
+      "sha256": "469b6bf79881beabcafd1a6612b691b564c6133bba33fc2069cda7dc09ddea67",
+      "bytes": 6423
     },
     {
       "arquivo": "data/paineis/agropecuaria_ibge_serie_anual.json.json",
@@ -286,7 +286,7 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json.json",
-      "sha256": "f2ee2d7945e05a388e299775350a5ed55bfca4d54fd3c397efcf68fc18b8038a",
+      "sha256": "9492d466a0af635f2c5c0f1de236f7bd52e55bf8633184b7e3d92d0373ef7602",
       "bytes": 1052
     },
     {
@@ -331,7 +331,7 @@
     },
     {
       "arquivo": "data/paineis/meio-fisico_ibge-bdia_atual_classes.json.json",
-      "sha256": "21dd5aab49781dcb9dc323044e917a84b4f2fca1d7d060e21c4f8644761421f6",
+      "sha256": "72e5ad8e364ee85a6cd8c23b921f8191ccf5025a2e0770675baa72b7cadf4ba8",
       "bytes": 1378
     },
     {
@@ -416,7 +416,7 @@
     },
     {
       "arquivo": "data/paineis/uso-solo_mapbiomas_serie_classes.json.json",
-      "sha256": "e7d26966f3251dd940a0bef2510dc37c25a72219d35a86f6864366924fcfb671",
+      "sha256": "eac063cdbb6b35beabc042277b4d16a63002613b1715436eed3c030095425d5b",
       "bytes": 730
     }
   ],
@@ -466,5 +466,5 @@
   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T22:43:20Z"
+  "data_processamento": "2026-11-03T23:23:27Z"
 }
