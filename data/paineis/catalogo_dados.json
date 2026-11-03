@@ -69,7 +69,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T18:03:08Z",
+ "gerado_em": "2026-11-03T18:28:17Z",
  "script": "scripts/paineis/dados_catalogo.py",
  "colunas": [
   {
@@ -349,11 +349,12 @@
   },
   "inundacao_sgb_cotas": {
    "titulo": "Manchas de inundação por cota e ESF/UBS dentro delas",
-   "licenca": "dados abertos",
-   "data_coleta": "2026-07-27",
+   "licenca": "dados abertos; documento público do SGB",
+   "data_coleta": "2026-10-08",
    "metodo": "união acumulada das manchas por cota em EPSG:31981; área; teste ponto-dentro das 21 ESF/UBS; mini-mapas em matplotlib",
    "fontes_catalogo": [
-    "cotas_inundacao"
+    "cotas_inundacao",
+    "documentos_sgb_cheias_uruguai"
    ],
    "csv": "data/paineis/csv/inundacao_sgb_cotas.csv"
   },
@@ -438,7 +439,8 @@
    "data_coleta": "2026-11-02",
    "metodo": "máxima e última leitura de cada dia da telemetria de 15 min, do início da janela da série diária (no máximo 450 dias) até a última leitura; sem a trava do evento (produto provisório)",
    "fontes_catalogo": [
-    "nivel_rio_ana"
+    "nivel_rio_ana",
+    "nivel_rio_ana_telemetria_2015_2017"
    ],
    "csv": "data/paineis/csv/rio_ana-77150000_telemetria-recente_diario.csv"
   },
@@ -448,7 +450,8 @@
    "data_coleta": "2026-11-02",
    "metodo": "última leitura da telemetria; com evento em curso, só o aviso",
    "fontes_catalogo": [
-    "nivel_rio_ana"
+    "nivel_rio_ana",
+    "nivel_rio_ana_telemetria_2015_2017"
    ],
    "csv": "data/paineis/csv/rio_ana-77150000_ultima-leitura.csv"
   },
@@ -458,7 +461,8 @@
    "data_coleta": "2026-11-02",
    "metodo": "média diária das leituras de 15 min, últimos 365 dias; com evento em curso, até o fim do mês anterior ao mês do evento (MES_DO_EVENTO_COM_CORTE) ou até o dia anterior ao evento",
    "fontes_catalogo": [
-    "nivel_rio_ana"
+    "nivel_rio_ana",
+    "nivel_rio_ana_telemetria_2015_2017"
    ],
    "csv": "data/paineis/csv/rio_ana-77150000_ultimos-365-dias_diario.csv"
   },
@@ -1231,6 +1235,36 @@
    "downloads_camadas": null
   },
   {
+   "tema": "nivel_rio_ana_telemetria_2015_2017",
+   "fonte": "ANA — telemetria de 15 min da estação 77150000 (operada por SGB-CPRM)",
+   "tipo": "tabela",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "estação",
+   "resolucao_temporal": "15 min; 2015-07-01 a 2015-08-15, 2015-11-15 a 2016-01-31 e 2017-05-15 a 2017-07-05",
+   "data_acesso": "2026-10-08",
+   "selo": "conferido",
+   "dimensoes": "Cheia e saúde · Clima",
+   "telas": "cheia-saude clima",
+   "produtos": "rio_ana-77150000_telemetria-recente_diario rio_ana-77150000_ultima-leitura rio_ana-77150000_ultimos-365-dias_diario",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "documentos_sgb_cheias_uruguai",
+   "fonte": "SGB — repositório institucional: estudo técnico do sistema de alerta da bacia do rio Uruguai (2017) e tempo de retorno de cotas e vazões de grandes cheias (2023)",
+   "tipo": "documento",
+   "licenca": "documento público do SGB",
+   "resolucao_espacial": "estação e trecho do rio",
+   "resolucao_temporal": "estático",
+   "data_acesso": "2026-10-08",
+   "selo": "em_confirmacao",
+   "dimensoes": "Cheia e saúde",
+   "telas": "cheia-saude",
+   "produtos": "inundacao_sgb_cotas",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
    "tema": "rede_hidrografica",
    "fonte": "ANA — Base Hidrográfica Ottocodificada Multiescalas 6 (BHO 6), versão 6.2.4 (publicada em 2022-10-20); camadas curso_dagua, trecho_drenagem e ponto_drenagem",
    "tipo": "vetor (linhas e pontos)",
@@ -1244,6 +1278,21 @@
    "produtos": null,
    "camadas": "rede-hidrografica",
    "downloads_camadas": "data/geoportal/rede-hidrografica.geojson"
+  },
+  {
+   "tema": "edificacoes_overture",
+   "fonte": "Overture Maps Foundation — tema buildings (conflação de Google Open Buildings, Microsoft ML Buildings e OpenStreetMap), derivado",
+   "tipo": "vetor (polígonos), derivado",
+   "licenca": "ODbL 1.0 (Overture buildings; registros Google Open Buildings sem licença no campo sources, publicados pelo Google sob CC BY 4.0 e ODbL); atribuição: Overture Maps Foundation; © contribuidores do OpenStreetMap; Google Open Buildings; Microsoft",
+   "resolucao_espacial": "edificação (polígono de telhado, detecção por imagem ou mapeamento)",
+   "resolucao_temporal": "estático (release 2026-09-23.1)",
+   "data_acesso": "2026-10-21",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "densidade-edificacoes-250m",
+   "downloads_camadas": "data/geoportal/densidade-edificacoes-250m.geojson"
   },
   {
    "tema": "densidade_edificacoes_250m",

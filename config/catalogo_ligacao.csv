@@ -81,3 +81,8 @@ escolas_inep_censo_escolar,camada,escolas-inep
 estrutura_fundiaria_car,camada,estrutura-fundiaria
 malha_viaria,camada,malha-viaria
 malha_viaria_federal_dnit,camada,malha-viaria-dnit
+documentos_sgb_cheias_uruguai,produto,inundacao_sgb_cotas
+nivel_rio_ana_telemetria_2015_2017,produto,rio_ana-77150000_telemetria-recente_diario
+nivel_rio_ana_telemetria_2015_2017,produto,rio_ana-77150000_ultima-leitura
+nivel_rio_ana_telemetria_2015_2017,produto,rio_ana-77150000_ultimos-365-dias_diario
+edificacoes_overture,camada,densidade-edificacoes-250m

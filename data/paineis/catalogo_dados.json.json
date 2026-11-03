@@ -11,8 +11,8 @@
     },
     {
       "arquivo": "config/catalogo_ligacao.csv",
-      "sha256": "b552284d90fe6c5dd662b3fd3e777b3231298e9b26e852ebb4068d835cf822c4",
-      "bytes": 4533
+      "sha256": "7698539d656f780ed4e48aaed6c9a14a4f50cdb416f9f0233f52b76a9f69ffeb",
+      "bytes": 4891
     },
     {
       "arquivo": "config/paineis_ativos.csv",
@@ -466,5 +466,5 @@
   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T18:03:08Z"
+  "data_processamento": "2026-11-03T18:28:17Z"
 }

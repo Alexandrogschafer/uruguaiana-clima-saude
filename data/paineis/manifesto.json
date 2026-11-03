@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-03T18:03:08Z",
+ "gerado_em": "2026-11-03T18:28:17Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_serie_anual",
@@ -156,12 +156,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
    "dados_ate": "2026-11-02",
-   "gerado_em": "2026-11-03T18:03:08Z",
+   "gerado_em": "2026-11-03T18:28:17Z",
    "telas": [
     "catalogo"
    ],
-   "bytes": 48710,
-   "sha256": "0e1d0104f5fe90181d118ff093fbc1cad5bda9bcb00331e0348c022328f0c8cc",
+   "bytes": 51060,
+   "sha256": "3f090e79309a75f93b3acf2a977c99f30a38d11d111d9d4129fa9084662248a7",
    "csv": "csv/catalogo_dados.csv"
   },
   {
@@ -445,12 +445,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2026-08-09",
-   "gerado_em": "2026-11-03T18:03:08Z",
+   "gerado_em": "2026-11-03T18:28:17Z",
    "telas": [
     "inicio"
    ],
    "bytes": 11397,
-   "sha256": "db2891d33917ee52d320d5770efb9267e47086ee7488fc35d859a92a74e7aa36",
+   "sha256": "7d266e094fe2132b82493adc9757c8ef3d4b67ce8310f4f2f1e8b31318ff9e8d",
    "csv": "csv/inicio_resumo.csv"
   },
   {

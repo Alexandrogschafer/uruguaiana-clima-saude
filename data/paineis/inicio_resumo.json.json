@@ -86,8 +86,8 @@
     },
     {
       "arquivo": "data/paineis/catalogo_dados.json",
-      "sha256": "0e1d0104f5fe90181d118ff093fbc1cad5bda9bcb00331e0348c022328f0c8cc",
-      "bytes": 48710
+      "sha256": "3f090e79309a75f93b3acf2a977c99f30a38d11d111d9d4129fa9084662248a7",
+      "bytes": 51060
     }
   ],
   "script": "scripts/paineis/dados_inicio.py",
@@ -115,5 +115,5 @@
   "autorizacao": "livre",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T18:03:08Z"
+  "data_processamento": "2026-11-03T18:28:17Z"
 }
