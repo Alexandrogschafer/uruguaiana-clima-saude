@@ -953,6 +953,12 @@ async function testeIdAntigo(browser, base, def) {
 const TEXTOS_INICIO = () => JSON.parse(fs.readFileSync(path.join(RAIZ, "config", "textos_inicio.json"), "utf8"));
 const dataDados = (s) => { const m = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/.exec(String(s || "")); return !m ? String(s) : m[3] ? `${m[3]}/${m[2]}/${m[1]}` : m[2] ? `${m[2]}/${m[1]}` : m[1]; };
 
+// números esperados na faixa do rio: código da estação, nível, data, hora, vazão e a data do aviso de método
+const NUMEROS_FAIXA = (rio) => {
+  const avisos = rio.meta.avisos.filter((a) => a.tipo === "metodo" && /tempo real/.test(a.texto)).map((a) => a.texto).join(" ");
+  return 5 + (avisos.match(/\d[\d.,:/]*/g) || []).length;
+};
+
 async function linksRespondem(page, seletor) {
   const hrefs = await page.evaluate((s) => [...new Set([...document.querySelectorAll(s)].map((a) => a.href).filter((h) => h.startsWith(location.origin)))], seletor);
   const ruins = [];
@@ -970,6 +976,7 @@ async function testesExtrasInicio(browser, base, prod) {
       rotulos: [...c.querySelectorAll(".indicador-inicio .kpi-label")].map((e) => e.textContent), metas: [...c.querySelectorAll(".indicador-meta")].map((e) => e.textContent.replace(/\s+/g, " ").trim()),
       avisos: [...c.querySelectorAll(".indicador-aviso")].map((e) => e.textContent), data: (c.querySelector(".cartao-inicio-data") || {}).textContent || "" })),
     faixa: document.getElementById("faixa-rio").innerText.replace(/\s+/g, " ").trim(),
+    linkCheia: (document.querySelector("#faixa-rio a") || {}).getAttribute ? document.querySelector("#faixa-rio a").getAttribute("href") : null,
     provisorio: !!document.querySelector("#faixa-rio .rotulo-provisorio"),
     contagens: [...document.querySelectorAll(".cartao-inicio-contagem")].map((e) => e.textContent),
     projeto: [...document.querySelectorAll("#cartao-projeto a")].map((a) => [a.getAttribute("href"), a.target]),
@@ -993,8 +1000,11 @@ async function testesExtrasInicio(browser, base, prod) {
   // faixa do rio: última leitura da telemetria, provisória, sem pico/duração/posição/tempo de retorno
   const u = rio.dados[rio.dados.length - 1], dh = rio.meta.ultima_leitura;
   const esperado = `nível ${fmtInt(u.nivel_ultimo_cm)} cm em ${dataBR(dh)} ${dh.slice(11, 16)} · vazão ${fmtInt(u.vazao_ultima_m3s)} m³/s`;
-  const fOk = r.faixa.includes(esperado) && r.provisorio && /não é dado em tempo real/.test(r.faixa) && !/pico|duração|posição|retorno|recorde/i.test(r.faixa);
-  res.push({ nome: "início: faixa do rio com a última leitura da telemetria, rótulo \"provisório\" e \"não é dado em tempo real\"; sem pico nem tempo de retorno", ok: fOk, detalhe: r.faixa });
+  // rodada A3: link "ver cheia e saúde →"; nenhum texto do evento de outubro nem número além da leitura
+  const numerosFaixa = (r.faixa.match(/\d[\d.,:/]*/g) || []).length;
+  const fOk = r.faixa.includes(esperado) && r.provisorio && /não é dado em tempo real/.test(r.faixa) && !/pico|duração|posição|retorno|recorde|outubro|evento/i.test(r.faixa) &&
+    r.linkCheia === "dashboards/cheia-saude.html" && r.faixa.endsWith("ver cheia e saúde →") && numerosFaixa === NUMEROS_FAIXA(rio);
+  res.push({ nome: "início: faixa do rio com a última leitura da telemetria, rótulo \"provisório\", \"não é dado em tempo real\" e link \"ver cheia e saúde →\"; sem pico, tempo de retorno nem evento", ok: fOk, detalhe: r.faixa });
   // contagens do gerador
   const c = resumo.meta.contagens;
   const cOk = r.contagens.some((x) => x.includes(`${c.telas} telas`) && x.includes(`${c.conjuntos_dados} conjuntos de dados`) && x.includes(`${c.fontes} fontes`)) && r.contagens.some((x) => x.includes(`${c.grupos_camadas} grupos de camadas`));

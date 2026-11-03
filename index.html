@@ -118,6 +118,10 @@ function faixaRio(rio){
   f.append(` nível ${P.valor(u.nivel_ultimo_cm, fmtInt)} cm em ${dataDados(dh)} ${dh.slice(11, 16)} · vazão ${P.valor(u.vazao_ultima_m3s, fmtInt)} m³/s `);
   f.appendChild(criar('span', 'rotulo-provisorio', ROTULO_PROVISORIO));
   if(metodo.length) f.append(` · ${metodo.join(' · ')}`);
+  // leva à tela da cheia e saúde (manchas por cota e unidades de saúde); nenhum número novo aqui
+  f.append(' · ');
+  const a = criar('a', 'faixa-rio-link', 'ver cheia e saúde →'); a.href = 'dashboards/cheia-saude.html';
+  f.appendChild(a);
 }
 
 async function iniciar(){

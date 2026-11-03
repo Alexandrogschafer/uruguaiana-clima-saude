@@ -209,3 +209,4 @@ details.sobre-dado dd { margin: 0; color: var(--ink-secondary); overflow-wrap: a
   .cabecalho-comum.menu-aberto .menu-explorar summary::after { content: ""; }
   .cabecalho-comum.menu-aberto .menu-explorar-lista { position: static; border: 0; box-shadow: none; padding: 0 0 0 10px; min-width: 0; background: none; }
 }
+.faixa-rio-link { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border-strong); white-space: nowrap; }
