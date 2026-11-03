@@ -33,7 +33,12 @@ Regras:
        linha datada de 01/10/2026 em diante, nenhum campo de pico, duração ou posição do
        evento, nenhuma data do evento como valor nas camadas do portal;
     o) os links dos painéis para o portal (index.html?camada=...) usam só chaves de camada
-       que o portal aceita (lidas de js/url-estado.js e js/layers.js).
+       que o portal aceita (lidas de js/url-estado.js e js/layers.js);
+    p) id de série sem período (rodada 120): nenhum id de produto com ano no nome, fora
+       das edições fixas de comum.EDICOES_FIXAS; "substitui" só com id antigo que não
+       está publicado e sem repetição;
+    q) nenhum JSON órfão em data/paineis/: todo produto da pasta é declarado em PRODUTOS
+       por algum gerador e está no manifesto, e todo item do manifesto tem o arquivo.
 
 Uso:
     python scripts/paineis/test_regras_publicas.py
@@ -52,6 +57,7 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI))
 import comum  # noqa: E402
+import manifesto  # noqa: E402
 
 RAIZ = comum.RAIZ
 PASTA = comum.PASTA_PUBLICACAO
@@ -455,6 +461,56 @@ def regra_n(prods) -> list[str]:
     return falhas
 
 
+RE_ANO_NO_ID = re.compile(r"_(19|20)\d{2}")
+
+
+def regra_p(prods) -> list[str]:
+    """Ids estáveis: nenhum ano no id fora das edições fixas; "substitui" coerente."""
+    falhas = []
+    ids = {d.get("id") for _, d in prods}
+    vistos = {}
+    for p, d in prods:
+        pid = d.get("id", "")
+        if pid != p.stem:
+            falhas.append(f"{p.name}: id {pid} diferente do nome do arquivo")
+        if RE_ANO_NO_ID.search(pid) and pid not in comum.EDICOES_FIXAS:
+            falhas.append(f"{p.name}: id com período no nome (use serie ou atual; edições fixas em comum.EDICOES_FIXAS)")
+        sub = d.get("substitui")
+        if sub:
+            if sub in ids:
+                falhas.append(f"{p.name}: substitui {sub}, que ainda está publicado")
+            if sub in vistos:
+                falhas.append(f"{p.name}: substitui {sub}, já substituído por {vistos[sub]}")
+            vistos[sub] = pid
+            if comum.IDS_SUBSTITUIDOS.get(pid) != sub:
+                falhas.append(f"{p.name}: substitui {sub} diferente de comum.IDS_SUBSTITUIDOS")
+    return falhas
+
+
+def regra_q(prods) -> list[str]:
+    """Nenhum órfão: pasta, geradores e manifesto com os mesmos ids."""
+    falhas = []
+    declarados = set(manifesto.ids_declarados())
+    na_pasta = {p.stem for p, _ in prods}
+    man = json.loads((PASTA / "manifesto.json").read_text(encoding="utf-8"))
+    no_manifesto = {i["id"] for i in man["produtos"]}
+    for x in sorted(na_pasta - declarados):
+        falhas.append(f"{x}.json: órfão (nenhum gerador o declara); rode gerar_todos.py --limpar")
+    for x in sorted(declarados - na_pasta):
+        falhas.append(f"{x}: declarado por um gerador, mas sem arquivo em data/paineis/")
+    for x in sorted(no_manifesto ^ (na_pasta & declarados)):
+        falhas.append(f"{x}: manifesto e pasta divergem")
+    for item in man["produtos"]:
+        sub = item.get("substitui")
+        d = next((d for p, d in prods if p.stem == item["id"]), {})
+        if sub != d.get("substitui"):
+            falhas.append(f"{item['id']}: substitui no manifesto ({sub}) diferente do produto ({d.get('substitui')})")
+    for f in sorted(PASTA.glob("*.json.json")):
+        if not f.with_name(f.name[:-5]).exists():
+            falhas.append(f"{f.name}: metadado sem produto")
+    return falhas
+
+
 def chaves_camada_portal() -> set[str]:
     """Chaves que o portal aceita em ?camada= (as mesmas de js/url-estado.js; data-camada vem de layers.js)."""
     url = (RAIZ / "js" / "url-estado.js").read_text(encoding="utf-8")
@@ -505,6 +561,8 @@ def main() -> int:
         "m camada das unidades no portal sem campos de 2026 nem soma": regra_m(),
         "n nenhum dado da cheia de outubro de 2026 no portal nem nos painéis": regra_n(prods),
         "o links dos painéis ao portal com chaves de camada que existem": regra_o(),
+        "p id de série sem período, fora das edições listadas": regra_p(prods),
+        "q nenhum JSON órfão em data/paineis/": regra_q(prods),
     }
     print(f"arquivos varridos: {len(arqs)}; produtos: {len(prods)}")
     ok = True

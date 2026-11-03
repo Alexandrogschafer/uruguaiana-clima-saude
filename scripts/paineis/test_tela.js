@@ -50,12 +50,12 @@ const TELAS = {
     pagina: "dashboards/clima.html",
     enderecoAntigo: "dashboards/painel-clima-ambiental.html",
     produtos: {
-      anual: "clima_inmet-a809_2007-2025_anual",
-      precip: "clima_precipitacao-merge_2010-2025_anual",
-      mensal: "clima_precipitacao-merge_2010-2025_mensal",
-      queim: "queimadas_inpe_2010-2025_anual",
+      anual: "clima_inmet-a809_serie_anual",
+      precip: "clima_precipitacao-merge_serie_anual",
+      mensal: "clima_precipitacao-merge_serie_mensal",
+      queim: "queimadas_inpe_serie_anual",
       rio: "rio_ana-77150000_telemetria-recente_diario",
-      tabela: "clima_tabela-anual_2007-2025",
+      tabela: "clima_tabela_serie_anual",
     },
     // dica esperada em cada ponto: [rótulo do eixo, [[valor, nome da série], ...]]
     graficos: (p) => {
@@ -110,11 +110,11 @@ const TELAS = {
     pagina: "dashboards/saude.html",
     enderecoAntigo: "dashboards/painel-saude.html",
     produtos: {
-      sim: "saude_sim_2010-2024_anual",
-      afog: "saude_sim-afogamento-enchente_2010-2024_quinquenal",
-      sih: "saude_sih_2010-2025_anual",
-      sinan: "saude_sinan_2010-2026_anual",
-      unidades: "saude_unidades-esf-ubs_2026",
+      sim: "saude_sim_serie_anual",
+      afog: "saude_sim-afogamento-enchente_serie_quinquenal",
+      sih: "saude_sih_serie_anual",
+      sinan: "saude_sinan_serie_anual",
+      unidades: "saude_unidades-esf-ubs_atual",
     },
     graficos: (p) => {
       const fc = (k) => p[k].meta.fonte_curta;
@@ -169,7 +169,7 @@ const TELAS = {
   },
   populacao: {
     pagina: "dashboards/populacao.html", enderecoAntigo: "dashboards/painel-demografia.html",
-    produtos: { serie: "populacao_ibge_1970-2025_anual", ind: "demografia_ibge_1970-2022_indicadores", pir: "demografia_ibge_2000-2010-2022_piramides" },
+    produtos: { serie: "populacao_ibge_serie_anual", ind: "demografia_ibge_serie_indicadores", pir: "demografia_ibge_censos_piramides" },
     recolhiveis: ["det-piramides"], extras: async (browser, base, prod) => testePeriodoRecolhivel(browser, base, "dashboards/populacao.html", { "det-piramides": false }),
     kpisCompletos: true,
     kpis: (p) => kpisTexto(p.serie.meta.kpis),
@@ -196,8 +196,8 @@ const TELAS = {
   },
   territorio: {
     pagina: "dashboards/territorio.html", enderecoAntigo: "dashboards/painel-territorio.html",
-    produtos: { serie: "uso-solo_mapbiomas_1985-2024_classes", classes: "uso-solo_mapbiomas_2024_todas-classes", meio: "meio-fisico_ibge-bdia_atual_classes",
-                pocos: "pocos_siagas_atual_aquifero", app: "app-hidrica_ana-bho-mapbiomas_2024_curso", urb: "areas-urbanizadas_ibge_2019_classe" },
+    produtos: { serie: "uso-solo_mapbiomas_serie_classes", classes: "uso-solo_mapbiomas_atual_todas-classes", meio: "meio-fisico_ibge-bdia_atual_classes",
+                pocos: "pocos_siagas_atual_aquifero", app: "app-hidrica_ana-bho-mapbiomas_atual_curso", urb: "areas-urbanizadas_ibge_2019_classe" },
     recolhiveis: ["det-uso", "det-meio"],
     extras: async (browser, base, prod) => testePeriodoRecolhivel(browser, base, "dashboards/territorio.html", { "det-uso": true, "det-meio": false }),
     kpisCompletos: true,
@@ -224,8 +224,8 @@ const TELAS = {
   },
   economia: {
     pagina: "dashboards/economia.html",
-    produtos: { censo: "censo_ibge_2022_situacao-setor", pib: "pib_ibge_2002-2023_anual", pam: "agropecuaria_ibge_1974-2024_anual", caged: "emprego_caged_2020-2026_mensal",
-                rais: "emprego_rais_2025_secao", idhm: "idhm_atlas_1991-2010_censos", cadunico: "cadunico_mds_2012-2026_anual", siconfi: "despesas_siconfi_2015-2026_anual" },
+    produtos: { censo: "censo_ibge_2022_situacao-setor", pib: "pib_ibge_serie_anual", pam: "agropecuaria_ibge_serie_anual", caged: "emprego_caged_serie_mensal",
+                rais: "emprego_rais_atual_secao", idhm: "idhm_atlas_censos", cadunico: "cadunico_mds_serie_anual", siconfi: "despesas_siconfi_serie_anual" },
     recolhiveis: ["det-emprego", "det-vulnerabilidade", "det-despesas"],
     extras: async (browser, base, prod) => testePeriodoRecolhivel(browser, base, "dashboards/economia.html", { "det-emprego": true, "det-vulnerabilidade": true, "det-despesas": true }),
     kpisCompletos: true,
@@ -258,7 +258,7 @@ const TELAS = {
   },
   riscos: {
     pagina: "dashboards/riscos.html",
-    produtos: { s2id: "desastres_s2id_2014-2025_anual", cprm: "risco-geologico_cprm_2021_classe", aneel: "energia_aneel_2000-2026_anual",
+    produtos: { s2id: "desastres_s2id_serie_anual", cprm: "risco-geologico_cprm_2021_classe", aneel: "energia_aneel_serie_anual",
                 setor: "setorizacao-risco_sgb_2014_setor", bater: "areas-de-risco_ibge_2018_bater", indisp: "infraestrutura_indisponivel_atual" },
     recolhiveis: ["det-setorizacao", "det-indisponivel"], extras: async (browser, base, prod) => testeSuprimidoSetor(browser, base, prod),
     kpisCompletos: true,
@@ -293,9 +293,9 @@ const TELAS = {
     pagina: "dashboards/sintese.html",
     enderecoAntigo: "dashboards/index.html",
     semGraficos: true,
-    produtos: { rio: "rio_ana-77150000_ultima-leitura", cotas: "inundacao_sgb_cotas", precip: "clima_precipitacao-merge_2010-2025_anual",
-                inmet: "clima_inmet-a809_2007-2025_anual", sim: "saude_sim_2010-2024_anual", sih: "saude_sih_2010-2025_anual",
-                sinan: "saude_sinan_2010-2026_anual", ind: "demografia_ibge_1970-2022_indicadores" },
+    produtos: { rio: "rio_ana-77150000_ultima-leitura", cotas: "inundacao_sgb_cotas", precip: "clima_precipitacao-merge_serie_anual",
+                inmet: "clima_inmet-a809_serie_anual", sim: "saude_sim_serie_anual", sih: "saude_sih_serie_anual",
+                sinan: "saude_sinan_serie_anual", ind: "demografia_ibge_serie_indicadores" },
     recolhiveis: [],
     kpis: () => [], graficos: () => ({}), tabelas: () => ({}),
     extras: async (browser, base, prod) => testesExtrasSintese(browser, base, prod),
@@ -909,6 +909,58 @@ async function testesExtrasCheia(browser, base, prod) {
   return res;
 }
 
+// ------------------------------------------------------------------ ids estáveis e manifesto (rodada 120)
+const MANIFESTO = () => JSON.parse(fs.readFileSync(path.join(RAIZ, "data", "paineis", "manifesto.json"), "utf8"));
+
+// ids da constante IDS da página (texto entre aspas dentro de "const IDS = {...}")
+function idsDaPagina(def) {
+  const html = fs.readFileSync(path.join(RAIZ, def.pagina), "utf8");
+  const m = /const IDS = \{([\s\S]*?)\};/.exec(html);
+  return m ? [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]) : [];
+}
+
+// cada id da tela (no teste e na página) existe no manifesto
+function testeIdsNoManifesto(def) {
+  const publicados = new Set(MANIFESTO().produtos.map((p) => p.id));
+  const doTeste = Object.values(def.produtos), daPagina = idsDaPagina(def);
+  const faltam = [...new Set([...doTeste, ...daPagina])].filter((id) => !publicados.has(id));
+  const soNaPagina = daPagina.filter((id) => !doTeste.includes(id));
+  return { ok: daPagina.length > 0 && faltam.length === 0, n: daPagina.length, detalhe: JSON.stringify({ faltam, soNaPagina }) };
+}
+
+// a página servida com os ids antigos (campo "substitui") carrega os mesmos produtos, sem erro; e um id
+// que não existe vira erro no bloco (e o console registra "produto não está no manifesto")
+async function testeIdAntigo(browser, base, def) {
+  const porNovo = Object.fromEntries(MANIFESTO().produtos.filter((p) => p.substitui).map((p) => [p.id, p.substitui]));
+  const ids = idsDaPagina(def).filter((id) => porNovo[id]);
+  if (!ids.length) return null;
+  const servir = async (troca) => {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const page = await ctx.newPage();
+    const erros = [];
+    page.on("pageerror", (e) => erros.push(String(e)));
+    page.on("console", (m) => { if (m.type() === "error") erros.push(m.text()); });
+    await page.route(`**/${def.pagina}`, async (route) => {
+      const resp = await route.fetch();
+      let corpo = await resp.text();
+      for (const [a, b] of troca) corpo = corpo.split(`'${a}'`).join(`'${b}'`);
+      await route.fulfill({ response: resp, body: corpo });
+    });
+    await page.goto(base + def.pagina, { waitUntil: "networkidle" });
+    await page.waitForFunction(() => document.documentElement.dataset.pronto === "1", null, { timeout: 10000 });
+    const r = await page.evaluate(() => ({ carregados: window.Paineis.produtosCarregados.map((m) => m.id),
+      erroBloco: [...document.querySelectorAll(".erro-bloco")].map((e) => e.textContent) }));
+    await ctx.close();
+    return { ...r, erros };
+  };
+  const a = await servir(ids.map((id) => [id, porNovo[id]]));
+  const okAntigo = a.erroBloco.length === 0 && a.erros.length === 0 && ids.every((id) => a.carregados.includes(id));
+  const b = await servir([[ids[0], "produto_inexistente_serie_anual"]]);
+  // a mensagem no bloco é a da página (algumas mostram o id, outras o erro); basta haver erro no bloco
+  const okInexistente = b.erroBloco.length > 0 && b.erros.some((t) => t.includes("não está no manifesto"));
+  return { ok: okAntigo && okInexistente, n: ids.length, detalhe: JSON.stringify({ antigo: a, inexistente: b.erroBloco }) };
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const iSaida = args.indexOf("--saida");
@@ -934,6 +986,14 @@ async function main() {
           (r.dicas ? `; dicas ${Object.entries(r.dicas).map(([g, v]) => `${g} ${v}`).join(", ")}` : "") + (r.toqueFecha !== null ? `; toque fora fecha: ${r.toqueFecha}` : ""));
         r.falhas.forEach((f) => console.log(`    - ${f}`));
       }
+    }
+    const im = testeIdsNoManifesto(def);
+    console.log(`[${im.ok ? "ok" : "FALHA"}] ${im.n} ids da página e do teste existem no manifesto`);
+    if (!im.ok) { total++; console.log(`    - ${im.detalhe}`); }
+    const ia = await testeIdAntigo(browser, base, def);
+    if (ia) {
+      console.log(`[${ia.ok ? "ok" : "FALHA"}] ${ia.n} id(s) antigo(s) resolvem pelo "substitui"; id inexistente vira erro no bloco`);
+      if (!ia.ok) { total++; console.log(`    - ${ia.detalhe}`); }
     }
     const fc = await testeFalhaDeCarga(browser, base, def);
     console.log(`[${fc.ok ? "ok" : "FALHA"}] produto indisponível vira erro no bloco (${fc.erroBloco} bloco(s) com erro, ${fc.svgs} gráficos desenhados)`);

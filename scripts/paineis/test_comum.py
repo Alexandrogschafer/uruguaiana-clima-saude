@@ -180,5 +180,91 @@ class Gravacao(unittest.TestCase):
         self.assertEqual(m["entradas"][0]["arquivo"], "entrada.csv", "caminho relativo, sem pasta local")
 
 
+class Substitui(unittest.TestCase):
+    """Rodada 120: id estável com o id antigo no campo "substitui", também no manifesto."""
+
+    def test_produto_renomeado_leva_substitui(self):
+        with mock.patch.dict(comum.IDS_SUBSTITUIDOS, {"teste_x_serie_anual": "teste_x_2020-2021_anual"}):
+            p = produto([{"n": 10}], id="teste_x_serie_anual")
+        self.assertEqual(p["substitui"], "teste_x_2020-2021_anual")
+        self.assertEqual(list(p)[:3], ["esquema", "id", "substitui"])
+
+    def test_produto_sem_troca_nao_leva_substitui(self):
+        self.assertNotIn("substitui", produto([{"n": 10}], id="teste_y_atual_classe"))
+
+    def test_manifesto_leva_substitui_e_deixa_orfao_de_fora(self):
+        import manifesto
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.dict(comum.IDS_SUBSTITUIDOS, {"teste_x_serie_anual": "teste_x_2020-2021_anual"}), \
+                mock.patch.object(comum, "conferir_autorizacao", return_value="livre"):
+            pasta = Path(tmp)
+            novo = produto([{"n": 10}], id="teste_x_serie_anual")
+            antigo = produto([{"n": 10}], id="teste_x_2020-2021_anual")
+            for prod in (novo, antigo):
+                (pasta / f"{prod['id']}.json").write_text(json.dumps(prod), encoding="utf-8")
+            with mock.patch.object(comum, "ARQ_ATIVOS", pasta / "ativos.csv"), mock.patch.object(comum, "ler_autorizacoes", return_value={}):
+                (pasta / "ativos.csv").write_text("id\n", encoding="utf-8")
+                manifesto.gerar("0000000", pasta, declarados=["teste_x_serie_anual"])
+            m = json.loads((pasta / "manifesto.json").read_text(encoding="utf-8"))
+            self.assertEqual([(i["id"], i.get("substitui")) for i in m["produtos"]], [("teste_x_serie_anual", "teste_x_2020-2021_anual")])
+            self.assertEqual([o.name for o in manifesto.orfaos(pasta, ["teste_x_serie_anual"])], ["teste_x_2020-2021_anual.json"])
+
+    def test_tabela_de_ids_coerente(self):
+        """Nenhum id novo com ano, nenhum id antigo repetido, nenhuma edição fixa renomeada."""
+        import re
+        antigos = list(comum.IDS_SUBSTITUIDOS.values())
+        self.assertEqual(len(antigos), len(set(antigos)))
+        for novo in comum.IDS_SUBSTITUIDOS:
+            self.assertIsNone(re.search(r"_(19|20)\d{2}", novo), novo)
+            self.assertRegex(novo, r"_(serie|atual|censos)(_|$)")
+        self.assertFalse(set(comum.IDS_SUBSTITUIDOS) & comum.EDICOES_FIXAS)
+
+
+class BrutoMaisRecente(unittest.TestCase):
+    """Rodada 120: com mais de um bruto que casa com o padrão, vale o de data_acesso mais recente."""
+
+    def gravar(self, pasta, nome, **meta):
+        (pasta / nome).write_text("x\n", encoding="utf-8")
+        (pasta / nome).with_suffix(".json").write_text(json.dumps(meta), encoding="utf-8")
+
+    def test_um_so(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = Path(tmp)
+            (pasta / "a_2010-2025_m.csv").write_text("x\n", encoding="utf-8")  # sem metadado: com um só, não precisa
+            self.assertEqual(comum.bruto_mais_recente(pasta, "a_*_m.csv").name, "a_2010-2025_m.csv")
+
+    def test_data_acesso_mais_recente_vence_a_ordem_alfabetica(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = Path(tmp)
+            self.gravar(pasta, "a_2020-202606_m.csv", data_acesso="2026-07-30")
+            self.gravar(pasta, "a_2020-202512_m.csv", data_acesso="2026-11-03T10:00:00+00:00")
+            self.assertEqual(comum.bruto_mais_recente(pasta, "a_*_m.csv").name, "a_2020-202512_m.csv")
+
+    def test_sem_data_acesso_usa_data_processamento(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = Path(tmp)
+            self.gravar(pasta, "a_1_m.csv", data_processamento="2026-08-09T21:12:21+00:00")
+            self.gravar(pasta, "a_2_m.csv", data_processamento="2026-08-01T00:00:00+00:00")
+            self.assertEqual(comum.bruto_mais_recente(pasta, "a_*_m.csv").name, "a_1_m.csv")
+
+    def test_sem_data_nenhuma_falha_e_nada_some(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = Path(tmp)
+            self.gravar(pasta, "a_1_m.csv")
+            self.gravar(pasta, "a_2_m.csv", data_acesso="2026-01-01")
+            with self.assertRaises(ValueError):
+                comum.bruto_mais_recente(pasta, "a_*_m.csv")
+            self.assertEqual(len(list(pasta.glob("a_*_m.csv"))), 2)  # o bruto antigo nunca é apagado
+            with self.assertRaises(ValueError):
+                comum.bruto_mais_recente(pasta, "b_*_m.csv")
+
+    def test_metadado_do_json_e_o_json_json(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            pasta = Path(tmp)
+            for nome, quando in (("p_2010-2025_x.json", "2026-01-01"), ("p_2010-2026_x.json", "2026-11-01")):
+                (pasta / nome).write_text("{}", encoding="utf-8")
+                (pasta / (nome + ".json")).write_text(json.dumps({"data_processamento": quando}), encoding="utf-8")
+            self.assertEqual(comum.bruto_mais_recente(pasta, "p_*_x.json").name, "p_2010-2026_x.json")
+
+
 if __name__ == "__main__":
     unittest.main()
