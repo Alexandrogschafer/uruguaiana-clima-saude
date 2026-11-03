@@ -249,6 +249,15 @@ function renderTimeLineChart(containerId, tooltipId, opts){
     anterior = x;
   });
 
+  // opts.trechos: [{x0, x1, rotulo}] — faixa sombreada com rótulo escrito (ex.: trecho "provisório" da telemetria)
+  (opts.trechos || []).forEach(tr => {
+    const a = Math.max(padL, xAt(Math.max(tr.x0, minX))), b = Math.min(padL + innerW, xAt(Math.min(tr.x1, maxX)));
+    if(!(b > a)) return;
+    el('rect', {x:a, y:padT, width:b-a, height:innerH, fill:cssVar('--series-context'), opacity:0.18, class:'trecho'}, svg);
+    const t = el('text', {x:a + 4, y:padT + 10, class:'axis-label trecho-rotulo', 'text-anchor':'start'}, svg);
+    t.textContent = tr.rotulo;
+  });
+
   const hoverLine = el('line', {x1:padL, x2:padL, y1:padT, y2:padT+innerH, class:'crosshair'}, svg);
   hoverLine.style.opacity = 0;
 
@@ -281,6 +290,8 @@ function renderTimeLineChart(containerId, tooltipId, opts){
     opts.series.forEach(s => {
       const p = s.points.find(pp => pp.x === year) || s.points.reduce((a,b) => Math.abs(b.x-year)<Math.abs(a.x-year)?b:a);
       html += `<div class="tt-row"><span class="tt-key" style="border-color:${s.color}"></span><span class="tt-val">${opts.yFormat ? opts.yFormat(p.y) : fmtInt(p.y)}</span><span class="tt-name">${s.name}</span></div>`;
+      // p.nota: texto curto do ponto (ex.: "provisório"), escrito na dica — aparece também no toque
+      if(p.nota) html += `<div class="tt-nota">${p.nota}</div>`;
     });
     tooltip.innerHTML = html;
     tooltip.style.opacity = 1;

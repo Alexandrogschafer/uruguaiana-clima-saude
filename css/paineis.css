@@ -132,6 +132,7 @@ h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio
 .tt-key { width: 9px; height: 0; border-top: 2px solid; display: inline-block; }
 .tt-val { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-variant-numeric: tabular-nums; font-weight: 700; }
 .tt-name { opacity: 0.85; }
+.tt-nota { margin-top: 3px; font-size: 10.5px; font-style: italic; opacity: 0.85; }
 
 .empty-state { border: 1px dashed var(--border-strong); border-radius: 6px; padding: 22px 24px; color: var(--ink-secondary); font-size: 13.5px; background: var(--accent-soft); }
 .empty-state b { color: var(--ink); }

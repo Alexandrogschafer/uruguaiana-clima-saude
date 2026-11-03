@@ -47,6 +47,8 @@ a.nav-item:hover { color: var(--ink); border-color: var(--border-strong); }
 .aviso-lacuna, .aviso-parcial { border-left-color: var(--series-context); }
 .aviso-preliminar, .aviso-em_confirmacao { border-left-color: var(--series-orange); }
 .aviso-metodo { border-left-color: var(--accent); }
+.rotulo-provisorio { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 3px; border: 1px solid var(--series-orange); color: var(--ink-primary); background: color-mix(in srgb, var(--series-orange) 12%, transparent); vertical-align: middle; }
+.leitura-rio { font-size: 13px; color: var(--ink-secondary); margin: 6px 0 0; }
 .aviso-evento_em_curso { border-left-color: var(--series-orange); font-weight: 600; }
 
 /* ---------- valores ---------- */
