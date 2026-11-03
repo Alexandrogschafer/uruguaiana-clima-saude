@@ -1,6 +1,6 @@
 """
 Teste das regras de publicação do repositório público, sobre data/paineis/,
-dashboards/, css/, js/ e index.html.
+dashboards/, css/, js/, index.html (página inicial) e mapa.html (o mapa, até a rodada A2 em index.html).
 
 Regras:
     a) termos proibidos: regex lidos do arquivo local .git/info/padroes_proibidos.txt
@@ -28,11 +28,11 @@ Regras:
        Prisional fora da contagem, só mini-mapas como imagem;
     m) camada publicada das unidades (data/geoportal/unidades-saude-esf-ubs.geojson e o
        metadado irmão): nenhum campo de 2026 nem de soma ou total;
-    n) nenhum arquivo do portal (index.html, js/, data/geoportal/) nem de data/paineis/ traz
+    n) nenhum arquivo do portal (mapa.html, index.html, js/, data/geoportal/) nem de data/paineis/ traz
        dado da cheia de outubro de 2026: nenhum valor de nível ou vazão (nem outro número) em
        linha datada de 01/10/2026 em diante, nenhum campo de pico, duração ou posição do
        evento, nenhuma data do evento como valor nas camadas do portal;
-    o) os links dos painéis para o portal (index.html?camada=...) usam só chaves de camada
+    o) os links dos painéis para o portal (mapa.html?camada=...) usam só chaves de camada
        que o portal aceita (lidas de js/url-estado.js e js/layers.js);
     p) id de série sem período (rodada 120): nenhum id de produto com ano no nome, fora
        das edições fixas de comum.EDICOES_FIXAS; "substitui" só com id antigo que não
@@ -69,7 +69,7 @@ import manifesto  # noqa: E402
 
 RAIZ = comum.RAIZ
 PASTA = comum.PASTA_PUBLICACAO
-ALVOS = [RAIZ / "data" / "paineis", RAIZ / "dashboards", RAIZ / "css", RAIZ / "js", RAIZ / "index.html"]
+ALVOS = [RAIZ / "data" / "paineis", RAIZ / "dashboards", RAIZ / "css", RAIZ / "js", RAIZ / "index.html", RAIZ / "mapa.html"]
 EXT_TEXTO = {".html", ".js", ".css", ".json", ".geojson", ".csv", ".md", ".txt"}
 ARQ_PADROES = RAIZ / ".git" / "info" / "padroes_proibidos.txt"
 HOOK = RAIZ / "scripts" / "git_hooks" / "pre-commit"
@@ -462,7 +462,7 @@ def regra_n(prods) -> list[str]:
                 falhas.append(f"{f.relative_to(RAIZ)}: {caminho} = {v}")
                 break
     # portal: textos do mapa sem números da cheia de outubro
-    for f in [RAIZ / "index.html", *sorted((RAIZ / "js").glob("*.js"))]:
+    for f in [RAIZ / "mapa.html", RAIZ / "index.html", *sorted((RAIZ / "js").glob("*.js"))]:
         t = f.read_text(encoding="utf-8")
         if re.search(r"(cheia|evento|enchente)[^.\n]{0,40}outubro de 2026|outubro de 2026[^.\n]{0,40}\d+\s*(cm|m³/s)", t, re.I):
             falhas.append(f"{f.relative_to(RAIZ)}: texto sobre a cheia de outubro de 2026")
@@ -540,7 +540,7 @@ def regra_o() -> list[str]:
         return [f"chaves do portal não encontradas em js/url-estado.js e js/layers.js ({sorted(validas)})"]
     n = 0
     for f in sorted((RAIZ / "dashboards").glob("*.html")):
-        for lista in re.findall(r"index\.html\?[^\"'`\s]*?camada=([\w,]+)", f.read_text(encoding="utf-8")):
+        for lista in re.findall(r"mapa\.html\?[^\"'`\s]*?camada=([\w,]+)", f.read_text(encoding="utf-8")):
             n += 1
             ruins = [k for k in lista.split(",") if k not in validas]
             if ruins:

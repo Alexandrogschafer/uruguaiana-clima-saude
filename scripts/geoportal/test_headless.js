@@ -1,13 +1,15 @@
 // Teste headless (Playwright) do geoportal ClimaPampa.
 // Sobe um servidor HTTP local (fetch() de GeoJSON não funciona em file://),
-// abre index.html em Chromium headless e valida:
+// abre mapa.html (o mapa saiu de index.html na rodada A2) em Chromium headless e valida:
 //   - mapa Leaflet inicializado
 //   - camadas/painéis carregados a partir dos JSON em data/geoportal/
 //   - ausência de erros de JS/console
 //
 //   - parâmetros da URL (cota, unidade, camada; inválidos geram aviso e saem da URL)
 //   - popup das unidades (2017 e 2023, sem 2026 nem total; unidade sem classe sem população)
-//   - links "Painéis", "Ver na saúde" e "Ver na cheia e saúde" respondendo 200
+//   - links "Início", "Ver na saúde" e "Ver na cheia e saúde" respondendo 200
+//   - endereço antigo: index.html com parâmetro de mapa redireciona para mapa.html (busca e # mantidos);
+//     index.html sem parâmetro de mapa fica na página inicial
 //
 // Uso: npm run test:geoportal
 // Requer Chromium do Playwright instalado (npx playwright install chromium).
@@ -29,6 +31,7 @@ const MIME = {
   ".css": "text/css",
   ".json": "application/json",
   ".geojson": "application/json",
+  ".woff2": "font/woff2",
 };
 
 function serve() {
@@ -68,7 +71,7 @@ async function main() {
   page.on("pageerror", (err) => pageErrors.push(String(err)));
 
   console.log(`Abrindo ${baseUrl}`);
-  await page.goto(baseUrl, { waitUntil: "networkidle" });
+  await page.goto(`${baseUrl}mapa.html`, { waitUntil: "networkidle" });
   // dá tempo para fetch() das camadas GeoJSON e inicialização dos controles
   await page.waitForTimeout(2000);
 
@@ -286,7 +289,7 @@ async function abrirComParametros(browser, baseUrl, busca, consoleErrors, pageEr
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   page.on("console", (msg) => { if (msg.type() === "error") consoleErrors.push(`${busca}: ${msg.text()}`); });
   page.on("pageerror", (err) => pageErrors.push(`${busca}: ${err}`));
-  await page.goto(`${baseUrl}index.html${busca}`, { waitUntil: "networkidle" });
+  await page.goto(`${baseUrl}mapa.html${busca}`, { waitUntil: "networkidle" });
   await page.waitForFunction(() => document.documentElement.dataset.urlPronta === "1", null, { timeout: 15000 });
   return page;
 }
@@ -353,7 +356,7 @@ async function checarUrlPopupLinks(browser, baseUrl, consoleErrors, pageErrors) 
     !/popula/i.test(semClasse[0].texto) && !/\d/.test(semClasse[0].texto.replace(/CNES|4126947|BR 472, 07, KM 07|versão 4, 2026/g, ""));
   detalhe.links.saudeStatus = await status(popups[0].links[0]);
   await page.close();
-  checks.linksPortalParaPaineis200 = detalhe.links.paineis === "dashboards/sintese.html" && detalhe.links.paineisStatus === 200 &&
+  checks.linksPortalParaPaineis200 = detalhe.links.paineis === "index.html" && detalhe.links.paineisStatus === 200 &&
     detalhe.links.cheiaStatus === 200 && detalhe.links.saudeStatus === 200;
 
   // inválidos: unidade e cota geram aviso e saem da URL; chave de camada inválida é ignorada, a válida fica
@@ -371,6 +374,18 @@ async function checarUrlPopupLinks(browser, baseUrl, consoleErrors, pageErrors) 
     /cota=999/.test(detalhe.invalidos.aviso) && !detalhe.invalidos.popup && detalhe.invalidos.cota === `${cotas[0]} cm` && detalhe.invalidos.avisoFechado &&
     consoleErrors.length + pageErrors.length === errosAntes;
   checks.urlCamadaInvalidaIgnorada = detalhe.invalidos.bairros && /camada=naoexiste/.test(detalhe.invalidos.aviso);
+
+  // endereço antigo do mapa (rodada A2): index.html com parâmetro de mapa vai para mapa.html, com busca e #;
+  // só ?origem= (parâmetro neutro) fica na página inicial
+  page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  await page.goto(`${baseUrl}index.html?cota=952#x`, { waitUntil: "networkidle" });
+  await page.waitForFunction(() => document.documentElement.dataset.urlPronta === "1", null, { timeout: 15000 });
+  const u1 = new URL(page.url());
+  await page.goto(`${baseUrl}index.html?origem=t`, { waitUntil: "networkidle" });
+  const u2 = new URL(page.url());
+  await page.close();
+  detalhe.redirecionamento = { comCota: u1.pathname + u1.search + u1.hash, semParametroDeMapa: u2.pathname + u2.search };
+  checks.redirecionamentoIndexParaMapa = detalhe.redirecionamento.comCota === "/mapa.html?cota=952#x" && detalhe.redirecionamento.semParametroDeMapa === "/index.html?origem=t";
   return { checks, detalhe };
 }
 

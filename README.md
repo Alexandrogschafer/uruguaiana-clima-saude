@@ -1,9 +1,9 @@
 # uruguaiana-clima-saude
 
-🌐 **Geoportal (mapa):** [alexandrogschafer.github.io/uruguaiana-clima-saude](https://alexandrogschafer.github.io/uruguaiana-clima-saude/)
+🌐 **Início:** [alexandrogschafer.github.io/uruguaiana-clima-saude](https://alexandrogschafer.github.io/uruguaiana-clima-saude/)
+(índice por dimensão; leva às telas e ao mapa — lista completa em [Painéis](#painéis-dashboards))
 
-📊 **Painéis:** [alexandrogschafer.github.io/uruguaiana-clima-saude/dashboards/sintese.html](https://alexandrogschafer.github.io/uruguaiana-clima-saude/dashboards/sintese.html)
-(a síntese leva às demais telas; lista completa em [Painéis](#painéis-dashboards))
+🗺️ **Mapa:** [alexandrogschafer.github.io/uruguaiana-clima-saude/mapa.html](https://alexandrogschafer.github.io/uruguaiana-clima-saude/mapa.html)
 
 Geoportal e pipeline de dados espaciais do projeto **ClimaPampa**
 (PET-Saúde: Clima — UNIPAMPA + Secretaria Municipal de Saúde de
@@ -13,18 +13,26 @@ tomada de decisão territorial.
 
 O repositório reúne três blocos: os **scripts** que baixam, padronizam e
 cruzam dados espaciais (vetoriais e matriciais) sobre clima, território,
-vulnerabilidade socioambiental e saúde; o **geoportal** (`index.html` +
+vulnerabilidade socioambiental e saúde; o **geoportal** (`mapa.html` +
 `css/` + `js/`), um mapa interativo que publica essas camadas para
 consulta por gestores, equipes de saúde e pesquisadores; e os **painéis**
 (`dashboards/`), telas com séries e tabelas lidas de `data/paineis/`. O
 mapa e os painéis têm links nos dois sentidos.
 
+**Endereços (desde a rodada A2):** `index.html` é a página inicial; o mapa
+fica em `mapa.html`. Um endereço antigo do mapa com parâmetro de mapa
+(`cota`, `unidade`, `camada`, `periodo`, `bairro`, `cenario`) vai sozinho
+para `mapa.html`, com a busca e o `#`; sem parâmetro de mapa, abre a página
+inicial. `dashboards/sintese.html` foi incorporada ao início: com `?cota=`
+de uma mancha publicada leva a `dashboards/cheia-saude.html?cota=…`, sem
+cota leva ao início. `dashboards/index.html` também leva ao início.
+
 ## Camadas disponíveis
 
 O painel lateral do geoportal organiza as camadas em 12 grupos
-colapsáveis (contados em `index.html`), na mesma ordem abaixo — todas já
+colapsáveis (contados em `mapa.html`), na mesma ordem abaixo — todas já
 publicadas (versão preliminar, ainda em revisão visual). O cabeçalho do
-painel tem o link **Painéis**, para a síntese.
+painel tem o link **Início**, para a página inicial.
 
 - **Mapa base:** alternância entre mapa (OpenStreetMap) e imagem de
   satélite.
@@ -95,8 +103,8 @@ e aparece num aviso que pode ser fechado:
 `cenario` é ignorado. Quando a cota, as camadas, o ano do uso do solo ou a
 unidade aberta mudam, o estado volta para a URL (sem criar entradas no
 histórico do navegador); em `camada` vão só as camadas ligadas além das que
-já abrem ligadas. Exemplos: `index.html?camada=cotasInundacao,unidadesSaude&cota=952`,
-`index.html?unidade=2247275`.
+já abrem ligadas. Exemplos: `mapa.html?camada=cotasInundacao,unidadesSaude&cota=952`,
+`mapa.html?unidade=2247275`.
 
 ## Painéis (dashboards/)
 
@@ -106,7 +114,7 @@ escrito no HTML. Endereço de cada uma (no site publicado, depois de
 
 | Tela | Endereço | Conteúdo |
 |---|---|---|
-| Síntese | `dashboards/sintese.html` | rio, cheia e acesso à saúde, clima, saúde e contexto em cartões, com a data de cada fonte |
+| Início | `index.html` | índice por dimensão: rio agora, cartões das seis dimensões com números-chave e data, cheia e mapa, dados e o projeto |
 | Cheia e acesso à saúde | `dashboards/cheia-saude.html` | máximas anuais do rio e o último ano, manchas do SGB por cota, unidades em relação às manchas e o que falta conferir |
 | Clima | `dashboards/clima.html` | temperatura e dias de calor (INMET, estação A809), precipitação (MERGE/INPE), rio e queimadas |
 | Saúde | `dashboards/saude.html` | óbitos, internações, arboviroses e as unidades ESF/UBS |
@@ -115,8 +123,8 @@ escrito no HTML. Endereço de cada uma (no site publicado, depois de
 | Economia | `dashboards/economia.html` | PIB, agropecuária, emprego, vulnerabilidade e despesas municipais |
 | Riscos | `dashboards/riscos.html` | desastres reconhecidos, suscetibilidade, setorização de risco e energia |
 
-`dashboards/index.html` e os endereços antigos (`painel-*.html`) levam às
-telas novas. Os filtros também vão na URL (`periodo`, `unidade`, `cota`);
+`dashboards/index.html` e `dashboards/sintese.html` levam ao início; os
+endereços antigos (`painel-*.html`) levam às telas novas. Os filtros também vão na URL (`periodo`, `unidade`, `cota`);
 os links "ver no mapa" abrem o geoportal com os parâmetros acima.
 
 **Dados dos painéis (`data/paineis/`):** cada produto é um JSON pequeno no
@@ -269,7 +277,8 @@ irmão. Estão pendentes de conferência e nenhuma delas alimenta o portal.
 uruguaiana-clima-saude/
 ├── README.md
 ├── requirements.txt
-├── index.html, css/, js/          # geoportal (js/paineis/: base comum dos painéis)
+├── index.html                     # página inicial (índice por dimensão)
+├── mapa.html, css/, js/           # geoportal (js/paineis/: base comum dos painéis)
 ├── config/
 │   ├── area_estudo.geojson        # limite oficial do município (referência única)
 │   └── paineis_ativos.csv         # autorização de cada ativo nos painéis
@@ -313,21 +322,21 @@ referência única de recorte para todos os demais scripts.
 
 ## Geoportal (front-end estático)
 
-`index.html` + `css/` + `js/` compõem o geoportal ClimaPampa — mapa
+`mapa.html` + `css/` + `js/` compõem o geoportal ClimaPampa — mapa
 Leaflet que consome as camadas geradas em `data/geoportal/` (exportadas
 pelos scripts de `scripts/geoportal/`).
 
 ### Testar localmente
 
 O geoportal usa `fetch()` para carregar as camadas GeoJSON, então precisa
-ser servido por HTTP (não abrir `index.html` direto via `file://`):
+ser servido por HTTP (não abrir `mapa.html` direto via `file://`):
 
 ```bash
 python -m http.server 8000
-# abrir http://localhost:8000
+# abrir http://localhost:8000 (início) e http://localhost:8000/mapa.html (mapa)
 ```
 
-O mesmo servidor serve os painéis: `http://localhost:8000/dashboards/sintese.html`.
+O mesmo servidor serve os painéis: `http://localhost:8000/dashboards/cheia-saude.html`.
 
 ## Testes
 

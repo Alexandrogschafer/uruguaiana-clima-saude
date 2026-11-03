@@ -1,13 +1,13 @@
 /* Cabeçalho comum: navegação entre as telas e avisos de filtro.
    Telas que ainda não existirem aparecem desativadas, com "em breve" (hoje, nenhuma).
    O menu "Explorar" leva às seis telas temáticas. A marca em texto ("Clima" em --marca-1, "Pampa" em
-   --marca-2; nenhum logo até haver autorização, ver config/identidade.json) leva ao mapa. "Atualizado em"
+   --marca-2; nenhum logo até haver autorização, ver config/identidade.json) leva à página inicial. "Atualizado em"
    (data do manifesto) fica na linha da tela, acima do título. A tela atual vem de <html data-tela="...">. */
 (function(){
   const P = window.Paineis = window.Paineis || {};
 
   const PRINCIPAIS = [
-    {tela: 'sintese', rotulo: 'Síntese', href: 'sintese.html'},
+    {tela: 'inicio', rotulo: 'Início', href: '../index.html'},
     {tela: 'cheia-saude', rotulo: 'Cheia e saúde', href: 'cheia-saude.html'},
   ];
   const EXPLORAR = [
@@ -54,7 +54,7 @@
     host.innerHTML = '';
     host.className = 'cabecalho-comum';
 
-    // marca em texto: leva ao mapa (index.html)
+    // marca em texto: leva à página inicial (index.html)
     const marca = document.createElement('a');
     marca.href = `${P.raiz ? P.raiz() : '..'}/index.html`;
     marca.className = 'cabecalho-marca';
@@ -95,7 +95,7 @@
 
     const mapa = document.createElement('a');
     mapa.className = 'nav-item nav-mapa';
-    mapa.href = P.urlCom ? P.urlCom(`${P.raiz ? P.raiz() : '..'}/index.html`, ['bairro', 'unidade', 'cota', 'camada']) : '../index.html';
+    mapa.href = P.urlCom ? P.urlCom(`${P.raiz ? P.raiz() : '..'}/mapa.html`, ['bairro', 'unidade', 'cota', 'camada']) : '../mapa.html';
     mapa.textContent = 'Mapa';
     nav.appendChild(mapa);
     host.appendChild(nav);

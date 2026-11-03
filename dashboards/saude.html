@@ -312,7 +312,7 @@ async function iniciar(){
         const txt = P.valor(u[campo], fmtInt, P.estaSuprimido(meta, i, campo));
         return `<td data-rotulo="Pop. informada ${a} ◐">${txt}</td>`;
       }).join('');
-      const mapa = `${P.raiz()}/index.html?camada=unidadesSaude&unidade=${encodeURIComponent(u.cnes)}`;
+      const mapa = `${P.raiz()}/mapa.html?camada=unidadesSaude&unidade=${encodeURIComponent(u.cnes)}`;
       tr.innerHTML = `<td class="col-texto col-nome" data-rotulo="Unidade">${u.nome}</td><td class="col-texto" data-rotulo="Classe">${classe}</td><td class="col-texto col-curta" data-rotulo="Zona">${P.valor(u.zona)}</td><td class="col-texto" data-rotulo="Bairro">${P.valor(u.bairro)}</td>${pops}<td class="col-texto col-curta" data-rotulo="Mapa"><a href="${mapa}">ver no mapa</a></td>`;
       tbody.appendChild(tr);
     });

@@ -293,17 +293,6 @@ const TELAS = {
       };
     },
   },
-  sintese: {
-    pagina: "dashboards/sintese.html",
-    enderecoAntigo: "dashboards/index.html",
-    semGraficos: true,
-    produtos: { rio: "rio_ana-77150000_ultima-leitura", cotas: "inundacao_sgb_cotas", precip: "clima_precipitacao-merge_serie_anual",
-                inmet: "clima_inmet-a809_serie_anual", sim: "saude_sim_serie_anual", sih: "saude_sih_serie_anual",
-                sinan: "saude_sinan_serie_anual", ind: "demografia_ibge_serie_indicadores" },
-    recolhiveis: [],
-    kpis: () => [], graficos: () => ({}), tabelas: () => ({}),
-    extras: async (browser, base, prod) => testesExtrasSintese(browser, base, prod),
-  },
   "cheia-saude": {
     pagina: "dashboards/cheia-saude.html",
     produtos: { maximas: "rio_ana-77150000_maximas-anuais", diario: "rio_ana-77150000_ultimos-365-dias_diario", cotas: "inundacao_sgb_cotas",
@@ -745,7 +734,7 @@ async function testesExtrasSaude(browser, base, prod) {
       return { ultimaCnes: ult.dataset.cnes, classe: ult.cells[1].textContent, numeros: [ult.cells[4].textContent, ult.cells[5].textContent], n: linhas.length,
         palavraCobertura: /cobertura/i.test(document.body.innerText), mapa: ult.querySelector("a").getAttribute("href") };
     });
-    const ok = r.ultimaCnes === "4126947" && /fora das comparações/.test(r.classe) && r.numeros.every((x) => !/\d/.test(x)) && r.n === 22 && !r.palavraCobertura && r.mapa === "../index.html?camada=unidadesSaude&unidade=4126947";
+    const ok = r.ultimaCnes === "4126947" && /fora das comparações/.test(r.classe) && r.numeros.every((x) => !/\d/.test(x)) && r.n === 22 && !r.palavraCobertura && r.mapa === "../mapa.html?camada=unidadesSaude&unidade=4126947";
     res.push({ nome: "Prisional na última linha, sem números; 22 linhas; sem a palavra \"cobertura\"; link do mapa", ok, detalhe: JSON.stringify(r) });
     // o link do mapa abre o portal mesmo sem o portal ler o parâmetro
     const resp = await page.request.get(new URL(r.mapa, page.url()).toString());
@@ -779,81 +768,6 @@ async function testeSuprimidoSetor(browser, base, prod) {
   return [{ nome: "setorização: contagem suprimida aparece como \"<5\" (JSON simulado)", ok: v === "<5" && erros.length === 0, detalhe: v }];
 }
 
-// ------------------------------------------------------------------ extras da síntese
-// JSON da última leitura simulado num dos três estados: (i) normal e recente, (ii) evento em curso, (iii) leitura antiga
-function leituraSimulada(meta, estado) {
-  const rt = { tipo: "metodo", texto: "não é dado em tempo real; atualizado em 20/10" };
-  if (estado === "evento") return { ...meta, evento_em_curso: true, avisos: [{ tipo: "evento_em_curso", texto: "cheia de outubro de 2026: números em preparação" }, rt],
-    dados: [{ estado: "evento_em_curso", data_hora: null, nivel_cm: null, vazao_m3s: null, idade_dias: null }] };
-  const idade = estado === "antiga" ? 5 : 1;
-  return { ...meta, evento_em_curso: false, avisos: [rt, ...(estado === "antiga" ? [{ tipo: "parcial", texto: "leitura antiga" }] : [])],
-    dados: [{ estado: "normal", data_hora: "2026-10-20 18:00:00", nivel_cm: 512.0, vazao_m3s: 5400.0, idade_dias: idade }] };
-}
-
-async function testesExtrasSintese(browser, base, prod) {
-  const res = [];
-  const pag = base + "dashboards/sintese.html";
-  {
-    const { ctx, page, erros } = await abrir(browser, pag, {});
-    const r = await page.evaluate(() => {
-      const li = (id) => [...document.querySelectorAll(`#${id} li`)].map((e) => e.innerText.replace(/\s+/g, " ").trim());
-      return { faixa: document.getElementById("faixa-rio").innerText.trim(), cheia: li("lista-cheia"), clima: li("lista-clima"), saude: li("lista-saude"),
-        contexto: li("lista-contexto"), atualizacao: li("lista-atualizacao"), aviso: document.getElementById("aviso-cheia").innerText.trim(),
-        emBreve: /em breve/i.test(document.getElementById("cabecalho-comum").innerText), marca: document.querySelector(".cabecalho-marca").getAttribute("href"),
-        nav: [...document.querySelectorAll(".cabecalho-nav a.nav-item")].map((a) => a.getAttribute("href")) };
-    });
-    const p = prod, ult = (x) => x.dados[x.dados.length - 1];
-    const ordTr = [...p.cotas.dados].sort((a, b) => a.tr_anos_camada - b.tr_anos_camada);
-    const trS = (r) => trNaFrase(r, p.cotas.meta.dif_tr_cerca_anos).replace(/ anos$/, "");
-    const inm = ult(p.inmet), parcial = p.inmet.meta.avisos.find((a) => a.tipo === "parcial" && a.onde && a.onde.ano === inm.ano);
-    const fech = p.sinan.dados.filter((x) => !x.preliminar), sn = fech[fech.length - 1], pre = p.sinan.dados.find((x) => x.preliminar);
-    const ind = ult(p.ind);
-    const fr = p.rio.dados[0];
-    const esperado = {
-      faixa: fr.estado === "evento_em_curso" ? `⚠ Rio Uruguai (${p.rio.meta.fonte_curta}): ${p.rio.meta.avisos.map((a) => a.texto).join(" · ")}` : null,
-      cheia: [`${p.cotas.dados.length} manchas do SGB (cotas ${p.cotas.dados.map((x) => fmtInt(x.cota_cm)).join(", ")} cm), tempo de retorno de ${trS(ordTr[0])} a ${trS(ordTr[ordTr.length - 1])} anos`,
-              p.cotas.meta.notas.cs_frase_unidades],
-      clima: [`Chuva em ${ult(p.precip).ano}: ${fmtInt(ult(p.precip).merge_mm)} mm (${p.precip.meta.fonte_curta})`,
-              `Dias com máxima ≥ 35 °C em ${inm.ano}: ${fmtInt(inm.dias_calor_extremo)} (${p.inmet.meta.fonte_curta})${parcial ? ` · ${parcial.texto}` : ""}`],
-      saude: [`Óbitos em ${ult(p.sim).ano}: ${fmtInt(ult(p.sim).obitos_total)}, dos quais ${fmtInt(ult(p.sim).obitos_respiratorios)} por causas respiratórias (${p.sim.meta.fonte_curta})`,
-              `Internações respiratórias em ${ult(p.sih).ano}: ${fmtInt(ult(p.sih).internacoes_respiratorias)} (${p.sih.meta.fonte_curta})`,
-              `Notificações de dengue em ${sn.ano}: ${fmtInt(sn.dengue)}${pre ? `; em ${pre.ano} (preliminar): ${fmtInt(pre.dengue)}` : ""} (${p.sinan.meta.fonte_curta})`],
-      contexto: [`População (Censo ${ind.periodo}): ${fmtInt(ind.populacao_total)} habitantes`, `${fmt1(ind.pct_urbano)}% urbana · índice de envelhecimento ${fmt1(ind.indice_envelhecimento)}`],
-    };
-    const dif = Object.entries(esperado).filter(([k, v]) => v !== null && JSON.stringify(r[k]) !== JSON.stringify(v)).map(([k, v]) => `${k}: ${JSON.stringify(r[k])} ≠ ${JSON.stringify(v)}`);
-    res.push({ nome: "síntese: faixa do rio e cartões iguais aos JSON", ok: !dif.length && erros.length === 0, detalhe: dif.join(" | ") + erros.join(" | ") });
-    const datas = Object.values(prod).every((x) => r.atualizacao.some((l) => l.endsWith(x.meta.dados_ate.length === 10 ? dataBR(x.meta.dados_ate) : x.meta.dados_ate)));
-    res.push({ nome: "síntese: datas de atualização de cada produto; aviso \"em conferência\"", ok: datas && r.atualizacao.length === Object.keys(prod).length && r.aviso === "pessoas expostas e acesso: em conferência", detalhe: JSON.stringify(r.atualizacao) });
-    res.push({ nome: "cabeçalho: Síntese e Cheia e saúde ativos, marca leva ao mapa, nenhum \"em breve\"", ok: !r.emBreve && r.marca === "../index.html" && r.nav.includes("sintese.html") && r.nav.includes("cheia-saude.html"), detalhe: JSON.stringify(r) });
-    await ctx.close();
-  }
-  // leituras simuladas na faixa "rio agora"
-  for (const [estado, nome] of [["normal", "(i) abaixo de 800 cm e recente"], ["evento", "(ii) evento em curso"], ["antiga", "(iii) leitura com mais de 3 dias"]]) {
-    const j = leituraSimulada(prod.rio.meta, estado);
-    const rotas = [[`**/data/paineis/${prod.rio.meta.id}.json`, (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(j) })]];
-    const { ctx, page, erros } = await abrir(browser, pag, { rotas });
-    const f = await page.evaluate(() => ({ texto: document.getElementById("faixa-rio").innerText.trim(), evento: document.getElementById("faixa-rio").classList.contains("faixa-evento") }));
-    await ctx.close();
-    let ok;
-    if (estado === "evento") ok = f.evento && /números em preparação/.test(f.texto) && !/\bcm\b|m³\/s|pico/.test(f.texto);
-    else ok = !f.evento && f.texto.includes("512 cm em 20/10/2026 18:00") && f.texto.includes("vazão 5.400 m³/s") && f.texto.includes("não é dado em tempo real; atualizado em 20/10") && (estado === "antiga") === f.texto.includes("leitura antiga");
-    res.push({ nome: `faixa do rio com leitura simulada ${nome}`, ok: ok && erros.length === 0, detalhe: f.texto });
-  }
-  {
-    const a = await abrir(browser, `${pag}?cota=952`, {});
-    const r1 = await a.page.evaluate(() => ({ chip: document.getElementById("chips-filtro").innerText, link: document.querySelector('#cartao-cheia a[href^="cheia-saude"]').getAttribute("href"),
-      mapa: document.querySelector('#cartao-cheia a[href^="../index"]').getAttribute("href") }));
-    await a.ctx.close();
-    const b = await abrir(browser, `${pag}?cota=950`, {});
-    const r2 = await b.page.evaluate(() => ({ avisos: [...document.querySelectorAll(".cabecalho-avisos .aviso")].map((e) => e.textContent), url: location.search, chip: document.getElementById("chips-filtro").innerText }));
-    await b.ctx.close();
-    const ok = /Cota: 952 cm/.test(r1.chip) && r1.link === "cheia-saude.html?cota=952" && r1.mapa === "../index.html?camada=cotasInundacao,unidadesSaude&cota=952" &&
-      r2.avisos.includes("Parâmetro ignorado: cota=950") && r2.url === "" && r2.chip === "";
-    res.push({ nome: "síntese: ?cota= válido vira chip e segue nos links; inválido gera aviso e sai da URL", ok, detalhe: JSON.stringify({ r1, r2 }) });
-  }
-  return res;
-}
-
 // ------------------------------------------------------------------ extras da cheia e saúde
 async function testesExtrasCheia(browser, base, prod) {
   const res = [];
@@ -870,7 +784,7 @@ async function testesExtrasCheia(browser, base, prod) {
     });
     const c = prod.cotas.dados.find((x) => x.cota_cm === 952);
     const ok = JSON.stringify(r.pressionado) === '["952 cm"]' && r.src === `../data/paineis/${c.imagem}` && r.alt === c.alt && r.carregada &&
-      JSON.stringify(r.ativa) === '["952"]' && /Cota: 952 cm/.test(r.chip) && r.link === "../index.html?camada=cotasInundacao,unidadesSaude&cota=952" && r.filtrosAbertos === (largura !== 390) && new Set(r.refAtiva).size === 2;
+      JSON.stringify(r.ativa) === '["952"]' && /Cota: 952 cm/.test(r.chip) && r.link === "../mapa.html?camada=cotasInundacao,unidadesSaude&cota=952" && r.filtrosAbertos === (largura !== 390) && new Set(r.refAtiva).size === 2;
     res.push({ nome: `?cota=952 (${largura} px): botão, mini-mapa com texto alternativo, linha da tabela, chip e link do mapa`, ok: ok && erros.length === 0, detalhe: JSON.stringify(r) });
     if (largura === 1280) {
       const resp = await page.request.get(new URL(r.link, page.url()).toString());
@@ -1004,6 +918,31 @@ async function testeIdAntigo(browser, base, def) {
   return { ok: okAntigo && okInexistente, n: ids.length, detalhe: JSON.stringify({ antigo: a, inexistente: b.erroBloco }) };
 }
 
+// endereços que redirecionam (rodada A2): síntese incorporada ao início; pasta dashboards/ leva ao início
+const REDIRECIONAMENTOS = [
+  ["dashboards/sintese.html?cota=952&origem=r#x", "/dashboards/cheia-saude.html?cota=952&origem=r#x"],
+  ["dashboards/sintese.html?origem=r", "/index.html?origem=r"],
+  ["dashboards/sintese.html?cota=950", "/index.html"],
+  ["dashboards/index.html?origem=redirecionamento", "/index.html?origem=redirecionamento"],
+];
+async function testeRedirecionamentosA2(browser, base) {
+  const res = [];
+  for (const [de, para] of REDIRECIONAMENTOS) {
+    const ctx = await browser.newContext();
+    const page = await ctx.newPage();
+    await page.goto(base + de, { waitUntil: "networkidle" });
+    await page.waitForTimeout(300);
+    const u = new URL(page.url());
+    await ctx.close();
+    // a tela de destino pode limpar só os filtros que ela trata; aqui os parâmetros são neutros ou válidos
+    // mesma página, mesmo # e os mesmos parâmetros (a ordem pode mudar: a tela regrava a busca ao ler os filtros)
+    const esp = new URL(para, base), norm = (x) => [...x.searchParams].map((kv) => kv.join("=")).sort().join("&");
+    const obtido = u.pathname + u.search + u.hash;
+    res.push({ nome: `${de} → ${para}`, ok: u.pathname === esp.pathname && u.hash === esp.hash && norm(u) === norm(esp), detalhe: obtido });
+  }
+  return res;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const iSaida = args.indexOf("--saida");
@@ -1049,6 +988,13 @@ async function main() {
     }
     const rd = await testeRedirecionamento(browser, base, def);
     if (rd) { console.log(`[${rd.ok ? "ok" : "FALHA"}] endereço antigo redireciona para ${rd.destino}`); if (!rd.ok) total++; }
+  }
+  if (!nomes.length) {
+    console.log("\n== redirecionamentos");
+    for (const x of await testeRedirecionamentosA2(browser, base)) {
+      console.log(`[${x.ok ? "ok" : "FALHA"}] ${x.nome}`);
+      if (!x.ok) { total++; console.log(`    - ${x.detalhe}`); }
+    }
   }
   await browser.close();
   server.close();

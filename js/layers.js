@@ -58,7 +58,7 @@ window.App.coresDependenciaEscola = CORES_DEPENDENCIA_ESCOLA;
 window.App.rotulosDependenciaEscola = ROTULOS_DEPENDENCIA_ESCOLA;
 
 // cores por classificação de pavimento (DNIT/SNV) — mesmos valores hex do
-// mini-legenda estática em index.html (grupo "Malha viária"), mantidos em
+// mini-legenda estática em mapa.html (grupo "Malha viária"), mantidos em
 // sincronia manualmente (só 2 categorias fixas, sem geração dinâmica)
 const CORES_PAVIMENTO_DNIT = {
   PAV: "#1d4ed8",
@@ -66,7 +66,7 @@ const CORES_PAVIMENTO_DNIT = {
 };
 
 // cores por status_imovel (CAR/SICAR) — mesmos valores hex da mini-legenda
-// estática em index.html (grupo "Estrutura fundiária"), sincronia manual
+// estática em mapa.html (grupo "Estrutura fundiária"), sincronia manual
 const CORES_STATUS_CAR = {
   AT: "#16a34a",
   PE: "#f59e0b",

@@ -9,7 +9,7 @@
  * agregados — nenhuma edificação individual, nenhum rótulo.
  *
  * Classes por limites redondos de edificações/ha; as cores repetem as da
- * legenda estática em index.html (sincronia manual, como nos demais grupos).
+ * legenda estática em mapa.html (sincronia manual, como nos demais grupos).
  * Reaproveita onEachFeatureComPopup/CAMPOS_LEGIVEIS.densidadeEdificacoes de
  * layers.js — precisa carregar depois dele.
  */
