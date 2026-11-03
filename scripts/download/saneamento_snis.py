@@ -125,6 +125,7 @@ def main() -> None:
             "de resolver o login"
         ),
         "data_verificacao": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
     }
 
     CAMINHO_SAIDA.parent.mkdir(parents=True, exist_ok=True)

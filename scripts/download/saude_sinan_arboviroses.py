@@ -302,6 +302,7 @@ def main() -> None:
             "ser lido como zero"
         ),
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
     }
     caminho_metadados = caminho_saida.with_suffix(".json")
     caminho_metadados.write_text(json.dumps(metadados, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
@@ -359,6 +360,7 @@ def main() -> None:
             "limitacoes_por_agravo": limitacoes_prelim,
             "data_maxima_notificacao_no_arquivo_por_agravo": datas_maximas_prelim,
             "data_processamento": datetime.now(timezone.utc).isoformat(),
+            "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         }
         caminho_metadados_prelim = caminho_prelim.with_suffix(".json")
         caminho_metadados_prelim.write_text(json.dumps(metadados_prelim, indent=2, ensure_ascii=False, default=str), encoding="utf-8")

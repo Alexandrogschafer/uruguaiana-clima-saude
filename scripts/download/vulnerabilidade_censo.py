@@ -352,6 +352,7 @@ def calcular_metadados(
             "dado algum, mas com alguma faixa etária/variável especificamente suprimida por privacidade)"
         ),
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         "transformacao_aplicada": (
             "filtragem da malha de setores da UF por CD_MUN, filtragem dos CSVs nacionais de indicadores por setor "
             "(prefixo do CD_SETOR = código IBGE do município), cálculo de densidade demográfica e percentuais de "

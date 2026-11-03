@@ -208,6 +208,7 @@ def main() -> None:
         },
         "n_focos_por_ano": focos_por_ano,
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
     }
     caminho_metadados = caminho_saida.with_suffix(".json")
     caminho_metadados.write_text(json.dumps(metadados, indent=2, ensure_ascii=False, default=str), encoding="utf-8")

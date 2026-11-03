@@ -504,6 +504,7 @@ def gravar_metadados(caminho_saida: Path, args, ano_fim: int, nome_municipio: st
             m for m, d in detalhes_merge.items() if d.get("n_dias_com_dado", 0) < d.get("n_dias_no_mes", 0)
         ),
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
     }
     caminho_metadados = caminho_saida.with_suffix(".json")
     caminho_metadados.write_text(

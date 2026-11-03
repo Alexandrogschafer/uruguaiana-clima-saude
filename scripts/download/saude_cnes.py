@@ -291,6 +291,7 @@ def salvar_saida(
         "crs_original": CRS_ORIGEM,
         "crs_processado": CRS_PADRAO,
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         "transformacao_aplicada": (
             "download da lista + detalhe de cada estabelecimento via endpoint interno do CNES, "
             "construção de pontos a partir de nuLatitude/nuLongitude, descarte de coordenadas ausentes/"

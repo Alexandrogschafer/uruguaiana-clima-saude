@@ -385,6 +385,7 @@ def calcular_metadados(gdf: gpd.GeoDataFrame, ano: int, codigo_ibge: str, nome_m
             "non-residencial)."
         ) if n_sem_atributo else "todos os setores da malha têm dado atributivo correspondente na fonte.",
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
     }
 
 

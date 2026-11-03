@@ -408,6 +408,7 @@ def calcular_metadados(
         "pct_dados_faltantes_por_variavel": pct_faltantes,
         "tamanho_parquet_kb": round(caminho_parquet.stat().st_size / 1024, 1) if caminho_parquet.exists() else None,
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         "transformacao_aplicada": (
             "extração seletiva (HTTP Range) do CSV da estação em cada zip anual, normalização de "
             "cabeçalhos (posicional, cobrindo os dois formatos de data/hora usados pelo INMET ao "

@@ -75,6 +75,7 @@ def salvar_area_estudo(geojson_bruto: dict, caminho_saida: Path, codigo_ibge: st
         "crs_original": "EPSG:4674",
         "crs_processado": CRS_PADRAO,
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         "transformacao_aplicada": "reprojeção para EPSG:31981 (SIRGAS 2000 / UTM 21S)",
     }
     caminho_metadados = caminho_saida.with_suffix(".json")

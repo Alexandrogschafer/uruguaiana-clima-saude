@@ -301,6 +301,7 @@ def montar_metadados(ano: int, codigo_ibge: str, nome_municipio: str, estatistic
         ),
         "pixel_area_m2_pos_reprojecao": estatisticas_classes["pixel_area_m2"],
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         "transformacao_aplicada": (
             f"recorte (mask+crop) pela área de estudo e reprojeção para {CRS_PADRAO} via "
             "recortar_raster(), a partir de leitura remota em streaming do raster nacional"
@@ -399,6 +400,7 @@ def gerar_tabela_serie_temporal(diretorio_raster: Path, caminho_saida_csv: Path)
         ),
         "script_gerador": "scripts/download/uso-solo_mapbiomas.py",
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         "transformacao_aplicada": (
             "concatenação das tabelas 'classes_presentes_area_estudo' de cada "
             "uso-solo_mapbiomas_<ano>_30m.json disponível em data/raw/raster/, ordenada por ano "

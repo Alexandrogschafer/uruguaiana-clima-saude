@@ -150,6 +150,7 @@ def salvar_malha_viaria_pontes(nos, vias, n_bruto, caminho_base: Path, area_estu
         "crs_original": CRS_OSM,
         "crs_processado": CRS_PADRAO,
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         "o_que_mudou": ("arquivo NOVO, à parte da malha original (malha-viaria_osm_atual_vetorial.gpkg, intacta): "
                         "na original a simplificação fundia a ponte com as ruas de chegada; aqui ponte/túnel/layer "
                         "não são fundidos, todas as componentes desconectadas são mantidas e os nós são gravados; "
@@ -214,6 +215,7 @@ def salvar_malha_viaria(gdf_vias: gpd.GeoDataFrame, caminho_base: Path, area_est
         "crs_original": CRS_OSM,
         "crs_processado": CRS_PADRAO,
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         "transformacao_aplicada": (
             f"download via osmnx.graph_from_polygon (network_type='drive'), conversão grafo->vetor "
             f"(graph_to_gdfs), reprojeção para {CRS_PADRAO} e recorte pela área de estudo do projeto"
@@ -253,6 +255,7 @@ def salvar_estabelecimentos_saude(gdf: gpd.GeoDataFrame, caminho_base: Path, are
         "crs_original": CRS_OSM,
         "crs_processado": CRS_PADRAO,
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         "transformacao_aplicada": (
             f"download via osmnx.features_from_polygon (tags={TAGS_SAUDE}), reprojeção para "
             f"{CRS_PADRAO} e recorte pela área de estudo do projeto"

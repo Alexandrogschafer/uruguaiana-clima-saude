@@ -68,7 +68,7 @@ def baixar(python_ext: str | None) -> None:
     logger.info("Overture %s: baixando buildings (bbox %.4f %.4f %.4f %.4f)", VERSAO, w, s, e, n)
     subprocess.run([python_ext, "-c", SQL_OVERTURE, VERSAO, str(w), str(s), str(e), str(n), str(PASTA_OVERTURE),
                     json.dumps({"buildings": ["buildings", "building"]})], check=True, capture_output=True, text=True)
-    meta = {"arquivo": PARQUET.name, "data_processamento": datetime.now(timezone.utc).isoformat(),
+    meta = {"arquivo": PARQUET.name, "data_processamento": datetime.now(timezone.utc).isoformat(), "data_acesso": datetime.now(timezone.utc).isoformat(),
             "script": "scripts/download/edificacoes_overture.py", "fonte": "Overture Maps Foundation — tema buildings, tipo building",
             "versao": VERSAO, "url": f"s3://overturemaps-us-west-2/release/{VERSAO}/theme=buildings/type=building/",
             "licenca": "ODbL 1.0 (fontes OSM, Microsoft, Google — ver campo sources)", "bbox": [round(v, 5) for v in (w, s, e, n)],
@@ -173,7 +173,7 @@ def processar(saida_tab: Path, codigo: str) -> dict:
            "area_km2": round(b["area_m2"].sum() / 1e6, 3), "rural_com_alerta": int(b.loc[rur, "alerta"].notna().sum()),
            "rural_n": int(rur.sum()), "rural_pct_com_alerta": round(100 * b.loc[rur, "alerta"].notna().mean(), 1),
            "alertas_rural": alr.to_dict(), "fora_dos_bairros": int((b["bairro"] == "fora").sum()), "osm_x_overture": comp}
-    meta = {"arquivo": SAIDA.name, "data_processamento": datetime.now(timezone.utc).isoformat(),
+    meta = {"arquivo": SAIDA.name, "data_processamento": datetime.now(timezone.utc).isoformat(), "data_acesso": datetime.now(timezone.utc).isoformat(),
             "script": "scripts/download/edificacoes_overture.py", "codigo_ibge": codigo,
             "fonte": "Overture Maps Foundation — tema buildings (tipo building)", "versao": VERSAO,
             "url": f"s3://overturemaps-us-west-2/release/{VERSAO}/theme=buildings/type=building/",

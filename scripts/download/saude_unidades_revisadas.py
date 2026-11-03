@@ -144,6 +144,7 @@ def main() -> None:
         "nota_telefone": "telefone institucional mantido só neste arquivo completo interno (fora do git)",
         "crs": "EPSG:4326 (como na origem)",
         "data_processamento": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "data_acesso": datetime.now(timezone.utc).isoformat(timespec="seconds"),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         "script": "scripts/download/saude_unidades_revisadas.py",
         "tamanho_kb": round(SAIDA_RAW.stat().st_size / 1024, 1),
     }
@@ -211,6 +212,7 @@ def main() -> None:
         "zona_bairro": "malha de setores 2022 (dinâmica populacional): 'urbana da sede' = setor urbano do distrito-sede; bairro = atributo do setor",
         "nota_populacao": NOTA_POP, "conferencias": conf,
         "data_processamento": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "data_acesso": datetime.now(timezone.utc).isoformat(timespec="seconds"),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         "script": "scripts/download/saude_unidades_revisadas.py",
     }
     SAIDA_PROC.with_suffix(".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2, default=str), encoding="utf-8")

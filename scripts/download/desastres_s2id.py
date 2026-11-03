@@ -247,6 +247,7 @@ def main() -> None:
         "sub_periodos_totais": len(tarefas),
         "sub_periodos_baixados_com_sucesso": completos,
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
     }
     caminho_raw.with_suffix(".json").write_text(json.dumps(metadados_raw, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
 
@@ -274,6 +275,7 @@ def main() -> None:
         },
         "sub_periodos_baixados_com_sucesso": f"{completos}/{len(tarefas)}",
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
     }
     caminho_proc.with_suffix(".json").write_text(json.dumps(metadados_proc, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
     logger.info("Concluído.")

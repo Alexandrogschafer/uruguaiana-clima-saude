@@ -146,6 +146,7 @@ def salvar_saida(gdf: gpd.GeoDataFrame, caminho_base: Path, camadas: list[dict])
         "crs_original": CRS_ORIGEM,
         "crs_processado": CRS_PADRAO,
         "data_processamento": datetime.now(timezone.utc).isoformat(),
+        "data_acesso": datetime.now(timezone.utc).isoformat(),  # data da coleta (rodada 121: bruto_mais_recente decide por ela)
         "transformacao_aplicada": (
             "concatenação das 4 camadas de cota, geometria forçada para 2D, "
             f"reprojeção para {CRS_PADRAO} (SIRGAS 2000 / UTM 21S)"
