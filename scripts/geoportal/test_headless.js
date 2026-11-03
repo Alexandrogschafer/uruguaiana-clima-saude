@@ -80,6 +80,11 @@ async function main() {
 
   const checks = {
     tituloOk: (await page.title()) === TITULO_MAPA,
+    // rodada A4: nenhum "geoportal" no texto visível, nas descrições nem nos aria-label/title (caminhos e URLs não contam)
+    semGeoportalVisivel: await page.evaluate(() => [document.title, document.body.innerText,
+      ...[...document.querySelectorAll('meta[name="description"], meta[property^="og:"]')].map((m) => m.getAttribute("content")),
+      ...[...document.querySelectorAll("[aria-label], [title]")].flatMap((e) => [e.getAttribute("aria-label"), e.getAttribute("title")])]
+      .filter(Boolean).every((s) => !/geoportal/i.test(s.split(/\s+/).filter((w) => !/[/\\]|\.(geo)?json\b/i.test(w)).join(" ")))),
     mapaLeafletPresente: await page.evaluate(() => {
       const el = document.getElementById("mapa");
       return !!(el && el.classList.contains("leaflet-container"));

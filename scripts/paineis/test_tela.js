@@ -16,7 +16,10 @@
 //   - identidade (rodada A1): Plus Jakarta Sans local carregada, nenhuma requisição a
 //     serviço externo de fontes, marca em texto levando ao mapa, cabeçalho numa linha a
 //     1280 px, "Atualizado em" na linha da tela e no rodapé, realização em texto e
-//     nenhum texto herdado no masthead.
+//     nenhum texto herdado no masthead;
+//   - nome do sistema (rodada A4): <title> no padrão de config/identidade.json
+//     (nome_sistema.titulos) e nenhum "geoportal" no <title>, no texto visível, nas
+//     descrições (meta, og:) e nos aria-label/title — caminhos e URLs não contam.
 // Registra a altura do documento a 390 px. Screenshots vão para uma pasta
 // temporária fora do repositório (ou --saida, que não pode ficar dentro dele).
 
@@ -46,6 +49,21 @@ const trNaFrase = (r, lim) => {
 // telemetria do rio na tela de clima: últimos 365 dias corridos até o último dia; provisório = depois de fim_serie_ana
 const rioJanela = (pr) => { const fim = diaNum(pr.meta.dados_ate); return pr.dados.filter((r) => diaNum(r.dia) > fim - 365); };
 const rioProvisorio = (pr, r) => pr.meta.provisorio === true && (!pr.meta.fim_serie_ana || r.dia > pr.meta.fim_serie_ana);
+// nome do sistema (rodada A4): <title> esperado de cada tela, montado de config/identidade.json; <Tela> é o
+// nome da dimensão ou do cruzamento em config/textos_inicio.json
+const NOME_SISTEMA = JSON.parse(fs.readFileSync(path.join(RAIZ, "config", "identidade.json"), "utf8")).nome_sistema;
+const ID_TEXTOS = { "cheia-saude": "cheia" };
+function tituloEsperado(pagina) {
+  const tpl = NOME_SISTEMA.titulos, nome = NOME_SISTEMA.nome;
+  if (pagina === "index.html") return tpl.inicio.replace("{nome}", nome);
+  if (pagina === "dashboards/catalogo.html") return tpl.catalogo.replace("{nome}", nome);
+  const tx = JSON.parse(fs.readFileSync(path.join(RAIZ, "config", "textos_inicio.json"), "utf8"));
+  const id = path.basename(pagina, ".html"), d = [...tx.dimensoes, ...tx.cruzamentos].find((x) => x.id === (ID_TEXTOS[id] || id));
+  return d ? tpl.tela.replace("{tela}", d.nome).replace("{nome}", nome) : null;
+}
+// "geoportal" fora de caminho, arquivo e URL (tokens com / ou terminados em extensão de arquivo não contam)
+const semCaminhos = (s) => String(s || "").split(/\s+/).filter((w) => !/[/\\]|\.(geo)?json\b|\.html?\b|\.png\b|\.csv\b|\.js\b/i.test(w)).join(" ");
+const temGeoportal = (s) => /geoportal/i.test(semCaminhos(s));
 const dataBR = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ""); return m ? `${m[3]}/${m[2]}/${m[1]}` : iso || ""; };
 
 // ------------------------------------------------------------------ telas
@@ -495,6 +513,10 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
       folgas, finais, tabelas,
       rodape: document.getElementById("rodape-comum") ? document.getElementById("rodape-comum").innerText : "",
       textoTela: document.body.innerText,
+      titulo: document.title,
+      textosNome: [document.title, document.body.innerText,
+        ...[...document.querySelectorAll('meta[name="description"], meta[property^="og:"], meta[name^="twitter:"]')].map((m) => m.getAttribute("content")),
+        ...[...document.querySelectorAll("[aria-label], [title]")].flatMap((e) => [e.getAttribute("aria-label"), e.getAttribute("title")])].filter(Boolean),
       cabecalho: !!document.querySelector("#cabecalho-comum nav"),
       errosBloco: document.querySelectorAll(".erro-bloco").length,
       identidade: (() => {
@@ -526,6 +548,11 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
     if (!id.menuLinks.every((h) => !/sintese\.html|\/index\.html\?|^\.\.\/index\.html\?/.test(h))) falhas.push(`link do menu para endereço antigo: ${JSON.stringify(id.menuLinks)}`);
     if (!data.test(id.linhaTela)) falhas.push(`"Atualizado em" fora da linha da tela: "${id.linhaTela}"`);
     if (id.herdado) falhas.push(`texto herdado no masthead: "${id.herdado}"`);
+    // nome do sistema (rodada A4)
+    const tEsp = tituloEsperado(def.pagina);
+    if (!tEsp || r.titulo !== tEsp) falhas.push(`<title> "${r.titulo}" ≠ "${tEsp}"`);
+    const comGeo = r.textosNome.filter(temGeoportal);
+    if (comGeo.length) falhas.push(`"geoportal" em texto visível ou descrição: ${JSON.stringify(comGeo.map((s) => s.slice(Math.max(0, s.search(/geoportal/i) - 40), s.search(/geoportal/i) + 40)))}`);
     // grafia única do programa (Parte 0 da rodada A2) e eyebrow terminado no nome da tela
     const eyebrowOk = def.eyebrow ? id.eyebrow === def.eyebrow() : /^ClimaPampa · PET-Saúde: Clima · Uruguaiana \/ RS · \S/.test(id.eyebrow);
     if (!eyebrowOk) falhas.push(`eyebrow fora do padrão: "${id.eyebrow}"`);

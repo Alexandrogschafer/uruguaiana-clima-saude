@@ -59,7 +59,13 @@ Regras:
     u) catálogo (rodada A2): catalogo_dados.json sem a coluna observacao, sem url, caminho de dado bruto nem
        script; toda linha ligada a produto ou camada publicados; downloads só para arquivos que existem;
     v) início (rodada A2): inicio_resumo.json sem nenhum produto do rio; index.html sem número na marcação
-       (fora os <script>); textos de config/textos_inicio.json sem número fora de "Eixo 3".
+       (fora os <script>); textos de config/textos_inicio.json sem número fora de "Eixo 3";
+    w) nome do sistema (rodada A4): "geoportal" proibido em texto visível, <title>, meta description/og:,
+       aria-label/title das páginas versionadas (index.html, mapa.html, dashboards/*.html), em strings de
+       js/ (fora comentários e console.*), nos textos de config/textos_inicio.json e do nome_sistema de
+       config/identidade.json e nos textos dos JSON de data/paineis/ e dos metadados de data/geoportal/;
+       permitido em caminhos, nomes de arquivo, URLs e código. O <title> do início, do mapa, das telas e do
+       catálogo segue nome_sistema.titulos; cabecalho.js repete nome e linha da marca de identidade.json.
 
 Uso:
     python scripts/paineis/test_regras_publicas.py
@@ -821,6 +827,101 @@ def regra_v() -> list[str]:
     return falhas
 
 
+# ------------------------------------------------------------------ nome do sistema (rodada A4)
+RE_GEOPORTAL = re.compile(r"geoportal", re.I)
+# token que é caminho, nome de arquivo ou URL: tem barra, ou termina em extensão de arquivo
+RE_TOKEN_CAMINHO = re.compile(r"[/\\]|\.(?:geo)?json\b|\.html?\b|\.png\b|\.csv\b|\.js\b|\.py\b", re.I)
+
+
+def tem_geoportal(texto: str) -> bool:
+    """"geoportal" fora de caminho, arquivo e URL."""
+    return bool(RE_GEOPORTAL.search(" ".join(w for w in str(texto).split() if not RE_TOKEN_CAMINHO.search(w))))
+
+
+def textos_html(html: str) -> list[str]:
+    """<title>, texto visível (sem script/style/comentário), meta description/og: e aria-label/title."""
+    out = re.findall(r"<title>(.*?)</title>", html, flags=re.S)
+    corpo = re.sub(r"<script\b.*?</script>|<style\b.*?</style>|<!--.*?-->", " ", html, flags=re.S | re.I)
+    out.append(re.sub(r"<[^>]+>", " ", corpo))
+    out += re.findall(r'<meta\s+(?:name="(?:description|twitter:[^"]*)"|property="og:[^"]*")\s+content="([^"]*)"', html)
+    out += re.findall(r'\s(?:aria-label|title)="([^"]*)"', html)
+    return out
+
+
+def strings_json(x) -> list[str]:
+    if isinstance(x, str):
+        return [x]
+    if isinstance(x, dict):
+        return [s for v in x.values() for s in strings_json(v)]
+    if isinstance(x, list):
+        return [s for v in x for s in strings_json(v)]
+    return []
+
+
+def regra_w() -> list[str]:
+    falhas = []
+    ident = json.loads((RAIZ / "config" / "identidade.json").read_text(encoding="utf-8"))
+    ns = ident.get("nome_sistema") or {}
+    nome, tpl = ns.get("nome"), ns.get("titulos") or {}
+    if not nome or not {"inicio", "mapa", "tela", "catalogo"} <= set(tpl):
+        return ["config/identidade.json: nome_sistema sem nome ou sem os padrões de <title>"]
+    linha = ident["marca_texto"]["linha_pequena"]
+    for s in [nome, ns.get("descritor", ""), ns.get("nome_mapa", ""), linha, *tpl.values()]:
+        if tem_geoportal(s):
+            falhas.append(f"config/identidade.json: \"geoportal\" em {s!r}")
+    tx = json.loads((RAIZ / "config" / "textos_inicio.json").read_text(encoding="utf-8"))
+    tx.pop("descricao", None)
+    falhas += [f"config/textos_inicio.json: \"geoportal\" em {s[:80]!r}" for s in strings_json(tx) if tem_geoportal(s)]
+    # <title> esperado de cada página
+    telas = {d["tela"]: d["nome"] for d in tx["dimensoes"] + tx["cruzamentos"]}
+    esperado = {"index.html": tpl["inicio"].replace("{nome}", nome),
+                "mapa.html": tpl["mapa"].replace("{nome_mapa}", ns.get("nome_mapa", "Mapa")).replace("{nome}", nome),
+                "dashboards/catalogo.html": tpl["catalogo"].replace("{nome}", nome)}
+    for caminho, n in telas.items():
+        if caminho.startswith("dashboards/"):
+            esperado[caminho] = tpl["tela"].replace("{tela}", n).replace("{nome}", nome)
+    for rel, tit in esperado.items():
+        html = (RAIZ / rel).read_text(encoding="utf-8")
+        obtido = re.findall(r"<title>(.*?)</title>", html, flags=re.S)
+        if obtido != [tit]:
+            falhas.append(f"{rel}: <title> {obtido} ≠ {tit!r}")
+    # texto visível das páginas versionadas
+    for arq in [RAIZ / "index.html", RAIZ / "mapa.html", *sorted((RAIZ / "dashboards").glob("*.html"))]:
+        for s in textos_html(arq.read_text(encoding="utf-8")):
+            if tem_geoportal(s):
+                i = RE_GEOPORTAL.search(s).start()
+                falhas.append(f"{arq.relative_to(RAIZ)}: \"geoportal\" em texto visível: {' '.join(s[max(0, i - 50):i + 30].split())!r}")
+    # strings de js/ (fora comentários e console.*): o que o código põe na tela
+    for arq in sorted((RAIZ / "js").rglob("*.js")):
+        cod = re.sub(r"/\*.*?\*/", " ", arq.read_text(encoding="utf-8"), flags=re.S)
+        for n, lin in enumerate(cod.splitlines(), 1):
+            lin = re.sub(r"^\s*//.*|\s//\s.*$", "", lin)
+            if "console." in lin:
+                continue
+            for s in re.findall(r"'([^']*)'|\"([^\"]*)\"|`([^`]*)`", lin):
+                s = "".join(s)
+                if tem_geoportal(s):
+                    falhas.append(f"{arq.relative_to(RAIZ)}: \"geoportal\" em string: {s[:80]!r}")
+    # cabeçalho comum: nome e linha da marca iguais aos de identidade.json
+    cab = (RAIZ / "js" / "paineis" / "cabecalho.js").read_text(encoding="utf-8")
+    for const, valor in [("NOME_SISTEMA", nome), ("LINHA_MARCA", linha)]:
+        if f"const {const} = '{valor}';" not in cab:
+            falhas.append(f"js/paineis/cabecalho.js: {const} difere de config/identidade.json ({valor!r})")
+    # metadados e produtos públicos
+    for arq in sorted(PASTA.rglob("*.json")) + sorted((RAIZ / "data" / "geoportal").rglob("*.json")):
+        if "_orfaos" in arq.parts:  # fora do git e da publicação (gerar_todos.py --limpar)
+            continue
+        try:
+            d = json.loads(arq.read_text(encoding="utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            continue
+        for s in strings_json(d):
+            if tem_geoportal(s):
+                falhas.append(f"{arq.relative_to(RAIZ)}: \"geoportal\" em texto: {s[:80]!r}")
+                break
+    return falhas
+
+
 def main() -> int:
     arqs = arquivos_alvo()
     prods = produtos()
@@ -847,6 +948,7 @@ def main() -> int:
         "t CSV derivados dos JSON publicados, sem coordenada, supressão mantida, sem número do evento": regra_t(prods),
         "u catálogo sem observacao, url, caminho bruto nem script; só linhas publicadas": regra_u(),
         "v início sem produto do rio e sem número na marcação": regra_v(),
+        "w nome do sistema: \"geoportal\" só em caminhos, URLs e código; <title> no padrão": regra_w(),
     }
     print(f"arquivos varridos: {len(arqs)}; produtos: {len(prods)}")
     ok = True
