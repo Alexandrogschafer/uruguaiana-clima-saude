@@ -6,7 +6,7 @@
    renderBarChart, que acusa erro no console quando o texto da dica não foi
    montado com dica(rotulo, fonte) de componentes.js.
    Rodada A6: legenda comum (montarLegenda) em todo gráfico com 2 ou mais
-   séries. */
+   séries e rótulos finais sem sobreposição (desenharRotulosFinais). */
 
 // O texto da dica vem do nome da série; ele precisa ter sido montado com dica().
 function exigirFonte(nomes, grafico){
@@ -83,13 +83,74 @@ function montarLegenda(container, itens){
   return div;
 }
 
+// ------------------------------------------------------------------ rótulos finais sem sobreposição (rodada A6)
+// rotulos: [{xPonto, yPonto, texto, cor, aoLado}]. Cada rótulo fica no lugar de sempre (acima e à esquerda do
+// último ponto, ou à direita com aoLado); dois rótulos a menos de 14 px na vertical são afastados, com uma
+// linha-guia curta até o ponto; nenhum sai da área do gráfico (topo..base). O fundo é da cor do cartão,
+// para o rótulo não cruzar a linha.
+const DIST_ROTULOS = 14;
+function desenharRotulosFinais(svg, rotulos, topo, base){
+  if(!rotulos.length) return;
+  const largura = +svg.getAttribute('viewBox').split(' ')[2];
+  // altura real da caixa (texto e fundo): a distância mínima é a maior entre 14 px e essa altura
+  const med = el('text', {x: 0, y: -100, class: 'end-label'}, svg);
+  med.textContent = rotulos[0].texto;
+  const dist = Math.max(DIST_ROTULOS, Math.ceil(med.getBBox().height) + 3);
+  med.remove();
+  const desejado = r => r.aoLado ? r.yPonto + 4 : r.yPonto - 9;
+  const lista = rotulos.map((r, i) => ({...r, i, y: desejado(r)})).sort((a, b) => a.y - b.y || a.i - b.i);
+  const ymin = topo + 9, ymax = base - 3;
+  lista.forEach((r, i) => { r.y = Math.max(ymin, r.y); if(i > 0) r.y = Math.max(r.y, lista[i-1].y + dist); });
+  // passou da base: empurra de baixo para cima
+  for(let i = lista.length - 1; i >= 0; i--){
+    const lim = i === lista.length - 1 ? ymax : lista[i+1].y - dist;
+    if(lista[i].y > lim) lista[i].y = lim;
+  }
+  const fundo = cssVar('--surface-card');
+  // desenho na ordem das séries (a posição já foi resolvida pela altura)
+  lista.slice().sort((a, b) => a.i - b.i).forEach(r => {
+    let x = r.aoLado ? r.xPonto + 8 : r.xPonto - 2;
+    const g = el('g', {class: 'rotulo-final'}, svg);
+    const caixa = el('rect', {fill: fundo, opacity: 0.92, rx: 2}, g);
+    const t = el('text', {x, y: r.y, class: 'end-label', fill: r.cor, 'text-anchor': r.aoLado ? 'start' : 'end'}, g);
+    t.textContent = r.texto;
+    let b = t.getBBox();
+    // nunca fora do gráfico: rótulo que passaria da borda volta para dentro
+    const dx = b.x + b.width + 2 > largura ? largura - 2 - (b.x + b.width) : (b.x - 2 < 0 ? 2 - b.x : 0);
+    if(dx){ x += dx; t.setAttribute('x', x); b = t.getBBox(); }
+    caixa.setAttribute('x', b.x - 2); caixa.setAttribute('y', b.y - 1);
+    caixa.setAttribute('width', b.width + 4); caixa.setAttribute('height', b.height + 2);
+    if(Math.abs(r.y - desejado(r)) > 2){
+      // linha-guia curta do ponto até a borda do rótulo (por baixo do rótulo)
+      const xg = r.aoLado ? b.x - 1 : b.x + b.width + 1;
+      svg.insertBefore(el('line', {x1: r.xPonto, y1: r.yPonto, x2: xg, y2: b.y + b.height / 2, stroke: r.cor, 'stroke-width': 1, opacity: 0.7, class: 'linha-guia'}), g);
+    }
+  });
+}
+
+// Com 2 ou mais rótulos finais, eles vão para a margem direita (à direita do último ponto, na cor da série):
+// ali nenhuma linha passa e o fundo do rótulo não cobre marcador nem fim de linha. A margem é a do rótulo
+// mais largo; devolve a margem direita a usar.
+function margemRotulosFinais(container, textos, padR){
+  if(textos.length < 2) return padR;
+  const tmp = el('svg', {width: 10, height: 10, style: 'position:absolute;visibility:hidden'}, container);
+  const t = el('text', {x: 0, y: 10, class: 'end-label'}, tmp);
+  const larg = Math.max(...textos.map(s => { t.textContent = s; return t.getComputedTextLength() || s.length * 7; }));
+  tmp.remove();
+  return Math.max(padR, Math.ceil(larg) + 14);
+}
+
 function renderLineChart(containerId, tooltipId, opts){
   exigirFonte(opts.series.map(s => s.name), containerId);
   const container = document.getElementById(containerId);
   const tooltip = document.getElementById(tooltipId);
   const width = container.clientWidth || 560;
   const height = opts.height || 200;
-  const padL = opts.padL || 46, padR = opts.padR || 14, padT = 14, padB = 24;
+  const fmtY = v => opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+  const comRotulo = opts.series.filter(s => s.emphasis !== false);
+  const ladoMulti = !opts.rotuloFinalAoLado && comRotulo.length >= 2;
+  const padL = opts.padL || 46, padT = 14, padB = 24;
+  const padR = ladoMulti ? margemRotulosFinais(container, comRotulo.map(s => fmtY(s.data[s.data.length - 1])), opts.padR || 14) : (opts.padR || 14);
   const innerW = width - padL - padR;
   const innerH = height - padT - padB;
   const n = opts.labels.length;
@@ -141,7 +202,7 @@ function renderLineChart(containerId, tooltipId, opts){
   const hoverLine = el('line', {x1:padL, x2:padL, y1:padT, y2:padT+innerH, class:'crosshair'}, svg);
   hoverLine.style.opacity = 0;
 
-  const nS = opts.series.length;
+  const nS = opts.series.length, rotulos = [];
   opts.series.forEach((s, iS) => {
     // Com ano final parcial, o último trecho é tracejado e o marcador é vazado.
     const lastI = s.data.length - 1;
@@ -156,12 +217,12 @@ function renderLineChart(containerId, tooltipId, opts){
       el('circle', {cx:xAt(lastI), cy:yAt(s.data[lastI]), r:4, fill:s.color, stroke:cssVar('--surface-card'), 'stroke-width':2}, svg);
     }
     if(s.emphasis !== false){
-      const t = opts.rotuloFinalAoLado
-        ? el('text', {x:xAt(lastI)+8, y:yAt(s.data[lastI])+4, class:'end-label', fill:cssVar('--ink-secondary'), 'text-anchor':'start'}, svg)
-        : el('text', {x:xAt(lastI)-2, y:yAt(s.data[lastI]) - 9, class:'end-label', fill:s.color, 'text-anchor':'end'}, svg);
-      t.textContent = opts.yFormat ? opts.yFormat(s.data[lastI]) : fmtInt(s.data[lastI]);
+      rotulos.push({xPonto: xAt(lastI), yPonto: yAt(s.data[lastI]), aoLado: !!opts.rotuloFinalAoLado || ladoMulti,
+                    cor: opts.rotuloFinalAoLado ? cssVar('--ink-secondary') : s.color,
+                    texto: opts.yFormat ? opts.yFormat(s.data[lastI]) : fmtInt(s.data[lastI])});
     }
   });
+  desenharRotulosFinais(svg, rotulos, padT, padT + innerH);
 
   const hit = el('rect', {x:padL, y:0, width:innerW, height, fill:'transparent'}, svg);
   function showAt(clientX){

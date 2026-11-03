@@ -207,7 +207,10 @@ function renderTimeLineChart(containerId, tooltipId, opts){
   const tooltip = document.getElementById(tooltipId);
   const width = container.clientWidth || 300;
   const height = opts.height || 190;
-  const padL = opts.padL || 44, padR = opts.padR || 14, padT = 14, padB = 24;
+  const fmtY = v => opts.yFormat ? opts.yFormat(v) : fmtInt(v);
+  const ladoMulti = !opts.rotuloFinalAoLado && opts.series.length >= 2;
+  const padL = opts.padL || 44, padT = 14, padB = 24;
+  const padR = ladoMulti ? margemRotulosFinais(container, opts.series.map(s => fmtY(s.points[s.points.length - 1].y)), opts.padR || 14) : (opts.padR || 14);
   const innerW = width - padL - padR;
   const innerH = height - padT - padB;
 
@@ -263,7 +266,7 @@ function renderTimeLineChart(containerId, tooltipId, opts){
   const hoverLine = el('line', {x1:padL, x2:padL, y1:padT, y2:padT+innerH, class:'crosshair'}, svg);
   hoverLine.style.opacity = 0;
 
-  const nS = opts.series.length;
+  const nS = opts.series.length, rotulos = [];
   opts.series.forEach((s, iS) => {
     const pts = s.points;
     const d = pts.map((p,i) => (i===0?'M':'L') + xAt(p.x).toFixed(1) + ' ' + yAt(p.y).toFixed(1)).join(' ');
@@ -274,11 +277,10 @@ function renderTimeLineChart(containerId, tooltipId, opts){
     });
     const last = pts[pts.length-1];
     // com rotuloFinalAoLado, o rótulo vai à direita do último ponto (na margem padR), sem cobrir a linha
-    const t = opts.rotuloFinalAoLado
-      ? el('text', {x:xAt(last.x)+8, y:yAt(last.y)+4, class:'end-label', fill:cssVar('--ink-secondary'), 'text-anchor':'start'}, svg)
-      : el('text', {x:xAt(last.x)-2, y:yAt(last.y) - 11, class:'end-label', fill:s.color, 'text-anchor':'end'}, svg);
-    t.textContent = opts.yFormat ? opts.yFormat(last.y) : fmtInt(last.y);
+    rotulos.push({xPonto: xAt(last.x), yPonto: yAt(last.y), aoLado: !!opts.rotuloFinalAoLado || ladoMulti,
+                  cor: opts.rotuloFinalAoLado ? cssVar('--ink-secondary') : s.color, texto: opts.yFormat ? opts.yFormat(last.y) : fmtInt(last.y)});
   });
+  desenharRotulosFinais(svg, rotulos, padT, padT + innerH);
   montarLegenda(container, opts.series.map((s, i) => ({rotulo: s.rotulo, cor: s.color, traco: s.dashed ? '4 3' : tracoDaSerie(i, nS)})));
 
   // área de toque única; o ano mais próximo do ponteiro abre a dica
