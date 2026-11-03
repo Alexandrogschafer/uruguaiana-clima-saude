@@ -38,7 +38,15 @@ Regras:
        das edições fixas de comum.EDICOES_FIXAS; "substitui" só com id antigo que não
        está publicado e sem repetição;
     q) nenhum JSON órfão em data/paineis/: todo produto da pasta é declarado em PRODUTOS
-       por algum gerador e está no manifesto, e todo item do manifesto tem o arquivo.
+       por algum gerador e está no manifesto, e todo item do manifesto tem o arquivo;
+    r) marcas (rodada A1): enquanto alguma marca de config/identidade.json estiver com
+       marcas_liberadas false, nenhum arquivo de imagem de logo entra no repositório
+       (png, svg, jpg, gif, webp versionados com nome de logo, ou com o termo no texto
+       do svg ou nos metadados de texto do png/jpg);
+    s) fontes e identidade (rodada A1): nenhum @import nem link a fonts.googleapis.com /
+       fonts.gstatic.com em css, js ou html versionados; os woff2 de config/identidade.json
+       existem com o sha256 registrado, junto do OFL.txt; os tokens de cor de
+       config/identidade.json batem com os 3 blocos de css/paineis.css.
 
 Uso:
     python scripts/paineis/test_regras_publicas.py
@@ -542,6 +550,125 @@ def regra_o() -> list[str]:
     return falhas
 
 
+# ------------------------------------------------------------------ identidade (rodada A1)
+IDENTIDADE = RAIZ / "config" / "identidade.json"
+EXT_IMAGEM = {".png", ".svg", ".jpg", ".jpeg", ".gif", ".webp"}
+# pastas que o teste nunca lista nem abre (dados de campo e auditoria fora do escopo público)
+FORA_DA_VARREDURA = [":!data/campo", ":!data/auditoria_cnes"]
+# termos de logo: genéricos (valem enquanto qualquer marca estiver bloqueada) e por marca
+TERMOS_LOGO_GERAIS = [r"logo", r"logotipo", r"bras[aã]o", r"emblema"]
+TERMOS_LOGO_MARCA = {
+    "pet_saude_clima": [r"pet[-_ ]?sa[uú]de", r"climapampa"],
+    "unipampa": [r"unipampa"],
+    "ministerio_saude_sus": [r"minist[eé]rio", r"\bsus\b"],
+    "secretaria_municipal": [r"secretaria", r"\bsms\b", r"prefeitura"],
+}
+
+
+def arquivos_versionados(*padroes: str) -> list[Path]:
+    """Arquivos no índice do git (versionados ou já adicionados), sem as pastas fora da varredura."""
+    import subprocess
+    saida = subprocess.run(["git", "-C", str(RAIZ), "ls-files", "-z", "--cached", "--", *padroes, *FORA_DA_VARREDURA],
+                           capture_output=True, check=True).stdout.decode("utf-8")
+    return [RAIZ / x for x in saida.split("\0") if x and (RAIZ / x).is_file()]
+
+
+def _texto_metadados_imagem(f: Path) -> str:
+    """Texto que uma imagem carrega além dos pixels: o svg inteiro; no png, os blocos tEXt/iTXt/zTXt;
+    no jpg/gif/webp, os primeiros 64 kB (cabeçalho, EXIF, XMP). Não procura nos pixels comprimidos."""
+    import struct
+    import zlib
+    b = f.read_bytes()
+    suf = f.suffix.lower()
+    if suf == ".svg":
+        return b.decode("utf-8", errors="ignore")
+    if suf == ".png" and b[:8] == b"\x89PNG\r\n\x1a\n":
+        partes, i = [], 8
+        while i + 8 <= len(b):
+            n, tipo = struct.unpack(">I4s", b[i:i + 8])
+            dado = b[i + 8:i + 8 + n]
+            if tipo in (b"tEXt", b"iTXt"):
+                partes.append(dado.decode("latin-1", errors="ignore"))
+            elif tipo == b"zTXt":
+                chave, _, resto = dado.partition(b"\0")
+                try:
+                    partes.append(chave.decode("latin-1") + " " + zlib.decompress(resto[1:]).decode("latin-1", errors="ignore"))
+                except zlib.error:
+                    partes.append(chave.decode("latin-1"))
+            if tipo == b"IEND":
+                break
+            i += 12 + n
+        return "\n".join(partes)
+    return b[:65536].decode("latin-1", errors="ignore")
+
+
+def regra_r() -> list[str]:
+    """Nenhum arquivo de imagem de logo enquanto alguma marca estiver bloqueada."""
+    if not IDENTIDADE.exists():
+        return ["config/identidade.json ausente"]
+    liberadas = json.loads(IDENTIDADE.read_text(encoding="utf-8")).get("marcas_liberadas", {})
+    if set(liberadas) != set(TERMOS_LOGO_MARCA):
+        return [f"marcas_liberadas com chaves inesperadas: {sorted(liberadas)}"]
+    bloqueadas = [m for m, v in liberadas.items() if v is not True]
+    if not bloqueadas:
+        return []
+    termos = TERMOS_LOGO_GERAIS + [t for m in bloqueadas for t in TERMOS_LOGO_MARCA[m]]
+    rx = re.compile("|".join(termos), re.IGNORECASE)
+    falhas = []
+    for f in arquivos_versionados(*[f"*{e}" for e in EXT_IMAGEM], *[f"*{e.upper()}" for e in EXT_IMAGEM]):
+        rel = f.relative_to(RAIZ).as_posix()
+        if rx.search(f.name):
+            falhas.append(f"{rel}: nome de logo (marcas bloqueadas: {', '.join(bloqueadas)})")
+            continue
+        m = rx.search(_texto_metadados_imagem(f))
+        if m:
+            falhas.append(f"{rel}: termo de logo no conteúdo (\"{m.group(0)}\")")
+    return falhas
+
+
+def _tokens_bloco(css: str, seletor_re: str) -> dict[str, str]:
+    m = re.search(seletor_re + r"\s*\{([^{}]*)\}", css)
+    return {k: v.strip().lower() for k, v in re.findall(r"(--[\w-]+)\s*:\s*([^;]+);", m.group(1))} if m else {}
+
+
+def regra_s() -> list[str]:
+    """Nenhuma fonte de serviço externo; arquivos da fonte íntegros; tokens da identidade iguais aos do CSS."""
+    import hashlib
+    falhas = []
+    rx_externo = re.compile(r"fonts\.(googleapis|gstatic)\.com", re.IGNORECASE)
+    for f in arquivos_versionados("*.css", "*.js", "*.html", "*.htm", ":!node_modules"):
+        if rx_externo.search(f.read_text(encoding="utf-8", errors="ignore")):
+            falhas.append(f"{f.relative_to(RAIZ).as_posix()}: chamada a serviço externo de fontes")
+    if not IDENTIDADE.exists():
+        return falhas + ["config/identidade.json ausente"]
+    ident = json.loads(IDENTIDADE.read_text(encoding="utf-8"))
+    fonte = ident.get("fonte", {})
+    for a in fonte.get("arquivos", []):
+        p = RAIZ / a["arquivo"]
+        if not p.is_file():
+            falhas.append(f"{a['arquivo']}: arquivo da fonte ausente")
+        elif hashlib.sha256(p.read_bytes()).hexdigest() != a["sha256"]:
+            falhas.append(f"{a['arquivo']}: sha256 diferente do registrado em config/identidade.json")
+    lic = RAIZ / fonte.get("arquivo_licenca", "")
+    if not lic.is_file() or "Open Font License" not in lic.read_text(encoding="utf-8", errors="ignore"):
+        falhas.append("licença OFL da fonte ausente")
+    css = (RAIZ / "css" / "paineis.css").read_text(encoding="utf-8")
+    blocos = {
+        "claro (:root)": ("claro", _tokens_bloco(css, r"(?m)^:root")),
+        "escuro (prefers-color-scheme)": ("escuro", _tokens_bloco(css, r':root:not\(\[data-theme="light"\]\)')),
+        "escuro ([data-theme=\"dark\"])": ("escuro", _tokens_bloco(css, r':root\[data-theme="dark"\]')),
+    }
+    for nome, (modo, tokens) in blocos.items():
+        if not tokens:
+            falhas.append(f"css/paineis.css: bloco {nome} não encontrado")
+            continue
+        for k, v in ident["cores"][modo].items():
+            obtido = tokens.get(k, "").split("/*")[0].strip()
+            if obtido != v.lower():
+                falhas.append(f"css/paineis.css bloco {nome}: {k} = {obtido or 'ausente'} (identidade: {v})")
+    return falhas
+
+
 def main() -> int:
     arqs = arquivos_alvo()
     prods = produtos()
@@ -563,6 +690,8 @@ def main() -> int:
         "o links dos painéis ao portal com chaves de camada que existem": regra_o(),
         "p id de série sem período, fora das edições listadas": regra_p(prods),
         "q nenhum JSON órfão em data/paineis/": regra_q(prods),
+        "r nenhuma imagem de logo enquanto as marcas não forem liberadas": regra_r(),
+        "s fontes sem serviço externo; fonte íntegra; tokens da identidade iguais aos do CSS": regra_s(),
     }
     print(f"arquivos varridos: {len(arqs)}; produtos: {len(prods)}")
     ok = True

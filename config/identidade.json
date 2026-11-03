@@ -1,0 +1,68 @@
+{
+  "descricao": "Identidade visual das telas dos painéis (rodada A1): marca em texto, tokens de cor, fonte e marcas institucionais liberadas. Os tokens valem para css/paineis.css (blocos :root, prefers-color-scheme e [data-theme=\"dark\"]); test_regras_publicas.py confere que batem. O portal (index.html, css/style.css) ainda não usa esta identidade.",
+  "marca_texto": {
+    "texto": "ClimaPampa",
+    "partes": [
+      {"texto": "Clima", "token": "--marca-1"},
+      {"texto": "Pampa", "token": "--marca-2"}
+    ],
+    "fonte": "Plus Jakarta Sans",
+    "peso": 800,
+    "linha_pequena": "Geoportal · Uruguaiana/RS",
+    "destino": "index.html",
+    "observacao": "Só a marca em texto e os nomes por extenso; nenhum logo até haver autorização (ver marcas_liberadas)."
+  },
+  "realizacao_texto": "ClimaPampa — PET-Saúde: Clima · Unipampa e Secretaria Municipal de Saúde de Uruguaiana",
+  "cores": {
+    "claro": {
+      "--page": "#F7F6F3",
+      "--ink": "#1F2B38",
+      "--ink-secondary": "#54616F",
+      "--ink-muted": "#5F6B78",
+      "--accent": "#1B6E8A",
+      "--accent-ink": "#FFFFFF",
+      "--accent-soft": "#E3F0F5",
+      "--marca-1": "#1B6E8A",
+      "--marca-2": "#E0565D",
+      "--rotulo": "#B83A42"
+    },
+    "escuro": {
+      "--page": "#0b1414",
+      "--ink": "#eef1ec",
+      "--ink-secondary": "#9db3af",
+      "--ink-muted": "#6d8985",
+      "--accent": "#5FB7D4",
+      "--accent-ink": "#0b1414",
+      "--accent-soft": "#13303A",
+      "--marca-1": "#5FB7D4",
+      "--marca-2": "#F07F84",
+      "--rotulo": "#F07F84"
+    },
+    "nao_mudam": ["--series-*", "--status-*", "--grid", "--baseline", "--tooltip-*", "cores de manchas e de gráficos"],
+    "usos": {
+      "--accent": "masthead (contorno), links, selos, avisos, setas e botão ativo; nunca dentro de gráfico",
+      "--marca-2": "só no \"Pampa\" da marca em texto (texto grande, 800)",
+      "--rotulo": "etiquetas (eyebrow do masthead)"
+    }
+  },
+  "fonte": {
+    "nome": "Plus Jakarta Sans",
+    "licenca": "SIL Open Font License 1.1",
+    "copyright": "Copyright 2020 The Plus Jakarta Sans Project Authors (https://github.com/tokotype/PlusJakartaSans)",
+    "pasta": "fonts/plus-jakarta-sans/",
+    "arquivo_licenca": "fonts/plus-jakarta-sans/OFL.txt",
+    "pesos": "400 a 800 (arquivo variável, eixo wght)",
+    "arquivos": [
+      {"arquivo": "fonts/plus-jakarta-sans/plus-jakarta-sans_latin.woff2", "subconjunto": "latin", "sha256": "153fc85b70298beeb1d61a5f723331649e7f23bb77302a66e61cb3e2fbdb5e79"},
+      {"arquivo": "fonts/plus-jakarta-sans/plus-jakarta-sans_latin-ext.woff2", "subconjunto": "latin-ext", "sha256": "38e3b8fd8045048eb311d90170a4429ed2c8f405852dc3d91b5af8452758703f"}
+    ],
+    "reserva": ["Segoe UI Variable", "Segoe UI", "system-ui", "sans-serif"],
+    "numeros_e_eixos": "monoespaçados (sem mudança)"
+  },
+  "marcas_liberadas": {
+    "pet_saude_clima": false,
+    "unipampa": false,
+    "ministerio_saude_sus": false,
+    "secretaria_municipal": false
+  }
+}
