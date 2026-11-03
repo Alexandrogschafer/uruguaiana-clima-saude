@@ -12,7 +12,11 @@
 //     fonte iguais ao JSON, dica dentro do cartão; toque fora fecha;
 //   - cores escuras aplicadas no modo escuro; rodapé com as fontes dos produtos;
 //   - produto que falha ao carregar vira erro no bloco, sem derrubar a página;
-//   - o endereço antigo redireciona mantendo os parâmetros.
+//   - o endereço antigo redireciona mantendo os parâmetros;
+//   - identidade (rodada A1): Plus Jakarta Sans local carregada, nenhuma requisição a
+//     serviço externo de fontes, marca em texto levando ao mapa, cabeçalho numa linha a
+//     1280 px, "Atualizado em" na linha da tela e no rodapé, realização em texto e
+//     nenhum texto herdado no masthead.
 // Registra a altura do documento a 390 px. Screenshots vão para uma pasta
 // temporária fora do repositório (ou --saida, que não pode ficar dentro dele).
 
@@ -421,6 +425,7 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
   page.on("pageerror", (e) => erros.push(String(e)));
   page.on("requestfailed", (r) => erros.push(`falha de requisição ${r.url()}`));
   page.on("response", (r) => { if (r.status() >= 400) erros.push(`HTTP ${r.status()} ${r.url()}`); });
+  page.on("request", (q) => { if (/fonts\.(googleapis|gstatic)\.com/.test(q.url())) erros.push(`requisição a serviço externo de fontes ${q.url()}`); });
   if (tema === "atributo") {
     // modo escuro pelo atributo: grava data-theme="dark" no HTML servido (como na rodada 106)
     await page.route(`**/${def.pagina}`, async (route) => {
@@ -474,8 +479,33 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
       rodape: document.getElementById("rodape-comum") ? document.getElementById("rodape-comum").innerText : "",
       cabecalho: !!document.querySelector("#cabecalho-comum nav"),
       errosBloco: document.querySelectorAll(".erro-bloco").length,
+      identidade: (() => {
+        const marca = document.querySelector("#cabecalho-comum a.cabecalho-marca"), nav = document.querySelector("#cabecalho-comum nav");
+        const bm = marca && marca.getBoundingClientRect(), bn = nav && nav.getBoundingClientRect();
+        const masthead = document.querySelector(".masthead");
+        return {
+          fonteCorpo: getComputedStyle(document.body).fontFamily.split(",")[0].replace(/["']/g, "").trim(),
+          fonteCarregada: [...document.fonts].some((f) => f.family.replace(/["']/g, "") === "Plus Jakarta Sans" && f.status === "loaded"),
+          marcaHref: marca ? marca.getAttribute("href") : null, marcaTexto: marca ? marca.querySelector(".marca-texto").textContent : null,
+          marcaImg: marca ? marca.querySelectorAll("img, svg").length : null,
+          umaLinha: !!(bm && bn && bn.top < bm.bottom && bm.top < bn.bottom),
+          linhaTela: (document.querySelector(".masthead .linha-tela .atualizado-tela") || {}).textContent || "",
+          herdado: masthead ? (/Painel \d de \d|\bColeta\b|Ver também/.exec(masthead.innerText) || [""])[0] : "",
+        };
+      })(),
     };
   });
+  {
+    const id = r.identidade, data = /^Atualizado em \d{2}\/\d{2}\/\d{4}$/;
+    if (id.fonteCorpo !== "Plus Jakarta Sans" || !id.fonteCarregada) falhas.push(`fonte do corpo ${id.fonteCorpo}, carregada: ${id.fonteCarregada}`);
+    if (id.marcaHref !== "../index.html" || id.marcaTexto !== "ClimaPampa" || id.marcaImg !== 0) falhas.push(`marca: ${JSON.stringify(id)}`);
+    if (largura === 1280 && !id.umaLinha) falhas.push("cabeçalho não cabe numa linha a 1280 px");
+    if (!data.test(id.linhaTela)) falhas.push(`"Atualizado em" fora da linha da tela: "${id.linhaTela}"`);
+    if (id.herdado) falhas.push(`texto herdado no masthead: "${id.herdado}"`);
+    const rod = r.rodape.split("\n").map((l) => l.trim()).filter(Boolean);
+    if (rod[0] !== "Realização: ClimaPampa — PET-Saúde: Clima · Unipampa e Secretaria Municipal de Saúde de Uruguaiana" || !rod[1].startsWith("Fontes:") || !data.test(rod[rod.length - 1]) || /Outros painéis/.test(r.rodape))
+      falhas.push(`rodapé: ${JSON.stringify(rod)}`);
+  }
   const modo = `${largura}px ${tema}`;
   if (r.svgNaN) falhas.push(`${r.svgNaN} atributos SVG com NaN/undefined`);
   if (r.textoNaN) falhas.push("NaN ou undefined no texto visível");
@@ -781,7 +811,7 @@ async function testesExtrasSintese(browser, base, prod) {
     res.push({ nome: "síntese: faixa do rio e cartões iguais aos JSON", ok: !dif.length && erros.length === 0, detalhe: dif.join(" | ") + erros.join(" | ") });
     const datas = Object.values(prod).every((x) => r.atualizacao.some((l) => l.endsWith(x.meta.dados_ate.length === 10 ? dataBR(x.meta.dados_ate) : x.meta.dados_ate)));
     res.push({ nome: "síntese: datas de atualização de cada produto; aviso \"em conferência\"", ok: datas && r.atualizacao.length === Object.keys(prod).length && r.aviso === "pessoas expostas e acesso: em conferência", detalhe: JSON.stringify(r.atualizacao) });
-    res.push({ nome: "cabeçalho: Síntese e Cheia e saúde ativos, marca leva à síntese, nenhum \"em breve\"", ok: !r.emBreve && r.marca === "sintese.html" && r.nav.includes("sintese.html") && r.nav.includes("cheia-saude.html"), detalhe: JSON.stringify(r) });
+    res.push({ nome: "cabeçalho: Síntese e Cheia e saúde ativos, marca leva ao mapa, nenhum \"em breve\"", ok: !r.emBreve && r.marca === "../index.html" && r.nav.includes("sintese.html") && r.nav.includes("cheia-saude.html"), detalhe: JSON.stringify(r) });
     await ctx.close();
   }
   // leituras simuladas na faixa "rio agora"

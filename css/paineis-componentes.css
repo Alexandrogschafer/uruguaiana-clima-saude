@@ -16,8 +16,12 @@
 
 /* ---------- cabeçalho comum ---------- */
 .cabecalho-comum { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-bottom: 14px; font-size: 13px; }
-a.cabecalho-marca { text-decoration: none; }
-.cabecalho-marca { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+/* marca em texto: "Clima" (--marca-1) + "Pampa" (--marca-2), 800, 20 px (texto grande: contraste mínimo 3:1) */
+a.cabecalho-marca { text-decoration: none; display: inline-flex; flex-direction: column; gap: 3px; margin-right: auto; line-height: 1; }
+.marca-texto { font-family: "Plus Jakarta Sans", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
+.marca-clima { color: var(--marca-1); }
+.marca-pampa { color: var(--marca-2); }
+.marca-linha { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
 .cabecalho-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
 .nav-item { color: var(--ink-secondary); text-decoration: none; padding: 5px 9px; border-radius: 5px; border: 1px solid transparent; white-space: nowrap; }
 a.nav-item:hover { color: var(--ink); border-color: var(--border-strong); }
@@ -26,7 +30,10 @@ a.nav-item:hover { color: var(--ink); border-color: var(--border-strong); }
 .nav-desativado small { font-size: 10.5px; margin-left: 2px; }
 .nav-mapa { color: var(--accent); border-color: var(--border-strong); }
 .cabecalho-avisos { flex-basis: 100%; }
-.cabecalho-atualizado { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11px; color: var(--ink-muted); margin-right: auto; }
+/* linha da tela: eyebrow à esquerda, "Atualizado em" à direita (acima do título) */
+.linha-tela { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-bottom: 10px; position: relative; }
+.linha-tela .eyebrow { margin-bottom: 0; }
+.atualizado-tela { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11px; color: var(--ink-muted); white-space: nowrap; }
 
 .menu-explorar { position: relative; }
 .menu-explorar summary { list-style: none; cursor: pointer; color: var(--ink-secondary); padding: 5px 9px; border-radius: 5px; border: 1px solid transparent; }
