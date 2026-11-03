@@ -116,7 +116,7 @@
    Nenhum número fica neste arquivo: textos e indicadores vêm de "notas" e "kpis_*". */
 const P = window.Paineis;
 const setText = (id, t) => { const e = document.getElementById(id); if(e) e.textContent = t; };
-const IDS = {s2id: 'desastres_s2id_2014-2025_anual', cprm: 'risco-geologico_cprm_2021_classe', aneel: 'energia_aneel_2000-2026_anual',
+const IDS = {s2id: 'desastres_s2id_serie_anual', cprm: 'risco-geologico_cprm_2021_classe', aneel: 'energia_aneel_serie_anual',
              setor: 'setorizacao-risco_sgb_2014_setor', bater: 'areas-de-risco_ibge_2018_bater', indisp: 'infraestrutura_indisponivel_atual'};
 const BLOCOS = {s2id: ['chart-s2id-anual'], cprm: ['chart-risco-inund', 'chart-risco-mov', 'tabelaRisco'], aneel: ['chart-aneel-dec', 'chart-aneel-fec'],
                 setor: ['tabelaSetores'], bater: ['tabelaBater'], indisp: ['tabelaIndisp']};

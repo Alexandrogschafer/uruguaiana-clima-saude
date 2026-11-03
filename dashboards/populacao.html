@@ -112,7 +112,7 @@
 /* Tela de população: lê os produtos de data/paineis/ (scripts/paineis/dados_populacao.py).
    Nenhum número fica neste arquivo: textos e indicadores vêm dos campos "notas" e "kpis". */
 const P = window.Paineis;
-const IDS = {serie: 'populacao_ibge_1970-2025_anual', ind: 'demografia_ibge_1970-2022_indicadores', pir: 'demografia_ibge_2000-2010-2022_piramides'};
+const IDS = {serie: 'populacao_ibge_serie_anual', ind: 'demografia_ibge_serie_indicadores', pir: 'demografia_ibge_censos_piramides'};
 const BLOCOS = {serie: ['chart-populacao'], ind: ['chart-envelhecimento', 'chart-dependencia', 'chart-urbano-rural', 'tabelaIndicadores'], pir: ['piramideGrid']};
 function fmtSigned1(n){ return (n>0?'+':'') + fmt1(n); }
 

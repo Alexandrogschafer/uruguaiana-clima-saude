@@ -67,9 +67,9 @@
 <script>
 /* Síntese: lê só produtos já publicados em data/paineis/. Nenhum número fica neste arquivo. */
 const P = window.Paineis;
-const IDS = {rio: 'rio_ana-77150000_ultima-leitura', cotas: 'inundacao_sgb_cotas', precip: 'clima_precipitacao-merge_2010-2025_anual',
-             inmet: 'clima_inmet-a809_2007-2025_anual', sim: 'saude_sim_2010-2024_anual', sih: 'saude_sih_2010-2025_anual',
-             sinan: 'saude_sinan_2010-2026_anual', ind: 'demografia_ibge_1970-2022_indicadores'};
+const IDS = {rio: 'rio_ana-77150000_ultima-leitura', cotas: 'inundacao_sgb_cotas', precip: 'clima_precipitacao-merge_serie_anual',
+             inmet: 'clima_inmet-a809_serie_anual', sim: 'saude_sim_serie_anual', sih: 'saude_sih_serie_anual',
+             sinan: 'saude_sinan_serie_anual', ind: 'demografia_ibge_serie_indicadores'};
 const CARTOES = {rio: 'faixa-rio', cotas: 'lista-cheia', precip: 'lista-clima', inmet: 'lista-clima', sim: 'lista-saude', sih: 'lista-saude', sinan: 'lista-saude', ind: 'lista-contexto'};
 const dataBR = iso => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ''); return m ? `${m[3]}/${m[2]}/${m[1]}` : (iso || ''); };
 const item = (ul, html) => { const li = document.createElement('li'); li.innerHTML = html; document.getElementById(ul).appendChild(li); };

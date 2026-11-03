@@ -124,9 +124,9 @@
 /* Tela de economia e vulnerabilidade: lê os produtos de data/paineis/ (scripts/paineis/dados_economia.py).
    Nenhum número fica neste arquivo: textos e indicadores vêm de "notas" e "kpis_*". */
 const P = window.Paineis;
-const IDS = {censo: 'censo_ibge_2022_situacao-setor', pib: 'pib_ibge_2002-2023_anual', pam: 'agropecuaria_ibge_1974-2024_anual', caged: 'emprego_caged_2020-2026_mensal',
-             rais: 'emprego_rais_2025_secao', idhm: 'idhm_atlas_1991-2010_censos', cadunico: 'cadunico_mds_2012-2026_anual', bf: 'bolsa-familia_mds_2026-07_mes',
-             siconfi: 'despesas_siconfi_2015-2026_anual'};
+const IDS = {censo: 'censo_ibge_2022_situacao-setor', pib: 'pib_ibge_serie_anual', pam: 'agropecuaria_ibge_serie_anual', caged: 'emprego_caged_serie_mensal',
+             rais: 'emprego_rais_atual_secao', idhm: 'idhm_atlas_censos', cadunico: 'cadunico_mds_serie_anual', bf: 'bolsa-familia_mds_atual_mes',
+             siconfi: 'despesas_siconfi_serie_anual'};
 const BLOCOS = {censo: ['chart-pop-situacao'], pib: ['chart-pib-per-capita', 'chart-pib-composicao'], pam: ['chart-pam-area', 'chart-ppm-rebanho'],
                 caged: ['chart-caged-fluxo', 'chart-caged-saldo'], rais: ['chart-rais-setor', 'tabelaRais'], idhm: ['chart-idhm-componentes', 'chart-idhm-brasil'],
                 cadunico: ['chart-cadunico-familias', 'chart-cadunico-taxa'], bf: [], siconfi: ['chart-siconfi-saude-pc', 'chart-siconfi-assist-pc', 'chart-siconfi-pct-pib']};
