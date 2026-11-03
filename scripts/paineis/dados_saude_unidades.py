@@ -4,7 +4,7 @@ Produto das unidades de saúde da tela de saúde em data/paineis/
 revisado (versão 4):
     data/processed/saude/unidades-saude-esf-ubs_cnes-revisado-v4_<ano>_pontos.gpkg
 
-Grava saude_unidades-esf-ubs_<ano>: as 21 unidades ESF/UBS e a Equipe de
+Grava saude_unidades-esf-ubs_atual (id estável; o ano do cadastro fica no JSON): as 21 unidades ESF/UBS e a Equipe de
 Saúde Prisional (classe "sem classe"), com CNES, nome, classe, zona, bairro e a
 população informada pelos profissionais de saúde em 2017 e 2023.
 
@@ -47,10 +47,8 @@ FONTE = ("CNES (Ministério da Saúde), revisado e corrigido pela equipe do proj
 
 
 def entrada() -> Path:
-    achados = sorted(PASTA_SAUDE.glob("unidades-saude-esf-ubs_cnes-revisado-v4_*_pontos.gpkg"))
-    if len(achados) != 1:
-        raise ValueError(f"esperada 1 camada de unidades v4 em {comum.relativo(PASTA_SAUDE)}, há {len(achados)}")
-    return achados[0]
+    """Camada v4 de coleta mais recente (comum.bruto_mais_recente); o ano do cadastro fica no JSON, não no id."""
+    return comum.bruto_mais_recente(PASTA_SAUDE, "unidades-saude-esf-ubs_cnes-revisado-v4_*_pontos.gpkg")
 
 
 def ano_cadastro(arq: Path) -> str:
@@ -58,7 +56,8 @@ def ano_cadastro(arq: Path) -> str:
 
 
 def id_produto() -> str:
-    return f"saude_unidades-esf-ubs_{ano_cadastro(entrada())}"
+    """Id estável (retrato substituído a cada revisão do cadastro): convenção de comum.py."""
+    return "saude_unidades-esf-ubs_atual"
 
 
 def calcular(arq: Path) -> list[dict]:
@@ -115,14 +114,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
         entradas=[arq], forcar=forcar)}
 
 
-def _produtos() -> list[str]:
-    try:
-        return [id_produto()]
-    except (OSError, ValueError):
-        return []
-
-
-PRODUTOS = _produtos()
+PRODUTOS = [id_produto()]
 
 
 def main() -> int:

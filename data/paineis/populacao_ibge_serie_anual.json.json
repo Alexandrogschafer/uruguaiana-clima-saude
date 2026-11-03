@@ -1,0 +1,28 @@
+{
+  "produto": "populacao_ibge_serie_anual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "IBGE, Censos Demográficos (SIDRA tabelas 200 e 9514) e estimativas anuais (tabela 6579)",
+  "transformacao_aplicada": "série como gravada por demografia_ibge_sidra.py; textos e indicadores calculados dos dados",
+  "entradas": [
+    {
+      "arquivo": "data/processed/populacao-serie-temporal_ibge-sidra_1970-2025_municipal.csv",
+      "sha256": "e792ccd406e9bb4042b2e0ad0259f5403f04b8ebb9c651a4c59522a8594b2f50",
+      "bytes": 669
+    },
+    {
+      "arquivo": "data/processed/demografia-indicadores_ibge-sidra_1970-2022_municipal.csv",
+      "sha256": "a600b715e18c5ed9b6c91460f68b90919656af512a072ca0220a8d6911ffe684",
+      "bytes": 601
+    }
+  ],
+  "script": "scripts/paineis/dados_populacao.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "PD01"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T16:33:06Z",
+  "supressao_nota": "supressão primária não aplicada: séries municipais oficiais do IBGE, já publicadas pela fonte; nenhum agregado abaixo do município"
+}

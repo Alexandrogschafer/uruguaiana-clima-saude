@@ -1,9 +1,9 @@
 {
   "produto": "manifesto.json",
   "esquema": "climapampa-manifesto/1",
-  "fonte": "produtos publicados em data/paineis/",
-  "transformacao_aplicada": "lista dos produtos com id, título, ativos, selo, autorização, datas, telas, tamanho e sha256",
+  "fonte": "produtos publicados em data/paineis/ declarados em PRODUTOS pelos geradores",
+  "transformacao_aplicada": "lista dos produtos com id, id substituído, título, ativos, selo, autorização, datas, telas, tamanho e sha256; JSON órfão fica fora",
   "script": "scripts/paineis/manifesto.py",
   "codigo_ibge": "4322400",
-  "data_processamento": "2026-11-03T15:45:21Z"
+  "data_processamento": "2026-11-03T16:33:06Z"
 }

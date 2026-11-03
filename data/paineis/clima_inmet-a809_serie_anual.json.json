@@ -1,0 +1,22 @@
+{
+  "produto": "clima_inmet-a809_serie_anual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "INMET, estação automática A809 (portal de dados históricos), série horária",
+  "transformacao_aplicada": "média das médias diárias (dia em UTC) de temp_ar_c; extremos de temp_max_c e temp_min_c; dias com máxima >= 35 °C e com mínima <= 0 °C; aviso de lacuna em ano com menos de 90% das horas válidas",
+  "entradas": [
+    {
+      "arquivo": "data/raw/clima_inmet_historico-completo_horario.parquet",
+      "sha256": "9e56bcc202fee61ac58342aade69069499d127ea8ee3b8b362f60bfa3beca36f",
+      "bytes": 4291457
+    }
+  ],
+  "script": "scripts/paineis/dados_clima.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "CA01"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T16:33:05Z"
+}

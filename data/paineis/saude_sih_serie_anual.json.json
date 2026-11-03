@@ -1,0 +1,23 @@
+{
+  "produto": "saude_sih_serie_anual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "SIH (Sistema de Informações Hospitalares), DATASUS, AIH por município de residência",
+  "transformacao_aplicada": "soma dos 12 meses por ano",
+  "entradas": [
+    {
+      "arquivo": "data/raw/internacoes-respiratorias_sih-datasus_2010-2025_municipal.csv",
+      "sha256": "4bc8eaf8be06a01f1df9828e51cf3c5f25fd83cb287bbd299e312e6011d4f19c",
+      "bytes": 7460
+    }
+  ],
+  "script": "scripts/paineis/dados_saude.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "SA05"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T16:33:05Z",
+  "supressao_nota": "supressão primária não aplicada: série municipal anual oficial, de microdados públicos já divulgados pelo DATASUS; contagens pequenas são valores reais da fonte. A única série com contagens pequenas frequentes (óbitos por afogamento ou enchente) vai somada por quinquênio."
+}

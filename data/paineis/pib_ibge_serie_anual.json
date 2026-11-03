@@ -1,0 +1,299 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "pib_ibge_serie_anual",
+ "substitui": "pib_ibge_2002-2023_anual",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "EV01"
+ ],
+ "titulo": "PIB per capita e composição do VAB",
+ "fonte_curta": "IBGE/SIDRA",
+ "fonte": "IBGE, PIB dos Municípios (SIDRA tabela 5938)",
+ "unidade_espacial": "município",
+ "unidade_medida": "R$; % do VAB",
+ "periodo": {
+  "inicio": "2002",
+  "fim": "2023"
+ },
+ "dados_ate": "2023",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "lacuna",
+   "texto": "ano sem população não tem PIB per capita; VAB por atividade só até o último ano publicado"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-03T16:33:06Z",
+ "script": "scripts/paineis/dados_economia.py",
+ "colunas": [
+  {
+   "nome": "ano",
+   "tipo": "int"
+  },
+  {
+   "nome": "pib_mil_reais",
+   "tipo": "float"
+  },
+  {
+   "nome": "pib_per_capita",
+   "tipo": "float"
+  },
+  {
+   "nome": "vab_agropecuaria_pct",
+   "tipo": "float"
+  },
+  {
+   "nome": "vab_industria_pct",
+   "tipo": "float"
+  },
+  {
+   "nome": "vab_administracao_publica_pct",
+   "tipo": "float"
+  },
+  {
+   "nome": "vab_servicos_pct",
+   "tipo": "float"
+  }
+ ],
+ "fonte_rodape": "PIB dos Municípios — IBGE/SIDRA (tabela 5938), PIB per capita calculado localmente",
+ "telas": [
+  "economia"
+ ],
+ "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município",
+ "kpis_economia": [
+  {
+   "rotulo": "PIB per capita",
+   "prefixo": "R$ ",
+   "valor": "29.505,1",
+   "unidade": "",
+   "sub": "2022 · mais recente disponível"
+  },
+  {
+   "rotulo": "Agropecuária no VAB (pico)",
+   "valor": "27,1",
+   "unidade": " %",
+   "sub": "2021 · choque de preço do arroz, não de volume"
+  },
+  {
+   "rotulo": "Saldo Novo CAGED acumulado",
+   "valor": "2.788",
+   "unidade": " vínculos",
+   "sub": "2020-01 a 2026-06 (78 meses)"
+  },
+  {
+   "rotulo": "Vínculos formais ativos (RAIS)",
+   "valor": "24.498",
+   "unidade": " vínculos",
+   "sub": "retrato em 31/12/2025"
+  }
+ ],
+ "dados": [
+  {
+   "ano": 2002,
+   "pib_mil_reais": 756738.0,
+   "pib_per_capita": 5838.13,
+   "vab_agropecuaria_pct": 21.66,
+   "vab_industria_pct": 10.27,
+   "vab_administracao_publica_pct": 15.69,
+   "vab_servicos_pct": 52.39
+  },
+  {
+   "ano": 2003,
+   "pib_mil_reais": 882626.0,
+   "pib_per_capita": 6744.5,
+   "vab_agropecuaria_pct": 24.51,
+   "vab_industria_pct": 8.67,
+   "vab_administracao_publica_pct": 17.05,
+   "vab_servicos_pct": 49.77
+  },
+  {
+   "ano": 2004,
+   "pib_mil_reais": 989178.0,
+   "pib_per_capita": 7410.63,
+   "vab_agropecuaria_pct": 24.23,
+   "vab_industria_pct": 9.16,
+   "vab_administracao_publica_pct": 15.91,
+   "vab_servicos_pct": 50.7
+  },
+  {
+   "ano": 2005,
+   "pib_mil_reais": 958435.0,
+   "pib_per_capita": 7103.31,
+   "vab_agropecuaria_pct": 14.29,
+   "vab_industria_pct": 9.74,
+   "vab_administracao_publica_pct": 19.78,
+   "vab_servicos_pct": 56.18
+  },
+  {
+   "ano": 2006,
+   "pib_mil_reais": 1054140.0,
+   "pib_per_capita": 7730.34,
+   "vab_agropecuaria_pct": 17.76,
+   "vab_industria_pct": 8.24,
+   "vab_administracao_publica_pct": 19.33,
+   "vab_servicos_pct": 54.67
+  },
+  {
+   "ano": 2007,
+   "pib_mil_reais": 1096214.0,
+   "pib_per_capita": null,
+   "vab_agropecuaria_pct": 13.65,
+   "vab_industria_pct": 7.95,
+   "vab_administracao_publica_pct": 20.09,
+   "vab_servicos_pct": 58.32
+  },
+  {
+   "ano": 2008,
+   "pib_mil_reais": 1327734.0,
+   "pib_per_capita": 10443.25,
+   "vab_agropecuaria_pct": 21.3,
+   "vab_industria_pct": 8.1,
+   "vab_administracao_publica_pct": 18.0,
+   "vab_servicos_pct": 52.6
+  },
+  {
+   "ano": 2009,
+   "pib_mil_reais": 1389972.0,
+   "pib_per_capita": 10940.78,
+   "vab_agropecuaria_pct": 20.69,
+   "vab_industria_pct": 8.68,
+   "vab_administracao_publica_pct": 18.17,
+   "vab_servicos_pct": 52.46
+  },
+  {
+   "ano": 2010,
+   "pib_mil_reais": 1518547.0,
+   "pib_per_capita": 12106.25,
+   "vab_agropecuaria_pct": 17.11,
+   "vab_industria_pct": 9.51,
+   "vab_administracao_publica_pct": 21.76,
+   "vab_servicos_pct": 51.62
+  },
+  {
+   "ano": 2011,
+   "pib_mil_reais": 1569261.0,
+   "pib_per_capita": 12522.03,
+   "vab_agropecuaria_pct": 13.34,
+   "vab_industria_pct": 10.34,
+   "vab_administracao_publica_pct": 22.49,
+   "vab_servicos_pct": 53.83
+  },
+  {
+   "ano": 2012,
+   "pib_mil_reais": 1803992.0,
+   "pib_per_capita": 14407.85,
+   "vab_agropecuaria_pct": 13.03,
+   "vab_industria_pct": 10.14,
+   "vab_administracao_publica_pct": 21.52,
+   "vab_servicos_pct": 55.3
+  },
+  {
+   "ano": 2013,
+   "pib_mil_reais": 2094172.0,
+   "pib_per_capita": 16170.71,
+   "vab_agropecuaria_pct": 16.0,
+   "vab_industria_pct": 8.58,
+   "vab_administracao_publica_pct": 21.61,
+   "vab_servicos_pct": 53.81
+  },
+  {
+   "ano": 2014,
+   "pib_mil_reais": 2295321.0,
+   "pib_per_capita": 17713.54,
+   "vab_agropecuaria_pct": 17.53,
+   "vab_industria_pct": 8.61,
+   "vab_administracao_publica_pct": 22.22,
+   "vab_servicos_pct": 51.64
+  },
+  {
+   "ano": 2015,
+   "pib_mil_reais": 2626713.0,
+   "pib_per_capita": 20259.72,
+   "vab_agropecuaria_pct": 17.9,
+   "vab_industria_pct": 8.37,
+   "vab_administracao_publica_pct": 21.4,
+   "vab_servicos_pct": 52.33
+  },
+  {
+   "ano": 2016,
+   "pib_mil_reais": 2609550.0,
+   "pib_per_capita": 20116.79,
+   "vab_agropecuaria_pct": 17.02,
+   "vab_industria_pct": 8.39,
+   "vab_administracao_publica_pct": 22.11,
+   "vab_servicos_pct": 52.48
+  },
+  {
+   "ano": 2017,
+   "pib_mil_reais": 2801210.0,
+   "pib_per_capita": 21583.63,
+   "vab_agropecuaria_pct": 17.23,
+   "vab_industria_pct": 8.02,
+   "vab_administracao_publica_pct": 21.43,
+   "vab_servicos_pct": 53.32
+  },
+  {
+   "ano": 2018,
+   "pib_mil_reais": 2772959.0,
+   "pib_per_capita": 21820.75,
+   "vab_agropecuaria_pct": 14.25,
+   "vab_industria_pct": 8.41,
+   "vab_administracao_publica_pct": 22.79,
+   "vab_servicos_pct": 54.55
+  },
+  {
+   "ano": 2019,
+   "pib_mil_reais": 2885430.0,
+   "pib_per_capita": 22725.29,
+   "vab_agropecuaria_pct": 13.99,
+   "vab_industria_pct": 9.61,
+   "vab_administracao_publica_pct": 23.79,
+   "vab_servicos_pct": 52.61
+  },
+  {
+   "ano": 2020,
+   "pib_mil_reais": 2843973.0,
+   "pib_per_capita": 22417.14,
+   "vab_agropecuaria_pct": 15.42,
+   "vab_industria_pct": 11.68,
+   "vab_administracao_publica_pct": 25.13,
+   "vab_servicos_pct": 47.76
+  },
+  {
+   "ano": 2021,
+   "pib_mil_reais": 3717113.0,
+   "pib_per_capita": 29322.63,
+   "vab_agropecuaria_pct": 27.14,
+   "vab_industria_pct": 9.09,
+   "vab_administracao_publica_pct": 21.19,
+   "vab_servicos_pct": 42.58
+  },
+  {
+   "ano": 2022,
+   "pib_mil_reais": 3458296.0,
+   "pib_per_capita": 29505.13,
+   "vab_agropecuaria_pct": null,
+   "vab_industria_pct": null,
+   "vab_administracao_publica_pct": null,
+   "vab_servicos_pct": null
+  },
+  {
+   "ano": 2023,
+   "pib_mil_reais": 3915554.0,
+   "pib_per_capita": null,
+   "vab_agropecuaria_pct": null,
+   "vab_industria_pct": null,
+   "vab_administracao_publica_pct": null,
+   "vab_servicos_pct": null
+  }
+ ]
+}

@@ -1,0 +1,694 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "emprego_caged_serie_mensal",
+ "substitui": "emprego_caged_2020-2026_mensal",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "EV03"
+ ],
+ "titulo": "Admissões, desligamentos e saldo acumulado (Novo CAGED)",
+ "fonte_curta": "MTE/Novo CAGED",
+ "fonte": "Ministério do Trabalho e Emprego, Novo CAGED",
+ "unidade_espacial": "município",
+ "unidade_medida": "vínculos",
+ "periodo": {
+  "inicio": "202001",
+  "fim": "202606"
+ },
+ "dados_ate": "202606",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "parcial",
+   "texto": "último ano parcial"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-03T16:33:06Z",
+ "script": "scripts/paineis/dados_economia.py",
+ "colunas": [
+  {
+   "nome": "competencia",
+   "tipo": "int"
+  },
+  {
+   "nome": "rotulo",
+   "tipo": "texto"
+  },
+  {
+   "nome": "admissoes",
+   "tipo": "int"
+  },
+  {
+   "nome": "desligamentos",
+   "tipo": "int"
+  },
+  {
+   "nome": "saldo",
+   "tipo": "int"
+  },
+  {
+   "nome": "saldo_acumulado",
+   "tipo": "int"
+  }
+ ],
+ "fonte_rodape": "Emprego formal — RAIS e Novo CAGED, Ministério do Trabalho e Emprego (microdados via FTP público)",
+ "telas": [
+  "economia"
+ ],
+ "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município",
+ "dados": [
+  {
+   "competencia": 202001,
+   "rotulo": "01/20",
+   "admissoes": 429,
+   "desligamentos": 451,
+   "saldo": -22,
+   "saldo_acumulado": -22
+  },
+  {
+   "competencia": 202002,
+   "rotulo": "02/20",
+   "admissoes": 538,
+   "desligamentos": 461,
+   "saldo": 77,
+   "saldo_acumulado": 55
+  },
+  {
+   "competencia": 202003,
+   "rotulo": "03/20",
+   "admissoes": 524,
+   "desligamentos": 473,
+   "saldo": 51,
+   "saldo_acumulado": 106
+  },
+  {
+   "competencia": 202004,
+   "rotulo": "04/20",
+   "admissoes": 193,
+   "desligamentos": 511,
+   "saldo": -318,
+   "saldo_acumulado": -212
+  },
+  {
+   "competencia": 202005,
+   "rotulo": "05/20",
+   "admissoes": 258,
+   "desligamentos": 529,
+   "saldo": -271,
+   "saldo_acumulado": -483
+  },
+  {
+   "competencia": 202006,
+   "rotulo": "06/20",
+   "admissoes": 400,
+   "desligamentos": 397,
+   "saldo": 3,
+   "saldo_acumulado": -480
+  },
+  {
+   "competencia": 202007,
+   "rotulo": "07/20",
+   "admissoes": 343,
+   "desligamentos": 301,
+   "saldo": 42,
+   "saldo_acumulado": -438
+  },
+  {
+   "competencia": 202008,
+   "rotulo": "08/20",
+   "admissoes": 379,
+   "desligamentos": 335,
+   "saldo": 44,
+   "saldo_acumulado": -394
+  },
+  {
+   "competencia": 202009,
+   "rotulo": "09/20",
+   "admissoes": 363,
+   "desligamentos": 294,
+   "saldo": 69,
+   "saldo_acumulado": -325
+  },
+  {
+   "competencia": 202010,
+   "rotulo": "10/20",
+   "admissoes": 443,
+   "desligamentos": 359,
+   "saldo": 84,
+   "saldo_acumulado": -241
+  },
+  {
+   "competencia": 202011,
+   "rotulo": "11/20",
+   "admissoes": 539,
+   "desligamentos": 338,
+   "saldo": 201,
+   "saldo_acumulado": -40
+  },
+  {
+   "competencia": 202012,
+   "rotulo": "12/20",
+   "admissoes": 428,
+   "desligamentos": 350,
+   "saldo": 78,
+   "saldo_acumulado": 38
+  },
+  {
+   "competencia": 202101,
+   "rotulo": "01/21",
+   "admissoes": 479,
+   "desligamentos": 372,
+   "saldo": 107,
+   "saldo_acumulado": 145
+  },
+  {
+   "competencia": 202102,
+   "rotulo": "02/21",
+   "admissoes": 649,
+   "desligamentos": 446,
+   "saldo": 203,
+   "saldo_acumulado": 348
+  },
+  {
+   "competencia": 202103,
+   "rotulo": "03/21",
+   "admissoes": 560,
+   "desligamentos": 435,
+   "saldo": 125,
+   "saldo_acumulado": 473
+  },
+  {
+   "competencia": 202104,
+   "rotulo": "04/21",
+   "admissoes": 445,
+   "desligamentos": 588,
+   "saldo": -143,
+   "saldo_acumulado": 330
+  },
+  {
+   "competencia": 202105,
+   "rotulo": "05/21",
+   "admissoes": 487,
+   "desligamentos": 487,
+   "saldo": 0,
+   "saldo_acumulado": 330
+  },
+  {
+   "competencia": 202106,
+   "rotulo": "06/21",
+   "admissoes": 537,
+   "desligamentos": 375,
+   "saldo": 162,
+   "saldo_acumulado": 492
+  },
+  {
+   "competencia": 202107,
+   "rotulo": "07/21",
+   "admissoes": 536,
+   "desligamentos": 417,
+   "saldo": 119,
+   "saldo_acumulado": 611
+  },
+  {
+   "competencia": 202108,
+   "rotulo": "08/21",
+   "admissoes": 625,
+   "desligamentos": 500,
+   "saldo": 125,
+   "saldo_acumulado": 736
+  },
+  {
+   "competencia": 202109,
+   "rotulo": "09/21",
+   "admissoes": 618,
+   "desligamentos": 467,
+   "saldo": 151,
+   "saldo_acumulado": 887
+  },
+  {
+   "competencia": 202110,
+   "rotulo": "10/21",
+   "admissoes": 704,
+   "desligamentos": 507,
+   "saldo": 197,
+   "saldo_acumulado": 1084
+  },
+  {
+   "competencia": 202111,
+   "rotulo": "11/21",
+   "admissoes": 797,
+   "desligamentos": 565,
+   "saldo": 232,
+   "saldo_acumulado": 1316
+  },
+  {
+   "competencia": 202112,
+   "rotulo": "12/21",
+   "admissoes": 663,
+   "desligamentos": 579,
+   "saldo": 84,
+   "saldo_acumulado": 1400
+  },
+  {
+   "competencia": 202201,
+   "rotulo": "01/22",
+   "admissoes": 754,
+   "desligamentos": 716,
+   "saldo": 38,
+   "saldo_acumulado": 1438
+  },
+  {
+   "competencia": 202202,
+   "rotulo": "02/22",
+   "admissoes": 1031,
+   "desligamentos": 760,
+   "saldo": 271,
+   "saldo_acumulado": 1709
+  },
+  {
+   "competencia": 202203,
+   "rotulo": "03/22",
+   "admissoes": 937,
+   "desligamentos": 857,
+   "saldo": 80,
+   "saldo_acumulado": 1789
+  },
+  {
+   "competencia": 202204,
+   "rotulo": "04/22",
+   "admissoes": 717,
+   "desligamentos": 796,
+   "saldo": -79,
+   "saldo_acumulado": 1710
+  },
+  {
+   "competencia": 202205,
+   "rotulo": "05/22",
+   "admissoes": 766,
+   "desligamentos": 792,
+   "saldo": -26,
+   "saldo_acumulado": 1684
+  },
+  {
+   "competencia": 202206,
+   "rotulo": "06/22",
+   "admissoes": 771,
+   "desligamentos": 613,
+   "saldo": 158,
+   "saldo_acumulado": 1842
+  },
+  {
+   "competencia": 202207,
+   "rotulo": "07/22",
+   "admissoes": 711,
+   "desligamentos": 674,
+   "saldo": 37,
+   "saldo_acumulado": 1879
+  },
+  {
+   "competencia": 202208,
+   "rotulo": "08/22",
+   "admissoes": 805,
+   "desligamentos": 681,
+   "saldo": 124,
+   "saldo_acumulado": 2003
+  },
+  {
+   "competencia": 202209,
+   "rotulo": "09/22",
+   "admissoes": 732,
+   "desligamentos": 649,
+   "saldo": 83,
+   "saldo_acumulado": 2086
+  },
+  {
+   "competencia": 202210,
+   "rotulo": "10/22",
+   "admissoes": 756,
+   "desligamentos": 614,
+   "saldo": 142,
+   "saldo_acumulado": 2228
+  },
+  {
+   "competencia": 202211,
+   "rotulo": "11/22",
+   "admissoes": 682,
+   "desligamentos": 592,
+   "saldo": 90,
+   "saldo_acumulado": 2318
+  },
+  {
+   "competencia": 202212,
+   "rotulo": "12/22",
+   "admissoes": 645,
+   "desligamentos": 682,
+   "saldo": -37,
+   "saldo_acumulado": 2281
+  },
+  {
+   "competencia": 202301,
+   "rotulo": "01/23",
+   "admissoes": 714,
+   "desligamentos": 793,
+   "saldo": -79,
+   "saldo_acumulado": 2202
+  },
+  {
+   "competencia": 202302,
+   "rotulo": "02/23",
+   "admissoes": 795,
+   "desligamentos": 679,
+   "saldo": 116,
+   "saldo_acumulado": 2318
+  },
+  {
+   "competencia": 202303,
+   "rotulo": "03/23",
+   "admissoes": 1045,
+   "desligamentos": 876,
+   "saldo": 169,
+   "saldo_acumulado": 2487
+  },
+  {
+   "competencia": 202304,
+   "rotulo": "04/23",
+   "admissoes": 829,
+   "desligamentos": 968,
+   "saldo": -139,
+   "saldo_acumulado": 2348
+  },
+  {
+   "competencia": 202305,
+   "rotulo": "05/23",
+   "admissoes": 839,
+   "desligamentos": 868,
+   "saldo": -29,
+   "saldo_acumulado": 2319
+  },
+  {
+   "competencia": 202306,
+   "rotulo": "06/23",
+   "admissoes": 755,
+   "desligamentos": 731,
+   "saldo": 24,
+   "saldo_acumulado": 2343
+  },
+  {
+   "competencia": 202307,
+   "rotulo": "07/23",
+   "admissoes": 664,
+   "desligamentos": 715,
+   "saldo": -51,
+   "saldo_acumulado": 2292
+  },
+  {
+   "competencia": 202308,
+   "rotulo": "08/23",
+   "admissoes": 703,
+   "desligamentos": 699,
+   "saldo": 4,
+   "saldo_acumulado": 2296
+  },
+  {
+   "competencia": 202309,
+   "rotulo": "09/23",
+   "admissoes": 550,
+   "desligamentos": 558,
+   "saldo": -8,
+   "saldo_acumulado": 2288
+  },
+  {
+   "competencia": 202310,
+   "rotulo": "10/23",
+   "admissoes": 706,
+   "desligamentos": 606,
+   "saldo": 100,
+   "saldo_acumulado": 2388
+  },
+  {
+   "competencia": 202311,
+   "rotulo": "11/23",
+   "admissoes": 746,
+   "desligamentos": 673,
+   "saldo": 73,
+   "saldo_acumulado": 2461
+  },
+  {
+   "competencia": 202312,
+   "rotulo": "12/23",
+   "admissoes": 620,
+   "desligamentos": 644,
+   "saldo": -24,
+   "saldo_acumulado": 2437
+  },
+  {
+   "competencia": 202401,
+   "rotulo": "01/24",
+   "admissoes": 803,
+   "desligamentos": 843,
+   "saldo": -40,
+   "saldo_acumulado": 2397
+  },
+  {
+   "competencia": 202402,
+   "rotulo": "02/24",
+   "admissoes": 1096,
+   "desligamentos": 793,
+   "saldo": 303,
+   "saldo_acumulado": 2700
+  },
+  {
+   "competencia": 202403,
+   "rotulo": "03/24",
+   "admissoes": 1018,
+   "desligamentos": 895,
+   "saldo": 123,
+   "saldo_acumulado": 2823
+  },
+  {
+   "competencia": 202404,
+   "rotulo": "04/24",
+   "admissoes": 874,
+   "desligamentos": 984,
+   "saldo": -110,
+   "saldo_acumulado": 2713
+  },
+  {
+   "competencia": 202405,
+   "rotulo": "05/24",
+   "admissoes": 788,
+   "desligamentos": 959,
+   "saldo": -171,
+   "saldo_acumulado": 2542
+  },
+  {
+   "competencia": 202406,
+   "rotulo": "06/24",
+   "admissoes": 738,
+   "desligamentos": 744,
+   "saldo": -6,
+   "saldo_acumulado": 2536
+  },
+  {
+   "competencia": 202407,
+   "rotulo": "07/24",
+   "admissoes": 754,
+   "desligamentos": 731,
+   "saldo": 23,
+   "saldo_acumulado": 2559
+  },
+  {
+   "competencia": 202408,
+   "rotulo": "08/24",
+   "admissoes": 784,
+   "desligamentos": 792,
+   "saldo": -8,
+   "saldo_acumulado": 2551
+  },
+  {
+   "competencia": 202409,
+   "rotulo": "09/24",
+   "admissoes": 657,
+   "desligamentos": 656,
+   "saldo": 1,
+   "saldo_acumulado": 2552
+  },
+  {
+   "competencia": 202410,
+   "rotulo": "10/24",
+   "admissoes": 818,
+   "desligamentos": 717,
+   "saldo": 101,
+   "saldo_acumulado": 2653
+  },
+  {
+   "competencia": 202411,
+   "rotulo": "11/24",
+   "admissoes": 892,
+   "desligamentos": 728,
+   "saldo": 164,
+   "saldo_acumulado": 2817
+  },
+  {
+   "competencia": 202412,
+   "rotulo": "12/24",
+   "admissoes": 771,
+   "desligamentos": 758,
+   "saldo": 13,
+   "saldo_acumulado": 2830
+  },
+  {
+   "competencia": 202501,
+   "rotulo": "01/25",
+   "admissoes": 999,
+   "desligamentos": 969,
+   "saldo": 30,
+   "saldo_acumulado": 2860
+  },
+  {
+   "competencia": 202502,
+   "rotulo": "02/25",
+   "admissoes": 1116,
+   "desligamentos": 887,
+   "saldo": 229,
+   "saldo_acumulado": 3089
+  },
+  {
+   "competencia": 202503,
+   "rotulo": "03/25",
+   "admissoes": 875,
+   "desligamentos": 984,
+   "saldo": -109,
+   "saldo_acumulado": 2980
+  },
+  {
+   "competencia": 202504,
+   "rotulo": "04/25",
+   "admissoes": 815,
+   "desligamentos": 1025,
+   "saldo": -210,
+   "saldo_acumulado": 2770
+  },
+  {
+   "competencia": 202505,
+   "rotulo": "05/25",
+   "admissoes": 880,
+   "desligamentos": 912,
+   "saldo": -32,
+   "saldo_acumulado": 2738
+  },
+  {
+   "competencia": 202506,
+   "rotulo": "06/25",
+   "admissoes": 791,
+   "desligamentos": 709,
+   "saldo": 82,
+   "saldo_acumulado": 2820
+  },
+  {
+   "competencia": 202507,
+   "rotulo": "07/25",
+   "admissoes": 807,
+   "desligamentos": 733,
+   "saldo": 74,
+   "saldo_acumulado": 2894
+  },
+  {
+   "competencia": 202508,
+   "rotulo": "08/25",
+   "admissoes": 789,
+   "desligamentos": 670,
+   "saldo": 119,
+   "saldo_acumulado": 3013
+  },
+  {
+   "competencia": 202509,
+   "rotulo": "09/25",
+   "admissoes": 676,
+   "desligamentos": 739,
+   "saldo": -63,
+   "saldo_acumulado": 2950
+  },
+  {
+   "competencia": 202510,
+   "rotulo": "10/25",
+   "admissoes": 931,
+   "desligamentos": 756,
+   "saldo": 175,
+   "saldo_acumulado": 3125
+  },
+  {
+   "competencia": 202511,
+   "rotulo": "11/25",
+   "admissoes": 892,
+   "desligamentos": 684,
+   "saldo": 208,
+   "saldo_acumulado": 3333
+  },
+  {
+   "competencia": 202512,
+   "rotulo": "12/25",
+   "admissoes": 570,
+   "desligamentos": 832,
+   "saldo": -262,
+   "saldo_acumulado": 3071
+  },
+  {
+   "competencia": 202601,
+   "rotulo": "01/26",
+   "admissoes": 819,
+   "desligamentos": 876,
+   "saldo": -57,
+   "saldo_acumulado": 3014
+  },
+  {
+   "competencia": 202602,
+   "rotulo": "02/26",
+   "admissoes": 974,
+   "desligamentos": 797,
+   "saldo": 177,
+   "saldo_acumulado": 3191
+  },
+  {
+   "competencia": 202603,
+   "rotulo": "03/26",
+   "admissoes": 989,
+   "desligamentos": 926,
+   "saldo": 63,
+   "saldo_acumulado": 3254
+  },
+  {
+   "competencia": 202604,
+   "rotulo": "04/26",
+   "admissoes": 769,
+   "desligamentos": 1020,
+   "saldo": -251,
+   "saldo_acumulado": 3003
+  },
+  {
+   "competencia": 202605,
+   "rotulo": "05/26",
+   "admissoes": 709,
+   "desligamentos": 937,
+   "saldo": -228,
+   "saldo_acumulado": 2775
+  },
+  {
+   "competencia": 202606,
+   "rotulo": "06/26",
+   "admissoes": 746,
+   "desligamentos": 733,
+   "saldo": 13,
+   "saldo_acumulado": 2788
+  }
+ ]
+}

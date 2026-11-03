@@ -1,0 +1,117 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "queimadas_inpe_serie_anual",
+ "substitui": "queimadas_inpe_2010-2025_anual",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "CA06"
+ ],
+ "titulo": "Focos de queimada por ano",
+ "fonte_curta": "INPE/BDQUEIMADAS",
+ "fonte": "INPE, BDQueimadas, focos de calor de todos os satélites dentro do limite municipal",
+ "unidade_espacial": "município",
+ "unidade_medida": "focos",
+ "periodo": {
+  "inicio": "2010",
+  "fim": "2025"
+ },
+ "dados_ate": "2025-12-31",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "todos os satélites, não só o de referência"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-03T16:33:05Z",
+ "script": "scripts/paineis/dados_clima.py",
+ "colunas": [
+  {
+   "nome": "ano",
+   "tipo": "int"
+  },
+  {
+   "nome": "focos",
+   "tipo": "int"
+  }
+ ],
+ "fonte_rodape": "Focos de queimada — INPE/BDQUEIMADAS",
+ "telas": [
+  "clima"
+ ],
+ "dados": [
+  {
+   "ano": 2010,
+   "focos": 18
+  },
+  {
+   "ano": 2011,
+   "focos": 18
+  },
+  {
+   "ano": 2012,
+   "focos": 57
+  },
+  {
+   "ano": 2013,
+   "focos": 60
+  },
+  {
+   "ano": 2014,
+   "focos": 53
+  },
+  {
+   "ano": 2015,
+   "focos": 66
+  },
+  {
+   "ano": 2016,
+   "focos": 37
+  },
+  {
+   "ano": 2017,
+   "focos": 66
+  },
+  {
+   "ano": 2018,
+   "focos": 63
+  },
+  {
+   "ano": 2019,
+   "focos": 147
+  },
+  {
+   "ano": 2020,
+   "focos": 391
+  },
+  {
+   "ano": 2021,
+   "focos": 315
+  },
+  {
+   "ano": 2022,
+   "focos": 404
+  },
+  {
+   "ano": 2023,
+   "focos": 138
+  },
+  {
+   "ano": 2024,
+   "focos": 85
+  },
+  {
+   "ano": 2025,
+   "focos": 311
+  }
+ ]
+}

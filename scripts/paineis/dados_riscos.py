@@ -36,11 +36,22 @@ from comum import br  # noqa: E402
 
 RAIZ = comum.RAIZ
 SCRIPT = "scripts/paineis/dados_riscos.py"
+
+
+def _recente(pasta: Path, padrao: str) -> Path:
+    """Bruto de coleta mais recente (comum.bruto_mais_recente); sem nenhum, o caminho do padrão (falha na leitura)."""
+    try:
+        return comum.bruto_mais_recente(pasta, padrao)
+    except ValueError:
+        return pasta / padrao
+
+
+_S2ID = _recente(RAIZ / "data/processed", "desastres_s2id_*_municipal.csv")
 E = {
-    "s2id": RAIZ / "data/processed/desastres_s2id_2013-2026_municipal.csv",
-    "s2id_meta": RAIZ / "data/processed/desastres_s2id_2013-2026_municipal.json",
+    "s2id": _S2ID,
+    "s2id_meta": _S2ID.with_suffix(".json"),
     "cprm": RAIZ / "data/raw/vetor/risco-geologico_cprm_2021_vetorial.json",
-    "aneel": RAIZ / "data/raw/continuidade-energia_aneel_2000-2026_conjunto-consumidor.csv",
+    "aneel": _recente(RAIZ / "data/raw", "continuidade-energia_aneel_*_conjunto-consumidor.csv"),
     "setor": RAIZ / "data/raw/vetor/setorizacao-risco_sgb_atual_vetorial.geojson",
     "bater": RAIZ / "data/raw/vetor/populacao-areas-de-risco_ibge_2018_bater.zip",
     "snis": RAIZ / "data/raw/saneamento_snis_indisponivel.json",
@@ -192,11 +203,9 @@ def notas_kpis(s_l, s_x, c_l, c_t, a_l, distrib):
 
 
 def ids(codigo_ibge: str = "4322400") -> dict[str, str]:
-    s_l, _ = s2id()
-    a_l, _ = aneel()
-    _, ano_setor = setorizacao()
-    return {"s2id": f"desastres_s2id_{s_l[0]['ano']}-{s_l[-1]['ano']}_anual", "cprm": "risco-geologico_cprm_2021_classe",
-            "aneel": f"energia_aneel_{a_l[0]['ano']}-{a_l[-1]['ano']}_anual", "setor": f"setorizacao-risco_sgb_{ano_setor}_setor",
+    """Ids estáveis (convenção de comum.py). CPRM 2021, setorização 2014 e BATER 2018 são edições fixas da fonte."""
+    return {"s2id": "desastres_s2id_serie_anual", "cprm": "risco-geologico_cprm_2021_classe",
+            "aneel": "energia_aneel_serie_anual", "setor": "setorizacao-risco_sgb_2014_setor",
             "bater": "areas-de-risco_ibge_2018_bater", "indisp": "infraestrutura_indisponivel_atual"}
 
 
@@ -266,14 +275,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
     return out
 
 
-def _produtos() -> list[str]:
-    try:
-        return list(ids().values())
-    except (OSError, ValueError, KeyError):
-        return []
-
-
-PRODUTOS = _produtos()
+PRODUTOS = list(ids().values())
 
 
 def main() -> int:

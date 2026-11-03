@@ -4,17 +4,17 @@ Produtos do painel de clima em data/paineis/ (esquema climapampa-painel/1).
 Lê os mesmos arquivos que alimentavam o painel até a rodada 109:
     - temperatura, calor e geada: série horária INMET (estação automática),
       data/raw/clima_inmet_historico-completo_horario.parquet;
-    - focos de queimada: data/raw/focos-queimada_inpe_2010-2025_pontual.csv;
-    - nível e vazão do rio: data/raw/nivel-rio_ana_exemplo-consulta.csv
-      (amostra de 2 dias da telemetria; a série longa é outra etapa);
-    - precipitação da tabela anual: produto do MERGE gerado por
+    - focos de queimada: data/raw/focos-queimada_inpe_*_pontual.csv;
+    - precipitação da tabela anual: data/processed/precipitacao_merge-inpe_*_mensal-anual.json, gerado por
       scripts/processamento/precipitacao_painel_clima.py.
+    Havendo mais de um arquivo que casa com o padrão, vale o de coleta mais recente (comum.bruto_mais_recente).
 
-Grava:
-    clima_inmet-<estacao>_<inicio>-<fim>_anual
-    queimadas_inpe_<inicio>-<fim>_anual
-    rio_ana-<estacao>_<inicio>-a-<fim>_15min
-    clima_tabela-anual_<inicio>-<fim>
+Grava (ids estáveis, sem período; período e dados_ate ficam dentro do JSON):
+    clima_inmet-<estacao>_serie_anual
+    queimadas_inpe_serie_anual
+    clima_tabela_serie_anual
+A amostra de 2 dias do rio (rio_ana-77150000_2026-08-06-a-2026-08-07_15min) deixou de ser gerada na rodada 120:
+nenhuma tela a lia; a série do rio é de scripts/paineis/dados_rio.py.
 
 Decisões (as mesmas do painel publicado; os números são conferidos contra ele):
     - dia e ano em UTC, como vêm da estação;
@@ -46,9 +46,10 @@ import comum  # noqa: E402
 
 RAIZ = comum.RAIZ
 ENTRADA_ESTACAO = RAIZ / "data/raw/clima_inmet_historico-completo_horario.parquet"
-ENTRADA_QUEIMADAS = RAIZ / "data/raw/focos-queimada_inpe_2010-2025_pontual.csv"
-ENTRADA_RIO = RAIZ / "data/raw/nivel-rio_ana_exemplo-consulta.csv"
-ENTRADA_PRECIP = RAIZ / "data/processed/precipitacao_merge-inpe_2010-2025_mensal-anual.json"
+PADRAO_QUEIMADAS = "focos-queimada_inpe_*_pontual.csv"
+PADRAO_PRECIP = "precipitacao_merge-inpe_*_mensal-anual.json"
+# estação do INMET no id (minúscula); o gerador confere que o arquivo é desta estação
+ESTACAO_INMET = "A809"
 SCRIPT = "scripts/paineis/dados_clima.py"
 LIMIAR_HORAS_VALIDAS = 90.0
 LIMIAR_CALOR_C = 35.0
@@ -61,6 +62,14 @@ def _fmt_pct(v: float) -> str:
 
 # ---------------------------------------------------------------- leitura
 
+def entrada_queimadas() -> Path:
+    return comum.bruto_mais_recente(RAIZ / "data/raw", PADRAO_QUEIMADAS)
+
+
+def entrada_precip() -> Path:
+    return comum.bruto_mais_recente(RAIZ / "data/processed", PADRAO_PRECIP)
+
+
 def ler_estacao() -> pd.DataFrame:
     df = pd.read_parquet(ENTRADA_ESTACAO, columns=["codigo_estacao", "datetime_utc", "temp_ar_c", "temp_max_c", "temp_min_c"])
     df["dt"] = pd.to_datetime(df["datetime_utc"], utc=True)
@@ -70,27 +79,12 @@ def ler_estacao() -> pd.DataFrame:
     return df
 
 
-def ler_rio() -> pd.DataFrame:
-    df = pd.read_csv(ENTRADA_RIO, dtype={"codigo_estacao": str}).sort_values("data_hora_utc").reset_index(drop=True)
-    if df["codigo_estacao"].nunique() != 1:
-        raise ValueError("esperada uma estação no arquivo do rio")
-    if df["data_hora_utc"].duplicated().any():
-        raise ValueError("leituras repetidas no arquivo do rio")
-    return df
-
-
 def ids(codigo_ibge: str = "4322400") -> dict[str, str]:
-    """Ids dos produtos, a partir dos próprios dados (período e estação)."""
-    est = ler_estacao()
-    anos = anos_completos(est)
-    q = pd.DataFrame(calcular_queimadas(codigo_ibge))
-    rio = ler_rio()
-    cod = str(est["codigo_estacao"].iloc[0]).lower()
+    """Ids estáveis dos produtos (convenção {tema}_{fonte}_{serie|atual}_{resolucao}, ver comum.py)."""
     return {
-        "anual": f"clima_inmet-{cod}_{anos[0]}-{anos[-1]}_anual",
-        "queimadas": f"queimadas_inpe_{int(q.ano.min())}-{int(q.ano.max())}_anual",
-        "rio": f"rio_ana-{rio.codigo_estacao.iloc[0]}_{rio.data_hora_utc.iloc[0][:10]}-a-{rio.data_hora_utc.iloc[-1][:10]}_15min",
-        "tabela": f"clima_tabela-anual_{anos[0]}-{anos[-1]}",
+        "anual": f"clima_inmet-{ESTACAO_INMET.lower()}_serie_anual",
+        "queimadas": "queimadas_inpe_serie_anual",
+        "tabela": "clima_tabela_serie_anual",
     }
 
 
@@ -136,7 +130,7 @@ def calcular_anual(df: pd.DataFrame) -> tuple[list[dict], list[dict], str]:
 
 
 def calcular_queimadas(codigo_ibge: str) -> list[dict]:
-    q = pd.read_csv(ENTRADA_QUEIMADAS, usecols=["codigo_ibge", "ano"], dtype={"codigo_ibge": str})
+    q = pd.read_csv(entrada_queimadas(), usecols=["codigo_ibge", "ano"], dtype={"codigo_ibge": str})
     q = q[q["codigo_ibge"] == codigo_ibge]
     if q.empty:
         raise ValueError(f"sem focos de queimada para o código IBGE {codigo_ibge}")
@@ -149,6 +143,8 @@ def calcular_queimadas(codigo_ibge: str) -> list[dict]:
 def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = None) -> dict[str, bool]:
     est = ler_estacao()
     cod_est = str(est["codigo_estacao"].iloc[0])
+    if cod_est.upper() != ESTACAO_INMET:
+        raise ValueError(f"arquivo do INMET é da estação {cod_est}, esperada {ESTACAO_INMET}")
     nome_est = f"INMET {cod_est}"
     fonte_inmet = f"INMET, estação automática {cod_est} (portal de dados históricos), série horária"
     rodape_inmet = f"Temperatura — INMET, estação automática {cod_est} (portal de dados históricos)"
@@ -184,30 +180,10 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
             avisos=[{"tipo": "metodo", "texto": "todos os satélites, não só o de referência"}],
             colunas=[{"nome": "ano", "tipo": "int"}, {"nome": "focos", "tipo": "int"}],
             dados=queim, script=SCRIPT, extras={"fonte_rodape": "Focos de queimada — INPE/BDQUEIMADAS", "telas": ["clima"]})
-        out[p["id"]] = comum.gravar_produto(p, transformacao="contagem de focos por ano", entradas=[ENTRADA_QUEIMADAS], forcar=forcar)
-
-    rio = ler_rio()
-    cod_rio = rio["codigo_estacao"].iloc[0]
-    if not so or so == nomes["rio"]:
-        dados_rio = [{"data_hora_utc": r.data_hora_utc, "nivel_cm": float(r.nivel_cm), "vazao_m3s": float(r.vazao_m3s)}
-                     for r in rio.itertuples()]
-        p = comum.montar_produto(
-            id=nomes["rio"], codigo_ibge=codigo_ibge, ativos=["IN04"],
-            titulo="Nível e vazão do rio, leituras de 15 em 15 minutos (amostra)", fonte_curta=f"ANA {cod_rio}",
-            fonte=f"ANA, estação telemétrica {cod_rio} (operada por SGB-CPRM)",
-            unidade_espacial="estação", unidade_medida="cm; m³/s",
-            periodo={"inicio": dados_rio[0]["data_hora_utc"], "fim": dados_rio[-1]["data_hora_utc"]},
-            dados_ate=dados_rio[-1]["data_hora_utc"], selo="conferido",
-            avisos=[{"tipo": "parcial", "texto": "amostra recente de exemplo, não um histórico longo"}],
-            colunas=[{"nome": "data_hora_utc", "tipo": "texto"}, {"nome": "nivel_cm", "tipo": "float", "casas": 0},
-                     {"nome": "vazao_m3s", "tipo": "float", "casas": 2}],
-            dados=dados_rio, script=SCRIPT,
-            extras={"fonte_rodape": f"Nível e vazão do rio — ANA, estação telemétrica {cod_rio} (operada por SGB-CPRM)", "telas": ["clima"]})
-        out[p["id"]] = comum.gravar_produto(p, transformacao="leituras ordenadas por data e hora (UTC), sem agregação",
-                                            entradas=[ENTRADA_RIO], forcar=forcar)
+        out[p["id"]] = comum.gravar_produto(p, transformacao="contagem de focos por ano", entradas=[entrada_queimadas()], forcar=forcar)
 
     if not so or so == nomes["tabela"]:
-        precip = {a["ano"]: a["merge_mm"] for a in json.loads(ENTRADA_PRECIP.read_text(encoding="utf-8"))["anual"]}
+        precip = {a["ano"]: a["merge_mm"] for a in json.loads(entrada_precip().read_text(encoding="utf-8"))["anual"]}
         focos = {q["ano"]: q["focos"] for q in queim}
         nota_ano = {a["onde"]["ano"]: a["tipo"] for a in avisos_anual if "ano" in a.get("onde", {})}
         tabela = [{"ano": r["ano"], "precipitacao_merge_mm": precip.get(r["ano"]),
@@ -231,18 +207,11 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
         out[p["id"]] = comum.gravar_produto(
             p, transformacao="junção por ano dos produtos anual da estação, precipitação do MERGE e focos de queimada; "
                              "nota = tipo do aviso do ano (parcial ou lacuna)",
-            entradas=[ENTRADA_ESTACAO, ENTRADA_PRECIP, ENTRADA_QUEIMADAS], forcar=forcar)
+            entradas=[ENTRADA_ESTACAO, entrada_precip(), entrada_queimadas()], forcar=forcar)
     return out
 
 
-def _produtos() -> list[str]:
-    try:
-        return list(ids().values())
-    except (OSError, ValueError):
-        return []
-
-
-PRODUTOS = _produtos()
+PRODUTOS = list(ids().values())
 
 
 def main() -> int:

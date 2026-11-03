@@ -1,0 +1,473 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "agropecuaria_ibge_serie_anual",
+ "substitui": "agropecuaria_ibge_1974-2024_anual",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "EV02"
+ ],
+ "titulo": "Área colhida (arroz, soja) e efetivo de rebanho (bovino, ovino)",
+ "fonte_curta": "IBGE PAM/PPM",
+ "fonte": "IBGE, PAM (tabela 5457) e PPM (tabela 3939)",
+ "unidade_espacial": "município",
+ "unidade_medida": "hectares; cabeças",
+ "periodo": {
+  "inicio": "1974",
+  "fim": "2024"
+ },
+ "dados_ate": "2024",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-03T16:33:06Z",
+ "script": "scripts/paineis/dados_economia.py",
+ "colunas": [
+  {
+   "nome": "ano",
+   "tipo": "int"
+  },
+  {
+   "nome": "arroz_area_colhida_ha",
+   "tipo": "float"
+  },
+  {
+   "nome": "soja_area_colhida_ha",
+   "tipo": "float"
+  },
+  {
+   "nome": "area_colhida_total_ha",
+   "tipo": "float"
+  },
+  {
+   "nome": "bovino_cabecas",
+   "tipo": "int"
+  },
+  {
+   "nome": "ovino_cabecas",
+   "tipo": "int"
+  }
+ ],
+ "fonte_rodape": "Produção agrícola e efetivo de rebanho — IBGE/SIDRA, PAM (tabela 5457) e PPM (tabela 3939)",
+ "telas": [
+  "economia"
+ ],
+ "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município",
+ "dados": [
+  {
+   "ano": 1974,
+   "arroz_area_colhida_ha": 24743.0,
+   "soja_area_colhida_ha": 3000.0,
+   "area_colhida_total_ha": 34684.0,
+   "bovino_cabecas": 394909,
+   "ovino_cabecas": 1432802
+  },
+  {
+   "ano": 1975,
+   "arroz_area_colhida_ha": 27353.0,
+   "soja_area_colhida_ha": 3000.0,
+   "area_colhida_total_ha": 34505.0,
+   "bovino_cabecas": 392659,
+   "ovino_cabecas": 1296471
+  },
+  {
+   "ano": 1976,
+   "arroz_area_colhida_ha": 34589.0,
+   "soja_area_colhida_ha": 2000.0,
+   "area_colhida_total_ha": 44078.0,
+   "bovino_cabecas": 397561,
+   "ovino_cabecas": 1275951
+  },
+  {
+   "ano": 1977,
+   "arroz_area_colhida_ha": 40000.0,
+   "soja_area_colhida_ha": 3100.0,
+   "area_colhida_total_ha": 51599.0,
+   "bovino_cabecas": 401014,
+   "ovino_cabecas": 1250431
+  },
+  {
+   "ano": 1978,
+   "arroz_area_colhida_ha": 36400.0,
+   "soja_area_colhida_ha": 12000.0,
+   "area_colhida_total_ha": 56003.0,
+   "bovino_cabecas": 333404,
+   "ovino_cabecas": 1040160
+  },
+  {
+   "ano": 1979,
+   "arroz_area_colhida_ha": 47716.0,
+   "soja_area_colhida_ha": 14000.0,
+   "area_colhida_total_ha": 71928.0,
+   "bovino_cabecas": 348676,
+   "ovino_cabecas": 1040160
+  },
+  {
+   "ano": 1980,
+   "arroz_area_colhida_ha": 53000.0,
+   "soja_area_colhida_ha": 11000.0,
+   "area_colhida_total_ha": 67244.0,
+   "bovino_cabecas": 418600,
+   "ovino_cabecas": 1002294
+  },
+  {
+   "ano": 1981,
+   "arroz_area_colhida_ha": 51930.0,
+   "soja_area_colhida_ha": 8700.0,
+   "area_colhida_total_ha": 64053.0,
+   "bovino_cabecas": 424345,
+   "ovino_cabecas": 1010735
+  },
+  {
+   "ano": 1982,
+   "arroz_area_colhida_ha": 56540.0,
+   "soja_area_colhida_ha": 3000.0,
+   "area_colhida_total_ha": 61590.0,
+   "bovino_cabecas": 426654,
+   "ovino_cabecas": 996641
+  },
+  {
+   "ano": 1983,
+   "arroz_area_colhida_ha": 56070.0,
+   "soja_area_colhida_ha": 1936.0,
+   "area_colhida_total_ha": 58811.0,
+   "bovino_cabecas": 404792,
+   "ovino_cabecas": 895719
+  },
+  {
+   "ano": 1984,
+   "arroz_area_colhida_ha": 71616.0,
+   "soja_area_colhida_ha": 1500.0,
+   "area_colhida_total_ha": 73712.0,
+   "bovino_cabecas": 416912,
+   "ovino_cabecas": 872495
+  },
+  {
+   "ano": 1985,
+   "arroz_area_colhida_ha": 71000.0,
+   "soja_area_colhida_ha": 1000.0,
+   "area_colhida_total_ha": 72781.0,
+   "bovino_cabecas": 402113,
+   "ovino_cabecas": 783448
+  },
+  {
+   "ano": 1986,
+   "arroz_area_colhida_ha": 83000.0,
+   "soja_area_colhida_ha": 800.0,
+   "area_colhida_total_ha": 84931.0,
+   "bovino_cabecas": 424000,
+   "ovino_cabecas": 870610
+  },
+  {
+   "ano": 1987,
+   "arroz_area_colhida_ha": 87000.0,
+   "soja_area_colhida_ha": 800.0,
+   "area_colhida_total_ha": 89289.0,
+   "bovino_cabecas": 410046,
+   "ovino_cabecas": 970000
+  },
+  {
+   "ano": 1988,
+   "arroz_area_colhida_ha": 85000.0,
+   "soja_area_colhida_ha": 0.0,
+   "area_colhida_total_ha": 86284.0,
+   "bovino_cabecas": 412230,
+   "ovino_cabecas": 975100
+  },
+  {
+   "ano": 1989,
+   "arroz_area_colhida_ha": 71168.0,
+   "soja_area_colhida_ha": 1560.0,
+   "area_colhida_total_ha": 74124.0,
+   "bovino_cabecas": 477238,
+   "ovino_cabecas": 996780
+  },
+  {
+   "ano": 1990,
+   "arroz_area_colhida_ha": 47700.0,
+   "soja_area_colhida_ha": 800.0,
+   "area_colhida_total_ha": 50396.0,
+   "bovino_cabecas": 445000,
+   "ovino_cabecas": 840000
+  },
+  {
+   "ano": 1991,
+   "arroz_area_colhida_ha": 81000.0,
+   "soja_area_colhida_ha": 50.0,
+   "area_colhida_total_ha": 82049.0,
+   "bovino_cabecas": 438000,
+   "ovino_cabecas": 808900
+  },
+  {
+   "ano": 1992,
+   "arroz_area_colhida_ha": 93000.0,
+   "soja_area_colhida_ha": 0.0,
+   "area_colhida_total_ha": 93908.0,
+   "bovino_cabecas": 420000,
+   "ovino_cabecas": 720000
+  },
+  {
+   "ano": 1993,
+   "arroz_area_colhida_ha": 98000.0,
+   "soja_area_colhida_ha": 0.0,
+   "area_colhida_total_ha": 98946.0,
+   "bovino_cabecas": 410000,
+   "ovino_cabecas": 610000
+  },
+  {
+   "ano": 1994,
+   "arroz_area_colhida_ha": 93000.0,
+   "soja_area_colhida_ha": 0.0,
+   "area_colhida_total_ha": 93973.0,
+   "bovino_cabecas": 354735,
+   "ovino_cabecas": 583321
+  },
+  {
+   "ano": 1995,
+   "arroz_area_colhida_ha": 89280.0,
+   "soja_area_colhida_ha": 80.0,
+   "area_colhida_total_ha": 90421.0,
+   "bovino_cabecas": 376520,
+   "ovino_cabecas": 402628
+  },
+  {
+   "ano": 1996,
+   "arroz_area_colhida_ha": 70000.0,
+   "soja_area_colhida_ha": 0.0,
+   "area_colhida_total_ha": 70328.0,
+   "bovino_cabecas": 393509,
+   "ovino_cabecas": 342328
+  },
+  {
+   "ano": 1997,
+   "arroz_area_colhida_ha": 40000.0,
+   "soja_area_colhida_ha": 0.0,
+   "area_colhida_total_ha": 40382.0,
+   "bovino_cabecas": 331600,
+   "ovino_cabecas": 330993
+  },
+  {
+   "ano": 1998,
+   "arroz_area_colhida_ha": 57500.0,
+   "soja_area_colhida_ha": 330.0,
+   "area_colhida_total_ha": 58083.0,
+   "bovino_cabecas": 374553,
+   "ovino_cabecas": 305840
+  },
+  {
+   "ano": 1999,
+   "arroz_area_colhida_ha": 72100.0,
+   "soja_area_colhida_ha": 160.0,
+   "area_colhida_total_ha": 72713.0,
+   "bovino_cabecas": 329606,
+   "ovino_cabecas": 276975
+  },
+  {
+   "ano": 2000,
+   "arroz_area_colhida_ha": 53627.0,
+   "soja_area_colhida_ha": 0.0,
+   "area_colhida_total_ha": 54124.0,
+   "bovino_cabecas": 307522,
+   "ovino_cabecas": 290824
+  },
+  {
+   "ano": 2001,
+   "arroz_area_colhida_ha": 66200.0,
+   "soja_area_colhida_ha": 100.0,
+   "area_colhida_total_ha": 70052.0,
+   "bovino_cabecas": 341147,
+   "ovino_cabecas": 238470
+  },
+  {
+   "ano": 2002,
+   "arroz_area_colhida_ha": 71580.0,
+   "soja_area_colhida_ha": 0.0,
+   "area_colhida_total_ha": 74807.0,
+   "bovino_cabecas": 346048,
+   "ovino_cabecas": 209922
+  },
+  {
+   "ano": 2003,
+   "arroz_area_colhida_ha": 71580.0,
+   "soja_area_colhida_ha": 400.0,
+   "area_colhida_total_ha": 73068.0,
+   "bovino_cabecas": 379892,
+   "ovino_cabecas": 230453
+  },
+  {
+   "ano": 2004,
+   "arroz_area_colhida_ha": 72267.0,
+   "soja_area_colhida_ha": 600.0,
+   "area_colhida_total_ha": 73807.0,
+   "bovino_cabecas": 389390,
+   "ovino_cabecas": 238519
+  },
+  {
+   "ano": 2005,
+   "arroz_area_colhida_ha": 62000.0,
+   "soja_area_colhida_ha": 800.0,
+   "area_colhida_total_ha": 63580.0,
+   "bovino_cabecas": 368646,
+   "ovino_cabecas": 170159
+  },
+  {
+   "ano": 2006,
+   "arroz_area_colhida_ha": 71124.0,
+   "soja_area_colhida_ha": 600.0,
+   "area_colhida_total_ha": 72849.0,
+   "bovino_cabecas": 346231,
+   "ovino_cabecas": 184100
+  },
+  {
+   "ano": 2007,
+   "arroz_area_colhida_ha": 58095.0,
+   "soja_area_colhida_ha": 633.0,
+   "area_colhida_total_ha": 59362.0,
+   "bovino_cabecas": 330442,
+   "ovino_cabecas": 173048
+  },
+  {
+   "ano": 2008,
+   "arroz_area_colhida_ha": 79853.0,
+   "soja_area_colhida_ha": 370.0,
+   "area_colhida_total_ha": 80875.0,
+   "bovino_cabecas": 355868,
+   "ovino_cabecas": 190362
+  },
+  {
+   "ano": 2009,
+   "arroz_area_colhida_ha": 82700.0,
+   "soja_area_colhida_ha": 85.0,
+   "area_colhida_total_ha": 83122.0,
+   "bovino_cabecas": 357024,
+   "ovino_cabecas": 180407
+  },
+  {
+   "ano": 2010,
+   "arroz_area_colhida_ha": 68750.0,
+   "soja_area_colhida_ha": 0.0,
+   "area_colhida_total_ha": 68977.0,
+   "bovino_cabecas": 349452,
+   "ovino_cabecas": 179582
+  },
+  {
+   "ano": 2011,
+   "arroz_area_colhida_ha": 84400.0,
+   "soja_area_colhida_ha": 0.0,
+   "area_colhida_total_ha": 84637.0,
+   "bovino_cabecas": 345713,
+   "ovino_cabecas": 185057
+  },
+  {
+   "ano": 2012,
+   "arroz_area_colhida_ha": 70900.0,
+   "soja_area_colhida_ha": 750.0,
+   "area_colhida_total_ha": 71906.0,
+   "bovino_cabecas": 351276,
+   "ovino_cabecas": 192180
+  },
+  {
+   "ano": 2013,
+   "arroz_area_colhida_ha": 81414.0,
+   "soja_area_colhida_ha": 850.0,
+   "area_colhida_total_ha": 82515.0,
+   "bovino_cabecas": 355799,
+   "ovino_cabecas": 206105
+  },
+  {
+   "ano": 2014,
+   "arroz_area_colhida_ha": 82748.0,
+   "soja_area_colhida_ha": 1000.0,
+   "area_colhida_total_ha": 84005.0,
+   "bovino_cabecas": 353054,
+   "ovino_cabecas": 211189
+  },
+  {
+   "ano": 2015,
+   "arroz_area_colhida_ha": 84081.0,
+   "soja_area_colhida_ha": 936.0,
+   "area_colhida_total_ha": 85265.0,
+   "bovino_cabecas": 368761,
+   "ovino_cabecas": 205376
+  },
+  {
+   "ano": 2016,
+   "arroz_area_colhida_ha": 81353.0,
+   "soja_area_colhida_ha": 747.0,
+   "area_colhida_total_ha": 82274.0,
+   "bovino_cabecas": 370745,
+   "ovino_cabecas": 185729
+  },
+  {
+   "ano": 2017,
+   "arroz_area_colhida_ha": 81555.0,
+   "soja_area_colhida_ha": 1000.0,
+   "area_colhida_total_ha": 82746.0,
+   "bovino_cabecas": 354000,
+   "ovino_cabecas": 173566
+  },
+  {
+   "ano": 2018,
+   "arroz_area_colhida_ha": 81235.0,
+   "soja_area_colhida_ha": 916.0,
+   "area_colhida_total_ha": 82332.0,
+   "bovino_cabecas": 353075,
+   "ovino_cabecas": 164723
+  },
+  {
+   "ano": 2019,
+   "arroz_area_colhida_ha": 73308.0,
+   "soja_area_colhida_ha": 2872.0,
+   "area_colhida_total_ha": 76460.0,
+   "bovino_cabecas": 356101,
+   "ovino_cabecas": 152560
+  },
+  {
+   "ano": 2020,
+   "arroz_area_colhida_ha": 75000.0,
+   "soja_area_colhida_ha": 1312.0,
+   "area_colhida_total_ha": 76569.0,
+   "bovino_cabecas": 309337,
+   "ovino_cabecas": 141864
+  },
+  {
+   "ano": 2021,
+   "arroz_area_colhida_ha": 75760.0,
+   "soja_area_colhida_ha": 2427.0,
+   "area_colhida_total_ha": 78449.0,
+   "bovino_cabecas": 324526,
+   "ovino_cabecas": 149164
+  },
+  {
+   "ano": 2022,
+   "arroz_area_colhida_ha": 72785.0,
+   "soja_area_colhida_ha": 4728.0,
+   "area_colhida_total_ha": 77804.0,
+   "bovino_cabecas": 363453,
+   "ovino_cabecas": 166533
+  },
+  {
+   "ano": 2023,
+   "arroz_area_colhida_ha": 63106.0,
+   "soja_area_colhida_ha": 6500.0,
+   "area_colhida_total_ha": 70319.0,
+   "bovino_cabecas": 368169,
+   "ovino_cabecas": 161258
+  },
+  {
+   "ano": 2024,
+   "arroz_area_colhida_ha": 70825.0,
+   "soja_area_colhida_ha": 4100.0,
+   "area_colhida_total_ha": 75608.0,
+   "bovino_cabecas": 365849,
+   "ovino_cabecas": 137773
+  }
+ ]
+}

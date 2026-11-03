@@ -1,0 +1,23 @@
+{
+  "produto": "energia_aneel_serie_anual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "ANEEL, indicadores de continuidade da distribuidora RGE SUL",
+  "transformacao_aplicada": "por mês, média de DEC e FEC ponderada por NumCon dos conjuntos; soma dos meses no ano",
+  "entradas": [
+    {
+      "arquivo": "data/raw/continuidade-energia_aneel_2000-2026_conjunto-consumidor.csv",
+      "sha256": "7fa095ca2a4030980472c394e09eb431e72170f96f26c29193c2dfd2190dc2bc",
+      "bytes": 438328
+    }
+  ],
+  "script": "scripts/paineis/dados_riscos.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "IF01"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T16:33:06Z",
+  "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)"
+}

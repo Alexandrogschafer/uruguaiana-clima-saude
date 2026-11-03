@@ -210,9 +210,9 @@ def notas_kpis(anos, serie, classes, meio, poc_l, poc_r, app_l, app_r):
 
 
 def ids() -> dict[str, str]:
-    anos, _, _ = uso()
-    return {"serie": f"uso-solo_mapbiomas_{anos[0]}-{anos[-1]}_classes", "classes": f"uso-solo_mapbiomas_{anos[-1]}_todas-classes",
-            "meio": "meio-fisico_ibge-bdia_atual_classes", "pocos": "pocos_siagas_atual_aquifero", "app": "app-hidrica_ana-bho-mapbiomas_2024_curso",
+    """Ids estáveis (convenção de comum.py); áreas urbanizadas 2019 é edição fixa da fonte."""
+    return {"serie": "uso-solo_mapbiomas_serie_classes", "classes": "uso-solo_mapbiomas_atual_todas-classes",
+            "meio": "meio-fisico_ibge-bdia_atual_classes", "pocos": "pocos_siagas_atual_aquifero", "app": "app-hidrica_ana-bho-mapbiomas_atual_curso",
             "urb": "areas-urbanizadas_ibge_2019_classe"}
 
 
@@ -275,14 +275,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
     return out
 
 
-def _produtos() -> list[str]:
-    try:
-        return list(ids().values())
-    except (OSError, ValueError):
-        return []
-
-
-PRODUTOS = _produtos()
+PRODUTOS = list(ids().values())
 
 
 def main() -> int:

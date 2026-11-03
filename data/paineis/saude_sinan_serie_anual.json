@@ -1,0 +1,203 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "saude_sinan_serie_anual",
+ "substitui": "saude_sinan_2010-2026_anual",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "SA04"
+ ],
+ "titulo": "Notificações de arboviroses por ano",
+ "fonte_curta": "SINAN/DATASUS",
+ "fonte": "SINAN (Sistema de Informação de Agravos de Notificação), DATASUS; todas as notificações (suspeitos, descartados e confirmados)",
+ "unidade_espacial": "município (residência)",
+ "unidade_medida": "notificações",
+ "periodo": {
+  "inicio": "2010",
+  "fim": "2026"
+ },
+ "dados_ate": "2026-08-02",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "preliminar",
+   "onde": {
+    "ano": 2026
+   },
+   "texto": "2026 preliminar: notificações até 02/08/2026, sujeitas a revisão e a notificação atrasada"
+  },
+  {
+   "tipo": "lacuna",
+   "onde": {
+    "inicio_serie": {
+     "chikungunya": 2014,
+     "zika": 2015
+    }
+   },
+   "texto": "chikungunya só tem arquivo próprio no SINAN a partir de 2014 e zika só tem arquivo próprio no SINAN a partir de 2015; antes disso não há série (—), o que não é contagem zero"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-03T16:33:05Z",
+ "script": "scripts/paineis/dados_saude.py",
+ "colunas": [
+  {
+   "nome": "ano",
+   "tipo": "int"
+  },
+  {
+   "nome": "preliminar",
+   "tipo": "bool"
+  },
+  {
+   "nome": "dengue",
+   "tipo": "int"
+  },
+  {
+   "nome": "chikungunya",
+   "tipo": "int"
+  },
+  {
+   "nome": "zika",
+   "tipo": "int"
+  }
+ ],
+ "fonte_rodape": "SIM, SINAN e SIH — DATASUS/Ministério da Saúde (FTP público, microdados individuais)",
+ "telas": [
+  "saude"
+ ],
+ "supressao_nota": "supressão primária não aplicada: série municipal anual oficial, de microdados públicos já divulgados pelo DATASUS; contagens pequenas são valores reais da fonte. A única série com contagens pequenas frequentes (óbitos por afogamento ou enchente) vai somada por quinquênio.",
+ "inicio_serie": {
+  "dengue": 2010,
+  "chikungunya": 2014,
+  "zika": 2015
+ },
+ "dados": [
+  {
+   "ano": 2010,
+   "preliminar": false,
+   "dengue": 0,
+   "chikungunya": null,
+   "zika": null
+  },
+  {
+   "ano": 2011,
+   "preliminar": false,
+   "dengue": 1,
+   "chikungunya": null,
+   "zika": null
+  },
+  {
+   "ano": 2012,
+   "preliminar": false,
+   "dengue": 0,
+   "chikungunya": null,
+   "zika": null
+  },
+  {
+   "ano": 2013,
+   "preliminar": false,
+   "dengue": 0,
+   "chikungunya": null,
+   "zika": null
+  },
+  {
+   "ano": 2014,
+   "preliminar": false,
+   "dengue": 1,
+   "chikungunya": 0,
+   "zika": null
+  },
+  {
+   "ano": 2015,
+   "preliminar": false,
+   "dengue": 2,
+   "chikungunya": 0,
+   "zika": 0
+  },
+  {
+   "ano": 2016,
+   "preliminar": false,
+   "dengue": 2,
+   "chikungunya": 0,
+   "zika": 1
+  },
+  {
+   "ano": 2017,
+   "preliminar": false,
+   "dengue": 0,
+   "chikungunya": 0,
+   "zika": 0
+  },
+  {
+   "ano": 2018,
+   "preliminar": false,
+   "dengue": 0,
+   "chikungunya": 0,
+   "zika": 0
+  },
+  {
+   "ano": 2019,
+   "preliminar": false,
+   "dengue": 4,
+   "chikungunya": 1,
+   "zika": 1
+  },
+  {
+   "ano": 2020,
+   "preliminar": false,
+   "dengue": 0,
+   "chikungunya": 0,
+   "zika": 0
+  },
+  {
+   "ano": 2021,
+   "preliminar": false,
+   "dengue": 3,
+   "chikungunya": 0,
+   "zika": 0
+  },
+  {
+   "ano": 2022,
+   "preliminar": false,
+   "dengue": 11,
+   "chikungunya": 0,
+   "zika": 0
+  },
+  {
+   "ano": 2023,
+   "preliminar": false,
+   "dengue": 37,
+   "chikungunya": 0,
+   "zika": 0
+  },
+  {
+   "ano": 2024,
+   "preliminar": false,
+   "dengue": 421,
+   "chikungunya": 4,
+   "zika": 0
+  },
+  {
+   "ano": 2025,
+   "preliminar": false,
+   "dengue": 71,
+   "chikungunya": 0,
+   "zika": 1
+  },
+  {
+   "ano": 2026,
+   "preliminar": true,
+   "dengue": 15,
+   "chikungunya": 0,
+   "zika": 0
+  }
+ ]
+}

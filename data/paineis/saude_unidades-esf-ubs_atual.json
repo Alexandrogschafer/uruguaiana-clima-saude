@@ -1,0 +1,313 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "saude_unidades-esf-ubs_atual",
+ "substitui": "saude_unidades-esf-ubs_2026",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "SA01",
+  "SA02"
+ ],
+ "titulo": "Unidades de saúde da atenção primária (ESF/UBS) e população informada",
+ "fonte_curta": "CNES revisado v4",
+ "fonte": "CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4 (2026)",
+ "unidade_espacial": "unidade de saúde",
+ "unidade_medida": "pessoas (população informada)",
+ "periodo": {
+  "inicio": "2017",
+  "fim": "2023"
+ },
+ "dados_ate": "2026",
+ "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
+ "selo": "em_confirmacao",
+ "avisos": [
+  {
+   "tipo": "em_confirmacao",
+   "texto": "Número informado pelos profissionais de saúde. O conceito (cadastrada, adscrita ou atendida) está em confirmação. Não somar nem comparar com o Censo."
+  },
+  {
+   "tipo": "metodo",
+   "texto": "Equipe de Saúde Prisional: sem classe, fora das comparações e sem números de população"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [
+   "populacao_informada_2017",
+   "populacao_informada_2023"
+  ],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-03T16:33:06Z",
+ "script": "scripts/paineis/dados_saude_unidades.py",
+ "colunas": [
+  {
+   "nome": "cnes",
+   "tipo": "texto"
+  },
+  {
+   "nome": "nome",
+   "tipo": "texto"
+  },
+  {
+   "nome": "classe",
+   "tipo": "texto",
+   "valores": [
+    "ESF",
+    "UBS",
+    "sem classe"
+   ]
+  },
+  {
+   "nome": "zona",
+   "tipo": "texto"
+  },
+  {
+   "nome": "bairro",
+   "tipo": "texto"
+  },
+  {
+   "nome": "fora_das_comparacoes",
+   "tipo": "bool"
+  },
+  {
+   "nome": "populacao_informada_2017",
+   "tipo": "int",
+   "contagem": true
+  },
+  {
+   "nome": "populacao_informada_2023",
+   "tipo": "int",
+   "contagem": true
+  }
+ ],
+ "fonte_rodape": "Unidades de saúde — CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4 (2026)",
+ "telas": [
+  "saude"
+ ],
+ "comparacao": false,
+ "dados": [
+  {
+   "cnes": "2247143",
+   "nome": "ESF 01 RUI RAMOS",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Rui Ramos",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 7812,
+   "populacao_informada_2023": 7935
+  },
+  {
+   "cnes": "2247119",
+   "nome": "ESF 02 MARDUQUE",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Mascarenhas de Moraes",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 4597,
+   "populacao_informada_2023": 7985
+  },
+  {
+   "cnes": "2247100",
+   "nome": "ESF 03 CIDADE NOVA",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Cidade Nova",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 4479,
+   "populacao_informada_2023": 4379
+  },
+  {
+   "cnes": "2247135",
+   "nome": "ESF 04 COHAB I",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Alexandre Zachia",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 4735,
+   "populacao_informada_2023": 5068
+  },
+  {
+   "cnes": "2247127",
+   "nome": "ESF 05 TARRAGO",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Francisca Tarragô",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 3463,
+   "populacao_informada_2023": 3749
+  },
+  {
+   "cnes": "2247232",
+   "nome": "ESF 06 SAO JOAO",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "São João",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 8669,
+   "populacao_informada_2023": 10202
+  },
+  {
+   "cnes": "6989357",
+   "nome": "ESF 07 UNIAO DAS VILAS",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "União das Vilas",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 7778,
+   "populacao_informada_2023": 6150
+  },
+  {
+   "cnes": "2247305",
+   "nome": "ESF 09 BARRAGEM SANCHURI",
+   "classe": "ESF",
+   "zona": "interior",
+   "bairro": null,
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 1150,
+   "populacao_informada_2023": 1505
+  },
+  {
+   "cnes": "2247240",
+   "nome": "ESF 14TABAJARA BRITES",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Tabajara Brites",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 5769,
+   "populacao_informada_2023": 5859
+  },
+  {
+   "cnes": "2247259",
+   "nome": "ESF 15 HIPICA I E II",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Jóquei Clube",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 5199,
+   "populacao_informada_2023": 8046
+  },
+  {
+   "cnes": "2247267",
+   "nome": "ESF 16 CIDADE ALEGRIA",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Cidade Alegria",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 6547,
+   "populacao_informada_2023": 4494
+  },
+  {
+   "cnes": "2247275",
+   "nome": "ESF 17 NOVA ESPERANCA",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Nova Esperança",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 7540,
+   "populacao_informada_2023": 7134
+  },
+  {
+   "cnes": "3938336",
+   "nome": "ESF 18 PROFILURB",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Vila Júlia",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 5052,
+   "populacao_informada_2023": 4820
+  },
+  {
+   "cnes": "7159366",
+   "nome": "ESF 19 JOAO PAULO II",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Tabajara Brites",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 3126,
+   "populacao_informada_2023": 3126
+  },
+  {
+   "cnes": "6989373",
+   "nome": "ESF 20 CAIC",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "União das Vilas",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 3908,
+   "populacao_informada_2023": 3610
+  },
+  {
+   "cnes": "7762682",
+   "nome": "ESF 21 CENTRO",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Centro",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 18533,
+   "populacao_informada_2023": 15000
+  },
+  {
+   "cnes": "9203400",
+   "nome": "ESF 22 CABO LUIS QUEVEDO",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Cabo Luiz Quevedo",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 7997,
+   "populacao_informada_2023": 6339
+  },
+  {
+   "cnes": "2896478",
+   "nome": "ESF 23 SANTO ANTONIO",
+   "classe": "ESF",
+   "zona": "urbana da sede",
+   "bairro": "Santo Antônio",
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": null,
+   "populacao_informada_2023": 9474
+  },
+  {
+   "cnes": "2247321",
+   "nome": "UNIDADE DE SAUDE SAO MARCOS 10",
+   "classe": "UBS",
+   "zona": "interior",
+   "bairro": null,
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 450,
+   "populacao_informada_2023": null
+  },
+  {
+   "cnes": "2247348",
+   "nome": "UNIDADE DE SAUDE JOAO ARREGUI 11",
+   "classe": "UBS",
+   "zona": "interior",
+   "bairro": null,
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 274,
+   "populacao_informada_2023": null
+  },
+  {
+   "cnes": "2247356",
+   "nome": "UNIDADE DE SAUDE PLANO ALTO 12",
+   "classe": "UBS",
+   "zona": "interior",
+   "bairro": null,
+   "fora_das_comparacoes": false,
+   "populacao_informada_2017": 327,
+   "populacao_informada_2023": null
+  },
+  {
+   "cnes": "4126947",
+   "nome": "EQUIPE DE SAUDE PRISIONAL DE URUGUAIANA",
+   "classe": "sem classe",
+   "zona": "interior",
+   "bairro": null,
+   "fora_das_comparacoes": true,
+   "populacao_informada_2017": null,
+   "populacao_informada_2023": null
+  }
+ ]
+}

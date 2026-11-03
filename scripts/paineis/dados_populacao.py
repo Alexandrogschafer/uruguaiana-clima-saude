@@ -11,10 +11,10 @@ a partir dos mesmos arquivos que alimentavam o painel de demografia:
       (pirâmides de 2000, 2010 e 2022)
 
 Grava:
-    populacao_ibge_<inicio>-<fim>_anual        população total, censo ou estimativa
-    demografia_ibge_<inicio>-<fim>_indicadores  crescimento, envelhecimento, dependência,
+    populacao_ibge_serie_anual                 população total, censo ou estimativa
+    demografia_ibge_serie_indicadores         crescimento, envelhecimento, dependência,
                                                urbano e rural, crianças 0-4, idosos 60+
-    demografia_ibge_<anos>_piramides           pirâmides etárias dos 3 censos com 80+ aberto (ativo PD14:
+    demografia_ibge_censos_piramides           pirâmides etárias dos 3 censos com 80+ aberto (ativo PD14:
                                                pirâmides etárias oficiais do IBGE, SIDRA 200 e 9514; o PD03, tabela
                                                do estudo de dinâmica populacional, segue pendente e fora das telas)
 
@@ -55,10 +55,8 @@ FONTE_RODAPE = ("IBGE — API SIDRA/Agregados, tabelas 200 (Censos 1970-2010, se
 
 
 def _um(pasta: Path, padrao: str) -> Path:
-    achados = sorted(pasta.glob(padrao))
-    if len(achados) != 1:
-        raise ValueError(f"esperado 1 arquivo {padrao}, há {len(achados)}")
-    return achados[0]
+    """Bruto de coleta mais recente entre os que casam com o padrão (comum.bruto_mais_recente)."""
+    return comum.bruto_mais_recente(pasta, padrao)
 
 
 def entradas() -> dict[str, Path]:
@@ -170,10 +168,9 @@ def notas_e_kpis(serie, ind) -> tuple[dict, list]:
 
 
 def ids(codigo_ibge: str = "4322400") -> dict[str, str]:
-    serie, ind, pir = calcular(entradas())
-    return {"serie": f"populacao_ibge_{serie[0]['ano']}-{serie[-1]['ano']}_anual",
-            "indicadores": f"demografia_ibge_{ind[0]['periodo']}-{ind[-1]['periodo']}_indicadores",
-            "piramides": f"demografia_ibge_{'-'.join(map(str, ANOS_PIRAMIDE))}_piramides"}
+    """Ids estáveis (convenção {tema}_{fonte}_{serie|atual}_{resolucao}, ver comum.py); o período fica no JSON."""
+    return {"serie": "populacao_ibge_serie_anual", "indicadores": "demografia_ibge_serie_indicadores",
+            "piramides": "demografia_ibge_censos_piramides"}
 
 
 def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = None) -> dict[str, bool]:
@@ -218,14 +215,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
     return out
 
 
-def _produtos() -> list[str]:
-    try:
-        return list(ids().values())
-    except (OSError, ValueError):
-        return []
-
-
-PRODUTOS = _produtos()
+PRODUTOS = list(ids().values())
 
 
 def main() -> int:

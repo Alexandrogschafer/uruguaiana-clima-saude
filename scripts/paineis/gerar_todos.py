@@ -6,41 +6,42 @@ uma função de entrada (codigo_ibge, forcar, so) -> {id: True se gravou | False
 Idempotente: sem --forcar, nada é regravado se entradas e conteúdo não mudaram.
 
 Uso:
-    python scripts/paineis/gerar_todos.py [--codigo-ibge 4322400] [--forcar] [--so <id-do-produto>]
+    python scripts/paineis/gerar_todos.py [--codigo-ibge 4322400] [--forcar] [--so <id-do-produto>] [--limpar]
+
+JSON órfão (que nenhum gerador declara em PRODUTOS, ex.: id antigo depois da troca para id estável) fica fora
+do manifesto; o script avisa e, com --limpar, move produto e metadado para data/paineis/_orfaos/ (pasta iniciada
+por "_", que o GitHub Pages no modo clássico, com Jekyll, não publica).
 """
 
 from __future__ import annotations
 
 import argparse
-import importlib.util
 import sys
 from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parents[1]
 sys.path.insert(0, str(AQUI))
+import comum  # noqa: E402
 import manifesto  # noqa: E402
 
-# (script, função de entrada). Ordem importa: a tabela anual do clima lê o produto da precipitação.
-GERADORES: list[tuple[Path, str]] = [
-    (RAIZ / "scripts" / "processamento" / "precipitacao_painel_clima.py", "gerar_paineis"),
-    (AQUI / "dados_clima.py", "gerar"),
-    (AQUI / "dados_saude.py", "gerar"),
-    (AQUI / "dados_saude_unidades.py", "gerar"),
-    (AQUI / "dados_populacao.py", "gerar"),
-    (AQUI / "dados_territorio.py", "gerar"),
-    (AQUI / "dados_economia.py", "gerar"),
-    (AQUI / "dados_riscos.py", "gerar"),
-    (AQUI / "dados_rio.py", "gerar"),
-    (AQUI / "dados_inundacao.py", "gerar"),
-]
+GERADORES = manifesto.GERADORES
+carregar = manifesto.carregar
 
 
-def carregar(caminho: Path):
-    spec = importlib.util.spec_from_file_location(caminho.stem, caminho)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
+def limpar_orfaos(mover: bool) -> list[str]:
+    """Avisa (e, com mover=True, move para data/paineis/_orfaos/) os JSONs que nenhum gerador declara."""
+    destino = comum.PASTA_PUBLICACAO / manifesto.PASTA_ORFAOS
+    nomes = []
+    for p in manifesto.orfaos():
+        irmaos = [p, p.with_name(p.name + ".json")]
+        nomes.append(p.name)
+        if mover:
+            destino.mkdir(exist_ok=True)
+            for f in irmaos:
+                if f.exists():
+                    f.rename(destino / f.name)
+    return nomes
 
 
 def main() -> int:
@@ -48,6 +49,7 @@ def main() -> int:
     ap.add_argument("--codigo-ibge", default="4322400")
     ap.add_argument("--forcar", action="store_true", help="regrava mesmo sem mudança")
     ap.add_argument("--so", help="gera só este produto (id)")
+    ap.add_argument("--limpar", action="store_true", help="move os JSONs órfãos (sem gerador) para data/paineis/_orfaos/")
     args = ap.parse_args()
     try:
         modulos = [(carregar(g), f) for g, f in GERADORES]
@@ -59,6 +61,8 @@ def main() -> int:
                 continue
             for pid, gravou in getattr(m, funcao)(args.codigo_ibge, args.forcar, args.so).items():
                 print(f"{pid}: {'gravado' if gravou else 'sem mudança'}")
+        for nome in limpar_orfaos(args.limpar):
+            print(f"órfão (nenhum gerador o declara): {nome}{' → _orfaos/' if args.limpar else '; use --limpar para mover'}")
         mf, esp = manifesto.gerar(args.codigo_ibge)
         print(f"manifesto: {'gravado' if mf else 'sem mudança'}; espera: {'gravada' if esp else 'sem mudança'}")
     except (OSError, ValueError, KeyError) as erro:

@@ -1,0 +1,28 @@
+{
+  "produto": "clima_precipitacao-merge_serie_anual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "MERGE (CPTEC/INPE), grade diária agregada para total mensal",
+  "transformacao_aplicada": "soma dos meses do MERGE por ano; média de referência sem o último ano; total anual da A809 e percentual de horas válidas sobre as horas do calendário, em UTC",
+  "entradas": [
+    {
+      "arquivo": "data/raw/precipitacao_merge-inpe_2010-2025_mensal.csv",
+      "sha256": "d031a7bb868e3cabf69f40d275a512ff803b77752242ce3019a6d73f973dbf76",
+      "bytes": 16130
+    },
+    {
+      "arquivo": "data/raw/clima_inmet_historico-completo_horario.parquet",
+      "sha256": "9e56bcc202fee61ac58342aade69069499d127ea8ee3b8b362f60bfa3beca36f",
+      "bytes": 4291457
+    }
+  ],
+  "script": "scripts/processamento/precipitacao_painel_clima.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "CA04",
+    "CA01"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T16:33:05Z"
+}

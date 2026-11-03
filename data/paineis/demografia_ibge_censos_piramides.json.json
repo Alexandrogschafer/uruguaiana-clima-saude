@@ -1,0 +1,31 @@
+{
+  "produto": "demografia_ibge_censos_piramides.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "IBGE, Censos Demográficos: SIDRA tabela 200 (2000 e 2010) e tabela 9514 (2022)",
+  "transformacao_aplicada": "homens e mulheres por grupo de idade (situação Total na tabela 200)",
+  "entradas": [
+    {
+      "arquivo": "data/raw/populacao_ibge-sidra-tabela200_1970-2010_municipal.csv",
+      "sha256": "d2da99c2a486a79ac2df56b05e7f4d1429ab8f56a3c258956667ba3a146a6266",
+      "bytes": 40064
+    },
+    {
+      "arquivo": "data/raw/populacao-sexo-idade_ibge-sidra-tabela9514_2022_municipal.csv",
+      "sha256": "801f9b45141f29a13db50e87c701823b8aa70ba0a61deaade54d7ba3ed445717",
+      "bytes": 2128
+    }
+  ],
+  "script": "scripts/paineis/dados_populacao.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "PD14"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T16:33:06Z",
+  "supressao_nota": "supressão primária não aplicada: séries municipais oficiais do IBGE, já publicadas pela fonte; nenhum agregado abaixo do município",
+  "inconsistencias_da_fonte": [
+    "2000, 75 a 79 anos: total 1278, homens + mulheres 1277"
+  ]
+}

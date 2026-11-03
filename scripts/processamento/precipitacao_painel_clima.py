@@ -4,8 +4,11 @@ com a A809 só para comparação, e publica os produtos dos painéis em
 data/paineis/ (esquema climapampa-painel/1, via scripts/paineis/comum.py),
 lidos por dashboards/clima.html. Nenhum valor é injetado no HTML (a injeção
 no painel antigo saiu quando ele passou a ler os JSON):
-    clima_precipitacao-merge_<inicio>-<fim>_anual  (com a A809 para comparação)
-    clima_precipitacao-merge_<inicio>-<fim>_mensal (todos os meses)
+    clima_precipitacao-merge_serie_anual  (com a A809 para comparação)
+    clima_precipitacao-merge_serie_mensal (todos os meses)
+Ids estáveis desde a rodada 120: o período fica dentro do JSON. A entrada é o bruto
+data/raw/precipitacao_merge-inpe_*_mensal.csv de coleta mais recente (comum.bruto_mais_recente);
+o intermediário em data/processed/ leva no nome o mesmo período do bruto.
 
 Decisões:
     - o MERGE é a média de uma área com margem de 18 km em torno do município,
@@ -33,21 +36,28 @@ RAIZ = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(RAIZ / "scripts" / "paineis"))
 import comum  # noqa: E402
 
-ENTRADA_MERGE = RAIZ / "data/raw/precipitacao_merge-inpe_2010-2025_mensal.csv"
+PADRAO_MERGE = "precipitacao_merge-inpe_*_mensal.csv"
 ENTRADA_ESTACAO = RAIZ / "data/raw/clima_inmet_historico-completo_horario.parquet"
-SAIDA = RAIZ / "data/processed/precipitacao_merge-inpe_2010-2025_mensal-anual.json"
 FONTE_ESPERADA = "merge_inpe_cptec_diario_agregado"
 LIMIAR_HORAS_VALIDAS = 90.0
 SCRIPT = "scripts/processamento/precipitacao_painel_clima.py"
-# período no nome do produto = período do arquivo de entrada
-_PERIODO = re.search(r"_(\d{4}-\d{4})_mensal", ENTRADA_MERGE.name).group(1)
-PRODUTOS = [f"clima_precipitacao-merge_{_PERIODO}_anual", f"clima_precipitacao-merge_{_PERIODO}_mensal"]
+PRODUTOS = ["clima_precipitacao-merge_serie_anual", "clima_precipitacao-merge_serie_mensal"]
+
+
+def entrada_merge() -> Path:
+    return comum.bruto_mais_recente(RAIZ / "data/raw", PADRAO_MERGE)
+
+
+def saida() -> Path:
+    """Intermediário em data/processed/ com o período do bruto no nome (ex.: 2010-2025)."""
+    m = re.search(r"precipitacao_merge-inpe_(.+)_mensal\.csv$", entrada_merge().name)
+    return RAIZ / f"data/processed/precipitacao_merge-inpe_{m.group(1)}_mensal-anual.json"
 FONTE_RODAPE = "Precipitação — MERGE/INPE-CPTEC, média de área com margem de 18 km; a A809 aparece só na comparação anual"
 AVISO_AREA = {"tipo": "metodo", "texto": "média de uma área com margem de 18 km em torno do município; não é um ponto nem o limite municipal"}
 
 
 def ler_merge(codigo_ibge: str) -> pd.DataFrame:
-    df = pd.read_csv(ENTRADA_MERGE, dtype={"codigo_ibge": str})
+    df = pd.read_csv(entrada_merge(), dtype={"codigo_ibge": str})
     df = df[df["codigo_ibge"] == codigo_ibge]
     if df.empty:
         raise ValueError(f"sem dados do MERGE para o código IBGE {codigo_ibge}")
@@ -122,12 +132,12 @@ def gravar_metadado(dados: dict) -> None:
         "area": "média de uma área com margem de 18 km em torno do município (config/area_estudo_bacias.geojson); não é um ponto nem o limite municipal",
         "periodo": f"{anos[0]}-{anos[-1]}",
         "data_processamento": datetime.now(timezone.utc).isoformat(),
-        "arquivos_entrada": [str(ENTRADA_MERGE.relative_to(RAIZ)), str(ENTRADA_ESTACAO.relative_to(RAIZ))],
+        "arquivos_entrada": [str(entrada_merge().relative_to(RAIZ)), str(ENTRADA_ESTACAO.relative_to(RAIZ))],
         "transformacao_aplicada": "soma dos meses do MERGE por ano; média de referência sem o último ano; total anual da A809 e percentual de horas válidas sobre as horas do calendário, em UTC",
         "crs": "não se aplica (série tabular)",
         "script": "scripts/processamento/precipitacao_painel_clima.py",
     }
-    SAIDA.with_name(SAIDA.name + ".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    saida().with_name(saida().name + ".json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def publicar_paineis(dados: dict, forcar: bool = False, so: str | None = None) -> dict[str, bool]:
@@ -143,9 +153,9 @@ def publicar_paineis(dados: dict, forcar: bool = False, so: str | None = None) -
                   fonte="MERGE (CPTEC/INPE), grade diária agregada para total mensal",
                   unidade_espacial="área (município + margem de 18 km)", unidade_medida="mm",
                   dados_ate=f"{a1}-12-31", selo="conferido", script=SCRIPT)
-    entradas = [ENTRADA_MERGE, ENTRADA_ESTACAO]
+    entradas = [entrada_merge(), ENTRADA_ESTACAO]
     prod_anual = comum.montar_produto(
-        id=f"clima_precipitacao-merge_{a0}-{a1}_anual", ativos=["CA04", "CA01"],
+        id=PRODUTOS[0], ativos=["CA04", "CA01"],
         titulo="Precipitação total por ano (MERGE) e comparação com a A809",
         periodo={"inicio": str(a0), "fim": str(a1)}, avisos=avisos_anual,
         colunas=[{"nome": "ano", "tipo": "int"}, {"nome": "merge_mm", "tipo": "float", "casas": 2},
@@ -158,7 +168,7 @@ def publicar_paineis(dados: dict, forcar: bool = False, so: str | None = None) -
                 "media_referencia": dados["media_referencia"], "telas": ["clima"]},
         **comuns)
     prod_mensal = comum.montar_produto(
-        id=f"clima_precipitacao-merge_{a0}-{a1}_mensal", ativos=["CA04"],
+        id=PRODUTOS[1], ativos=["CA04"],
         titulo="Precipitação mensal (MERGE)",
         periodo={"inicio": mensal[0]["periodo"], "fim": mensal[-1]["periodo"]}, avisos=[AVISO_AREA],
         colunas=[{"nome": "periodo", "tipo": "texto"}, {"nome": "precipitacao_mm", "tipo": "float", "casas": 2}],
@@ -170,17 +180,17 @@ def publicar_paineis(dados: dict, forcar: bool = False, so: str | None = None) -
 
 
 def obter_dados(codigo_ibge: str, forcar: bool) -> dict:
-    if SAIDA.exists() and not forcar:
-        dados = json.loads(SAIDA.read_text(encoding="utf-8"))
+    if saida().exists() and not forcar:
+        dados = json.loads(saida().read_text(encoding="utf-8"))
         if dados.get("codigo_ibge") != codigo_ibge:
             raise ValueError("o produto existente é de outro município; use --forcar")
-        print(f"produto já existe, sem recalcular: {SAIDA.name}")
+        print(f"produto já existe, sem recalcular: {saida().name}")
     else:
         dados = gerar(codigo_ibge)
-        SAIDA.parent.mkdir(parents=True, exist_ok=True)
-        SAIDA.write_text(json.dumps(dados, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        saida().parent.mkdir(parents=True, exist_ok=True)
+        saida().write_text(json.dumps(dados, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         gravar_metadado(dados)
-        print(f"gerado: {SAIDA.name} ({SAIDA.stat().st_size} bytes)")
+        print(f"gerado: {saida().name} ({saida().stat().st_size} bytes)")
     conferir(dados)
     return dados
 

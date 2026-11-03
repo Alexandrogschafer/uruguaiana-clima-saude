@@ -12,7 +12,18 @@ script). Regras aplicadas aqui, e só aqui:
       conforme parâmetro; valor ausente (lacuna da fonte) fica null sem
       entrada em "suprimidos";
     - idempotência: não regrava se o conteúdo (sem a data de geração) e as
-      entradas não mudaram, a menos de forcar=True.
+      entradas não mudaram, a menos de forcar=True;
+    - id estável (rodada 120): o id do produto não carrega o período. Convenção
+      {tema}_{fonte}_{serie|atual}_{resolucao}: "serie" para série temporal que
+      cresce a cada coleta, "atual" para retrato que é substituído. O período e
+      o dados_ate ficam dentro do JSON. Edições fixas (o ano é a edição da fonte,
+      não o período: censo 2022, BATER 2018, CPRM 2021, setorização 2014,
+      áreas urbanizadas 2019) e os produtos do rio mantêm o id. Produto que
+      mudou de id leva o campo "substitui" com o id antigo (IDS_SUBSTITUIDOS),
+      e as telas resolvem o id antigo por ele;
+    - bruto mais recente (rodada 120): quando mais de um arquivo casa com o
+      padrão de entrada, vale o de data_acesso mais recente no .json irmão
+      (bruto_mais_recente); o bruto antigo nunca é apagado.
 
 CRS não se aplica: os produtos são tabulares.
 """
@@ -198,6 +209,73 @@ def suprimir(dados: list[dict], campos: list[str], limiar: int = LIMIAR_SUPRESSA
     return saida, lista, n_prim, len(lista) - n_prim
 
 
+# ---------------------------------------------------------------- ids e entradas
+
+# id estável → id antigo (com período no nome), publicado no campo "substitui" do produto
+IDS_SUBSTITUIDOS = {
+    "clima_inmet-a809_serie_anual": "clima_inmet-a809_2007-2025_anual",
+    "clima_tabela_serie_anual": "clima_tabela-anual_2007-2025",
+    "clima_precipitacao-merge_serie_anual": "clima_precipitacao-merge_2010-2025_anual",
+    "clima_precipitacao-merge_serie_mensal": "clima_precipitacao-merge_2010-2025_mensal",
+    "queimadas_inpe_serie_anual": "queimadas_inpe_2010-2025_anual",
+    "saude_sim_serie_anual": "saude_sim_2010-2024_anual",
+    "saude_sim-afogamento-enchente_serie_quinquenal": "saude_sim-afogamento-enchente_2010-2024_quinquenal",
+    "saude_sih_serie_anual": "saude_sih_2010-2025_anual",
+    "saude_sinan_serie_anual": "saude_sinan_2010-2026_anual",
+    "saude_unidades-esf-ubs_atual": "saude_unidades-esf-ubs_2026",
+    "populacao_ibge_serie_anual": "populacao_ibge_1970-2025_anual",
+    "demografia_ibge_serie_indicadores": "demografia_ibge_1970-2022_indicadores",
+    "demografia_ibge_censos_piramides": "demografia_ibge_2000-2010-2022_piramides",
+    "pib_ibge_serie_anual": "pib_ibge_2002-2023_anual",
+    "agropecuaria_ibge_serie_anual": "agropecuaria_ibge_1974-2024_anual",
+    "emprego_caged_serie_mensal": "emprego_caged_2020-2026_mensal",
+    "emprego_rais_atual_secao": "emprego_rais_2025_secao",
+    "cadunico_mds_serie_anual": "cadunico_mds_2012-2026_anual",
+    "bolsa-familia_mds_atual_mes": "bolsa-familia_mds_2026-07_mes",
+    "despesas_siconfi_serie_anual": "despesas_siconfi_2015-2026_anual",
+    "idhm_atlas_censos": "idhm_atlas_1991-2010_censos",
+    "desastres_s2id_serie_anual": "desastres_s2id_2014-2025_anual",
+    "energia_aneel_serie_anual": "energia_aneel_2000-2026_anual",
+    "uso-solo_mapbiomas_serie_classes": "uso-solo_mapbiomas_1985-2024_classes",
+    "uso-solo_mapbiomas_atual_todas-classes": "uso-solo_mapbiomas_2024_todas-classes",
+    "app-hidrica_ana-bho-mapbiomas_atual_curso": "app-hidrica_ana-bho-mapbiomas_2024_curso",
+}
+# edições fixas: o ano no id é a edição da fonte, não o período da série
+EDICOES_FIXAS = {
+    "censo_ibge_2022_situacao-setor", "areas-de-risco_ibge_2018_bater", "risco-geologico_cprm_2021_classe",
+    "setorizacao-risco_sgb_2014_setor", "areas-urbanizadas_ibge_2019_classe",
+}
+
+
+def _metadado_irmao(arq: Path) -> Path:
+    """Metadado do bruto: x.csv → x.json; x.json → x.json.json; x.csv.json (já é metadado) não se aplica."""
+    irmao = arq.with_suffix(".json")
+    return irmao if irmao != arq else arq.with_name(arq.name + ".json")
+
+
+def data_da_coleta(arq: Path) -> str:
+    """data_acesso do .json irmão; sem ela, data_processamento (brutos antigos não gravavam data_acesso)."""
+    meta = json.loads(_metadado_irmao(arq).read_text(encoding="utf-8"))
+    quando = meta.get("data_acesso") or meta.get("data_processamento")
+    if not quando:
+        raise ValueError(f"{arq.name}: metadado irmão sem data_acesso nem data_processamento")
+    return str(quando)
+
+
+def bruto_mais_recente(pasta: Path, padrao: str) -> Path:
+    """Entre os arquivos que casam com o padrão, o de coleta mais recente (um só: ele mesmo).
+
+    Cada coleta nova grava arquivo próprio e o bruto anterior não é apagado; com mais de um candidato vale o
+    de data_acesso mais recente no .json irmão (ISO 8601, ordenável como texto).
+    """
+    achados = sorted(p for p in Path(pasta).glob(padrao) if not p.name.endswith(".json.json") or padrao.endswith(".json.json"))
+    if not achados:
+        raise ValueError(f"nenhum arquivo {padrao} em {relativo(Path(pasta))}")
+    if len(achados) == 1:
+        return achados[0]
+    return max(achados, key=data_da_coleta)
+
+
 # ---------------------------------------------------------------- produto
 
 def montar_produto(*, id: str, codigo_ibge: str, ativos: list[str], titulo: str, fonte_curta: str,
@@ -224,6 +302,7 @@ def montar_produto(*, id: str, codigo_ibge: str, ativos: list[str], titulo: str,
     prod = {
         "esquema": ESQUEMA,
         "id": id,
+        **({"substitui": IDS_SUBSTITUIDOS[id]} if id in IDS_SUBSTITUIDOS else {}),
         "codigo_ibge": codigo_ibge,
         "ativos": ativos,
         "titulo": titulo,

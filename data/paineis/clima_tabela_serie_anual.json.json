@@ -1,0 +1,34 @@
+{
+  "produto": "clima_tabela_serie_anual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "INMET, estação automática A809 (portal de dados históricos), série horária; MERGE (CPTEC/INPE); INPE, BDQueimadas",
+  "transformacao_aplicada": "junção por ano dos produtos anual da estação, precipitação do MERGE e focos de queimada; nota = tipo do aviso do ano (parcial ou lacuna)",
+  "entradas": [
+    {
+      "arquivo": "data/raw/clima_inmet_historico-completo_horario.parquet",
+      "sha256": "9e56bcc202fee61ac58342aade69069499d127ea8ee3b8b362f60bfa3beca36f",
+      "bytes": 4291457
+    },
+    {
+      "arquivo": "data/processed/precipitacao_merge-inpe_2010-2025_mensal-anual.json",
+      "sha256": "9f80460d76e8c7c193795d7f5cbfd77b1c386b4310f1307a9cacb65227641e9c",
+      "bytes": 17592
+    },
+    {
+      "arquivo": "data/raw/focos-queimada_inpe_2010-2025_pontual.csv",
+      "sha256": "5d2a4ec753a46d3c207503e6a634ef70ab3867e365492775bc3c097bbce6d3b0",
+      "bytes": 230533
+    }
+  ],
+  "script": "scripts/paineis/dados_clima.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "CA01",
+    "CA04",
+    "CA06"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T16:33:05Z"
+}

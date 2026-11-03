@@ -1,0 +1,22 @@
+{
+  "produto": "queimadas_inpe_serie_anual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "INPE, BDQueimadas, focos de calor de todos os satélites dentro do limite municipal",
+  "transformacao_aplicada": "contagem de focos por ano",
+  "entradas": [
+    {
+      "arquivo": "data/raw/focos-queimada_inpe_2010-2025_pontual.csv",
+      "sha256": "5d2a4ec753a46d3c207503e6a634ef70ab3867e365492775bc3c097bbce6d3b0",
+      "bytes": 230533
+    }
+  ],
+  "script": "scripts/paineis/dados_clima.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "CA06"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T16:33:05Z"
+}

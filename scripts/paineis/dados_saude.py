@@ -8,11 +8,11 @@ a partir dos arquivos de data/raw gravados pelos scripts de download do DATASUS:
              + data/raw/arboviroses_sinan_<ano>_preliminar.csv (ano em curso)
 
 Grava:
-    saude_sim_<inicio>-<fim>_anual                  óbitos totais e respiratórios
-    saude_sim-afogamento-enchente_<inicio>-<fim>_quinquenal
+    saude_sim_serie_anual                           óbitos totais e respiratórios
+    saude_sim-afogamento-enchente_serie_quinquenal
                                                     óbitos por afogamento ou enchente somados por 5 anos
-    saude_sih_<inicio>-<fim>_anual                  internações totais e respiratórias
-    saude_sinan_<inicio>-<fim>_anual                dengue, chikungunya e zika (último ano preliminar)
+    saude_sih_serie_anual                           internações totais e respiratórias
+    saude_sinan_serie_anual                         dengue, chikungunya e zika (último ano preliminar)
 
 Decisões (rodada 111; D-B3 e D-B4 do relatório de especificação):
     - séries municipais oficiais anuais vão como a fonte publica: zero como 0,
@@ -54,19 +54,18 @@ TAMANHO_QUINQUENIO = 5
 
 
 def _unico(padrao: str) -> Path:
-    achados = sorted(RAW.glob(padrao))
-    if len(achados) != 1:
-        raise ValueError(f"esperado 1 arquivo para {padrao}, há {len(achados)}")
-    return achados[0]
+    """Bruto de coleta mais recente entre os que casam com o padrão (comum.bruto_mais_recente)."""
+    return comum.bruto_mais_recente(RAW, padrao)
 
 
 def entradas() -> dict[str, Path]:
+    prelim = _unico("arboviroses_sinan_*_preliminar.csv")
     return {
         "sim": _unico("obitos_sim-datasus_*_municipal.csv"),
         "sih": _unico("internacoes-respiratorias_sih-datasus_*_municipal.csv"),
         "sinan": _unico("arboviroses_sinan-datasus_*_municipal.csv"),
-        "sinan_prelim": _unico("arboviroses_sinan_*_preliminar.csv"),
-        "sinan_prelim_meta": _unico("arboviroses_sinan_*_preliminar.json"),
+        "sinan_prelim": prelim,
+        "sinan_prelim_meta": prelim.with_suffix(".json"),  # metadado do mesmo arquivo escolhido
     }
 
 
@@ -151,17 +150,12 @@ def calcular_sinan(arq: Path, arq_prelim: Path, codigo_ibge: str) -> tuple[list[
 # ---------------------------------------------------------------- produtos
 
 def ids(codigo_ibge: str = "4322400") -> dict[str, str]:
-    e = entradas()
-    sim = calcular_sim(e["sim"], codigo_ibge)
-    a0, a1 = int(sim["ano"].min()), int(sim["ano"].max())
-    q = quinquenios(sim, "obitos_afogamento_enchente")
-    sih = calcular_sih(e["sih"], codigo_ibge)
-    sinan, _ = calcular_sinan(e["sinan"], e["sinan_prelim"], codigo_ibge)
+    """Ids estáveis (convenção {tema}_{fonte}_{serie|atual}_{resolucao}, ver comum.py); o período fica no JSON."""
     return {
-        "sim": f"saude_sim_{a0}-{a1}_anual",
-        "afogamento": f"saude_sim-afogamento-enchente_{q[0]['ano_inicio']}-{q[-1]['ano_fim']}_quinquenal",
-        "sih": f"saude_sih_{sih[0]['ano']}-{sih[-1]['ano']}_anual",
-        "sinan": f"saude_sinan_{sinan[0]['ano']}-{sinan[-1]['ano']}_anual",
+        "sim": "saude_sim_serie_anual",
+        "afogamento": "saude_sim-afogamento-enchente_serie_quinquenal",
+        "sih": "saude_sih_serie_anual",
+        "sinan": "saude_sinan_serie_anual",
     }
 
 
@@ -251,14 +245,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
     return out
 
 
-def _produtos() -> list[str]:
-    try:
-        return list(ids().values())
-    except (OSError, ValueError):
-        return []
-
-
-PRODUTOS = _produtos()
+PRODUTOS = list(ids().values())
 
 
 def main() -> int:

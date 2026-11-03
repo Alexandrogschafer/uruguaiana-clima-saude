@@ -1,0 +1,28 @@
+{
+  "produto": "agropecuaria_ibge_serie_anual.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "IBGE, PAM (tabela 5457) e PPM (tabela 3939)",
+  "transformacao_aplicada": "área colhida (variável 216) de arroz, soja e total; efetivo bovino e ovino",
+  "entradas": [
+    {
+      "arquivo": "data/raw/producao-agricola_ibge-sidra-tabela5457_1974-2024_municipal.csv",
+      "sha256": "c28469c5d6fbd2b7de0a95356c23acda21aa91baf3b6ee101fe768ed404db5b3",
+      "bytes": 881638
+    },
+    {
+      "arquivo": "data/raw/rebanho_ibge-sidra-tabela3939_1974-2024_municipal.csv",
+      "sha256": "69061f873bc47db58f48fee889ae66041ca83c3815c10c1892c9b4f2fb5c8233",
+      "bytes": 30288
+    }
+  ],
+  "script": "scripts/paineis/dados_economia.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "EV02"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T16:33:06Z",
+  "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município"
+}

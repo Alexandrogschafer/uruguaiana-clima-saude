@@ -1,0 +1,22 @@
+{
+  "produto": "uso-solo_mapbiomas_atual_todas-classes.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "MapBiomas Coleção 10",
+  "transformacao_aplicada": "classes do último ano em ordem de área, arredondadas a 2 casas",
+  "entradas": [
+    {
+      "arquivo": "data/processed/uso-solo_mapbiomas_serie-temporal_area-por-classe.csv",
+      "sha256": "5e8ca1249872e9a7b14cc78ef4038e11b1bc8dd6f196999f037355c98673bb6e",
+      "bytes": 5394
+    }
+  ],
+  "script": "scripts/paineis/dados_territorio.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "CA08"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T16:33:06Z"
+}

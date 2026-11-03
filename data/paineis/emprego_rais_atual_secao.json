@@ -1,0 +1,201 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "emprego_rais_atual_secao",
+ "substitui": "emprego_rais_2025_secao",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "EV03"
+ ],
+ "titulo": "Vínculos formais ativos por seção CNAE (RAIS)",
+ "fonte_curta": "MTE/RAIS",
+ "fonte": "Ministério do Trabalho e Emprego, RAIS (estabelecimentos)",
+ "unidade_espacial": "município",
+ "unidade_medida": "vínculos",
+ "periodo": {
+  "inicio": "2025",
+  "fim": "2025"
+ },
+ "dados_ate": "2025-12-31",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-03T16:33:06Z",
+ "script": "scripts/paineis/dados_economia.py",
+ "colunas": [
+  {
+   "nome": "secao",
+   "tipo": "texto"
+  },
+  {
+   "nome": "rotulo",
+   "tipo": "texto"
+  },
+  {
+   "nome": "vinculos",
+   "tipo": "int"
+  }
+ ],
+ "fonte_rodape": "Emprego formal — RAIS e Novo CAGED, Ministério do Trabalho e Emprego (microdados via FTP público)",
+ "telas": [
+  "economia"
+ ],
+ "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município",
+ "grafico": [
+  {
+   "secao": "G",
+   "rotulo": "Comércio (G)",
+   "vinculos": 7388
+  },
+  {
+   "secao": "O",
+   "rotulo": "Administração pública (O)",
+   "vinculos": 3754
+  },
+  {
+   "secao": "A",
+   "rotulo": "Agropecuária (A)",
+   "vinculos": 3132
+  },
+  {
+   "secao": "H",
+   "rotulo": "Transporte (H)",
+   "vinculos": 2822
+  },
+  {
+   "secao": "Q",
+   "rotulo": "Saúde/ass. social (Q)",
+   "vinculos": 1373
+  },
+  {
+   "secao": "N",
+   "rotulo": "Ativ. administrativas (N)",
+   "vinculos": 1052
+  },
+  {
+   "secao": "C",
+   "rotulo": "Ind. transformação (C)",
+   "vinculos": 832
+  },
+  {
+   "secao": "I",
+   "rotulo": "Alojamento/alimentação (I)",
+   "vinculos": 805
+  },
+  {
+   "secao": "outras",
+   "rotulo": "Outras (12 seções)",
+   "vinculos": 3340
+  }
+ ],
+ "total": 24498,
+ "dados": [
+  {
+   "secao": "G",
+   "rotulo": "Comércio (G)",
+   "vinculos": 7388
+  },
+  {
+   "secao": "O",
+   "rotulo": "Administração pública (O)",
+   "vinculos": 3754
+  },
+  {
+   "secao": "A",
+   "rotulo": "Agropecuária (A)",
+   "vinculos": 3132
+  },
+  {
+   "secao": "H",
+   "rotulo": "Transporte (H)",
+   "vinculos": 2822
+  },
+  {
+   "secao": "Q",
+   "rotulo": "Saúde/ass. social (Q)",
+   "vinculos": 1373
+  },
+  {
+   "secao": "N",
+   "rotulo": "Ativ. administrativas (N)",
+   "vinculos": 1052
+  },
+  {
+   "secao": "C",
+   "rotulo": "Ind. transformação (C)",
+   "vinculos": 832
+  },
+  {
+   "secao": "I",
+   "rotulo": "Alojamento/alimentação (I)",
+   "vinculos": 805
+  },
+  {
+   "secao": "F",
+   "rotulo": "Construção (F)",
+   "vinculos": 768
+  },
+  {
+   "secao": "P",
+   "rotulo": "Educação (P)",
+   "vinculos": 675
+  },
+  {
+   "secao": "M",
+   "rotulo": "Ativ. profissionais/técnicas (M)",
+   "vinculos": 465
+  },
+  {
+   "secao": "S",
+   "rotulo": "Outros serviços (S)",
+   "vinculos": 376
+  },
+  {
+   "secao": "J",
+   "rotulo": "Informação/comunicação (J)",
+   "vinculos": 298
+  },
+  {
+   "secao": "K",
+   "rotulo": "Ativ. financeiras (K)",
+   "vinculos": 208
+  },
+  {
+   "secao": "E",
+   "rotulo": "Água/esgoto/resíduos (E)",
+   "vinculos": 155
+  },
+  {
+   "secao": "R",
+   "rotulo": "Artes/cultura (R)",
+   "vinculos": 141
+  },
+  {
+   "secao": "D",
+   "rotulo": "Eletricidade/gás (D)",
+   "vinculos": 125
+  },
+  {
+   "secao": "L",
+   "rotulo": "Ativ. imobiliárias (L)",
+   "vinculos": 76
+  },
+  {
+   "secao": "B",
+   "rotulo": "Ind. extrativa (B)",
+   "vinculos": 47
+  },
+  {
+   "secao": "U",
+   "rotulo": "Organismos internacionais (U)",
+   "vinculos": 6
+  }
+ ]
+}

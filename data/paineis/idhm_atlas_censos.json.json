@@ -1,0 +1,23 @@
+{
+  "produto": "idhm_atlas_censos.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "Atlas do Desenvolvimento Humano no Brasil (PNUD/Ipea/FJP)",
+  "transformacao_aplicada": "IDHM e componentes do município e IDHM do Brasil por censo",
+  "entradas": [
+    {
+      "arquivo": "data/raw/idhm_atlas-brasil_1991-2010_municipal.csv",
+      "sha256": "3fe99082629692493d3b5c1b4807e5bba27086b281e3b31452f6151079ac36ae",
+      "bytes": 1284
+    }
+  ],
+  "script": "scripts/paineis/dados_economia.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "EV04"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T16:33:06Z",
+  "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município"
+}

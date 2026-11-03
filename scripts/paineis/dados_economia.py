@@ -59,20 +59,24 @@ FONTES = {
 
 
 def _um(pasta: Path, padrao: str) -> Path:
-    a = sorted(pasta.glob(padrao))
-    if len(a) != 1:
-        raise ValueError(f"esperado 1 arquivo {padrao}, há {len(a)}")
-    return a[0]
+    """Bruto de coleta mais recente entre os que casam com o padrão (comum.bruto_mais_recente)."""
+    return comum.bruto_mais_recente(pasta, padrao)
 
 
 def entradas() -> dict[str, Path]:
+    e = _entradas_brutas()
+    # metadado do mesmo bruto escolhido (não um glob à parte, que poderia achar outra coleta)
+    e["rais_meta"], e["siconfi_meta"] = e["rais"].with_suffix(".json"), e["siconfi"].with_suffix(".json")
+    return e
+
+
+def _entradas_brutas() -> dict[str, Path]:
     return {"censo": RAW / "vulnerabilidade-censo_ibge_2022.csv", "pib_pc": _um(PROC, "pib-per-capita_ibge-sidra_*_municipal.csv"),
             "pib": _um(RAW, "pib-municipal_ibge-sidra-tabela5938_*_municipal.csv"), "pam": _um(RAW, "producao-agricola_ibge-sidra-tabela5457_*_municipal.csv"),
             "rebanho": _um(RAW, "rebanho_ibge-sidra-tabela3939_*_municipal.csv"), "caged": _um(RAW, "caged-movimentacao_mte_*_municipal.csv"),
-            "rais": _um(RAW, "rais-vinculos_mte_*_municipal.csv"), "rais_meta": _um(RAW, "rais-vinculos_mte_*_municipal.json"),
+            "rais": _um(RAW, "rais-vinculos_mte_*_municipal.csv"),
             "idhm": _um(RAW, "idhm_atlas-brasil_*_municipal.csv"), "cadunico": _um(RAW, "cadunico_mds-ri_*_municipal.csv"),
-            "bf": RAW / "bolsa-familia_mds-ri_atual_municipal.csv", "siconfi": _um(RAW, "despesas-por-funcao_siconfi_*_municipal.csv"),
-            "siconfi_meta": _um(RAW, "despesas-por-funcao_siconfi_*_municipal.json")}
+            "bf": RAW / "bolsa-familia_mds-ri_atual_municipal.csv", "siconfi": _um(RAW, "despesas-por-funcao_siconfi_*_municipal.csv")}
 
 
 def calcular(e: dict) -> dict:
@@ -274,13 +278,10 @@ def notas_kpis(d: dict):
 
 
 def ids(codigo_ibge: str = "4322400") -> dict[str, str]:
-    d = calcular(entradas())
-    a = lambda k, c="ano": (d[k][0][c], d[k][-1][c])
-    return {"censo": "censo_ibge_2022_situacao-setor", "pib": "pib_ibge_%s-%s_anual" % a("pib"), "pam": "agropecuaria_ibge_%s-%s_anual" % a("pam"),
-            "caged": "emprego_caged_%s-%s_mensal" % (d["caged"][0]["competencia"] // 100, d["caged"][-1]["competencia"] // 100),
-            "rais": f"emprego_rais_{d['rais_ano']}_secao", "idhm": "idhm_atlas_%s-%s_censos" % a("idhm"),
-            "cadunico": "cadunico_mds_%s-%s_anual" % a("cadunico"), "bf": "bolsa-familia_mds_%s-%02d_mes" % (d["bf"][0]["ano_referencia"], d["bf"][0]["mes_referencia"]),
-            "siconfi": "despesas_siconfi_%s-%s_anual" % a("siconfi")}
+    """Ids estáveis (convenção {tema}_{fonte}_{serie|atual}_{resolucao}, ver comum.py); o período fica no JSON."""
+    return {"censo": "censo_ibge_2022_situacao-setor", "pib": "pib_ibge_serie_anual", "pam": "agropecuaria_ibge_serie_anual",
+            "caged": "emprego_caged_serie_mensal", "rais": "emprego_rais_atual_secao", "idhm": "idhm_atlas_censos",
+            "cadunico": "cadunico_mds_serie_anual", "bf": "bolsa-familia_mds_atual_mes", "siconfi": "despesas_siconfi_serie_anual"}
 
 
 def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = None) -> dict[str, bool]:
@@ -347,14 +348,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
     return out
 
 
-def _produtos() -> list[str]:
-    try:
-        return list(ids().values())
-    except (OSError, ValueError, KeyError):
-        return []
-
-
-PRODUTOS = _produtos()
+PRODUTOS = list(ids().values())
 
 
 def main() -> int:
