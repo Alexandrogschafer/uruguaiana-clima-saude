@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-03T23:23:27Z",
+ "gerado_em": "2026-11-03T23:52:01Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_serie_anual",
@@ -13,12 +13,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2025",
-   "gerado_em": "2026-11-03T19:38:49Z",
+   "gerado_em": "2026-11-03T23:37:32Z",
    "telas": [
     "economia"
    ],
-   "bytes": 11298,
-   "sha256": "66c9e4f242ca5553f9e76d09531447c47e5fb6cd35ebc886dc4bc3d29863432b",
+   "bytes": 11388,
+   "sha256": "93ed7b3b19a59b99aa37030437dff35a708c475b0727525cbdb1d4207855d4f1",
    "csv": "csv/agropecuaria_ibge_serie_anual.csv"
   },
   {
@@ -156,12 +156,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
    "dados_ate": "2026-11-03",
-   "gerado_em": "2026-11-03T23:23:27Z",
+   "gerado_em": "2026-11-03T23:52:01Z",
    "telas": [
     "catalogo"
    ],
-   "bytes": 51064,
-   "sha256": "4881b6bab9341766a921897646939b8962f4f007d99a8532780fb571f7d7bc34",
+   "bytes": 51105,
+   "sha256": "235b4e7f11bee8b65707ca13c08c1279f5829acfe1b06c104ad5d273ba458e58",
    "csv": "csv/catalogo_dados.csv"
   },
   {
@@ -174,12 +174,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2022",
-   "gerado_em": "2026-11-03T22:43:19Z",
+   "gerado_em": "2026-11-03T23:52:00Z",
    "telas": [
     "economia"
    ],
    "bytes": 8097,
-   "sha256": "87aad5d7dfff492709eefb45cbf68da6402d02fb34eeb98d9d1ea472d1cbed44",
+   "sha256": "fec875e7e0d6d6e1f13f60b73eb10bbc895e616be582a6476f5624b93d5af8a6",
    "csv": "csv/censo_ibge_2022_situacao-setor.csv"
   },
   {
@@ -267,12 +267,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2022",
-   "gerado_em": "2026-11-03T16:33:06Z",
+   "gerado_em": "2026-11-03T23:37:32Z",
    "telas": [
     "populacao"
    ],
-   "bytes": 8381,
-   "sha256": "186673bd44f515ce94bee1caa4938a897b869ee9d59ab605070b9650ad0172bc",
+   "bytes": 8429,
+   "sha256": "b656443d892eaf48cc6dc7a9f49e0de2bfe1498b930b5ec52df5d42025eb7259",
    "csv": "csv/demografia_ibge_censos_piramides.csv"
   },
   {
@@ -285,12 +285,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2022",
-   "gerado_em": "2026-11-03T16:33:06Z",
+   "gerado_em": "2026-11-03T23:37:32Z",
    "telas": [
     "populacao"
    ],
-   "bytes": 4142,
-   "sha256": "cd86e061e836068a41195baff56a4ecdefe35457fadb0df4ae8f28814f6046e0",
+   "bytes": 4187,
+   "sha256": "6860e28b57d7033d91e993138a5194098fddbbcb90bfab380df67d8329a52759",
    "csv": "csv/demografia_ibge_serie_indicadores.csv"
   },
   {
@@ -339,12 +339,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "202608",
-   "gerado_em": "2026-11-03T19:38:49Z",
+   "gerado_em": "2026-11-03T23:37:32Z",
    "telas": [
     "economia"
    ],
-   "bytes": 13211,
-   "sha256": "053c5ca35725742021d1118d0628268c2444f8a11115c479c33948e1f415e0bb",
+   "bytes": 13268,
+   "sha256": "5d4230dae2e19aa95fe9a517f10a0763c88153d5f2b2324618a0ea73c110a289",
    "csv": "csv/emprego_caged_serie_mensal.csv"
   },
   {
@@ -393,12 +393,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2010",
-   "gerado_em": "2026-11-03T16:33:06Z",
+   "gerado_em": "2026-11-03T23:37:32Z",
    "telas": [
     "economia"
    ],
-   "bytes": 2495,
-   "sha256": "ed6a25bde11982207f0c06f6ddb985810e7cb9e7cfca7e41928924ede0b382a9",
+   "bytes": 2649,
+   "sha256": "283249e38585b097c519d9cded2a6af1820fa143a4f20352dab4eb742dbe5196",
    "csv": "csv/idhm_atlas_censos.csv"
   },
   {
@@ -445,12 +445,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2026-10-25",
-   "gerado_em": "2026-11-03T23:23:27Z",
+   "gerado_em": "2026-11-03T23:52:01Z",
    "telas": [
     "inicio"
    ],
    "bytes": 11447,
-   "sha256": "dfbc8756435ff1c88fd8a9fec99a33aa35e2fe6d39641706924ba8efe0f91c47",
+   "sha256": "02234249ea0a34ee48597cf6cfe8ef8c6290bf21400df361637293212f6831bf",
    "csv": "csv/inicio_resumo.csv"
   },
   {
@@ -519,12 +519,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2023",
-   "gerado_em": "2026-11-03T19:38:49Z",
+   "gerado_em": "2026-11-03T23:37:32Z",
    "telas": [
     "economia"
    ],
-   "bytes": 7092,
-   "sha256": "4b0459701bfd864384a7db1d8f76cdfe72e6be408550c6b2db468f1a3db2d721",
+   "bytes": 7216,
+   "sha256": "3f1d3651d3b4055d68a024c1cb410d55c11e16701c236e730dff092bee08358f",
    "csv": "csv/pib_ibge_serie_anual.csv"
   },
   {
@@ -675,12 +675,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2026-07-31",
-   "gerado_em": "2026-11-03T19:37:52Z",
+   "gerado_em": "2026-11-03T23:37:31Z",
    "telas": [
     "saude"
    ],
-   "bytes": 3813,
-   "sha256": "773a7606220817932b8ca9ec595ff2b3a6acfa037539d895c82c239948a24dd9",
+   "bytes": 3895,
+   "sha256": "b73ebf5b3d3cdc373e5a154d03afbc2d31043d554ea563b63e2ee5195afdbace",
    "csv": "csv/saude_sih_serie_anual.csv"
   },
   {
@@ -711,12 +711,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2025-12-31",
-   "gerado_em": "2026-11-03T19:37:52Z",
+   "gerado_em": "2026-11-03T23:37:31Z",
    "telas": [
     "saude"
    ],
-   "bytes": 3451,
-   "sha256": "d43b49e4ba56f20866f029a5ac4c7bc3b75a002ac2882e3ac32c2648c8150450",
+   "bytes": 3532,
+   "sha256": "bded8fe56f3e1f520fcaa4d6e1c02b6ea110d5b7cce6e6c35aa188255bfc4256",
    "csv": "csv/saude_sim_serie_anual.csv"
   },
   {

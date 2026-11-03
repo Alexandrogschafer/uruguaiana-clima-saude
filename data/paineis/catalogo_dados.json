@@ -69,7 +69,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T23:23:27Z",
+ "gerado_em": "2026-11-03T23:52:01Z",
  "script": "scripts/paineis/dados_catalogo.py",
  "colunas": [
   {
@@ -330,7 +330,7 @@
    "titulo": "IDHM e componentes",
    "licenca": "dados abertos",
    "data_coleta": "2026-08-11",
-   "metodo": "IDHM e componentes do município e IDHM do Brasil por censo",
+   "metodo": "IDHM e componentes do município e IDHM do Brasil por censo; nome do município do metadado do bruto",
    "fontes_catalogo": [
     "idhm_atlas_brasil"
    ],

@@ -21,8 +21,8 @@
     },
     {
       "arquivo": "data/paineis/agropecuaria_ibge_serie_anual.json",
-      "sha256": "66c9e4f242ca5553f9e76d09531447c47e5fb6cd35ebc886dc4bc3d29863432b",
-      "bytes": 11298
+      "sha256": "93ed7b3b19a59b99aa37030437dff35a708c475b0727525cbdb1d4207855d4f1",
+      "bytes": 11388
     },
     {
       "arquivo": "data/paineis/app-hidrica_ana-bho-mapbiomas_atual_curso.json",
@@ -51,7 +51,7 @@
     },
     {
       "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json",
-      "sha256": "87aad5d7dfff492709eefb45cbf68da6402d02fb34eeb98d9d1ea472d1cbed44",
+      "sha256": "fec875e7e0d6d6e1f13f60b73eb10bbc895e616be582a6476f5624b93d5af8a6",
       "bytes": 8097
     },
     {
@@ -76,13 +76,13 @@
     },
     {
       "arquivo": "data/paineis/demografia_ibge_censos_piramides.json",
-      "sha256": "186673bd44f515ce94bee1caa4938a897b869ee9d59ab605070b9650ad0172bc",
-      "bytes": 8381
+      "sha256": "b656443d892eaf48cc6dc7a9f49e0de2bfe1498b930b5ec52df5d42025eb7259",
+      "bytes": 8429
     },
     {
       "arquivo": "data/paineis/demografia_ibge_serie_indicadores.json",
-      "sha256": "cd86e061e836068a41195baff56a4ecdefe35457fadb0df4ae8f28814f6046e0",
-      "bytes": 4142
+      "sha256": "6860e28b57d7033d91e993138a5194098fddbbcb90bfab380df67d8329a52759",
+      "bytes": 4187
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json",
@@ -96,8 +96,8 @@
     },
     {
       "arquivo": "data/paineis/emprego_caged_serie_mensal.json",
-      "sha256": "053c5ca35725742021d1118d0628268c2444f8a11115c479c33948e1f415e0bb",
-      "bytes": 13211
+      "sha256": "5d4230dae2e19aa95fe9a517f10a0763c88153d5f2b2324618a0ea73c110a289",
+      "bytes": 13268
     },
     {
       "arquivo": "data/paineis/emprego_rais_atual_secao.json",
@@ -111,8 +111,8 @@
     },
     {
       "arquivo": "data/paineis/idhm_atlas_censos.json",
-      "sha256": "ed6a25bde11982207f0c06f6ddb985810e7cb9e7cfca7e41928924ede0b382a9",
-      "bytes": 2495
+      "sha256": "283249e38585b097c519d9cded2a6af1820fa143a4f20352dab4eb742dbe5196",
+      "bytes": 2649
     },
     {
       "arquivo": "data/paineis/infraestrutura_indisponivel_atual.json",
@@ -136,8 +136,8 @@
     },
     {
       "arquivo": "data/paineis/pib_ibge_serie_anual.json",
-      "sha256": "4b0459701bfd864384a7db1d8f76cdfe72e6be408550c6b2db468f1a3db2d721",
-      "bytes": 7092
+      "sha256": "3f1d3651d3b4055d68a024c1cb410d55c11e16701c236e730dff092bee08358f",
+      "bytes": 7216
     },
     {
       "arquivo": "data/paineis/pocos_siagas_atual_aquifero.json",
@@ -181,8 +181,8 @@
     },
     {
       "arquivo": "data/paineis/saude_sih_serie_anual.json",
-      "sha256": "773a7606220817932b8ca9ec595ff2b3a6acfa037539d895c82c239948a24dd9",
-      "bytes": 3813
+      "sha256": "b73ebf5b3d3cdc373e5a154d03afbc2d31043d554ea563b63e2ee5195afdbace",
+      "bytes": 3895
     },
     {
       "arquivo": "data/paineis/saude_sim-afogamento-enchente_serie_quinquenal.json",
@@ -191,8 +191,8 @@
     },
     {
       "arquivo": "data/paineis/saude_sim_serie_anual.json",
-      "sha256": "d43b49e4ba56f20866f029a5ac4c7bc3b75a002ac2882e3ac32c2648c8150450",
-      "bytes": 3451
+      "sha256": "bded8fe56f3e1f520fcaa4d6e1c02b6ea110d5b7cce6e6c35aa188255bfc4256",
+      "bytes": 3532
     },
     {
       "arquivo": "data/paineis/saude_sinan_serie_anual.json",
@@ -221,7 +221,7 @@
     },
     {
       "arquivo": "data/paineis/agropecuaria_ibge_serie_anual.json.json",
-      "sha256": "5523ae627644e27ccf13de202c5c1499161c982484820bedf21f18a2df3fede9",
+      "sha256": "a107c16cbbe11cd89617bed840ea15465ed3a3dff0239e817aa0ec34e7fc36a6",
       "bytes": 1091
     },
     {
@@ -251,7 +251,7 @@
     },
     {
       "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json.json",
-      "sha256": "9f711982444433aad0c3b96e73fdbb53418ea119561615a7914fa862a762f743",
+      "sha256": "fbd395c250a705643d644663250ffd25952226f97e0e0b96c3a1a47d6724270f",
       "bytes": 929
     },
     {
@@ -276,12 +276,12 @@
     },
     {
       "arquivo": "data/paineis/demografia_ibge_censos_piramides.json.json",
-      "sha256": "7ca456f6d62c295bcb2395bf88e7010e276fe86c04647a51077aa6e334528c0c",
+      "sha256": "7857ad19fe616ceea95e925e67306fbadbde63ee065b33af2575de238a1b0cb7",
       "bytes": 1226
     },
     {
       "arquivo": "data/paineis/demografia_ibge_serie_indicadores.json.json",
-      "sha256": "1d7e28e707f6c9d87bb2156bee42fac4d2caf0ce56cbfdf2763dcaf91ab66f58",
+      "sha256": "83fbf06bc08420380c3fd8839179b9cb7c6b3896eaf5f4d517c42690711777cf",
       "bytes": 960
     },
     {
@@ -296,7 +296,7 @@
     },
     {
       "arquivo": "data/paineis/emprego_caged_serie_mensal.json.json",
-      "sha256": "5e81e0e3375a98753df0c5b3b088b35b7baabff6eb5b4e655032ef36426c110d",
+      "sha256": "43997ae937f80f5a40b7274ea7a7bc26a8327d67e46935abcb6d555b282486f0",
       "bytes": 874
     },
     {
@@ -311,8 +311,8 @@
     },
     {
       "arquivo": "data/paineis/idhm_atlas_censos.json.json",
-      "sha256": "58d48ae126e0df909c0ded8e37118615fc2fcaa1416d6990316d542717d6674a",
-      "bytes": 850
+      "sha256": "0da9e4930d2cbc69d2d6c8439cea548a723b76a8a779c5c76d09560d20d5a461",
+      "bytes": 1080
     },
     {
       "arquivo": "data/paineis/infraestrutura_indisponivel_atual.json.json",
@@ -336,7 +336,7 @@
     },
     {
       "arquivo": "data/paineis/pib_ibge_serie_anual.json.json",
-      "sha256": "9962d98ea50476d48c254d8d9ac222122dcb8ebbee25d7ee8987b352c6b428dd",
+      "sha256": "165f9b6c0d24c03c8b8a4855ca2d151dc932970f5fea3e605dd602a6a0876e59",
       "bytes": 1101
     },
     {
@@ -381,7 +381,7 @@
     },
     {
       "arquivo": "data/paineis/saude_sih_serie_anual.json.json",
-      "sha256": "6f3b96cd07194e3a637b5b6da90f5c0ef945932b4af65dc02f81a0a419d1f527",
+      "sha256": "9d32a779cc09ac833b88a60376226cb881f61f32c5f45c4132667fd76a2dd19e",
       "bytes": 1149
     },
     {
@@ -391,7 +391,7 @@
     },
     {
       "arquivo": "data/paineis/saude_sim_serie_anual.json.json",
-      "sha256": "06a46be91cd025e7f705dc0027b4e7fb254b1accc6f86d0ab404630335f7b55b",
+      "sha256": "eac3c4be440e10e30e2f867180747a6a2187b61e1746d7c4433134eed2256c92",
       "bytes": 1140
     },
     {
@@ -466,5 +466,5 @@
   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T23:23:27Z"
+  "data_processamento": "2026-11-03T23:52:01Z"
 }

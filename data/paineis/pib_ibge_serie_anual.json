@@ -32,7 +32,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T19:38:49Z",
+ "gerado_em": "2026-11-03T23:37:32Z",
  "script": "scripts/paineis/dados_economia.py",
  "colunas": [
   {
@@ -49,19 +49,23 @@
   },
   {
    "nome": "vab_agropecuaria_pct",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Agropecuária"
   },
   {
    "nome": "vab_industria_pct",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Indústria"
   },
   {
    "nome": "vab_administracao_publica_pct",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Administração pública"
   },
   {
    "nome": "vab_servicos_pct",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Serviços"
   }
  ],
  "fonte_rodape": "PIB dos Municípios — IBGE/SIDRA (tabela 5938), PIB per capita calculado localmente",

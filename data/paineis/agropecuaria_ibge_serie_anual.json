@@ -27,7 +27,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T19:38:49Z",
+ "gerado_em": "2026-11-03T23:37:32Z",
  "script": "scripts/paineis/dados_economia.py",
  "colunas": [
   {
@@ -36,11 +36,13 @@
   },
   {
    "nome": "arroz_area_colhida_ha",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Arroz"
   },
   {
    "nome": "soja_area_colhida_ha",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Soja"
   },
   {
    "nome": "area_colhida_total_ha",
@@ -48,11 +50,13 @@
   },
   {
    "nome": "bovino_cabecas",
-   "tipo": "int"
+   "tipo": "int",
+   "rotulo": "Bovinos"
   },
   {
    "nome": "ovino_cabecas",
-   "tipo": "int"
+   "tipo": "int",
+   "rotulo": "Ovinos"
   }
  ],
  "fonte_rodape": "Produção agrícola e efetivo de rebanho — IBGE/SIDRA, PAM (tabela 5457) e PPM (tabela 3939)",

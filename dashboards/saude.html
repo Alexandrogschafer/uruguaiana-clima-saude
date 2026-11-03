@@ -39,7 +39,6 @@
       <span class="card-title">Óbitos por ano — total e por causas respiratórias</span>
       <span class="card-meta" id="meta-obitos"></span>
     </div>
-    <div class="chart-legend-slot" id="legend-obitos"></div>
     <div class="card-body">
       <div id="chart-obitos"></div>
       <div class="chart-tooltip" id="tt-obitos"></div>
@@ -64,7 +63,6 @@
         <span class="card-title">Internações e internações respiratórias por ano</span>
         <span class="card-meta" id="meta-sih"></span>
       </div>
-      <div class="chart-legend-slot" id="legend-sih"></div>
       <div class="card-body">
         <div id="chart-sih"></div>
         <div class="chart-tooltip" id="tt-sih"></div>
@@ -236,10 +234,10 @@ async function iniciar(){
       renderLineChart('chart-obitos', 'tt-obitos', {
         labels: d.map(r => r.preliminar ? `${r.ano}*` : r.ano),
         series: [
-          {name: P.dica('Óbitos totais', sim.meta.fonte_curta), color: ctx, data: d.map(r=>r.obitos_total), emphasis:false, ultimoParcial: ultPre},
-          {name: P.dica('Óbitos por causas respiratórias', sim.meta.fonte_curta), color: blue, data: d.map(r=>r.obitos_respiratorios), ultimoParcial: ultPre},
+          {name: P.dica(P.rotulo(sim, 'obitos_total'), sim.meta.fonte_curta), rotulo: P.rotulo(sim, 'obitos_total'), color: ctx, data: d.map(r=>r.obitos_total), emphasis:false, ultimoParcial: ultPre},
+          {name: P.dica(P.rotulo(sim, 'obitos_respiratorios'), sim.meta.fonte_curta), rotulo: P.rotulo(sim, 'obitos_respiratorios'), color: blue, data: d.map(r=>r.obitos_respiratorios), ultimoParcial: ultPre},
         ],
-        height: 220, legendSlot: 'legend-obitos',
+        height: 220,
       });
     }
     if(afog){
@@ -255,10 +253,10 @@ async function iniciar(){
       renderLineChart('chart-sih', 'tt-sih', {
         labels: d.map(r => r.parcial ? `${r.ano}*` : r.ano),
         series: [
-          {name: P.dica('Internações totais', sih.meta.fonte_curta), color: ctx, data: d.map(r=>r.internacoes_total), emphasis:false, ultimoParcial: ultPar},
-          {name: P.dica('Internações respiratórias', sih.meta.fonte_curta), color: blue, data: d.map(r=>r.internacoes_respiratorias), ultimoParcial: ultPar},
+          {name: P.dica(P.rotulo(sih, 'internacoes_total'), sih.meta.fonte_curta), rotulo: P.rotulo(sih, 'internacoes_total'), color: ctx, data: d.map(r=>r.internacoes_total), emphasis:false, ultimoParcial: ultPar},
+          {name: P.dica(P.rotulo(sih, 'internacoes_respiratorias'), sih.meta.fonte_curta), rotulo: P.rotulo(sih, 'internacoes_respiratorias'), color: blue, data: d.map(r=>r.internacoes_respiratorias), ultimoParcial: ultPar},
         ],
-        height: 190, legendSlot: 'legend-sih',
+        height: 190,
       });
     }
     if(sinan){

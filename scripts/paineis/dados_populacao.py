@@ -43,6 +43,8 @@ from comum import br  # noqa: E402
 RAIZ = comum.RAIZ
 SCRIPT = "scripts/paineis/dados_populacao.py"
 ANOS_PIRAMIDE = [2000, 2010, 2022]
+# nome legível das colunas que viram série de gráfico com legenda (campo "rotulo" de colunas)
+ROTULOS_SERIE = {"pct_urbano": "Urbana", "pct_rural": "Rural"}
 INCONSISTENCIAS: list[str] = []
 NOTA_SUPRESSAO = ("supressão primária não aplicada: séries municipais oficiais do IBGE, já publicadas pela fonte; "
                   "nenhum agregado abaixo do município")
@@ -197,7 +199,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
             fonte="IBGE, Censos Demográficos via SIDRA (indicadores calculados por processamento/demografia_indicadores.py)",
             unidade_medida="% ; índice; habitantes", periodo={"inicio": str(ind[0]["periodo"]), "fim": str(ind[-1]["periodo"])},
             dados_ate=f"{ind[-1]['periodo']}", avisos=[],
-            colunas=[{"nome": k, "tipo": "float" if k != "periodo" else "int"} for k in ind[0]],
+            colunas=[{"nome": k, "tipo": "float" if k != "periodo" else "int", **({"rotulo": ROTULOS_SERIE[k]} if k in ROTULOS_SERIE else {})} for k in ind[0]],
             dados=ind, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["populacao"], "supressao_nota": NOTA_SUPRESSAO}, **comuns)
         out[p["id"]] = comum.gravar_produto(p, transformacao="indicadores como gravados por demografia_indicadores.py, colunas renomeadas",
                                             entradas=[e["indicadores"]], forcar=forcar, extras_metadado={"supressao_nota": NOTA_SUPRESSAO})
@@ -207,7 +209,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
             fonte="IBGE, Censos Demográficos: SIDRA tabela 200 (2000 e 2010) e tabela 9514 (2022)", unidade_medida="habitantes",
             periodo={"inicio": str(ANOS_PIRAMIDE[0]), "fim": str(ANOS_PIRAMIDE[-1])}, dados_ate=str(ANOS_PIRAMIDE[-1]),
             avisos=[{"tipo": "metodo", "texto": "célula vazia na tabela 200 do SIDRA é o \"-\" do IBGE (zero); conferido contra o total do grupo"}],
-            colunas=[{"nome": "ano", "tipo": "int"}, {"nome": "grupo_idade", "tipo": "texto"}, {"nome": "homens", "tipo": "float"}, {"nome": "mulheres", "tipo": "float"}],
+            colunas=[{"nome": "ano", "tipo": "int"}, {"nome": "grupo_idade", "tipo": "texto"}, {"nome": "homens", "tipo": "float", "rotulo": "Homens"}, {"nome": "mulheres", "tipo": "float", "rotulo": "Mulheres"}],
             dados=pir, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["populacao"], "supressao_nota": NOTA_SUPRESSAO}, **comuns)
         out[p["id"]] = comum.gravar_produto(p, transformacao="homens e mulheres por grupo de idade (situação Total na tabela 200)",
                                             entradas=[e["t200"], e["t9514"]], forcar=forcar,

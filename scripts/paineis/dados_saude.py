@@ -212,7 +212,8 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
             unidade_medida="óbitos", periodo={"inicio": str(a0), "fim": str(a1)}, dados_ate=f"{a1}-12-31",
             avisos=[{"tipo": "metodo", "texto": "agrupamento por causa básica (CID-10) sujeito a validação pela equipe de saúde"}]
                    + [{"tipo": "preliminar", "onde": {"ano": a}, "texto": f"{a} preliminar: arquivo preliminar do DATASUS (PRELIM), sujeito a revisão"} for a in anos_prelim],
-            colunas=[{"nome": "ano", "tipo": "int"}, {"nome": "preliminar", "tipo": "bool"}, {"nome": "obitos_total", "tipo": "int"}, {"nome": "obitos_respiratorios", "tipo": "int"}],
+            colunas=[{"nome": "ano", "tipo": "int"}, {"nome": "preliminar", "tipo": "bool"}, {"nome": "obitos_total", "tipo": "int", "rotulo": "Óbitos totais"},
+                     {"nome": "obitos_respiratorios", "tipo": "int", "rotulo": "Óbitos por causas respiratórias"}],
             dados=dados, extras=extras, **comuns)
         out[p["id"]] = comum.gravar_produto(
             p, transformacao="seleção das colunas de óbitos totais e respiratórios (CID-10 J00-J99) por ano; "
@@ -253,7 +254,8 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
             fonte_curta="SIH/DATASUS", fonte="SIH (Sistema de Informações Hospitalares), DATASUS, AIH por município de residência",
             unidade_medida="internações", periodo={"inicio": str(sih[0]["ano"]), "fim": str(sih[-1]["ano"])},
             dados_ate=ate_sih, avisos=avisos_sih,
-            colunas=[{"nome": "ano", "tipo": "int"}, {"nome": "parcial", "tipo": "bool"}, {"nome": "internacoes_total", "tipo": "int"}, {"nome": "internacoes_respiratorias", "tipo": "int"}],
+            colunas=[{"nome": "ano", "tipo": "int"}, {"nome": "parcial", "tipo": "bool"}, {"nome": "internacoes_total", "tipo": "int", "rotulo": "Internações totais"},
+                     {"nome": "internacoes_respiratorias", "tipo": "int", "rotulo": "Internações respiratórias"}],
             dados=sih, extras={**extras, **({"sih_parcial": sih_parcial} if sih_parcial else {})}, **comuns)
         out[p["id"]] = comum.gravar_produto(p, transformacao="soma dos 12 meses por ano; no último ano, soma dos meses completos "
                                             "(mês com total menor que metade da média dos meses anteriores do ano fica de fora)",

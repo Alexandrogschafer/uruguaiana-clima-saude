@@ -57,7 +57,6 @@
   <div class="kpi-row" id="kpiRowS2id"></div>
   <div class="card">
     <div class="card-head"><span class="card-title">Reconhecimentos federais de desastre por ano e tipo</span><span class="card-meta" data-nota="ris_meta_s2id"></span></div>
-    <div class="status-legend" id="legenda-s2id"></div>
     <div class="card-body"><div id="chart-s2id-anual"></div><div class="chart-tooltip" id="tt-s2id-anual"></div></div>
   </div>
   <p class="section-note" style="margin-top:6px;" data-nota="ris_nota_s2id_2"></p>
@@ -145,11 +144,7 @@ async function iniciar(){
   };
   const cores = () => ({'Inundação': cssVar('--series-blue'), 'Estiagem': cssVar('--series-orange'), 'Tempestade local/convectiva': cssVar('--series-aqua'),
                         'Doença infecciosa viral': cssVar('--series-context'), 'Enxurrada': cssVar('--status-critical')});
-  const corVar = {'Inundação': '--series-blue', 'Estiagem': '--series-orange', 'Tempestade local/convectiva': '--series-aqua', 'Doença infecciosa viral': '--series-context', 'Enxurrada': '--status-critical'};
-  if(s2id){
-    document.getElementById('legenda-s2id').innerHTML = s2id.meta.categorias.map(cat =>
-      `<span class="item"><span class="dot" style="background:var(${corVar[cat]})"></span>${cat}</span>`).join('');
-  }
+  // legenda do S2ID: a comum dos gráficos (graficos.js), com as categorias do produto
 
   function draw(){
     const good = cssVar('--status-good'), warning = cssVar('--status-warning'), critical = cssVar('--status-critical');
@@ -165,7 +160,7 @@ async function iniciar(){
     if(s2id){
       const d = noPeriodo(s2id.dados), cr = cores(), f = s2id.meta.fonte_curta;
       renderStackedBarChart('chart-s2id-anual', 'tt-s2id-anual', {
-        labels: d.map(r => r.ano), series: s2id.meta.categorias.map(cat => ({name: P.dica(cat, f), color: cr[cat], data: d.map(r => r[cat])})),
+        labels: d.map(r => r.ano), series: s2id.meta.categorias.map(cat => ({name: P.dica(cat, f), rotulo: cat, color: cr[cat], data: d.map(r => r[cat])})),
         height: 190, barMax: 40, tickCount: 3, nomeVazio: P.dica('reconhecimentos', f),
       });
     }

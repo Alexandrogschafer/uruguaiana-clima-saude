@@ -2,7 +2,7 @@
   "produto": "emprego_caged_serie_mensal.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/emprego_caged_serie_mensal.json",
-  "sha256_fonte": "053c5ca35725742021d1118d0628268c2444f8a11115c479c33948e1f415e0bb",
+  "sha256_fonte": "5d4230dae2e19aa95fe9a517f10a0763c88153d5f2b2324618a0ea73c110a289",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "competencia",
@@ -17,5 +17,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T19:38:49Z"
+  "data_processamento": "2026-11-03T23:37:32Z"
 }

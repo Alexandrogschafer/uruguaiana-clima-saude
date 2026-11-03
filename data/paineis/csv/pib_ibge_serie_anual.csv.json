@@ -2,7 +2,7 @@
   "produto": "pib_ibge_serie_anual.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/pib_ibge_serie_anual.json",
-  "sha256_fonte": "4b0459701bfd864384a7db1d8f76cdfe72e6be408550c6b2db468f1a3db2d721",
+  "sha256_fonte": "3f1d3651d3b4055d68a024c1cb410d55c11e16701c236e730dff092bee08358f",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "ano",
@@ -18,5 +18,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T19:38:49Z"
+  "data_processamento": "2026-11-03T23:37:32Z"
 }

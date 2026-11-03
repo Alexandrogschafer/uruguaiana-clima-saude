@@ -2,7 +2,7 @@
   "produto": "saude_sim_serie_anual.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/saude_sim_serie_anual.json",
-  "sha256_fonte": "d43b49e4ba56f20866f029a5ac4c7bc3b75a002ac2882e3ac32c2648c8150450",
+  "sha256_fonte": "bded8fe56f3e1f520fcaa4d6e1c02b6ea110d5b7cce6e6c35aa188255bfc4256",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "ano",
@@ -15,5 +15,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T19:37:52Z"
+  "data_processamento": "2026-11-03T23:37:31Z"
 }

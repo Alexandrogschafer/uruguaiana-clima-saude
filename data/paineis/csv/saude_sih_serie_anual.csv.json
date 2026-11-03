@@ -2,7 +2,7 @@
   "produto": "saude_sih_serie_anual.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/saude_sih_serie_anual.json",
-  "sha256_fonte": "773a7606220817932b8ca9ec595ff2b3a6acfa037539d895c82c239948a24dd9",
+  "sha256_fonte": "b73ebf5b3d3cdc373e5a154d03afbc2d31043d554ea563b63e2ee5195afdbace",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "ano",
@@ -15,5 +15,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T19:37:52Z"
+  "data_processamento": "2026-11-03T23:37:31Z"
 }

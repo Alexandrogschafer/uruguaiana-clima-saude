@@ -2,7 +2,7 @@
   "produto": "catalogo_dados.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/catalogo_dados.json",
-  "sha256_fonte": "4881b6bab9341766a921897646939b8962f4f007d99a8532780fb571f7d7bc34",
+  "sha256_fonte": "235b4e7f11bee8b65707ca13c08c1279f5829acfe1b06c104ad5d273ba458e58",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "tema",
@@ -24,5 +24,5 @@
   "codigo_ibge": "4322400",
   "selo": "em_confirmacao",
   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
-  "data_processamento": "2026-11-03T23:23:27Z"
+  "data_processamento": "2026-11-03T23:52:01Z"
 }

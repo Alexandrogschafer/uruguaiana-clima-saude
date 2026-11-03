@@ -46,6 +46,11 @@ CNAE = {"A": "Agropecuária", "B": "Ind. extrativa", "C": "Ind. transformação"
         "O": "Administração pública", "P": "Educação", "Q": "Saúde/ass. social", "R": "Artes/cultura", "S": "Outros serviços",
         "T": "Serviços domésticos", "U": "Organismos internacionais"}
 RAIS_TOPO = 8
+# nome legível das colunas que viram série de gráfico com legenda (campo "rotulo" de colunas)
+ROTULOS_SERIE = {"vab_servicos_pct": "Serviços", "vab_administracao_publica_pct": "Administração pública", "vab_agropecuaria_pct": "Agropecuária",
+                 "vab_industria_pct": "Indústria", "arroz_area_colhida_ha": "Arroz", "soja_area_colhida_ha": "Soja", "bovino_cabecas": "Bovinos",
+                 "ovino_cabecas": "Ovinos", "admissoes": "Admissões", "desligamentos": "Desligamentos", "idhm": "IDHM", "idhm_longevidade": "Longevidade",
+                 "idhm_renda": "Renda", "idhm_educacao": "Educação", "idhm_brasil": "Brasil"}
 FAIXAS_IDHM = [(0.800, "muito alto", "0,800–1"), (0.700, "alto", "0,700–0,799"), (0.600, "médio", "0,600–0,699"), (0.500, "baixo", "0,500–0,599"), (0.0, "muito baixo", "0–0,499")]
 FONTES = {
     "censo": "Censo — IBGE 2022 (Agregados por Setores Censitários + SIDRA)",
@@ -115,6 +120,8 @@ def calcular(e: dict) -> dict:
     d["rais"] = [{"secao": s, "rotulo": f"{CNAE[s]} ({s})", "vinculos": int(n)} for s, n in zip(ra.secao_cnae, ra.vinculos_ativos)]
     d["rais_ano"] = int(json.loads(e["rais_meta"].read_text(encoding="utf-8"))["ano"])
     i = pd.read_csv(e["idhm"])
+    # nome do município para a série municipal no gráfico "IDHM — município x Brasil" (metadado irmão do bruto do Atlas)
+    d["nome_municipio"] = json.loads(e["idhm"].with_suffix(".json").read_text(encoding="utf-8"))["nome_municipio"]
     iv = lambda n, col: [float(x) for x in i[i.indicador == n].sort_values("ano")[col]]
     anos_i = sorted(int(x) for x in i.ano.unique())
     cols = {"idhm": ("IDHM", "valor_municipio"), "idhm_brasil": ("IDHM", "valor_brasil"), "idhm_renda": ("IDHM Renda", "valor_municipio"),
@@ -291,8 +298,8 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
     n = ids(codigo_ibge)
     c = dict(codigo_ibge=codigo_ibge, script=SCRIPT, selo="conferido", unidade_espacial="município")
     ext = lambda f, **kw: {"fonte_rodape": FONTES[f], "telas": ["economia"], "supressao_nota": NOTA_SUPRESSAO, **kw}
-    col = lambda linhas: [{"nome": k, "tipo": "texto" if isinstance(v, str) else ("bool" if isinstance(v, bool) else ("int" if isinstance(v, int) else "float"))}
-                          for k, v in linhas[0].items()]
+    col = lambda linhas: [{"nome": k, "tipo": "texto" if isinstance(v, str) else ("bool" if isinstance(v, bool) else ("int" if isinstance(v, int) else "float")),
+                           **({"rotulo": ROTULOS_SERIE[k]} if k in ROTULOS_SERIE else {})} for k, v in linhas[0].items()]
     rais_graf = d["rais"][:RAIS_TOPO] + [{"secao": "outras", "rotulo": f"Outras ({len(d['rais']) - RAIS_TOPO} seções)",
                                            "vinculos": sum(r["vinculos"] for r in d["rais"][RAIS_TOPO:])}]
     defs = [
@@ -322,8 +329,8 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
         (n["idhm"], ["EV04"], dict(titulo="IDHM e componentes", fonte_curta="Atlas Brasil", fonte="Atlas do Desenvolvimento Humano no Brasil (PNUD/Ipea/FJP)",
                                     unidade_medida="índice", periodo={"inicio": str(d["idhm"][0]["ano"]), "fim": str(d["idhm"][-1]["ano"])}, dados_ate=str(d["idhm"][-1]["ano"]),
                                     avisos=[{"tipo": "lacuna", "texto": "IDHM 2022 não existe em nível municipal"}], colunas=col(d["idhm"]), dados=d["idhm"],
-                                    extras=ext("idhm", kpis_vulnerabilidade=kpis["kpis_vulnerabilidade"])),
-         [e["idhm"]], "IDHM e componentes do município e IDHM do Brasil por censo"),
+                                    extras=ext("idhm", kpis_vulnerabilidade=kpis["kpis_vulnerabilidade"], nome_municipio=d["nome_municipio"])),
+         [e["idhm"], e["idhm"].with_suffix(".json")], "IDHM e componentes do município e IDHM do Brasil por censo; nome do município do metadado do bruto"),
         (n["cadunico"], ["EV05"], dict(titulo="Famílias no CadÚnico e taxa de atualização", fonte_curta="MDS", fonte="MDS, Relatório de Informações (RIv3)",
                                         unidade_medida="famílias; %", periodo={"inicio": str(d["cadunico"][0]["ano"]), "fim": str(d["cadunico"][-1]["ano"])},
                                         dados_ate=f"{d['cadunico'][-1]['ano']}-{d['cadunico'][-1]['mes']:02d}", avisos=[{"tipo": "parcial", "texto": "último ponto não é dezembro"}],

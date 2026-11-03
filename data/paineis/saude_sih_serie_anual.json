@@ -35,7 +35,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T19:37:52Z",
+ "gerado_em": "2026-11-03T23:37:31Z",
  "script": "scripts/paineis/dados_saude.py",
  "colunas": [
   {
@@ -48,11 +48,13 @@
   },
   {
    "nome": "internacoes_total",
-   "tipo": "int"
+   "tipo": "int",
+   "rotulo": "Internações totais"
   },
   {
    "nome": "internacoes_respiratorias",
-   "tipo": "int"
+   "tipo": "int",
+   "rotulo": "Internações respiratórias"
   }
  ],
  "fonte_rodape": "SIM, SINAN e SIH — DATASUS/Ministério da Saúde (FTP público, microdados individuais)",

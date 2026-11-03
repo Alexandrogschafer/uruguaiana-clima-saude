@@ -57,7 +57,7 @@
 
   <div class="card">
     <div class="card-head"><span class="card-title">Precipitação anual: MERGE × A809</span><span class="card-meta" id="meta-comparacao"></span></div>
-    <div class="card-body"><div class="chart-legend-slot" id="legend-comparacao"></div><div id="chart-comparacao"></div><div class="chart-tooltip" id="tt-comparacao"></div><p class="nota-grafico" id="nota-comparacao"></p></div>
+    <div class="card-body"><div id="chart-comparacao"></div><div class="chart-tooltip" id="tt-comparacao"></div><p class="nota-grafico" id="nota-comparacao"></p></div>
   </div>
 
   <div class="section-head"><h2>Hidrologia</h2><div class="section-rule"></div></div>
@@ -274,11 +274,11 @@ async function iniciar(){
       renderLineChart('chart-comparacao', 'tt-comparacao', {
         labels: precip.dados.map(r=>r.ano),
         series: [
-          {name: P.dica('', precip.meta.fonte_curta), color: blue, data: precip.dados.map(r=>r.merge_mm)},
-          {name: P.dica('', precip.meta.fonte_curta_comparacao), color: cssVar('--series-orange'), data: precip.dados.map(r=>r.a809_mm)},
+          {name: P.dica('', precip.meta.fonte_curta), rotulo: precip.meta.fonte_curta, color: blue, data: precip.dados.map(r=>r.merge_mm)},
+          {name: P.dica('', precip.meta.fonte_curta_comparacao), rotulo: precip.meta.fonte_curta_comparacao, color: cssVar('--series-orange'), data: precip.dados.map(r=>r.a809_mm)},
         ],
         faixas: precip.dados.map((r,i)=>r.a809_abaixo_de_90_pct ? i : -1).filter(i=>i>=0),
-        height: 220, padR: 48, rotuloFinalAoLado: true, legendSlot: 'legend-comparacao', yFormat: v => fmtInt(v),
+        height: 220, padR: 48, rotuloFinalAoLado: true, yFormat: v => fmtInt(v),
       });
     }
     if(rio){

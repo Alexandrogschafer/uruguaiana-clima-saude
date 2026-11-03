@@ -184,6 +184,8 @@ function renderStackedBarChart(containerId, tooltipId, opts){
       labEl.textContent = lab;
     }
   });
+  // legenda comum: na ordem das séries, que é a do empilhamento (de baixo para cima)
+  montarLegenda(container, opts.series.map(s => ({rotulo: s.rotulo, cor: s.color})));
 
   function showTip(e, i){
     const rect = svg.getBoundingClientRect();
@@ -261,10 +263,12 @@ function renderTimeLineChart(containerId, tooltipId, opts){
   const hoverLine = el('line', {x1:padL, x2:padL, y1:padT, y2:padT+innerH, class:'crosshair'}, svg);
   hoverLine.style.opacity = 0;
 
-  opts.series.forEach(s => {
+  const nS = opts.series.length;
+  opts.series.forEach((s, iS) => {
     const pts = s.points;
     const d = pts.map((p,i) => (i===0?'M':'L') + xAt(p.x).toFixed(1) + ' ' + yAt(p.y).toFixed(1)).join(' ');
-    el('path', {d, fill:'none', stroke:s.color, 'stroke-width':2, 'stroke-linecap':'round', 'stroke-linejoin':'round', 'stroke-dasharray': s.dashed ? '4 3' : 'none'}, svg);
+    const traco = s.dashed ? '4 3' : tracoDaSerie(iS, nS);
+    el('path', {d, fill:'none', stroke:s.color, 'stroke-width':2, 'stroke-linecap':'round', 'stroke-linejoin':'round', 'stroke-dasharray': traco || 'none'}, svg);
     pts.forEach(p => {
       if(p.marker) el('circle', {cx:xAt(p.x), cy:yAt(p.y), r:5, fill:s.color, stroke:cssVar('--surface-card'), 'stroke-width':2, class:'marker-censo'}, svg);
     });
@@ -275,6 +279,7 @@ function renderTimeLineChart(containerId, tooltipId, opts){
       : el('text', {x:xAt(last.x)-2, y:yAt(last.y) - 11, class:'end-label', fill:s.color, 'text-anchor':'end'}, svg);
     t.textContent = opts.yFormat ? opts.yFormat(last.y) : fmtInt(last.y);
   });
+  montarLegenda(container, opts.series.map((s, i) => ({rotulo: s.rotulo, cor: s.color, traco: s.dashed ? '4 3' : tracoDaSerie(i, nS)})));
 
   // área de toque única; o ano mais próximo do ponteiro abre a dica
   const anos = Array.from(new Set(allYears)).sort((a,b)=>a-b);
@@ -357,6 +362,7 @@ function renderStackedAreaChart(containerId, tooltipId, opts){
   hit.addEventListener('pointermove', e => showAt(e.clientX));
   hit.addEventListener('pointerdown', e => showAt(e.clientX));
   hit.addEventListener('pointerleave', _ocultarDica(tooltip));
+  montarLegenda(container, [{rotulo: opts.rotuloUrbano, cor: opts.colorUrbano}, {rotulo: opts.rotuloRural, cor: opts.colorRural}]);
 }
 
 function renderPyramidChart(containerId, tooltipId, opts){
@@ -406,6 +412,7 @@ function renderPyramidChart(containerId, tooltipId, opts){
     tooltip.style.opacity = 1;
     posicionarDica(tooltip, ((e.clientX - rect.left) / rect.width) * 100);
   }
+  montarLegenda(container, [{rotulo: opts.rotuloHomens, cor: opts.colorHomens}, {rotulo: opts.rotuloMulheres, cor: opts.colorMulheres}]);
 }
 
 // Rótulo de categoria do eixo x que passaria da borda do gráfico (comum no celular) vai em

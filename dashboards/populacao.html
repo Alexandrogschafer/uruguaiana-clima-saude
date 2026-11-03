@@ -45,10 +45,6 @@
   <p class="section-note" data-nota="pop_nota_piramide"></p>
   <details class="recolhivel" id="det-piramides" open>
     <summary>Ver as pirâmides</summary>
-    <div class="status-legend">
-      <span class="item"><span class="dot" style="background:var(--series-blue)"></span>Homens</span>
-      <span class="item"><span class="dot" style="background:var(--series-orange)"></span>Mulheres</span>
-    </div>
     <div class="chart-grid triple" id="piramideGrid"></div>
   </details>
 
@@ -69,10 +65,6 @@
   <p class="section-note" data-nota="pop_nota_urbano"></p>
   <div class="card">
     <div class="card-head"><span class="card-title">Situação do domicílio</span><span class="card-meta">% da população total</span></div>
-    <div class="status-legend">
-      <span class="item"><span class="dot" style="background:var(--series-aqua)"></span>Urbana</span>
-      <span class="item"><span class="dot" style="background:var(--series-orange)"></span>Rural</span>
-    </div>
     <div class="card-body"><div id="chart-urbano-rural"></div><div class="chart-tooltip" id="tt-urbano-rural"></div></div>
   </div>
 
@@ -162,7 +154,8 @@ async function iniciar(){
         const p = pir.dados.filter(r => r.ano === ano).reverse();
         renderPyramidChart(`chart-piramide-${ano}`, `tt-piramide-${ano}`, {
           labels: p.map(g => g.grupo_idade), homens: p.map(g => g.homens), mulheres: p.map(g => g.mulheres), maxValue: maxP,
-          colorHomens: blue, colorMulheres: orange, nomeHomens: P.dica('Homens', pir.meta.fonte_curta), nomeMulheres: P.dica('Mulheres', pir.meta.fonte_curta),
+          colorHomens: blue, colorMulheres: orange, rotuloHomens: P.rotulo(pir, 'homens'), rotuloMulheres: P.rotulo(pir, 'mulheres'),
+          nomeHomens: P.dica(P.rotulo(pir, 'homens'), pir.meta.fonte_curta), nomeMulheres: P.dica(P.rotulo(pir, 'mulheres'), pir.meta.fonte_curta),
         });
       });
     }
@@ -176,7 +169,8 @@ async function iniciar(){
       linha('dependencia', 'Razão de dependência', blue, 'razao_dependencia', v => fmt1(v), 190);
       if(!P.semDadosNoPeriodo('chart-urbano-rural', d.length)) renderStackedAreaChart('chart-urbano-rural', 'tt-urbano-rural', {
         height: 200, years: xt, urbano: d.map(r => r.pct_urbano), rural: d.map(r => r.pct_rural), colorUrbano: aqua, colorRural: orange,
-        nomeUrbano: P.dica('Urbana', fonteInd), nomeRural: P.dica('Rural', fonteInd),
+        rotuloUrbano: P.rotulo(ind, 'pct_urbano'), rotuloRural: P.rotulo(ind, 'pct_rural'),
+        nomeUrbano: P.dica(P.rotulo(ind, 'pct_urbano'), fonteInd), nomeRural: P.dica(P.rotulo(ind, 'pct_rural'), fonteInd),
       });
       linha('criancas-abs', 'Crianças 0-4', blue, 'pop_0_4', v => fmtInt(v), 160);
       linha('criancas-pct', 'Crianças 0-4 (%)', blue, 'pct_pop_0_4', v => fmt1(v)+'%', 160);

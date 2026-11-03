@@ -154,6 +154,11 @@ async function iniciar(){
     return linhas.filter(r => ano(r) >= a && ano(r) <= b);
   };
   // margem esquerda maior que a padrão: rótulos como "1.500.000" e "R$ 30.000" cortavam no celular
+  // série de gráfico: nome (legenda e dica) do rótulo da coluna no produto (P.rotulo) ou do nome dado pelo produto
+  const serie = (prod, campo, color, linhas, nome) => {
+    const rotulo = nome || P.rotulo(prod, campo);
+    return {name: P.dica(rotulo, prod.meta.fonte_curta), rotulo, color, data: linhas.map(r => r[campo])};
+  };
   const linha = (id, d, labels, series, fmt) => P.semDadosNoPeriodo(`chart-${id}`, labels.length) || renderLineChart(`chart-${id}`, `tt-${id}`, {labels, series, height: 190, padL: 72, yFormat: fmt});
 
   function draw(){
@@ -169,24 +174,17 @@ async function iniciar(){
       const pc = noPeriodo(pib.dados.filter(r => r.pib_per_capita !== null));
       const cp = noPeriodo(pib.dados.filter(r => r.vab_agropecuaria_pct !== null));
       linha('pib-per-capita', pc, pc.map(r => r.ano), [{name: P.dica('PIB per capita', f), color: blue, data: pc.map(r => r.pib_per_capita)}], v => 'R$ '+fmtInt(v));
-      linha('pib-composicao', cp, cp.map(r => r.ano), [
-        {name: P.dica('Serviços', f), color: blue, data: cp.map(r => r.vab_servicos_pct)},
-        {name: P.dica('Adm. pública', f), color: gray, data: cp.map(r => r.vab_administracao_publica_pct)},
-        {name: P.dica('Agropecuária', f), color: orange, data: cp.map(r => r.vab_agropecuaria_pct)},
-        {name: P.dica('Indústria', f), color: aqua, data: cp.map(r => r.vab_industria_pct)},
-      ], v => fmt1(v)+'%');
+      linha('pib-composicao', cp, cp.map(r => r.ano), [serie(pib, 'vab_servicos_pct', blue, cp), serie(pib, 'vab_administracao_publica_pct', gray, cp),
+        serie(pib, 'vab_agropecuaria_pct', orange, cp), serie(pib, 'vab_industria_pct', aqua, cp)], v => fmt1(v)+'%');
     }
     if(pam){
       const d = noPeriodo(pam.dados), f = pam.meta.fonte_curta;
-      linha('pam-area', d, d.map(r => r.ano), [{name: P.dica('Arroz', f), color: orange, data: d.map(r => r.arroz_area_colhida_ha)},
-                                              {name: P.dica('Soja', f), color: aqua, data: d.map(r => r.soja_area_colhida_ha)}], v => fmtInt(v)+' ha');
-      linha('ppm-rebanho', d, d.map(r => r.ano), [{name: P.dica('Bovino', f), color: blue, data: d.map(r => r.bovino_cabecas)},
-                                                 {name: P.dica('Ovino', f), color: orange, data: d.map(r => r.ovino_cabecas)}], v => fmtInt(v));
+      linha('pam-area', d, d.map(r => r.ano), [serie(pam, 'arroz_area_colhida_ha', orange, d), serie(pam, 'soja_area_colhida_ha', aqua, d)], v => fmtInt(v)+' ha');
+      linha('ppm-rebanho', d, d.map(r => r.ano), [serie(pam, 'bovino_cabecas', blue, d), serie(pam, 'ovino_cabecas', orange, d)], v => fmtInt(v));
     }
     if(caged){
       const d = noPeriodo(caged.dados, r => Math.floor(r.competencia / 100)), f = caged.meta.fonte_curta;
-      linha('caged-fluxo', d, d.map(r => r.rotulo), [{name: P.dica('Admissões', f), color: blue, data: d.map(r => r.admissoes)},
-                                                    {name: P.dica('Desligamentos', f), color: orange, data: d.map(r => r.desligamentos)}], v => fmtInt(v));
+      linha('caged-fluxo', d, d.map(r => r.rotulo), [serie(caged, 'admissoes', blue, d), serie(caged, 'desligamentos', orange, d)], v => fmtInt(v));
       linha('caged-saldo', d, d.map(r => r.rotulo), [{name: P.dica('Saldo acumulado', f), color: aqua, data: d.map(r => r.saldo_acumulado)}], v => fmtInt(v));
     }
     if(rais){
@@ -197,12 +195,10 @@ async function iniciar(){
     }
     if(idhm){
       const d = noPeriodo(idhm.dados), f = idhm.meta.fonte_curta;
-      linha('idhm-componentes', d, d.map(r => r.ano), [
-        {name: P.dica('IDHM', f), color: blue, data: d.map(r => r.idhm)}, {name: P.dica('Longevidade', f), color: aqua, data: d.map(r => r.idhm_longevidade)},
-        {name: P.dica('Renda', f), color: orange, data: d.map(r => r.idhm_renda)}, {name: P.dica('Educação', f), color: gray, data: d.map(r => r.idhm_educacao)},
-      ], fmt3);
-      linha('idhm-brasil', d, d.map(r => r.ano), [{name: P.dica('Uruguaiana', f), color: blue, data: d.map(r => r.idhm)},
-                                                 {name: P.dica('Brasil', f), color: gray, data: d.map(r => r.idhm_brasil)}], fmt3);
+      linha('idhm-componentes', d, d.map(r => r.ano), [serie(idhm, 'idhm', blue, d), serie(idhm, 'idhm_longevidade', aqua, d),
+        serie(idhm, 'idhm_renda', orange, d), serie(idhm, 'idhm_educacao', gray, d)], fmt3);
+      // série do município com o nome do município (do produto); a do Brasil com o rótulo da coluna
+      linha('idhm-brasil', d, d.map(r => r.ano), [serie(idhm, 'idhm', blue, d, idhm.meta.nome_municipio), serie(idhm, 'idhm_brasil', gray, d)], fmt3);
     }
     if(cadunico){
       const d = noPeriodo(cadunico.dados), f = cadunico.meta.fonte_curta;

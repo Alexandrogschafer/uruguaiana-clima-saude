@@ -18,6 +18,17 @@
   };
   P.dicaTemFonte = nome => comFonte.has(nome);
 
+  // Nome legível de uma coluna do produto (campo "rotulo" de "colunas", posto pelo gerador): é o nome da série
+  // na legenda comum dos gráficos (rodada A6). Coluna sem rótulo acusa erro no console.
+  P.rotulo = function(prod, campo){
+    const c = ((prod && prod.meta && prod.meta.colunas) || []).find(x => x.nome === campo);
+    if(!c || !c.rotulo){
+      console.error(`coluna sem rótulo: ${prod && prod.meta ? prod.meta.id : '?'}.${campo}`);
+      return campo;
+    }
+    return c.rotulo;
+  };
+
   // Valor para exibição: suprimido → "<5"; ausente → "—"; nunca 0 no lugar de vazio.
   P.valor = function(v, formatar, suprimido){
     if(suprimido) return '<5';

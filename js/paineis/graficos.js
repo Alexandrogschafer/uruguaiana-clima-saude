@@ -4,7 +4,9 @@
    e eixo espaçado pela largura real do rótulo (rodadas 104 a 107).
    Único acréscimo: exigirFonte() no início de renderLineChart e
    renderBarChart, que acusa erro no console quando o texto da dica não foi
-   montado com dica(rotulo, fonte) de componentes.js. */
+   montado com dica(rotulo, fonte) de componentes.js.
+   Rodada A6: legenda comum (montarLegenda) em todo gráfico com 2 ou mais
+   séries. */
 
 // O texto da dica vem do nome da série; ele precisa ter sido montado com dica().
 function exigirFonte(nomes, grafico){
@@ -52,6 +54,34 @@ document.addEventListener('pointerdown', () => {
   document.querySelectorAll('.chart-tooltip').forEach(t => { t.style.opacity = 0; });
   document.querySelectorAll('.crosshair').forEach(l => { l.style.opacity = 0; });
 }, true);
+
+// ------------------------------------------------------------------ legenda comum (rodada A6)
+// Acima do gráfico, em linha (quebra no celular), um item por série na ordem das séries: traço da cor
+// da série e o nome por extenso (s.rotulo, vindo do produto: P.rotulo). Com mais de 4 séries, cada uma
+// ganha também um traço próprio (sólido, tracejado...), igual na linha e no marcador. Uma série só: sem legenda.
+const TRACOS = ['', '6 3', '2 3', '8 3 2 3', '1 3', '10 4'];
+function tracoDaSerie(i, n){ return n > 4 ? TRACOS[i % TRACOS.length] : ''; }
+function montarLegenda(container, itens){
+  if(itens.length < 2) return null;
+  if(itens.some(it => !it.rotulo)) console.error(`legenda sem nome de série no gráfico ${container.id}`);
+  const div = document.createElement('div');
+  div.className = 'chart-legenda';
+  div.setAttribute('role', 'list');
+  div.setAttribute('aria-label', 'Legenda');
+  itens.forEach(it => {
+    const item = document.createElement('span');
+    item.className = 'legend-item';
+    item.setAttribute('role', 'listitem');
+    const sw = el('svg', {viewBox: '0 0 18 8', width: 18, height: 8, class: 'legend-traco', 'aria-hidden': 'true'});
+    el('line', {x1: 1, x2: 17, y1: 4, y2: 4, stroke: it.cor, 'stroke-width': 3, 'stroke-linecap': 'round', ...(it.traco ? {'stroke-dasharray': it.traco} : {})}, sw);
+    const nome = document.createElement('span');
+    nome.className = 'legend-nome';
+    nome.textContent = it.rotulo || '';
+    item.appendChild(sw); item.appendChild(nome); div.appendChild(item);
+  });
+  container.insertBefore(div, container.firstChild);
+  return div;
+}
 
 function renderLineChart(containerId, tooltipId, opts){
   exigirFonte(opts.series.map(s => s.name), containerId);
@@ -111,12 +141,14 @@ function renderLineChart(containerId, tooltipId, opts){
   const hoverLine = el('line', {x1:padL, x2:padL, y1:padT, y2:padT+innerH, class:'crosshair'}, svg);
   hoverLine.style.opacity = 0;
 
-  opts.series.forEach(s => {
+  const nS = opts.series.length;
+  opts.series.forEach((s, iS) => {
     // Com ano final parcial, o último trecho é tracejado e o marcador é vazado.
     const lastI = s.data.length - 1;
     const fimCheio = s.ultimoParcial ? lastI - 1 : lastI;
     const d = s.data.slice(0, fimCheio+1).map((v,i) => (i===0?'M':'L') + xAt(i).toFixed(1) + ' ' + yAt(v).toFixed(1)).join(' ');
-    el('path', {d, fill:'none', stroke:s.color, 'stroke-width':2, 'stroke-linecap':'round', 'stroke-linejoin':'round', opacity: s.emphasis===false?0.7:1}, svg);
+    const traco = tracoDaSerie(iS, nS);
+    el('path', {d, fill:'none', stroke:s.color, 'stroke-width':2, 'stroke-linecap':'round', 'stroke-linejoin':'round', opacity: s.emphasis===false?0.7:1, ...(traco ? {'stroke-dasharray': traco} : {})}, svg);
     if(s.ultimoParcial){
       el('path', {d:`M${xAt(lastI-1).toFixed(1)} ${yAt(s.data[lastI-1]).toFixed(1)} L${xAt(lastI).toFixed(1)} ${yAt(s.data[lastI]).toFixed(1)}`, fill:'none', stroke:s.color, 'stroke-width':2, 'stroke-dasharray':'4 4'}, svg);
       el('circle', {cx:xAt(lastI), cy:yAt(s.data[lastI]), r:4, fill:cssVar('--surface-card'), stroke:s.color, 'stroke-width':2}, svg);
@@ -152,16 +184,7 @@ function renderLineChart(containerId, tooltipId, opts){
   hit.addEventListener('pointerdown', e => showAt(e.clientX));
   hit.addEventListener('pointerleave', e => { if(e.pointerType === 'mouse'){ hoverLine.style.opacity = 0; tooltip.style.opacity = 0; } });
 
-  if(opts.legendSlot){
-    const slot = document.getElementById(opts.legendSlot);
-    slot.innerHTML = '';
-    opts.series.forEach(s => {
-      const item = document.createElement('span'); item.className = 'legend-item';
-      const sw = document.createElement('span'); sw.className = 'legend-swatch'; sw.style.background = s.color;
-      const lab = document.createElement('span'); lab.textContent = s.name;
-      item.appendChild(sw); item.appendChild(lab); slot.appendChild(item);
-    });
-  }
+  montarLegenda(container, opts.series.map((s, i) => ({rotulo: s.rotulo, cor: s.color, traco: tracoDaSerie(i, nS)})));
 }
 
 function roundedTopBarPath(x, yTop, w, yBottom, r){

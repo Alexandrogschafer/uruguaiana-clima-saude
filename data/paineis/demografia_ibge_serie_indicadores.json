@@ -27,7 +27,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:06Z",
+ "gerado_em": "2026-11-03T23:37:32Z",
  "script": "scripts/paineis/dados_populacao.py",
  "colunas": [
   {
@@ -52,11 +52,13 @@
   },
   {
    "nome": "pct_urbano",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Urbana"
   },
   {
    "nome": "pct_rural",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Rural"
   },
   {
    "nome": "pop_0_4",

@@ -32,7 +32,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:06Z",
+ "gerado_em": "2026-11-03T23:37:32Z",
  "script": "scripts/paineis/dados_populacao.py",
  "colunas": [
   {
@@ -45,11 +45,13 @@
   },
   {
    "nome": "homens",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Homens"
   },
   {
    "nome": "mulheres",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Mulheres"
   }
  ],
  "fonte_rodape": "IBGE — API SIDRA/Agregados, tabelas 200 (Censos 1970-2010, sexo × situação do domicílio × grupo de idade), 9514 (Censo 2022, sexo × idade), 202 (situação do domicílio 1970-2010), 9923 (situação do domicílio 2022) e 6579 (estimativas populacionais anuais). A tabela 6706 (\"pirâmide etária\" nominal do SIDRA) é da PNAD Contínua, uma pesquisa amostral sem representatividade em nível de município pequeno — testada e confirmada sem dado para Uruguaiana em nenhum período; por isso a pirâmide etária aqui vem das tabelas de Censo (200 e 9514), que têm os mesmos 21 grupos etários de 5 anos nos 3 pontos comparados",

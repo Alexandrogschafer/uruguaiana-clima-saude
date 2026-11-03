@@ -32,7 +32,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T19:38:49Z",
+ "gerado_em": "2026-11-03T23:37:32Z",
  "script": "scripts/paineis/dados_economia.py",
  "colunas": [
   {
@@ -45,11 +45,13 @@
   },
   {
    "nome": "admissoes",
-   "tipo": "int"
+   "tipo": "int",
+   "rotulo": "Admissões"
   },
   {
    "nome": "desligamentos",
-   "tipo": "int"
+   "tipo": "int",
+   "rotulo": "Desligamentos"
   },
   {
    "nome": "saldo",

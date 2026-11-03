@@ -32,7 +32,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:06Z",
+ "gerado_em": "2026-11-03T23:37:32Z",
  "script": "scripts/paineis/dados_economia.py",
  "colunas": [
   {
@@ -41,23 +41,28 @@
   },
   {
    "nome": "idhm",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "IDHM"
   },
   {
    "nome": "idhm_brasil",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Brasil"
   },
   {
    "nome": "idhm_renda",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Renda"
   },
   {
    "nome": "idhm_longevidade",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Longevidade"
   },
   {
    "nome": "idhm_educacao",
-   "tipo": "float"
+   "tipo": "float",
+   "rotulo": "Educação"
   }
  ],
  "fonte_rodape": "IDHM — Atlas do Desenvolvimento Humano no Brasil (PNUD/Ipea/FJP)",
@@ -92,6 +97,7 @@
    "sub": "07/2026 · R$ 5.419.371 investidos no mês"
   }
  ],
+ "nome_municipio": "Uruguaiana",
  "dados": [
   {
    "ano": 1991,

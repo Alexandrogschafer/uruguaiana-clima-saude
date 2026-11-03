@@ -2,7 +2,7 @@
   "produto": "agropecuaria_ibge_serie_anual.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/agropecuaria_ibge_serie_anual.json",
-  "sha256_fonte": "66c9e4f242ca5553f9e76d09531447c47e5fb6cd35ebc886dc4bc3d29863432b",
+  "sha256_fonte": "93ed7b3b19a59b99aa37030437dff35a708c475b0727525cbdb1d4207855d4f1",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "ano",
@@ -17,5 +17,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T19:38:49Z"
+  "data_processamento": "2026-11-03T23:37:32Z"
 }

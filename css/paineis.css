@@ -145,9 +145,10 @@ h1 { font-family: "Plus Jakarta Sans", "Segoe UI Variable", "Segoe UI", system-u
 .card-meta { font-size: 11.5px; color: var(--ink-muted); font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
 .card-body { position: relative; }
 .nota-grafico { font-size: 12px; color: var(--ink-muted); margin: 8px 0 0; }
-.chart-legend-slot { display: flex; gap: 14px; margin: 2px 0 6px; flex-wrap: wrap; }
-.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-secondary); }
-.legend-swatch { width: 12px; height: 3px; border-radius: 2px; display: inline-block; }
+/* legenda comum dos gráficos com 2 ou mais séries (rodada A6): acima do gráfico, quebra no celular */
+.chart-legenda { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0 0 6px; }
+.legend-item { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; line-height: 1.35; color: var(--ink-secondary); }
+.legend-traco { flex: none; display: block; }
 
 .chart-svg { display: block; width: 100%; overflow: visible; }
 .gridline { stroke: var(--grid); stroke-width: 1; shape-rendering: crispEdges; }
