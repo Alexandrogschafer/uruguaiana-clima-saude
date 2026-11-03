@@ -32,7 +32,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:06Z",
+ "gerado_em": "2026-11-03T19:38:49Z",
  "script": "scripts/paineis/dados_economia.py",
  "colunas": [
   {
@@ -184,10 +184,10 @@
   },
   {
    "ano": 2026,
-   "bimestre": 3,
+   "bimestre": 4,
    "parcial": true,
-   "saude_per_capita_reais": 418.8,
-   "assistencia_social_per_capita_reais": 19.79,
+   "saude_per_capita_reais": 587.59,
+   "assistencia_social_per_capita_reais": 40.87,
    "saude_pct_pib": null
   }
  ]

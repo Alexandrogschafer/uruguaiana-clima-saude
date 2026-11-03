@@ -2,7 +2,7 @@
   "produto": "despesas_siconfi_serie_anual.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/despesas_siconfi_serie_anual.json",
-  "sha256_fonte": "d63dc41b0092864034faffb002710ec9617ed2cc8bb2c59814eb39b077c63bf9",
+  "sha256_fonte": "48d33e1992cf3c1e6d50068bf19cb774c545986380ec6c5927706fc05c13fb89",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "ano",
@@ -17,5 +17,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T16:33:06Z"
+  "data_processamento": "2026-11-03T19:38:49Z"
 }

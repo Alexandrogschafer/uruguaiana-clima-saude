@@ -5,9 +5,9 @@
   "transformacao_aplicada": "série como gravada por demografia_ibge_sidra.py; textos e indicadores calculados dos dados",
   "entradas": [
     {
-      "arquivo": "data/processed/populacao-serie-temporal_ibge-sidra_1970-2025_municipal.csv",
-      "sha256": "e792ccd406e9bb4042b2e0ad0259f5403f04b8ebb9c651a4c59522a8594b2f50",
-      "bytes": 669
+      "arquivo": "data/processed/populacao-serie-temporal_ibge-sidra_1970-2026_municipal.csv",
+      "sha256": "5b4e7d73ccf2bde839136b1c7c46213743c8fc5343eb41ab754fbc7c88aaa75a",
+      "bytes": 694
     },
     {
       "arquivo": "data/processed/demografia-indicadores_ibge-sidra_1970-2022_municipal.csv",
@@ -23,6 +23,6 @@
   "autorizacao": "livre",
   "selo": "conferido",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T16:33:06Z",
+  "data_processamento": "2026-11-03T19:38:49Z",
   "supressao_nota": "supressão primária não aplicada: séries municipais oficiais do IBGE, já publicadas pela fonte; nenhum agregado abaixo do município"
 }

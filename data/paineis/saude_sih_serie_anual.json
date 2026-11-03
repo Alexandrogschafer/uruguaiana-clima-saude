@@ -13,12 +13,20 @@
  "unidade_medida": "internações",
  "periodo": {
   "inicio": "2010",
-  "fim": "2025"
+  "fim": "2026"
  },
- "dados_ate": "2025-12-31",
+ "dados_ate": "2026-07-31",
  "autorizacao": "livre",
  "selo": "conferido",
- "avisos": [],
+ "avisos": [
+  {
+   "tipo": "parcial",
+   "onde": {
+    "ano": 2026
+   },
+   "texto": "2026 parcial: janeiro a julho; 08/2026 fica de fora (incompleto na fonte)"
+  }
+ ],
  "supressao": {
   "limiar": 5,
   "campos": [],
@@ -27,12 +35,16 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:05Z",
+ "gerado_em": "2026-11-03T19:37:52Z",
  "script": "scripts/paineis/dados_saude.py",
  "colunas": [
   {
    "nome": "ano",
    "tipo": "int"
+  },
+  {
+   "nome": "parcial",
+   "tipo": "bool"
   },
   {
    "nome": "internacoes_total",
@@ -48,86 +60,120 @@
   "saude"
  ],
  "supressao_nota": "supressão primária não aplicada: série municipal anual oficial, de microdados públicos já divulgados pelo DATASUS; contagens pequenas são valores reais da fonte. A única série com contagens pequenas frequentes (óbitos por afogamento ou enchente) vai somada por quinquênio.",
+ "sih_parcial": {
+  "ano": 2026,
+  "mes_fim": 7,
+  "criterio": "mês com total menor que 50% da média dos meses anteriores do ano fica de fora",
+  "excluidos": [
+   {
+    "mes": 8,
+    "internacoes_total": 10,
+    "pct_da_media": 1.8
+   }
+  ]
+ },
  "dados": [
   {
    "ano": 2010,
+   "parcial": false,
    "internacoes_total": 6977,
    "internacoes_respiratorias": 983
   },
   {
    "ano": 2011,
+   "parcial": false,
    "internacoes_total": 7179,
    "internacoes_respiratorias": 818
   },
   {
    "ano": 2012,
+   "parcial": false,
    "internacoes_total": 7122,
    "internacoes_respiratorias": 823
   },
   {
    "ano": 2013,
+   "parcial": false,
    "internacoes_total": 7410,
    "internacoes_respiratorias": 1020
   },
   {
    "ano": 2014,
+   "parcial": false,
    "internacoes_total": 7372,
    "internacoes_respiratorias": 889
   },
   {
    "ano": 2015,
+   "parcial": false,
    "internacoes_total": 6866,
    "internacoes_respiratorias": 877
   },
   {
    "ano": 2016,
+   "parcial": false,
    "internacoes_total": 6439,
    "internacoes_respiratorias": 823
   },
   {
    "ano": 2017,
+   "parcial": false,
    "internacoes_total": 6317,
    "internacoes_respiratorias": 738
   },
   {
    "ano": 2018,
+   "parcial": false,
    "internacoes_total": 5817,
    "internacoes_respiratorias": 568
   },
   {
    "ano": 2019,
+   "parcial": false,
    "internacoes_total": 5919,
    "internacoes_respiratorias": 577
   },
   {
    "ano": 2020,
+   "parcial": false,
    "internacoes_total": 5803,
    "internacoes_respiratorias": 418
   },
   {
    "ano": 2021,
+   "parcial": false,
    "internacoes_total": 5745,
    "internacoes_respiratorias": 398
   },
   {
    "ano": 2022,
+   "parcial": false,
    "internacoes_total": 6321,
    "internacoes_respiratorias": 749
   },
   {
    "ano": 2023,
+   "parcial": false,
    "internacoes_total": 5989,
    "internacoes_respiratorias": 751
   },
   {
    "ano": 2024,
+   "parcial": false,
    "internacoes_total": 6021,
    "internacoes_respiratorias": 738
   },
   {
    "ano": 2025,
+   "parcial": false,
    "internacoes_total": 6515,
    "internacoes_respiratorias": 838
+  },
+  {
+   "ano": 2026,
+   "parcial": true,
+   "internacoes_total": 3975,
+   "internacoes_respiratorias": 361
   }
  ]
 }

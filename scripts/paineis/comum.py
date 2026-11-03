@@ -44,6 +44,10 @@ PASTA_PUBLICACAO = RAIZ / "data" / "paineis"
 ARQ_ATIVOS = RAIZ / "config" / "paineis_ativos.csv"
 ESQUEMA = "climapampa-painel/1"
 LIMIAR_SUPRESSAO = 5
+# Decisão C1 (rodada 121): dado de outubro de 2026 em diante (mês da cheia) é publicado como provisório ou
+# parcial, com o rótulo na tela; a regra n de test_regras_publicas.py confere.
+PROVISORIO_DESDE = "2026-10"
+AVISO_PROVISORIO_DESDE = "outubro de 2026 em diante: provisório"
 SELOS = {"conferido", "pendente", "em_confirmacao"}
 TIPOS_AVISO = {"lacuna", "parcial", "preliminar", "em_confirmacao", "metodo", "evento_em_curso"}
 CAMPOS_OBRIGATORIOS = [

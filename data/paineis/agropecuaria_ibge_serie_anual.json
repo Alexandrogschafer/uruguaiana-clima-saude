@@ -13,9 +13,9 @@
  "unidade_medida": "hectares; cabeças",
  "periodo": {
   "inicio": "1974",
-  "fim": "2024"
+  "fim": "2025"
  },
- "dados_ate": "2024",
+ "dados_ate": "2025",
  "autorizacao": "livre",
  "selo": "conferido",
  "avisos": [],
@@ -27,7 +27,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:06Z",
+ "gerado_em": "2026-11-03T19:38:49Z",
  "script": "scripts/paineis/dados_economia.py",
  "colunas": [
   {
@@ -468,6 +468,14 @@
    "area_colhida_total_ha": 75608.0,
    "bovino_cabecas": 365849,
    "ovino_cabecas": 137773
+  },
+  {
+   "ano": 2025,
+   "arroz_area_colhida_ha": 74838.0,
+   "soja_area_colhida_ha": 2500.0,
+   "area_colhida_total_ha": 77867.0,
+   "bovino_cabecas": 361772,
+   "ovino_cabecas": 119937
   }
  ]
 }

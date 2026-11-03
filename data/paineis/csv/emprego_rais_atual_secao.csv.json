@@ -2,7 +2,7 @@
   "produto": "emprego_rais_atual_secao.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/emprego_rais_atual_secao.json",
-  "sha256_fonte": "cb8d5f2d4d157cdcd00aa66c38beeb4071062efbc316b0f2df5369f08180d02a",
+  "sha256_fonte": "5d39994d7c7d60214f6116b51b5a3c63c22de343f0fcd1ce5b695e56740a343d",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "secao",
@@ -14,5 +14,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T16:33:06Z"
+  "data_processamento": "2026-11-03T19:38:49Z"
 }

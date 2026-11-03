@@ -69,7 +69,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T19:21:46Z",
+ "gerado_em": "2026-11-03T19:40:30Z",
  "script": "scripts/paineis/dados_catalogo.py",
  "colunas": [
   {
@@ -480,7 +480,7 @@
    "titulo": "Internações e internações respiratórias por ano",
    "licenca": "dados abertos (microdados individuais)",
    "data_coleta": "2026-08-07",
-   "metodo": "soma dos 12 meses por ano",
+   "metodo": "soma dos 12 meses por ano; no último ano, soma dos meses completos (mês com total menor que metade da média dos meses anteriores do ano fica de fora)",
    "fontes_catalogo": [
     "saude_internacoes_sih"
    ],

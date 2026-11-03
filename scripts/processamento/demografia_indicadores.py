@@ -32,6 +32,19 @@ logger = logging.getLogger(__name__)
 RAW_DIR = Path(__file__).resolve().parents[2] / "data" / "raw"
 PROCESSED_DIR = Path(__file__).resolve().parents[2] / "data" / "processed"
 
+
+def estimativas_6579_mais_recentes() -> Path:
+    """Rodada 121: a coleta da tabela 6579 com data_acesso mais recente (o nome traz o período publicado,
+    ex. 2001-2026); a coleta anterior pode continuar na pasta."""
+    achados = sorted(RAW_DIR.glob("populacao-estimada_ibge-sidra-tabela6579_*_municipal.csv"))
+    if not achados:
+        raise FileNotFoundError("tabela 6579 não encontrada em data/raw; rode scripts/download/demografia_ibge_sidra.py")
+
+    def acesso(arq: Path) -> str:
+        m = json.loads(arq.with_suffix(".json").read_text(encoding="utf-8"))
+        return str(m.get("data_acesso") or m.get("data_processamento") or "")
+    return max(achados, key=acesso)
+
 # Grupos etários de 5 anos com nomes idênticos entre as tabelas 200 (2000/2010) e 9514 (2022) —
 # ver scripts/download/demografia_ibge_sidra.py para a verificação nos metadados SIDRA.
 FAIXAS_0_4 = ["0 a 4 anos"]
@@ -94,16 +107,17 @@ def montar_serie_temporal() -> pd.DataFrame:
         pop = carregar_populacao_por_faixa(periodo).query("grupo_idade == 'Total'")["populacao"].iloc[0]
         linhas.append({"ano": periodo, "populacao_total": pop, "fonte": "censo"})
 
-    df_est = pd.read_csv(RAW_DIR / "populacao-estimada_ibge-sidra-tabela6579_2001-2025_municipal.csv")
+    df_est = pd.read_csv(estimativas_6579_mais_recentes())
     for _, linha in df_est.iterrows():
         linhas.append({"ano": int(linha["periodo"]), "populacao_total": linha["populacao"], "fonte": "estimativa"})
 
     serie = pd.DataFrame(linhas).sort_values("ano").reset_index(drop=True)
-    anos_faltantes_intercensitarios = sorted(set(range(2000, 2026)) - set(serie["ano"]))
+    ultimo = int(serie["ano"].max())
+    anos_faltantes_intercensitarios = sorted(set(range(2000, ultimo + 1)) - set(serie["ano"]))
     logger.info(
-        "Série temporal: %d pontos (1970-2025; 1970-1991 só pontos de censo, sem estimativa anual — tabela 6579 "
-        "só cobre 2001+); anos sem dado dentro de 2000-2025: %s (Contagem da População, não baixada)",
-        len(serie), anos_faltantes_intercensitarios,
+        "Série temporal: %d pontos (1970-%d; 1970-1991 só pontos de censo, sem estimativa anual — tabela 6579 "
+        "só cobre 2001+); anos sem dado dentro de 2000-%d: %s (Contagem da População, não baixada)",
+        len(serie), ultimo, ultimo, anos_faltantes_intercensitarios,
     )
     return serie
 
@@ -180,10 +194,11 @@ def main() -> None:
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
     serie = montar_serie_temporal()
+    ultimo = int(serie["ano"].max())
     salvar_com_metadados(
-        serie, "populacao-serie-temporal_ibge-sidra_1970-2025_municipal.csv",
+        serie, f"populacao-serie-temporal_ibge-sidra_1970-{ultimo}_municipal.csv",
         {
-            "descricao": "População total municipal, 1970-2025 — todos os 6 Censos (1970/1980/1991/2000/2010/2022) + estimativas anuais IBGE nos anos entre censos a partir de 2001",
+            "descricao": f"População total municipal, 1970-{ultimo} — todos os 6 Censos (1970/1980/1991/2000/2010/2022) + estimativas anuais IBGE nos anos entre censos a partir de 2001",
             "fontes": {
                 "censo": "SIDRA tabelas 200 (1970/1980/1991/2000/2010) e 9514 (2022) — contagem exata do Censo",
                 "estimativa": "SIDRA tabela 6579 — estimativa populacional anual do IBGE, só publicada a partir de 2001",
@@ -191,7 +206,7 @@ def main() -> None:
             "limitacao_comparabilidade": (
                 "entre 1970 e 2000 só há os 3 pontos de censo (1970/1980/1991), sem estimativa anual preenchendo "
                 "o intervalo — tabela 6579 só cobre 2001 em diante; interpolar visualmente entre censos distantes "
-                "(9-11 anos) é uma aproximação grosseira, diferente do trecho 2001-2025 que tem 1 ponto por ano. "
+                f"(9-11 anos) é uma aproximação grosseira, diferente do trecho 2001-{ultimo} que tem 1 ponto por ano. "
                 "2007 e 2023 (Contagem da População) também não estão nesta série — tabela 6579 não os publica e "
                 "a Contagem da População (tabela separada) não foi priorizada para este estudo. Nível SEMPRE "
                 "municipal, nunca por setor censitário (malha de setores muda a cada Censo, não comparável "

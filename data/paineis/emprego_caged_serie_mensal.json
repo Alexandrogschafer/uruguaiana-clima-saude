@@ -13,9 +13,9 @@
  "unidade_medida": "vínculos",
  "periodo": {
   "inicio": "202001",
-  "fim": "202606"
+  "fim": "202608"
  },
- "dados_ate": "202606",
+ "dados_ate": "202608",
  "autorizacao": "livre",
  "selo": "conferido",
  "avisos": [
@@ -32,7 +32,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:06Z",
+ "gerado_em": "2026-11-03T19:38:49Z",
  "script": "scripts/paineis/dados_economia.py",
  "colunas": [
   {
@@ -689,6 +689,22 @@
    "desligamentos": 733,
    "saldo": 13,
    "saldo_acumulado": 2788
+  },
+  {
+   "competencia": 202607,
+   "rotulo": "07/26",
+   "admissoes": 712,
+   "desligamentos": 792,
+   "saldo": -80,
+   "saldo_acumulado": 2708
+  },
+  {
+   "competencia": 202608,
+   "rotulo": "08/26",
+   "admissoes": 682,
+   "desligamentos": 722,
+   "saldo": -40,
+   "saldo_acumulado": 2668
   }
  ]
 }

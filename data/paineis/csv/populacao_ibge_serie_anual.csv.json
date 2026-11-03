@@ -2,17 +2,17 @@
   "produto": "populacao_ibge_serie_anual.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/populacao_ibge_serie_anual.json",
-  "sha256_fonte": "af62fe4af4dac121cd50f09645a2d7cf755117f54d074bb9269c41d2a57ea92e",
+  "sha256_fonte": "3c7154949374db3b9f863072f62d3bd74e54fb7ad94602f0309dbc531c7c5da3",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "ano",
     "populacao",
     "fonte"
   ],
-  "n_linhas": 27,
+  "n_linhas": 28,
   "script": "scripts/paineis/exportar_csv.py",
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T16:33:06Z"
+  "data_processamento": "2026-11-03T19:38:49Z"
 }

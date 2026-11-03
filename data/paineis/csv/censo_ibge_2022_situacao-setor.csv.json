@@ -2,7 +2,7 @@
   "produto": "censo_ibge_2022_situacao-setor.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/censo_ibge_2022_situacao-setor.json",
-  "sha256_fonte": "6a82d73765b8aeb95862eb314dc28c0737949a8c9c5fd9df14680dfa1d9be325",
+  "sha256_fonte": "8823d46840af52824564d2e212df50ff39eb79cb75fc016ee62c0d531234d5bc",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "situacao",
@@ -14,5 +14,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-02T13:23:47Z"
+  "data_processamento": "2026-11-03T19:38:49Z"
 }

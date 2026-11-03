@@ -390,8 +390,22 @@ def resumir_csv(caminho_csv: Path) -> tuple[dict[str, list[str]], list[str]]:
     return meses_por_fonte, sem_arquivo
 
 
-def meses_pendentes(ano_inicio: int, ano_fim: int, ja_processados: set[tuple[int, int]]) -> list[tuple[int, int]]:
-    return [(a, m) for a in range(ano_inicio, ano_fim + 1) for m in range(1, 13) if (a, m) not in ja_processados]
+def meses_pendentes(ano_inicio: int, ano_fim: int, ja_processados: set[tuple[int, int]], mes_fim: tuple[int, int] | None = None) -> list[tuple[int, int]]:
+    return [(a, m) for a in range(ano_inicio, ano_fim + 1) for m in range(1, 13)
+            if (a, m) not in ja_processados and (mes_fim is None or (a, m) <= mes_fim)]
+
+
+def semear_de_coleta_anterior(anterior: Path, caminho_saida: Path, ano_inicio: int, mes_fim: tuple[int, int] | None) -> int:
+    """Rodada 121: começa a coleta nova com as linhas (com valor) de uma coleta anterior, para baixar só os meses
+    que faltam em vez de recalcular desde ano_inicio. Só vale se o arquivo de trabalho ainda não existe."""
+    if caminho_saida.exists():
+        return 0
+    df = pd.read_csv(anterior)
+    df = df[df["precipitacao_media_mm"].notna() & (df["ano"] >= ano_inicio)]
+    if mes_fim is not None:
+        df = df[[(a, m) <= mes_fim for a, m in zip(df["ano"], df["mes"])]]
+    df[CAMPOS_CSV].to_csv(caminho_saida, index=False)
+    return len(df)
 
 
 def obter_stats_do_mes(ano: int, mes: int, fonte_pedida: str, estado: dict, area_4326, detalhes_merge: dict) -> tuple[dict | None, str | None, bool]:
@@ -491,6 +505,8 @@ def gravar_metadados(caminho_saida: Path, args, ano_fim: int, nome_municipio: st
         "uf": uf,
         "area_usada": "config/area_estudo_bacias.geojson (buffer de 18 km sobre area_estudo.geojson — NÃO é o limite municipal estrito)",
         "periodo_coberto": f"{args.ano_inicio}-{ano_fim}",
+        "mes_fim": args.mes_fim,  # último mês da coleta (rodada 121); None = dezembro de ano_fim
+        "continuado_de": args.continuar_de.name if args.continuar_de else None,
         "criterio_ano_fim": "--ano-fim informado" if args.ano_fim else f"último ano calendário completo na fonte consultada ({'MERGE' if args.fonte == 'merge' else 'CHIRPS'}), verificado via HTTP HEAD do último arquivo do ano",
         "nivel_agregacao": "média espacial sobre a área de estudo estendida, por mês — não há série por pixel/sub-área neste CSV",
         "nodata": f"CHIRPS: {NODATA_CHIRPS} (não vem marcado no header do GeoTIFF, tratado explicitamente); MERGE: -999",
@@ -524,7 +540,11 @@ def main() -> None:
         help="merge: só MERGE/INPE (padrão). chirps: só CHIRPS. auto: CHIRPS primeiro, com troca ao MERGE depois de 3 falhas seguidas",
     )
     parser.add_argument("--forcar", action="store_true", help="Ignora progresso incremental salvo e recomeça do zero")
+    parser.add_argument("--mes-fim", default=None, help="AAAA-MM: último mês da coleta (o último mês completo; os seguintes ficam de fora, "
+                        "para um mês com poucos dias não virar total mensal). Default: dezembro de --ano-fim")
+    parser.add_argument("--continuar-de", type=Path, default=None, help="CSV de uma coleta anterior: os meses com valor dele entram sem novo download")
     args = parser.parse_args()
+    mes_fim = tuple(int(x) for x in args.mes_fim.split("-")) if args.mes_fim else None
 
     if not args.area_bacias.exists():
         raise FileNotFoundError(
@@ -543,13 +563,20 @@ def main() -> None:
 
     caminho_saida = localizar_arquivo_trabalho(args.ano_inicio, ano_fim, args.forcar)
     caminho_saida.parent.mkdir(parents=True, exist_ok=True)
+    if args.continuar_de:
+        n = semear_de_coleta_anterior(args.continuar_de, caminho_saida, args.ano_inicio, mes_fim)
+        if n:
+            logger.info("%d mês(es) com valor vindos de %s (sem novo download).", n, args.continuar_de.name)
+            ant = args.continuar_de.with_suffix(".json")
+            if ant.exists() and not caminho_saida.with_suffix(".json").exists():
+                caminho_saida.with_suffix(".json").write_text(ant.read_text(encoding="utf-8"), encoding="utf-8")
 
     ja_processados = carregar_meses_ja_processados(caminho_saida)
     if ja_processados:
         logger.info("Retomando: %d mês(es) já processado(s) em %s — pulando esses.", len(ja_processados), caminho_saida)
 
     # Sem mês pendente, nada muda: nem o nome do arquivo final nem o metadado.
-    pendentes = meses_pendentes(args.ano_inicio, ano_fim, ja_processados)
+    pendentes = meses_pendentes(args.ano_inicio, ano_fim, ja_processados, mes_fim)
     if not pendentes:
         logger.info("Coleta já completa em %s — nada a fazer (use --forcar para refazer).", caminho_saida)
         return
@@ -574,7 +601,7 @@ def main() -> None:
 
     for ano in range(args.ano_inicio, ano_fim + 1):
         for mes in range(1, 13):
-            if (ano, mes) in ja_processados:
+            if (ano, mes) in ja_processados or (mes_fim is not None and (ano, mes) > mes_fim):
                 continue
 
             rotulo_mes = f"{ano}-{mes:02d}"

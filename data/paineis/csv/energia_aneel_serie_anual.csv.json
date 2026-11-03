@@ -2,7 +2,7 @@
   "produto": "energia_aneel_serie_anual.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/energia_aneel_serie_anual.json",
-  "sha256_fonte": "bcb5cc156742a2d76d0af7e79e0c5080f69f37951754c9a60ed97e67c2cabd63",
+  "sha256_fonte": "66248a691d1a8417421a90bd62a8d4870019559ebcf333e3de939e500d27e46a",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "ano",
@@ -16,5 +16,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T16:33:06Z"
+  "data_processamento": "2026-11-03T19:38:49Z"
 }

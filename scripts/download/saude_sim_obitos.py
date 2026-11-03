@@ -72,6 +72,9 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 logger = logging.getLogger(__name__)
 
 DIRETORIO_REMOTO_SIM = "/dissemin/publicos/SIM/CID10/DORES"
+# rodada 121: anos ainda não consolidados saem do diretório PRELIM (arquivo preliminar do DATASUS), marcados
+# com preliminar=True; só até --prelim-ate (por decisão do responsável, 2025)
+DIRETORIO_REMOTO_SIM_PRELIM = "/dissemin/publicos/SIM/PRELIM/DORES"
 ANO_INICIO_DEFAULT = 2010
 CACHE_DIR = Path(__file__).resolve().parents[2] / "data" / "raw" / "cache_datasus" / "sim"
 CAMINHO_SAIDA_TEMPLATE = Path(__file__).resolve().parents[2] / "data" / "raw" / "obitos_sim-datasus_{inicio}-{fim}_municipal.csv"
@@ -85,21 +88,23 @@ GRUPOS_CID10 = {
 }
 
 
-def mapear_arquivos_por_ano(uf: str) -> dict[int, str]:
+def mapear_arquivos_por_ano(uf: str, diretorio: str = DIRETORIO_REMOTO_SIM) -> dict[int, str]:
     """Lista o diretório do SIM uma vez e mapeia ano -> nome exato do arquivo da UF.
 
     A extensão varia de capitalização entre arquivos (ex. "DORS2010.DBC"
     vs "DORS2013.dbc"), por isso listamos em vez de montar o nome no chute.
     """
-    nomes = listar_diretorio(DIRETORIO_REMOTO_SIM)
+    nomes = listar_diretorio(diretorio)
     padrao = re.compile(rf"^DO{uf}(\d{{4}})\.dbc$", re.IGNORECASE)
     return {int(m.group(1)): nome for nome in nomes if (m := padrao.match(nome))}
 
 
-def baixar_e_filtrar_ano(nome_arquivo: str, ano: int, codigo_municipio_6: str) -> pd.DataFrame:
-    """Baixa o .dbc do ano (cacheado) e retorna as linhas do município."""
-    destino = CACHE_DIR / f"{Path(nome_arquivo).stem}.dbc"
-    caminho_remoto = f"{DIRETORIO_REMOTO_SIM}/{nome_arquivo}"
+def baixar_e_filtrar_ano(nome_arquivo: str, ano: int, codigo_municipio_6: str, diretorio: str = DIRETORIO_REMOTO_SIM) -> pd.DataFrame:
+    """Baixa o .dbc do ano (cacheado) e retorna as linhas do município. O preliminar tem cache próprio
+    (sufixo _prelim), para não se confundir com o consolidado do mesmo ano quando ele sair."""
+    sufixo = "_prelim" if diretorio == DIRETORIO_REMOTO_SIM_PRELIM else ""
+    destino = CACHE_DIR / f"{Path(nome_arquivo).stem}{sufixo}.dbc"
+    caminho_remoto = f"{diretorio}/{nome_arquivo}"
 
     baixado = baixar_dbc(caminho_remoto, destino)
     if baixado is None:
@@ -120,6 +125,7 @@ def contar_por_grupo(df_municipio: pd.DataFrame, ano: int, codigo_ibge: str, nom
         "nome_municipio": nome_municipio,
         "obitos_total": len(df_municipio),
         "arquivo_disponivel": True,
+        "preliminar": False,
     }
     for nome_grupo, teste in GRUPOS_CID10.items():
         linha[nome_grupo] = int(causas.apply(teste).sum())
@@ -133,6 +139,7 @@ def linha_sem_dado(ano: int, codigo_ibge: str, nome_municipio: str) -> dict:
         "nome_municipio": nome_municipio,
         "obitos_total": pd.NA,
         "arquivo_disponivel": False,
+        "preliminar": False,
     }
     for nome_grupo in GRUPOS_CID10:
         linha[nome_grupo] = pd.NA
@@ -145,6 +152,7 @@ def main() -> None:
     parser.add_argument("--ano-inicio", type=int, default=ANO_INICIO_DEFAULT)
     parser.add_argument("--ano-fim", type=int, default=None, help="Default: último ano disponível no FTP")
     parser.add_argument("--forcar", action="store_true", help="Ignora o cache de .dbc e rebaixa tudo")
+    parser.add_argument("--prelim-ate", type=int, default=None, help="AAAA: anos depois do último consolidado, até este, vêm do PRELIM (preliminar=True)")
     args = parser.parse_args()
 
     if args.forcar:
@@ -157,13 +165,21 @@ def main() -> None:
     logger.info("Município: %s (%s) — código IBGE %s / 6 dígitos %s", nome_municipio, uf, args.codigo_ibge, codigo_municipio_6)
 
     arquivos_por_ano = mapear_arquivos_por_ano(uf)
-    ano_fim = args.ano_fim or max(a for a in arquivos_por_ano if a >= args.ano_inicio)
+    ultimo_final = max(a for a in arquivos_por_ano if a >= args.ano_inicio)
+    prelim: dict[int, str] = {}
+    if args.prelim_ate and args.prelim_ate > ultimo_final:
+        prelim = {a: n for a, n in mapear_arquivos_por_ano(uf, DIRETORIO_REMOTO_SIM_PRELIM).items() if ultimo_final < a <= args.prelim_ate}
+    ano_fim = args.ano_fim or max([ultimo_final, *prelim])
     logger.info("Janela: %d-%d", args.ano_inicio, ano_fim)
 
     linhas = []
     anos_sem_arquivo = []
     for ano in range(args.ano_inicio, ano_fim + 1):
         nome_arquivo = arquivos_por_ano.get(ano)
+        if nome_arquivo is None and ano in prelim:
+            df_municipio = baixar_e_filtrar_ano(prelim[ano], ano, codigo_municipio_6, DIRETORIO_REMOTO_SIM_PRELIM)
+            linhas.append({**contar_por_grupo(df_municipio, ano, args.codigo_ibge, nome_municipio), "preliminar": True})
+            continue
         if nome_arquivo is None:
             anos_sem_arquivo.append(ano)
             linhas.append(linha_sem_dado(ano, args.codigo_ibge, nome_municipio))
@@ -191,6 +207,7 @@ def main() -> None:
         "periodo_coberto": f"{args.ano_inicio}-{ano_fim}",
         "nivel_agregacao": "municipal (contagem por ano) — NÃO espacializado por bairro/setor/microárea; SIM registra só o município de residência",
         "anos_sem_arquivo_disponivel": anos_sem_arquivo,
+        "anos_preliminares": {str(a): f"{DIRETORIO_REMOTO_SIM_PRELIM}/{n}" for a, n in sorted(prelim.items())},
         "grupos_cid10": {
             "obitos_respiratorios": "CAUSABAS inicia com 'J' (capítulo X da CID-10, doenças do aparelho respiratório, J00-J99)",
             "obitos_calor_extremo": "CAUSABAS = X30 (exposição a calor natural excessivo) ou T67 (efeitos do calor e da luz)",

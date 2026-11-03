@@ -5,9 +5,9 @@
   "transformacao_aplicada": "soma das seções CNAE por competência; saldo acumulado desde o primeiro mês",
   "entradas": [
     {
-      "arquivo": "data/raw/caged-movimentacao_mte_2020-202606_municipal.csv",
-      "sha256": "89dda02340e2411ade1357779e0063078d8f22da0db5f501bf02d660bab3a9c9",
-      "bytes": 23946
+      "arquivo": "data/raw/caged-movimentacao_mte_2020-202608_municipal.csv",
+      "sha256": "14ef41c5c7e738acdac7845804c6a7e39e596138335e27f2d53759e0840eb1cc",
+      "bytes": 24549
     }
   ],
   "script": "scripts/paineis/dados_economia.py",
@@ -18,6 +18,6 @@
   "autorizacao": "livre",
   "selo": "conferido",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T16:33:06Z",
+  "data_processamento": "2026-11-03T19:38:49Z",
   "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município"
 }

@@ -5,9 +5,9 @@
   "transformacao_aplicada": "soma dos óbitos por afogamento ou enchente em blocos de 5 anos; a série anual não é publicada; supressão de comum.py (limiar 5) aplicada aos quinquênios",
   "entradas": [
     {
-      "arquivo": "data/raw/obitos_sim-datasus_2010-2024_municipal.csv",
-      "sha256": "6bc160d98123f3d4a5e96e1239f23e703d4751bf2027067893a5a5e41cfc8d28",
-      "bytes": 746
+      "arquivo": "data/raw/obitos_sim-datasus_2010-2025_municipal.csv",
+      "sha256": "14e05db186b12f38792aa5c8450745f53f3b8aa273321bc5ed0a16979cc6e742",
+      "bytes": 893
     }
   ],
   "script": "scripts/paineis/dados_saude.py",
@@ -18,5 +18,5 @@
   "autorizacao": "livre",
   "selo": "conferido",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T16:33:05Z"
+  "data_processamento": "2026-11-03T19:37:52Z"
 }

@@ -44,6 +44,7 @@
       <div id="chart-obitos"></div>
       <div class="chart-tooltip" id="tt-obitos"></div>
     </div>
+    <p class="nota-grafico" id="nota-obitos"></p>
   </div>
 
   <div class="chart-grid">
@@ -68,6 +69,7 @@
         <div id="chart-sih"></div>
         <div class="chart-tooltip" id="tt-sih"></div>
       </div>
+      <p class="nota-grafico" id="nota-sih"></p>
     </div>
   </div>
 
@@ -162,8 +164,18 @@ async function iniciar(){
   /* ================= textos dos metadados ================= */
   if(anosTodos.length) setText('meta-janela', `${Math.min(...anosTodos)}–${Math.max(...anosTodos)}`);
   const per = m => `${m.periodo.inicio}–${m.periodo.fim}`;
-  if(sim) setText('meta-obitos', `SIM · ${per(sim.meta)}`);
-  if(sih) setText('meta-sih', `SIH · ${per(sih.meta)}`);
+  // rodada 121: ano preliminar (SIM, decisão C2) e ano parcial (SIH, decisão C3) marcados com * e trecho tracejado
+  const simPrelim = sim ? sim.dados.filter(r => r.preliminar) : [];
+  const sihParcial = sih ? sih.dados.filter(r => r.parcial) : [];
+  const avisoDe = (p, tipo, ano) => (p.meta.avisos.find(a => a.tipo === tipo && a.onde && a.onde.ano === ano) || {}).texto;
+  if(sim){
+    setText('meta-obitos', `SIM · ${per(sim.meta)}${simPrelim.length ? ` · ${simPrelim.map(r => r.ano).join(', ')} preliminar` : ''}`);
+    setText('nota-obitos', simPrelim.map(r => `* ${avisoDe(sim, 'preliminar', r.ano)}. Trecho tracejado e ponto vazado.`).join(' '));
+  }
+  if(sih){
+    setText('meta-sih', `SIH · ${per(sih.meta)}${sihParcial.length ? ` · ${sihParcial.map(r => r.ano).join(', ')} parcial` : ''}`);
+    setText('nota-sih', sihParcial.map(r => `* ${avisoDe(sih, 'parcial', r.ano)}. Trecho tracejado e ponto vazado: não comparar com ano fechado.`).join(' '));
+  }
   if(afog) P.aviso(document.getElementById('aviso-afogamento'), afog.meta.avisos.filter(a => a.texto.startsWith('somado')));
   let prelim = null;
   if(sinan){
@@ -173,15 +185,22 @@ async function iniciar(){
     let nota = `Chikungunya e zika só passaram a ter arquivo próprio no SINAN a partir de ${ini.chikungunya} e ${ini.zika} — os anos anteriores não têm barra porque a série ainda não existia, não porque a contagem foi zero (— na tabela).`;
     if(prelim) nota += ` ${prelim.ano} é parcial (preliminar, barra tracejada): dengue ${fmtNulo(prelim.dengue)}, chikungunya ${fmtNulo(prelim.chikungunya)}, zika ${fmtNulo(prelim.zika)} até ${dataBR(sinan.meta.dados_ate)}.`;
     setText('nota-sinan', nota);
-    setText('nota-tabela-anual', `Óbitos por afogamento ou enchente não aparecem por ano (ver o gráfico por quinquênio).${prelim ? ` * ${prelim.ano}: notificações preliminares do SINAN.` : ''}`);
+  }
+  {
+    const marcas = [];
+    simPrelim.forEach(r => marcas.push(`${r.ano}: óbitos preliminares do SIM`));
+    if(prelim) marcas.push(`${prelim.ano}: notificações preliminares do SINAN`);
+    sihParcial.forEach(r => marcas.push(`${r.ano}: internações parciais do SIH (${(avisoDe(sih, 'parcial', r.ano) || '').replace(/^\d{4} parcial: /, '')})`));
+    setText('nota-tabela-anual', `Óbitos por afogamento ou enchente não aparecem por ano (ver o gráfico por quinquênio).${marcas.length ? ' * ' + marcas.join('; ') + '.' : ''}`);
   }
 
   /* ================= KPI row (sempre o último ano, sem filtro de período) ================= */
   const kpis = [];
   if(sim){
-    const u = sim.dados[sim.dados.length-1];
-    kpis.push({label:`Óbitos totais · ${u.ano}`, value: u.obitos_total, sub:`dos quais ${fmtInt(u.obitos_respiratorios)} respiratórios`, spark: sim.dados.map(r=>r.obitos_total)});
-    kpis.push({label:`Óbitos respiratórios · ${u.ano}`, value: u.obitos_respiratorios, sub:`de ${fmtInt(u.obitos_total)} óbitos totais`, spark: sim.dados.map(r=>r.obitos_respiratorios)});
+    // indicadores do topo: último ano consolidado (o preliminar fica no gráfico e na tabela, marcado)
+    const simFech = sim.dados.filter(r => !r.preliminar), u = simFech[simFech.length-1];
+    kpis.push({label:`Óbitos totais · ${u.ano}`, value: u.obitos_total, sub:`dos quais ${fmtInt(u.obitos_respiratorios)} respiratórios`, spark: simFech.map(r=>r.obitos_total)});
+    kpis.push({label:`Óbitos respiratórios · ${u.ano}`, value: u.obitos_respiratorios, sub:`de ${fmtInt(u.obitos_total)} óbitos totais`, spark: simFech.map(r=>r.obitos_respiratorios)});
   }
   if(sinan){
     const fechados = sinan.dados.filter(r => !r.preliminar);
@@ -189,8 +208,8 @@ async function iniciar(){
     kpis.push({label:`Notificações de dengue · ${u.ano}`, value: u.dengue, sub:`${ant.ano}${ant.ano === 2024 ? ' (epidemia nacional)' : ''}: ${fmtInt(ant.dengue)}`, spark: fechados.map(r=>r.dengue)});
   }
   if(sih){
-    const u = sih.dados[sih.dados.length-1];
-    kpis.push({label:`Internações respiratórias · ${u.ano}`, value: u.internacoes_respiratorias, sub:`${fmt1(100*u.internacoes_respiratorias/u.internacoes_total)}% das internações`, spark: sih.dados.map(r=>r.internacoes_respiratorias)});
+    const sihFech = sih.dados.filter(r => !r.parcial), u = sihFech[sihFech.length-1];
+    kpis.push({label:`Internações respiratórias · ${u.ano}`, value: u.internacoes_respiratorias, sub:`${fmt1(100*u.internacoes_respiratorias/u.internacoes_total)}% das internações`, spark: sihFech.map(r=>r.internacoes_respiratorias)});
   }
   const kpiRow = document.getElementById('kpiRow');
   kpis.forEach(k => {
@@ -213,11 +232,12 @@ async function iniciar(){
     const blue = cssVar('--series-blue'), orange = cssVar('--series-orange'), aqua = cssVar('--series-aqua'), ctx = cssVar('--series-context');
     if(sim){
       const d = noPeriodo(sim.dados);
+      const ultPre = d.length > 0 && d[d.length - 1].preliminar;
       renderLineChart('chart-obitos', 'tt-obitos', {
-        labels: d.map(r=>r.ano),
+        labels: d.map(r => r.preliminar ? `${r.ano}*` : r.ano),
         series: [
-          {name: P.dica('Óbitos totais', sim.meta.fonte_curta), color: ctx, data: d.map(r=>r.obitos_total), emphasis:false},
-          {name: P.dica('Óbitos por causas respiratórias', sim.meta.fonte_curta), color: blue, data: d.map(r=>r.obitos_respiratorios)},
+          {name: P.dica('Óbitos totais', sim.meta.fonte_curta), color: ctx, data: d.map(r=>r.obitos_total), emphasis:false, ultimoParcial: ultPre},
+          {name: P.dica('Óbitos por causas respiratórias', sim.meta.fonte_curta), color: blue, data: d.map(r=>r.obitos_respiratorios), ultimoParcial: ultPre},
         ],
         height: 220, legendSlot: 'legend-obitos',
       });
@@ -231,11 +251,12 @@ async function iniciar(){
     }
     if(sih){
       const d = noPeriodo(sih.dados);
+      const ultPar = d.length > 0 && d[d.length - 1].parcial;
       renderLineChart('chart-sih', 'tt-sih', {
-        labels: d.map(r=>r.ano),
+        labels: d.map(r => r.parcial ? `${r.ano}*` : r.ano),
         series: [
-          {name: P.dica('Internações totais', sih.meta.fonte_curta), color: ctx, data: d.map(r=>r.internacoes_total), emphasis:false},
-          {name: P.dica('Internações respiratórias', sih.meta.fonte_curta), color: blue, data: d.map(r=>r.internacoes_respiratorias)},
+          {name: P.dica('Internações totais', sih.meta.fonte_curta), color: ctx, data: d.map(r=>r.internacoes_total), emphasis:false, ultimoParcial: ultPar},
+          {name: P.dica('Internações respiratórias', sih.meta.fonte_curta), color: blue, data: d.map(r=>r.internacoes_respiratorias), ultimoParcial: ultPar},
         ],
         height: 190, legendSlot: 'legend-sih',
       });
@@ -270,7 +291,7 @@ async function iniciar(){
     const tbody = document.createElement('tbody');
     anos.forEach(ano => {
       const a = s[ano], b = sn[ano], c2 = h[ano];
-      const m = b && b.preliminar ? '*' : '';
+      const m = (b && b.preliminar) || (a && a.preliminar) || (c2 && c2.parcial) ? '*' : '';
       const cel = v => P.valor(v, fmtInt);
       const tr = document.createElement('tr');
       tr.innerHTML = `<td>${ano}${m}</td><td>${cel(a && a.obitos_total)}</td><td>${cel(a && a.obitos_respiratorios)}</td><td>${cel(b && b.dengue)}</td><td>${cel(b && b.chikungunya)}</td><td>${cel(b && b.zika)}</td><td>${cel(c2 && c2.internacoes_total)}</td><td>${cel(c2 && c2.internacoes_respiratorias)}</td>`;

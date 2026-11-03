@@ -15,7 +15,7 @@
   "inicio": "2010",
   "fim": "2026"
  },
- "dados_ate": "2026-08-02",
+ "dados_ate": "2026-10-25",
  "autorizacao": "livre",
  "selo": "conferido",
  "avisos": [
@@ -24,7 +24,14 @@
    "onde": {
     "ano": 2026
    },
-   "texto": "2026 preliminar: notificações até 02/08/2026, sujeitas a revisão e a notificação atrasada"
+   "texto": "2026 preliminar: notificações até 25/10/2026, sujeitas a revisão e a notificação atrasada"
+  },
+  {
+   "tipo": "parcial",
+   "onde": {
+    "ano": 2026
+   },
+   "texto": "2026 parcial: notificações até 25/10/2026"
   },
   {
    "tipo": "lacuna",
@@ -45,7 +52,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:05Z",
+ "gerado_em": "2026-11-03T19:37:52Z",
  "script": "scripts/paineis/dados_saude.py",
  "colunas": [
   {
@@ -195,7 +202,7 @@
   {
    "ano": 2026,
    "preliminar": true,
-   "dengue": 15,
+   "dengue": 13,
    "chikungunya": 0,
    "zika": 0
   }

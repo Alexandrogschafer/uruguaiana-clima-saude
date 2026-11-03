@@ -180,7 +180,7 @@ def notas_kpis(s_l, s_x, c_l, c_t, a_l, distrib):
         "ris_nota_aneel_2": (f"{parc[0]['ano']} (parcial, só até {['', 'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro'][parc[0]['meses']]}) "
                              f"fica fora do gráfico pelo mesmo motivo do SICONFI acima — DEC de {br(parc[0]['dec_horas'], 2)}h/FEC de "
                              f"{br(parc[0]['fec_interrupcoes'], 2)} acumulados em {parc[0]['meses']} meses pareceriam uma melhora dramática frente a um "
-                             "ano fechado, mas é só metade do período. A quebra de comparabilidade real na divisão interna de \"conjuntos\" ao longo "
+                             f"ano fechado, mas são só {parc[0]['meses']} dos 12 meses. A quebra de comparabilidade real na divisão interna de \"conjuntos\" ao longo "
                              f"do tempo ({TRANSCRITO_ANEEL}) não afeta este agregado — ele soma todas as unidades consumidoras do município em cada "
                              "mês, independente de como a distribuidora dividiu internamente naquele período."),
         "ris_leitura": LEITURA,

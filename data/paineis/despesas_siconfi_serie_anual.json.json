@@ -6,12 +6,12 @@
   "entradas": [
     {
       "arquivo": "data/raw/despesas-por-funcao_siconfi_2015-2026_municipal.csv",
-      "sha256": "a7c0b8a3f02898dd6f482863ce6e2a1ae532da40483a20d14f3bb98201844a84",
-      "bytes": 1634
+      "sha256": "46667ea43a8d4767697131dd627980c3d0fdf858356fabc7109482b082ad04a6",
+      "bytes": 1633
     },
     {
       "arquivo": "data/raw/despesas-por-funcao_siconfi_2015-2026_municipal.json",
-      "sha256": "d0f99367a67df13374b55ceb95573515d4c58af80a63cd587612f0cc7edd1c92",
+      "sha256": "b76ce0ffc5954e01e106dc3dfe63069fad7193879c3c219e246e9a159533281e",
       "bytes": 1913
     },
     {
@@ -28,6 +28,6 @@
   "autorizacao": "livre",
   "selo": "conferido",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T16:33:06Z",
+  "data_processamento": "2026-11-03T19:38:49Z",
   "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município"
 }

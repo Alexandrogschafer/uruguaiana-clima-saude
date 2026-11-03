@@ -2,7 +2,7 @@
   "produto": "clima_precipitacao-merge_serie_anual.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/clima_precipitacao-merge_serie_anual.json",
-  "sha256_fonte": "2f4c2e33d82ce81f70dbfe5b14172a0e39c93ce93c7fe2df960674e690aab5d6",
+  "sha256_fonte": "d6f8cc8497f6733249b232192d6135adf0443a959be00dc5ddbfe52b2225d5f7",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "ano",
@@ -17,5 +17,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T16:33:05Z"
+  "data_processamento": "2026-11-03T19:38:48Z"
 }

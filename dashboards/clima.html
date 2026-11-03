@@ -52,6 +52,7 @@
   <div class="card">
     <div class="card-head"><span class="card-title">Precipitação mensal — últimos 5 anos</span><span class="card-meta" id="meta-precip-mensal"></span></div>
     <div class="card-body"><div id="chart-precip-mensal"></div><div class="chart-tooltip" id="tt-precip-mensal"></div></div>
+    <p class="nota-grafico" id="nota-precip-mensal"></p>
   </div>
 
   <div class="card">
@@ -254,11 +255,20 @@ async function iniciar(){
     }
     if(mensal){
       const meses = mensal.dados.slice(-MESES_NO_GRAFICO);
+      // rodada 121 (decisão C1): meses desde provisorio_desde são provisórios — faixa, trecho final tracejado e nota
+      const desde = mensal.meta.provisorio_desde;
+      const prov = desde ? meses.map((r, i) => r.periodo >= desde ? i : -1).filter(i => i >= 0) : [];
       renderLineChart('chart-precip-mensal', 'tt-precip-mensal', {
         labels: meses.map(r=>r.periodo.slice(2)),
-        series: [{name: P.dica('Precipitação', mensal.meta.fonte_curta), color: blue, data: meses.map(r=>r.precipitacao_mm)}],
+        series: [{name: P.dica('Precipitação', mensal.meta.fonte_curta), color: blue, ultimoParcial: prov.includes(meses.length - 1), data: meses.map(r=>r.precipitacao_mm)}],
+        faixas: prov,
         height: 190, padL: 40, padR: 52, rotuloFinalAoLado: true, yFormat: v => fmtInt(v)+'mm',
       });
+      const parcialMensal = mensal.meta.avisos.find(a => a.tipo === 'parcial');
+      const notaM = [];
+      if(prov.length) notaM.push(`Faixa cinza, trecho tracejado e ponto vazado: ${prov.map(i => meses[i].periodo.slice(5) + '/' + meses[i].periodo.slice(0, 4)).join(', ')} ${prov.length > 1 ? 'são provisórios' : 'é provisório'}.`);
+      if(parcialMensal) notaM.push(`${parcialMensal.texto}.`);
+      setText('nota-precip-mensal', notaM.join(' '));
     }
     if(precip){
       renderLineChart('chart-comparacao', 'tt-comparacao', {

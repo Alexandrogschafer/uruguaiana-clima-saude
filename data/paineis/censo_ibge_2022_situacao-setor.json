@@ -29,7 +29,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T13:23:47Z",
+ "gerado_em": "2026-11-03T19:38:49Z",
  "script": "scripts/paineis/dados_economia.py",
  "colunas": [
   {
@@ -53,19 +53,19 @@
  "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município",
  "notas": {
   "eco_meta_censo": "2022",
-  "eco_meta_economia": "PIB 2002–2022 · PAM/PPM 1974–2024 · CAGED 2020–2026",
+  "eco_meta_economia": "PIB 2002–2022 · PAM/PPM 1974–2025 · CAGED 2020–2026",
   "eco_meta_vulnerabilidade": "IDHM 1991–2010 · CadÚnico 2012–2026",
   "eco_nota_censo": "Censo 2022 (179 setores censitários). Renda, água e esgoto só existem no nível municipal para este censo — não variam por setor no produto do IBGE.",
   "eco_nota_economia": "PIB municipal e composição setorial (IBGE/SIDRA), produção agropecuária (PAM/PPM) e emprego formal (RAIS/Novo CAGED) — indicadores de contexto socioeconômico municipal, sem granularidade espacial abaixo do município na fonte (ao contrário das demais camadas deste painel, por isso não aparecem no geoportal).",
   "eco_meta_pib_pc": "IBGE/SIDRA · 2002–2022",
   "eco_meta_vab": "% do VAB total · 2002–2021",
   "eco_nota_pib": "2007 não tem PIB per capita (sem fonte de população nesse ano) e 2022/2023 não têm detalhamento setorial (a fonte só publica VAB por atividade até 2021, mesmo com o PIB total mais recente). O pico da agropecuária no VAB em 2021 (27,1%) é um choque de **preço** do arroz, não de volume — a área colhida (abaixo) fica estável no mesmo período.",
-  "eco_meta_pam": "PAM · 1974–2024 · hectares",
-  "eco_meta_ppm": "PPM · 1974–2024 · cabeças",
-  "eco_nota_pam": "Arroz irrigado domina a lavoura do município (~94% da área colhida em 2024); soja começou a crescer a partir de meados dos anos 2010, ainda pequena. Rebanho ovino em queda estrutural de longo prazo (de 1,43 milhão de cabeças em 1974 para 137,8 mil em 2024), mesmo padrão já visto em outros municípios do Pampa gaúcho — bovino oscila, sem tendência clara. PAM/PPM não têm versão por setor censitário nem geolocalizada na fonte (decisão confirmada com o usuário) — por isso ficam só como indicador tabular, sem virar camada no geoportal.",
-  "eco_meta_caged_fluxo": "mensal · 2020-01 a 2026-06",
+  "eco_meta_pam": "PAM · 1974–2025 · hectares",
+  "eco_meta_ppm": "PPM · 1974–2025 · cabeças",
+  "eco_nota_pam": "Arroz irrigado domina a lavoura do município (~96% da área colhida em 2025); soja começou a crescer a partir de meados dos anos 2010, ainda pequena. Rebanho ovino em queda estrutural de longo prazo (de 1,43 milhão de cabeças em 1974 para 119,9 mil em 2025), mesmo padrão já visto em outros municípios do Pampa gaúcho — bovino oscila, sem tendência clara. PAM/PPM não têm versão por setor censitário nem geolocalizada na fonte (decisão confirmada com o usuário) — por isso ficam só como indicador tabular, sem virar camada no geoportal.",
+  "eco_meta_caged_fluxo": "mensal · 2020-01 a 2026-08",
   "eco_meta_caged_saldo": "acumulado desde 2020-01",
-  "eco_nota_caged": "Novo CAGED (via eSocial, a partir de 2020) — período anterior fica fora de escopo por quebra metodológica com o CAGED antigo (formulário declaratório), mesmo espírito da quebra já documentada entre Censos do IBGE. Saldo de 2026 (parcial, até junho) puxado para baixo pelo setor Agropecuária — sinal a acompanhar, não uma reversão de tendência confirmada.",
+  "eco_nota_caged": "Novo CAGED (via eSocial, a partir de 2020) — período anterior fica fora de escopo por quebra metodológica com o CAGED antigo (formulário declaratório), mesmo espírito da quebra já documentada entre Censos do IBGE. Saldo de 2026 (parcial, até agosto) puxado para baixo pelo setor Agropecuária — sinal a acompanhar, não uma reversão de tendência confirmada.",
   "eco_meta_rais": "retrato em 31/12/2025 · 24.498 vínculos",
   "eco_nota_rais": "RAIS não tem série histórica baixada nesta rodada (só o ano mais recente — o arquivo de estabelecimentos nacional tem ~3GB por ano) — funciona como retrato do estoque atual ao lado da série mensal de fluxo do CAGED acima, não como tendência própria. Participação da Agropecuária no emprego formal (12,8%) é menor que sua participação no PIB (13–27%), padrão esperado: agricultura mecanizada é intensiva em capital, não em mão de obra.",
   "eco_resumo_rais": "Ver RAIS 2025 completa por seção CNAE (20 seções)",
@@ -81,7 +81,7 @@
   "eco_meta_siconfi_saude": "2015–2025 · R$/hab",
   "eco_meta_siconfi_assist": "2015–2025 · R$/hab",
   "eco_meta_siconfi_pct": "2015–2023 · anos com PIB disponível",
-  "eco_nota_siconfi_parcial": "2026 (parcial, só bimestre 3 publicado até agora) fica fora dos gráficos — R$ 418,80/hab em Saúde e R$ 19,79/hab em Assistência Social acumulados até junho não são comparáveis a um ano fechado; incluir sugeriria uma queda de investimento que não é real. % do PIB só existe até 2023 (mesma lacuna já documentada na seção de Economia — a fonte do PIB não publica detalhamento mais recente). Despesa em Saúde per capita cresce de forma monotônica desde 2015 (+193,3% entre 2015 e 2025), estável entre 1,5% e 2,3% do PIB (esperado — o piso constitucional de 15% da EC 29/86 é sobre receita própria municipal, não sobre o PIB)."
+  "eco_nota_siconfi_parcial": "2026 (parcial, só bimestre 4 publicado até agora) fica fora dos gráficos — R$ 587,59/hab em Saúde e R$ 40,87/hab em Assistência Social acumulados até agosto não são comparáveis a um ano fechado; incluir sugeriria uma queda de investimento que não é real. % do PIB só existe até 2023 (mesma lacuna já documentada na seção de Economia — a fonte do PIB não publica detalhamento mais recente). Despesa em Saúde per capita cresce de forma monotônica desde 2015 (+193,3% entre 2015 e 2025), estável entre 1,5% e 2,3% do PIB (esperado — o piso constitucional de 15% da EC 29/86 é sobre receita própria municipal, não sobre o PIB)."
  },
  "kpis_censo": [
   {

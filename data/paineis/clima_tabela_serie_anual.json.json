@@ -10,9 +10,9 @@
       "bytes": 4291457
     },
     {
-      "arquivo": "data/processed/precipitacao_merge-inpe_2010-2025_mensal-anual.json",
-      "sha256": "9f80460d76e8c7c193795d7f5cbfd77b1c386b4310f1307a9cacb65227641e9c",
-      "bytes": 17592
+      "arquivo": "data/processed/precipitacao_merge-inpe_2010-2026_mensal-anual.json",
+      "sha256": "00d1c5dc4dba09909623558c92c0ef53281706ee69b09d4b22f74c36b3643cc4",
+      "bytes": 18395
     },
     {
       "arquivo": "data/raw/focos-queimada_inpe_2010-2025_pontual.csv",
@@ -30,5 +30,5 @@
   "autorizacao": "livre",
   "selo": "conferido",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T16:33:05Z"
+  "data_processamento": "2026-11-03T19:38:49Z"
 }

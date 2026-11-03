@@ -2,12 +2,12 @@ dimensao,ordem,rotulo,prefixo,valor,unidade,sub,aviso,produto,fonte_curta,period
 clima,1,Precipitação total · 2025,,1.255,mm,MERGE/INPE · média 2010–2024: 1.201 mm,,clima_precipitacao-merge_serie_anual,MERGE/INPE,2010–2025,conferido,2025-12-31
 clima,2,Dias de calor ≥35°C · 2025,,36,dias,recorde: 51 dias (2023),parcial: dados até 18/08/2025,clima_inmet-a809_serie_anual,INMET A809,2007–2025,conferido,2025-08-18
 clima,3,Focos de queimada · 2025,,311,focos,pico 2022: 404,,queimadas_inpe_serie_anual,INPE/BDQUEIMADAS,2010–2025,conferido,2025-12-31
-saude,1,Óbitos totais · 2024,,960,,dos quais 150 respiratórios,,saude_sim_serie_anual,SIM/DATASUS,2010–2024,conferido,2024-12-31
-saude,2,Internações respiratórias · 2025,,838,,"12,9% das internações",,saude_sih_serie_anual,SIH/DATASUS,2010–2025,conferido,2025-12-31
-saude,3,Notificações de dengue · 2025,,71,,2024: 421,2026 preliminar: 15,saude_sinan_serie_anual,SINAN/DATASUS,2010–2026,conferido,2026-08-02
-populacao,1,População (Censo 2022),,117.210,hab,"94,9% urbana",,populacao_ibge_serie_anual,IBGE,1970–2025,conferido,2025
-populacao,2,Taxa de crescimento 2010–2022,,"-0,6",%/ano,geométrica anual — população vem caindo,,populacao_ibge_serie_anual,IBGE,1970–2025,conferido,2025
-populacao,3,Índice de envelhecimento,,"83,9",,60+ por 100 crianças de 0-14 anos,,populacao_ibge_serie_anual,IBGE,1970–2025,conferido,2025
+saude,1,Óbitos totais · 2024,,960,,dos quais 150 respiratórios,2025 preliminar: 990,saude_sim_serie_anual,SIM/DATASUS,2010–2025,conferido,2025-12-31
+saude,2,Internações respiratórias · 2025,,838,,"12,9% das internações",2026 parcial: janeiro a julho: 361,saude_sih_serie_anual,SIH/DATASUS,2010–2026,conferido,2026-07-31
+saude,3,Notificações de dengue · 2025,,71,,2024: 421,2026 preliminar: 13,saude_sinan_serie_anual,SINAN/DATASUS,2010–2026,conferido,2026-10-25
+populacao,1,População (Censo 2022),,117.210,hab,"94,9% urbana",,populacao_ibge_serie_anual,IBGE,1970–2026,conferido,2026
+populacao,2,Taxa de crescimento 2010–2022,,"-0,6",%/ano,geométrica anual — população vem caindo,,populacao_ibge_serie_anual,IBGE,1970–2026,conferido,2026
+populacao,3,Índice de envelhecimento,,"83,9",,60+ por 100 crianças de 0-14 anos,,populacao_ibge_serie_anual,IBGE,1970–2026,conferido,2026
 territorio,1,Classe dominante,,2.573,km²,"Formação Campestre · 45,2% da área",,uso-solo_mapbiomas_serie_classes,MapBiomas,1985–2024,conferido,2024
 territorio,2,Natural remanescente,,"50,8",%,"2.890 km² — campestre, florestal, alagado, afloramento",,uso-solo_mapbiomas_serie_classes,MapBiomas,1985–2024,conferido,2024
 territorio,3,Poços de água subterrânea (SIAGAS),,340,poços,Serra Geral (178) e Guarani (73) são os aquíferos predominantes,,pocos_siagas_atual_aquifero,SIAGAS/CPRM,atual,conferido,2026-08-09

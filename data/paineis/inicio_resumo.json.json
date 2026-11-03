@@ -11,8 +11,8 @@
     },
     {
       "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json",
-      "sha256": "6a82d73765b8aeb95862eb314dc28c0737949a8c9c5fd9df14680dfa1d9be325",
-      "bytes": 8110
+      "sha256": "8823d46840af52824564d2e212df50ff39eb79cb75fc016ee62c0d531234d5bc",
+      "bytes": 8112
     },
     {
       "arquivo": "data/paineis/clima_inmet-a809_serie_anual.json",
@@ -21,17 +21,17 @@
     },
     {
       "arquivo": "data/paineis/clima_precipitacao-merge_serie_anual.json",
-      "sha256": "2f4c2e33d82ce81f70dbfe5b14172a0e39c93ce93c7fe2df960674e690aab5d6",
+      "sha256": "d6f8cc8497f6733249b232192d6135adf0443a959be00dc5ddbfe52b2225d5f7",
       "bytes": 5109
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json",
-      "sha256": "8c6048316a2092f3f8b17740dbc8fab7ec96b88f67ed979885ede6f603392602",
-      "bytes": 7448
+      "sha256": "b1294f4bb886679975f02f8fa0807554f88a70fc1b9489819e5cd08fa26df79d",
+      "bytes": 7447
     },
     {
       "arquivo": "data/paineis/energia_aneel_serie_anual.json",
-      "sha256": "bcb5cc156742a2d76d0af7e79e0c5080f69f37951754c9a60ed97e67c2cabd63",
+      "sha256": "66248a691d1a8417421a90bd62a8d4870019559ebcf333e3de939e500d27e46a",
       "bytes": 5334
     },
     {
@@ -41,7 +41,7 @@
     },
     {
       "arquivo": "data/paineis/pib_ibge_serie_anual.json",
-      "sha256": "4fb788533a88552fae892e5866444e7a64a8be9de3844c12ad9e7ce2c8e1f7be",
+      "sha256": "4b0459701bfd864384a7db1d8f76cdfe72e6be408550c6b2db468f1a3db2d721",
       "bytes": 7092
     },
     {
@@ -51,8 +51,8 @@
     },
     {
       "arquivo": "data/paineis/populacao_ibge_serie_anual.json",
-      "sha256": "af62fe4af4dac121cd50f09645a2d7cf755117f54d074bb9269c41d2a57ea92e",
-      "bytes": 7869
+      "sha256": "3c7154949374db3b9f863072f62d3bd74e54fb7ad94602f0309dbc531c7c5da3",
+      "bytes": 7945
     },
     {
       "arquivo": "data/paineis/queimadas_inpe_serie_anual.json",
@@ -61,18 +61,18 @@
     },
     {
       "arquivo": "data/paineis/saude_sih_serie_anual.json",
-      "sha256": "399c73c2d7e0cd00a0b373062aa7c2e8ac86a224924cdaaed1648da1088bf3f6",
-      "bytes": 2914
+      "sha256": "773a7606220817932b8ca9ec595ff2b3a6acfa037539d895c82c239948a24dd9",
+      "bytes": 3813
     },
     {
       "arquivo": "data/paineis/saude_sim_serie_anual.json",
-      "sha256": "3e0bb6a5606b8983b4e823fdd6cee6614e70c37f842e089ddf69ef95dd94b229",
-      "bytes": 2777
+      "sha256": "d43b49e4ba56f20866f029a5ac4c7bc3b75a002ac2882e3ac32c2648c8150450",
+      "bytes": 3451
     },
     {
       "arquivo": "data/paineis/saude_sinan_serie_anual.json",
-      "sha256": "494784dd22da93cc3b10b5a87f90a367596c049bf0fc2d91bbb9474241ba09f8",
-      "bytes": 3860
+      "sha256": "99ed507d02857ac267bc5523188761d868f8a58c04b8e34e453469bdd06cc5ff",
+      "bytes": 3985
     },
     {
       "arquivo": "data/paineis/uso-solo_mapbiomas_serie_classes.json",
@@ -86,8 +86,8 @@
     },
     {
       "arquivo": "data/paineis/catalogo_dados.json",
-      "sha256": "7df62de4a2ee8192d09f821e08c2f4eb08e8053069b94fd61ffcb18ed5519e94",
-      "bytes": 51060
+      "sha256": "c10afec96e44a64236b5989ff7d37b332f75e70b1bcf03b059b977aa5a09b171",
+      "bytes": 51187
     }
   ],
   "script": "scripts/paineis/dados_inicio.py",
@@ -115,5 +115,5 @@
   "autorizacao": "livre",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T19:21:46Z"
+  "data_processamento": "2026-11-03T19:40:30Z"
 }

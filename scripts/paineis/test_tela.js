@@ -128,14 +128,17 @@ const TELAS = {
       const rot = (r) => (r.preliminar ? `${r.ano}*` : String(r.ano));
       const arbo = (ag) => p.sinan.dados.map((r, i) => [rot(r), [[v("sinan", ag)(r, i), `notificações · ${fc("sinan")}`]]]);
       return {
-        obitos: p.sim.dados.map((r) => [r.ano, [[fmtInt(r.obitos_total), `Óbitos totais · ${fc("sim")}`], [fmtInt(r.obitos_respiratorios), `Óbitos por causas respiratórias · ${fc("sim")}`]]]),
+        // rodada 121: ano preliminar (SIM) e parcial (SIH) com * no rótulo
+        obitos: p.sim.dados.map((r) => [r.preliminar ? `${r.ano}*` : r.ano, [[fmtInt(r.obitos_total), `Óbitos totais · ${fc("sim")}`], [fmtInt(r.obitos_respiratorios), `Óbitos por causas respiratórias · ${fc("sim")}`]]]),
         afogamento: p.afog.dados.map((r, i) => [r.periodo, [[v("afog", "obitos")(r, i), `óbitos · ${fc("afog")}`]]]),
-        sih: p.sih.dados.map((r) => [r.ano, [[fmtInt(r.internacoes_total), `Internações totais · ${fc("sih")}`], [fmtInt(r.internacoes_respiratorias), `Internações respiratórias · ${fc("sih")}`]]]),
+        sih: p.sih.dados.map((r) => [r.parcial ? `${r.ano}*` : r.ano, [[fmtInt(r.internacoes_total), `Internações totais · ${fc("sih")}`], [fmtInt(r.internacoes_respiratorias), `Internações respiratórias · ${fc("sih")}`]]]),
         dengue: arbo("dengue"), chik: arbo("chikungunya"), zika: arbo("zika"),
       };
     },
     kpis: (p) => {
-      const us = p.sim.dados[p.sim.dados.length - 1], uh = p.sih.dados[p.sih.dados.length - 1];
+      // indicadores do topo: último ano consolidado (sem o preliminar do SIM nem o parcial do SIH)
+      const fs = p.sim.dados.filter((r) => !r.preliminar), fh = p.sih.dados.filter((r) => !r.parcial);
+      const us = fs[fs.length - 1], uh = fh[fh.length - 1];
       const f = p.sinan.dados.filter((r) => !r.preliminar);
       return [fmtInt(us.obitos_total), fmtInt(us.obitos_respiratorios), fmtInt(f[f.length - 1].dengue), fmtInt(uh.internacoes_respiratorias)];
     },
@@ -146,7 +149,7 @@ const TELAS = {
       const c = (x) => (x === null || x === undefined ? "—" : fmtInt(x));
       const anual = anos.map((a) => {
         const A = s[a] || {}, B = sn[a] || {}, C = h[a] || {};
-        return [`${a}${B.preliminar ? "*" : ""}`, c(A.obitos_total), c(A.obitos_respiratorios), c(B.dengue), c(B.chikungunya), c(B.zika), c(C.internacoes_total), c(C.internacoes_respiratorias)];
+        return [`${a}${B.preliminar || A.preliminar || C.parcial ? "*" : ""}`, c(A.obitos_total), c(A.obitos_respiratorios), c(B.dengue), c(B.chikungunya), c(B.zika), c(C.internacoes_total), c(C.internacoes_respiratorias)];
       });
       const m = p.unidades.meta;
       const supU = (i, campo) => (m.suprimidos || []).some((x) => x.linha === i && x.campo === campo);
@@ -491,6 +494,7 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
       kpisCompletos: Array.from(document.querySelectorAll(".kpi-tile")).map((e) => e.innerText.replace(/\s+/g, " ").trim()),
       folgas, finais, tabelas,
       rodape: document.getElementById("rodape-comum") ? document.getElementById("rodape-comum").innerText : "",
+      textoTela: document.body.innerText,
       cabecalho: !!document.querySelector("#cabecalho-comum nav"),
       errosBloco: document.querySelectorAll(".erro-bloco").length,
       identidade: (() => {
@@ -546,6 +550,12 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
   }
   for (const [g, rot] of Object.entries(def.rotulosFinais ? def.rotulosFinais(prod) : {})) {
     if (JSON.stringify(r.finais[g]) !== JSON.stringify(rot)) falhas.push(`rótulo final ${g}: ${JSON.stringify(r.finais[g])} ≠ ${JSON.stringify(rot)}`);
+  }
+  // decisão C1 (rodada 121): produto com dado de outubro de 2026 em diante precisa do rótulo na tela
+  for (const m of Object.values(prod)) {
+    const fim = String(m.meta.dados_ate || "").slice(0, 7);
+    const marcado = m.meta.provisorio === true || m.meta.provisorio_desde || (m.meta.avisos || []).some((a) => a.tipo === "parcial");
+    if (fim >= "2026-10" && marcado && m.meta.id !== "catalogo_dados" && !/provisório|parcial/.test(r.textoTela)) falhas.push(`${m.meta.id}: dado de ${fim} sem rótulo provisório ou parcial na tela`);
   }
   for (const m of Object.values(prod)) {
     const f = "fonte_rodape" in m.meta ? m.meta.fonte_rodape : m.meta.fonte;

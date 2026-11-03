@@ -13,15 +13,29 @@
  "unidade_medida": "mm",
  "periodo": {
   "inicio": "2010-01",
-  "fim": "2025-12"
+  "fim": "2026-10"
  },
- "dados_ate": "2025-12-31",
+ "dados_ate": "2026-10-31",
  "autorizacao": "livre",
  "selo": "conferido",
  "avisos": [
   {
    "tipo": "metodo",
    "texto": "média de uma área com margem de 18 km em torno do município; não é um ponto nem o limite municipal"
+  },
+  {
+   "tipo": "preliminar",
+   "onde": {
+    "desde": "2026-10"
+   },
+   "texto": "outubro de 2026 em diante: provisório"
+  },
+  {
+   "tipo": "parcial",
+   "onde": {
+    "ano": 2026
+   },
+   "texto": "2026 incompleto: meses até 10/2026, sem total anual"
   }
  ],
  "supressao": {
@@ -32,7 +46,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:05Z",
+ "gerado_em": "2026-11-03T19:38:48Z",
  "script": "scripts/processamento/precipitacao_painel_clima.py",
  "colunas": [
   {
@@ -49,6 +63,7 @@
  "telas": [
   "clima"
  ],
+ "provisorio_desde": "2026-10",
  "dados": [
   {
    "periodo": "2010-01",
@@ -817,6 +832,46 @@
   {
    "periodo": "2025-12",
    "precipitacao_mm": 120.7
+  },
+  {
+   "periodo": "2026-01",
+   "precipitacao_mm": 61.67
+  },
+  {
+   "periodo": "2026-02",
+   "precipitacao_mm": 115.27
+  },
+  {
+   "periodo": "2026-03",
+   "precipitacao_mm": 48.65
+  },
+  {
+   "periodo": "2026-04",
+   "precipitacao_mm": 88.34
+  },
+  {
+   "periodo": "2026-05",
+   "precipitacao_mm": 84.91
+  },
+  {
+   "periodo": "2026-06",
+   "precipitacao_mm": 58.67
+  },
+  {
+   "periodo": "2026-07",
+   "precipitacao_mm": 123.55
+  },
+  {
+   "periodo": "2026-08",
+   "precipitacao_mm": 134.94
+  },
+  {
+   "periodo": "2026-09",
+   "precipitacao_mm": 67.92
+  },
+  {
+   "periodo": "2026-10",
+   "precipitacao_mm": 169.39
   }
  ]
 }

@@ -32,7 +32,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:06Z",
+ "gerado_em": "2026-11-03T19:38:49Z",
  "script": "scripts/paineis/dados_economia.py",
  "colunas": [
   {
@@ -85,9 +85,9 @@
   },
   {
    "rotulo": "Saldo Novo CAGED acumulado",
-   "valor": "2.788",
+   "valor": "2.668",
    "unidade": " vínculos",
-   "sub": "2020-01 a 2026-06 (78 meses)"
+   "sub": "2020-01 a 2026-08 (80 meses)"
   },
   {
    "rotulo": "Vínculos formais ativos (RAIS)",

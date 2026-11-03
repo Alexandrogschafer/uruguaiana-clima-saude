@@ -43,7 +43,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:05Z",
+ "gerado_em": "2026-11-03T19:38:48Z",
  "script": "scripts/processamento/precipitacao_painel_clima.py",
  "colunas": [
   {

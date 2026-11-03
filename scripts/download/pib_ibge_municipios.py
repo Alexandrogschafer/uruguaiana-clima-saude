@@ -75,7 +75,7 @@ BACKOFF_BASE_S = 1.0
 
 TABELA_PIB = 5938
 PERIODO_INICIO = 2002
-PERIODO_FIM = 2023
+PERIODO_FIM = 2023  # rodada 121: substituído em main() pelo último período de /periodos da tabela 5938
 
 VARIAVEIS_PIB = {
     37: "PIB a preços correntes (mil R$)",
@@ -96,7 +96,9 @@ RAW_DIR = RAIZ / "data" / "raw"
 PROC_DIR = RAIZ / "data" / "processed"
 CAMINHO_RAW = RAW_DIR / f"pib-municipal_ibge-sidra-tabela{TABELA_PIB}_{PERIODO_INICIO}-{PERIODO_FIM}_municipal.csv"
 CAMINHO_PROC = PROC_DIR / f"pib-per-capita_ibge-sidra_{PERIODO_INICIO}-{PERIODO_FIM}_municipal.csv"
-CAMINHO_POPULACAO_ESTIMADA = RAW_DIR / "populacao-estimada_ibge-sidra-tabela6579_2001-2025_municipal.csv"
+# rodada 121: a coleta mais recente da tabela 6579 (o nome traz o período publicado)
+CAMINHO_POPULACAO_ESTIMADA = max(sorted(RAW_DIR.glob("populacao-estimada_ibge-sidra-tabela6579_*_municipal.csv")) or
+                                 [RAW_DIR / "populacao-estimada_ibge-sidra-tabela6579_2001-2026_municipal.csv"])
 
 VALORES_AUSENTES = {None, "...", "-", "X", ".."}
 
@@ -171,6 +173,11 @@ def main() -> None:
     parser.add_argument("--forcar", action="store_true", help="Ignora arquivos já existentes e baixa tudo de novo")
     args = parser.parse_args()
 
+    global PERIODO_FIM, CAMINHO_RAW, CAMINHO_PROC
+    PERIODO_FIM = max(int(p["id"]) for p in _requisitar_com_retry(f"{URL_SIDRA_BASE}/{TABELA_PIB}/periodos", {}).json())
+    CAMINHO_RAW = RAW_DIR / f"pib-municipal_ibge-sidra-tabela{TABELA_PIB}_{PERIODO_INICIO}-{PERIODO_FIM}_municipal.csv"
+    CAMINHO_PROC = PROC_DIR / f"pib-per-capita_ibge-sidra_{PERIODO_INICIO}-{PERIODO_FIM}_municipal.csv"
+    logger.info("Último período publicado da tabela %d: %d", TABELA_PIB, PERIODO_FIM)
     if CAMINHO_RAW.exists() and CAMINHO_PROC.exists() and not args.forcar:
         logger.info("Arquivos já existem — nada a fazer (use --forcar para baixar de novo).")
         return

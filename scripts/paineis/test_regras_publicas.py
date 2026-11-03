@@ -28,7 +28,12 @@ Regras:
        Prisional fora da contagem, só mini-mapas como imagem;
     m) camada publicada das unidades (data/geoportal/unidades-saude-esf-ubs.geojson e o
        metadado irmão): nenhum campo de 2026 nem de soma ou total;
-    n) nenhum arquivo do portal (mapa.html, index.html, js/, data/geoportal/) nem de data/paineis/ traz
+    n) (decisão C1, rodada 121) dado de outubro de 2026 em diante só passa marcado: o produto com período
+       (dados_ate, linha mensal ou anual) a partir de comum.PROVISORIO_DESDE e com número nesse trecho precisa
+       de "provisorio": true, de "provisorio_desde" que cubra o mês, ou de aviso "parcial" do ano; nos
+       derivados do início, a linha com dados a partir de outubro de 2026 precisa de aviso. A exceção da
+       telemetria do rio continua. Antes da rodada 121 a regra barrava todo número a partir de 01/10/2026;
+       continua valendo: nenhum arquivo do portal (mapa.html, index.html, js/, data/geoportal/) nem de data/paineis/ traz
        dado da cheia de outubro de 2026: nenhum valor de nível ou vazão (nem outro número) em
        linha datada de 01/10/2026 em diante, nenhum campo de pico, duração ou posição do
        evento, nenhuma data do evento como valor nas camadas do portal;
@@ -433,22 +438,68 @@ def _walk(obj, caminho=""):
             yield from _walk(v, f"{caminho}[{i}]") if isinstance(v, (dict, list)) else [(f"{caminho}[{i}]", None, v)]
 
 
-def regra_n(prods) -> list[str]:
-    """Nada da cheia de outubro de 2026 no portal nem nos painéis."""
+DERIVADOS_INICIO = {"inicio_resumo.json"}
+SEM_PERIODO_DE_DADO = {"catalogo_dados.json"}  # datas do catálogo são de acesso (registro), não de dado
+RE_MES = re.compile(r"^(\d{4})-?(\d{2})$")
+
+
+def _mes_da_linha(linha: dict) -> str | None:
+    """AAAA-MM do registro: data ISO (dia, data...), periodo/competencia mensal, ou ano + mes."""
+    for c in CAMPOS_DATA_LINHA:
+        v = linha.get(c)
+        if isinstance(v, str) and RE_DATA_ISO.match(v):
+            return v[:7]
+    for c in ("periodo", "competencia"):
+        v = linha.get(c)
+        if isinstance(v, (str, int)) and RE_MES.match(str(v)):
+            m = RE_MES.match(str(v))
+            return f"{m.group(1)}-{m.group(2)}"
+    if isinstance(linha.get("ano"), int) and isinstance(linha.get("mes"), int):
+        return f"{linha['ano']}-{linha['mes']:02d}"
+    return None
+
+
+def _tem_numero(linha: dict, fora: tuple = ()) -> bool:
+    return any(isinstance(v, (int, float)) and not isinstance(v, bool) for k, v in linha.items() if k not in ("ano", "mes", *fora))
+
+
+def regra_n_c1(prods) -> list[str]:
+    """Decisão C1: período a partir de outubro de 2026 só marcado como provisório ou parcial."""
     falhas = []
-    # painéis: linhas datadas de 01/10/2026 em diante não podem ter número; nenhum campo de pico/duração/posição
+    desde = comum.PROVISORIO_DESDE
+    for p, d in prods:
+        if p.name in TELEMETRIA_PROVISORIA or p.name in SEM_PERIODO_DE_DADO:
+            continue
+        if p.name in DERIVADOS_INICIO:
+            for i, l in enumerate(d.get("dados", [])):
+                if str(l.get("dados_ate", ""))[:7] >= desde and not l.get("aviso"):
+                    falhas.append(f"{p.name}: linha {i} com dados de {l['dados_ate']} sem aviso de provisório, parcial ou preliminar")
+            continue
+        prov = d.get("provisorio") is True
+        prov_desde = d.get("provisorio_desde")
+        parciais = {(a.get("onde") or {}).get("ano") for a in d.get("avisos", []) if a.get("tipo") == "parcial"}
+        for i, l in enumerate(d.get("dados", [])):
+            if not isinstance(l, dict):
+                continue
+            mes = _mes_da_linha(l)
+            if mes and mes >= desde and _tem_numero(l):
+                if not (prov or (prov_desde and prov_desde <= mes)):
+                    falhas.append(f"{p.name}: linha {i} de {mes} com número sem marca de provisório (C1)")
+            elif mes is None and isinstance(l.get("ano"), int) and str(d.get("dados_ate", ""))[:7] >= desde \
+                    and l["ano"] == int(str(d["dados_ate"])[:4]) and _tem_numero(l):
+                if not (prov or l["ano"] in parciais):
+                    falhas.append(f"{p.name}: ano {l['ano']} com dados até {d['dados_ate']} sem aviso de parcial (C1)")
+    return falhas
+
+
+def regra_n(prods) -> list[str]:
+    """Nada da cheia de outubro de 2026 no portal nem nos painéis, fora o que a decisão C1 publica marcado."""
+    falhas = regra_n_c1(prods)
+    # painéis: nenhum campo de pico/duração/posição; a telemetria provisória tem as condições próprias
     for p, d in prods:
         if p.name in TELEMETRIA_PROVISORIA:
             falhas += telemetria_provisoria_ok(p.name, d)
             continue
-        for i, linha in enumerate(d.get("dados", [])):
-            if not isinstance(linha, dict):
-                continue
-            datas = [str(linha[c])[:10] for c in CAMPOS_DATA_LINHA if isinstance(linha.get(c), str) and RE_DATA_ISO.match(linha[c])]
-            if any(x >= INICIO_EVENTO for x in datas):
-                numeros = [k for k, v in linha.items() if isinstance(v, (int, float)) and not isinstance(v, bool)]
-                if numeros:
-                    falhas.append(f"{p.name}: linha {i} de {max(datas)} com valores {numeros}")
         if d.get("evento_em_curso") is not None or p.name.startswith("rio_"):
             ruins = sorted(k for k in _chaves(d) if any(t in k for t in TERMOS_EVENTO))
             if ruins:

@@ -29,9 +29,9 @@
  "unidade_medida": "vários (ver cada linha)",
  "periodo": {
   "inicio": "2022",
-  "fim": "2026-08-09"
+  "fim": "2026-10-25"
  },
- "dados_ate": "2026-08-09",
+ "dados_ate": "2026-10-25",
  "autorizacao": "livre",
  "selo": "em_confirmacao",
  "avisos": [
@@ -48,7 +48,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T19:21:46Z",
+ "gerado_em": "2026-11-03T19:40:30Z",
  "script": "scripts/paineis/dados_inicio.py",
  "colunas": [
   {
@@ -185,12 +185,12 @@
    "valor": "960",
    "unidade": "",
    "sub": "dos quais 150 respiratórios",
-   "aviso": null,
+   "aviso": "2025 preliminar: 990",
    "produto": "saude_sim_serie_anual",
    "fonte_curta": "SIM/DATASUS",
-   "periodo": "2010–2024",
+   "periodo": "2010–2025",
    "selo": "conferido",
-   "dados_ate": "2024-12-31"
+   "dados_ate": "2025-12-31"
   },
   {
    "dimensao": "saude",
@@ -200,12 +200,12 @@
    "valor": "838",
    "unidade": "",
    "sub": "12,9% das internações",
-   "aviso": null,
+   "aviso": "2026 parcial: janeiro a julho: 361",
    "produto": "saude_sih_serie_anual",
    "fonte_curta": "SIH/DATASUS",
-   "periodo": "2010–2025",
+   "periodo": "2010–2026",
    "selo": "conferido",
-   "dados_ate": "2025-12-31"
+   "dados_ate": "2026-07-31"
   },
   {
    "dimensao": "saude",
@@ -215,12 +215,12 @@
    "valor": "71",
    "unidade": "",
    "sub": "2024: 421",
-   "aviso": "2026 preliminar: 15",
+   "aviso": "2026 preliminar: 13",
    "produto": "saude_sinan_serie_anual",
    "fonte_curta": "SINAN/DATASUS",
    "periodo": "2010–2026",
    "selo": "conferido",
-   "dados_ate": "2026-08-02"
+   "dados_ate": "2026-10-25"
   },
   {
    "dimensao": "populacao",
@@ -233,9 +233,9 @@
    "aviso": null,
    "produto": "populacao_ibge_serie_anual",
    "fonte_curta": "IBGE",
-   "periodo": "1970–2025",
+   "periodo": "1970–2026",
    "selo": "conferido",
-   "dados_ate": "2025"
+   "dados_ate": "2026"
   },
   {
    "dimensao": "populacao",
@@ -248,9 +248,9 @@
    "aviso": null,
    "produto": "populacao_ibge_serie_anual",
    "fonte_curta": "IBGE",
-   "periodo": "1970–2025",
+   "periodo": "1970–2026",
    "selo": "conferido",
-   "dados_ate": "2025"
+   "dados_ate": "2026"
   },
   {
    "dimensao": "populacao",
@@ -263,9 +263,9 @@
    "aviso": null,
    "produto": "populacao_ibge_serie_anual",
    "fonte_curta": "IBGE",
-   "periodo": "1970–2025",
+   "periodo": "1970–2026",
    "selo": "conferido",
-   "dados_ate": "2025"
+   "dados_ate": "2026"
   },
   {
    "dimensao": "territorio",

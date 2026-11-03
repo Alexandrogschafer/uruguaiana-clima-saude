@@ -200,13 +200,18 @@ def baixar_tabela_9514(codigo_ibge: str, sessao: requests.Session) -> None:
     )
 
 
+def nome_tabela_6579(periodos: list[str]) -> str:
+    """Rodada 121: o período do arquivo vem dos períodos publicados (antes era 2001-2025 fixo)."""
+    return f"populacao-estimada_ibge-sidra-tabela6579_{periodos[0]}-{periodos[-1]}_municipal.csv"
+
+
 def baixar_tabela_6579(codigo_ibge: str, sessao: requests.Session) -> None:
     periodos_disponiveis = obter_periodos_disponiveis(6579, sessao)
     df = consultar_sidra(6579, ",".join(periodos_disponiveis), 9324, None, codigo_ibge, sessao)
     df = df[["periodo", "populacao"]].sort_values("periodo")
     anos_ausentes = sorted(set(str(a) for a in range(int(periodos_disponiveis[0]), int(periodos_disponiveis[-1]) + 1)) - set(periodos_disponiveis))
     salvar_com_metadados(
-        df, "populacao-estimada_ibge-sidra-tabela6579_2001-2025_municipal.csv",
+        df, nome_tabela_6579(periodos_disponiveis),
         {
             "fonte": "IBGE — SIDRA, tabela 6579 (Estimativas de População, publicação anual do IBGE, IN Nº 2/2020 do TCU)",
             "url_api": "https://servicodados.ibge.gov.br/api/v3/agregados/6579",
@@ -307,7 +312,8 @@ def investigar_tabela_6706(codigo_ibge: str, sessao: requests.Session) -> None:
 TAREFAS = {
     "tabela200": (baixar_tabela_200, "populacao_ibge-sidra-tabela200_1970-2010_municipal.csv"),
     "tabela9514": (baixar_tabela_9514, "populacao-sexo-idade_ibge-sidra-tabela9514_2022_municipal.csv"),
-    "tabela6579": (baixar_tabela_6579, "populacao-estimada_ibge-sidra-tabela6579_2001-2025_municipal.csv"),
+    # nome calculado a partir dos períodos publicados: um ano novo na fonte gera arquivo novo (sem --forcar)
+    "tabela6579": (baixar_tabela_6579, lambda sessao: nome_tabela_6579(obter_periodos_disponiveis(6579, sessao))),
     "tabela202": (baixar_tabela_202, "situacao-domicilio_ibge-sidra-tabela202_1970-2010_municipal.csv"),
     "tabela9923": (baixar_tabela_9923, "situacao-domicilio_ibge-sidra-tabela9923_2022_municipal.csv"),
     "tabela6706": (investigar_tabela_6706, "piramide-etaria_ibge-sidra-tabela6706_indisponivel-municipal.json"),
@@ -328,6 +334,8 @@ def main() -> None:
     logger.info("Município: %s (%s) — código IBGE %s", nome_municipio, uf, args.codigo_ibge)
 
     for chave, (funcao, nome_arquivo) in TAREFAS.items():
+        if callable(nome_arquivo):
+            nome_arquivo = nome_arquivo(sessao)
         caminho = RAW_DIR / nome_arquivo
         if caminho.exists() and not args.forcar:
             logger.info("%s já existe (%s) — pulando (use --forcar para refazer).", chave, caminho)

@@ -2,7 +2,7 @@
   "produto": "inicio_resumo.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/inicio_resumo.json",
-  "sha256_fonte": "a7ab9404068264cc3fc03bbb042b16cbd145ce81895b15603ad623e20e3b7d4e",
+  "sha256_fonte": "a1c40763ae6d338c6c8f1bbd87ebd976f87f8a9e90ce54bdbbaacb530d75fff3",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "dimensao",
@@ -24,5 +24,5 @@
   "codigo_ibge": "4322400",
   "selo": "em_confirmacao",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T19:21:46Z"
+  "data_processamento": "2026-11-03T19:40:30Z"
 }

@@ -6,8 +6,8 @@
   "entradas": [
     {
       "arquivo": "data/raw/continuidade-energia_aneel_2000-2026_conjunto-consumidor.csv",
-      "sha256": "7fa095ca2a4030980472c394e09eb431e72170f96f26c29193c2dfd2190dc2bc",
-      "bytes": 438328
+      "sha256": "8adfa832eba8a0a0863ceee470d7bd068e50ed30462aa91b1097bc85dc685bdd",
+      "bytes": 441288
     }
   ],
   "script": "scripts/paineis/dados_riscos.py",
@@ -18,6 +18,6 @@
   "autorizacao": "livre",
   "selo": "conferido",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T16:33:06Z",
+  "data_processamento": "2026-11-03T19:38:49Z",
   "supressao_nota": "séries municipais oficiais sem supressão; contagens por setor de risco passam pela supressão de comum.py (limiar 5)"
 }

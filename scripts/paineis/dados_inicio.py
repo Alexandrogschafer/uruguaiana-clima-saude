@@ -106,13 +106,23 @@ def clima(f) -> list[dict]:
 def saude(f) -> list[dict]:
     sim, sih, sn = f["sim"], f["sih"], f["sinan"]
     out = []
-    u = sim["dados"][-1]
+    # rodada 121: último ano consolidado; o preliminar (SIM) e o parcial (SIH) vão no aviso
+    fech = [r for r in sim["dados"] if not r.get("preliminar")]
+    u = fech[-1]
+    pre = next((r for r in reversed(sim["dados"]) if r.get("preliminar")), None)
     out.append(linha("saude", 1, sim, f"Óbitos totais · {u['ano']}", num(u["obitos_total"]), "",
-                     f"dos quais {num(u['obitos_respiratorios'])} respiratórios"))
-    u = sih["dados"][-1]
+                     f"dos quais {num(u['obitos_respiratorios'])} respiratórios",
+                     aviso=pre and f"{pre['ano']} preliminar: {num(pre['obitos_total'])}"))
+    fech_h = [r for r in sih["dados"] if not r.get("parcial")]
+    par = next((r for r in reversed(sih["dados"]) if r.get("parcial")), None)
+    u = fech_h[-1]
     pct = None if not u.get("internacoes_total") or u.get("internacoes_respiratorias") is None else 100 * u["internacoes_respiratorias"] / u["internacoes_total"]
+    aviso_par = None
+    if par:
+        txt = next((a["texto"] for a in sih["avisos"] if a["tipo"] == "parcial" and (a.get("onde") or {}).get("ano") == par["ano"]), f"{par['ano']} parcial")
+        aviso_par = f"{txt.split(';')[0]}: {num(par['internacoes_respiratorias'])}"
     out.append(linha("saude", 2, sih, f"Internações respiratórias · {u['ano']}", num(u["internacoes_respiratorias"]), "",
-                     f"{num(pct, 1)}% das internações" if pct is not None else ""))
+                     f"{num(pct, 1)}% das internações" if pct is not None else "", aviso=aviso_par))
     fech = [r for r in sn["dados"] if not r.get("preliminar")]
     u = fech[-1]
     pre = next((r for r in sn["dados"] if r.get("preliminar")), None)

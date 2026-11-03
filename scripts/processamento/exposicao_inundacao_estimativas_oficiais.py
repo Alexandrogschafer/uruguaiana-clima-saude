@@ -88,7 +88,9 @@ SCRIPT = "scripts/processamento/exposicao_inundacao_estimativas_oficiais.py"
 SAIDA = c.RAIZ / "data" / "processed" / "exposicao_inundacao_oficiais"
 CONFERENCIA = c.RAIZ / "data" / "processed" / "conferencia_fontes_inundacao"
 ARQ_SETORES_2010 = c.RAW / "vetor" / "setores-censitarios_ibge_2010_vetorial.gpkg"
-ARQ_POP_MUNICIPIO = c.RAIZ / "data" / "processed" / "populacao-serie-temporal_ibge-sidra_1970-2025_municipal.csv"
+# rodada 121: a série mais recente (o nome traz o último ano, ex. 1970-2026); a anterior vai para _substituidos
+ARQ_POP_MUNICIPIO = max(sorted((c.RAIZ / "data" / "processed").glob("populacao-serie-temporal_ibge-sidra_1970-*_municipal.csv")) or
+                        [c.RAIZ / "data" / "processed" / "populacao-serie-temporal_ibge-sidra_1970-2026_municipal.csv"])
 PUBLICADOS = c.RAIZ / "docs" / "exposicao_inundacao" / "numeros_publicados"  # transcrições versionadas (entrada padrão)
 PADRAO_PUBLICADOS = "numeros-publicados_*.csv"  # a pasta guarda também transcrições de outro assunto, com outras colunas
 ARQ_URBANIZADAS = c.RAW / "vetor" / "areas-urbanizadas_ibge_2019_recorte-municipio.gpkg"

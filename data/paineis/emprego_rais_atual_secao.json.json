@@ -11,7 +11,7 @@
     },
     {
       "arquivo": "data/raw/rais-vinculos_mte_2025_municipal.json",
-      "sha256": "b7d87861e11f6d4618473a15d67c67e16c2d0846574dbd44897859dd5003251f",
+      "sha256": "c3f1f91eb4dce2d9518d4ce0a98686904163670c4a87eafb9c332b00d4fda31e",
       "bytes": 1310
     }
   ],
@@ -23,6 +23,6 @@
   "autorizacao": "livre",
   "selo": "conferido",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T16:33:06Z",
+  "data_processamento": "2026-11-03T19:38:49Z",
   "supressao_nota": "supressão primária não aplicada: séries municipais oficiais, já publicadas pela fonte; nenhum agregado abaixo do município"
 }

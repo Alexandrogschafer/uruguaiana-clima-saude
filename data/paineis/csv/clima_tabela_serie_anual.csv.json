@@ -2,7 +2,7 @@
   "produto": "clima_tabela_serie_anual.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/clima_tabela_serie_anual.json",
-  "sha256_fonte": "c9e8174d7192036525af25aa40a3160b7b55ba7c7ff27b30e911b5a36be12c39",
+  "sha256_fonte": "ef2e8263e795a55a38c64125c9acfec197298b861d6e4c09d778e3641d6183be",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "ano",
@@ -20,5 +20,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T16:33:05Z"
+  "data_processamento": "2026-11-03T19:38:49Z"
 }

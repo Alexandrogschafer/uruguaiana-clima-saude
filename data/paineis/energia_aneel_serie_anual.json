@@ -36,7 +36,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T16:33:06Z",
+ "gerado_em": "2026-11-03T19:38:49Z",
  "script": "scripts/paineis/dados_riscos.py",
  "colunas": [
   {
@@ -277,9 +277,9 @@
   },
   {
    "ano": 2026,
-   "dec_horas": 3.98,
-   "fec_interrupcoes": 1.57,
-   "meses": 6,
+   "dec_horas": 5.66,
+   "fec_interrupcoes": 2.58,
+   "meses": 8,
    "parcial": true
   }
  ]

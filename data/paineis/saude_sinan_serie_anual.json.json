@@ -11,13 +11,13 @@
     },
     {
       "arquivo": "data/raw/arboviroses_sinan_2026_preliminar.csv",
-      "sha256": "0fce7a3dc368cf190a767b73aa3e45ef3ed4621224855917ccd5e20642849c1e",
-      "bytes": 1951
+      "sha256": "bcdc561c4ac08a8eddc003abe5ffc5c984b364c22f5da6914aebe45342e1fab3",
+      "bytes": 1882
     },
     {
       "arquivo": "data/raw/arboviroses_sinan_2026_preliminar.json",
-      "sha256": "6df05405036aa82f791943d07ef1b7b159d01d223f5ff5019246770c288ebed5",
-      "bytes": 2292
+      "sha256": "2b14b02e3a43b83455c0cbb943ccd6a777b1398a5faab222a7cb08e1bbdadcf6",
+      "bytes": 2345
     }
   ],
   "script": "scripts/paineis/dados_saude.py",
@@ -28,6 +28,6 @@
   "autorizacao": "livre",
   "selo": "conferido",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T16:33:05Z",
+  "data_processamento": "2026-11-03T19:37:52Z",
   "supressao_nota": "supressão primária não aplicada: série municipal anual oficial, de microdados públicos já divulgados pelo DATASUS; contagens pequenas são valores reais da fonte. A única série com contagens pequenas frequentes (óbitos por afogamento ou enchente) vai somada por quinquênio."
 }

@@ -90,8 +90,15 @@ def gerar(codigo_ibge: str) -> dict:
         for r in merge.itertuples()
     ]
     anual = []
+    ultimo_ano = int(merge["ano"].max())
+    ano_parcial = None
     for ano, grupo in merge.groupby("ano"):
         if len(grupo) != 12:
+            # rodada 121: o último ano pode estar incompleto (a coleta para no último mês completo); ele fica
+            # só na série mensal, sem total anual. Ano incompleto no meio da série continua sendo erro.
+            if int(ano) == ultimo_ano:
+                ano_parcial = {"ano": int(ano), "meses": len(grupo), "ate": f"{int(ano)}-{int(grupo['mes'].max()):02d}"}
+                continue
             raise ValueError(f"{ano} tem {len(grupo)} meses no MERGE")
         e = estacao.loc[int(ano)]
         pct = e["validas_prec"] / e["horas"] * 100
@@ -108,6 +115,7 @@ def gerar(codigo_ibge: str) -> dict:
         "codigo_ibge": codigo_ibge,
         "mensal": mensal,
         "anual": anual,
+        "ano_parcial": ano_parcial,
         "media_referencia": {
             "ano_inicio": referencia[0]["ano"],
             "ano_fim": referencia[-1]["ano"],
@@ -167,12 +175,23 @@ def publicar_paineis(dados: dict, forcar: bool = False, so: str | None = None) -
         extras={"fonte_rodape": FONTE_RODAPE, "fonte_curta_comparacao": "A809",
                 "media_referencia": dados["media_referencia"], "telas": ["clima"]},
         **comuns)
+    # decisão C1: meses de outubro de 2026 em diante são provisórios (rótulo na tela)
+    prov = [m["periodo"] for m in mensal if m["periodo"] >= comum.PROVISORIO_DESDE]
+    avisos_mensal = [AVISO_AREA] + ([{"tipo": "preliminar", "onde": {"desde": comum.PROVISORIO_DESDE}, "texto": comum.AVISO_PROVISORIO_DESDE}] if prov else [])
+    parcial = dados.get("ano_parcial")
+    if parcial:
+        avisos_mensal.append({"tipo": "parcial", "onde": {"ano": parcial["ano"]},
+                              "texto": f"{parcial['ano']} incompleto: meses até {parcial['ate'][5:]}/{parcial['ano']}, sem total anual"})
+    mensal_ate = mensal[-1]["periodo"]
+    ult_dia = calendar.monthrange(int(mensal_ate[:4]), int(mensal_ate[5:]))[1]
     prod_mensal = comum.montar_produto(
         id=PRODUTOS[1], ativos=["CA04"],
         titulo="Precipitação mensal (MERGE)",
-        periodo={"inicio": mensal[0]["periodo"], "fim": mensal[-1]["periodo"]}, avisos=[AVISO_AREA],
+        periodo={"inicio": mensal[0]["periodo"], "fim": mensal[-1]["periodo"]}, avisos=avisos_mensal,
         colunas=[{"nome": "periodo", "tipo": "texto"}, {"nome": "precipitacao_mm", "tipo": "float", "casas": 2}],
-        dados=mensal, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["clima"]}, **comuns)
+        dados=mensal, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["clima"],
+                              **({"provisorio_desde": comum.PROVISORIO_DESDE} if prov else {})},
+        **{**comuns, "dados_ate": f"{mensal_ate}-{ult_dia:02d}"})
     transf = ("soma dos meses do MERGE por ano; média de referência sem o último ano; total anual da A809 e "
               "percentual de horas válidas sobre as horas do calendário, em UTC")
     return {p["id"]: comum.gravar_produto(p, transformacao=transf, entradas=entradas, forcar=forcar)

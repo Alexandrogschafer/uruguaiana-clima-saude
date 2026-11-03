@@ -21,8 +21,8 @@
     },
     {
       "arquivo": "data/paineis/agropecuaria_ibge_serie_anual.json",
-      "sha256": "52d3a6eedabf8a3732418602044366e4c590ae64f56cca21a8896b1cd2b5fff1",
-      "bytes": 11108
+      "sha256": "66c9e4f242ca5553f9e76d09531447c47e5fb6cd35ebc886dc4bc3d29863432b",
+      "bytes": 11298
     },
     {
       "arquivo": "data/paineis/app-hidrica_ana-bho-mapbiomas_atual_curso.json",
@@ -51,8 +51,8 @@
     },
     {
       "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json",
-      "sha256": "6a82d73765b8aeb95862eb314dc28c0737949a8c9c5fd9df14680dfa1d9be325",
-      "bytes": 8110
+      "sha256": "8823d46840af52824564d2e212df50ff39eb79cb75fc016ee62c0d531234d5bc",
+      "bytes": 8112
     },
     {
       "arquivo": "data/paineis/clima_inmet-a809_serie_anual.json",
@@ -61,17 +61,17 @@
     },
     {
       "arquivo": "data/paineis/clima_precipitacao-merge_serie_anual.json",
-      "sha256": "2f4c2e33d82ce81f70dbfe5b14172a0e39c93ce93c7fe2df960674e690aab5d6",
+      "sha256": "d6f8cc8497f6733249b232192d6135adf0443a959be00dc5ddbfe52b2225d5f7",
       "bytes": 5109
     },
     {
       "arquivo": "data/paineis/clima_precipitacao-merge_serie_mensal.json",
-      "sha256": "89f973ced0ba686b630776b42374c2a6dc405dd8272b729feafbd8f1808c15e1",
-      "bytes": 13243
+      "sha256": "2d327df138b23e055d99c413a2463a1a37208711f5077f7ed8299ef1d653cfd1",
+      "bytes": 14161
     },
     {
       "arquivo": "data/paineis/clima_tabela_serie_anual.json",
-      "sha256": "c9e8174d7192036525af25aa40a3160b7b55ba7c7ff27b30e911b5a36be12c39",
+      "sha256": "ef2e8263e795a55a38c64125c9acfec197298b861d6e4c09d778e3641d6183be",
       "bytes": 6183
     },
     {
@@ -86,27 +86,27 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json",
-      "sha256": "8c6048316a2092f3f8b17740dbc8fab7ec96b88f67ed979885ede6f603392602",
-      "bytes": 7448
+      "sha256": "b1294f4bb886679975f02f8fa0807554f88a70fc1b9489819e5cd08fa26df79d",
+      "bytes": 7447
     },
     {
       "arquivo": "data/paineis/despesas_siconfi_serie_anual.json",
-      "sha256": "d63dc41b0092864034faffb002710ec9617ed2cc8bb2c59814eb39b077c63bf9",
-      "bytes": 4301
+      "sha256": "48d33e1992cf3c1e6d50068bf19cb774c545986380ec6c5927706fc05c13fb89",
+      "bytes": 4302
     },
     {
       "arquivo": "data/paineis/emprego_caged_serie_mensal.json",
-      "sha256": "ffb3ac865d95d978be14e3ebc10699bf6a505234f946555777bdee8c53e4557d",
-      "bytes": 12917
+      "sha256": "053c5ca35725742021d1118d0628268c2444f8a11115c479c33948e1f415e0bb",
+      "bytes": 13211
     },
     {
       "arquivo": "data/paineis/emprego_rais_atual_secao.json",
-      "sha256": "cb8d5f2d4d157cdcd00aa66c38beeb4071062efbc316b0f2df5369f08180d02a",
+      "sha256": "5d39994d7c7d60214f6116b51b5a3c63c22de343f0fcd1ce5b695e56740a343d",
       "bytes": 3721
     },
     {
       "arquivo": "data/paineis/energia_aneel_serie_anual.json",
-      "sha256": "bcb5cc156742a2d76d0af7e79e0c5080f69f37951754c9a60ed97e67c2cabd63",
+      "sha256": "66248a691d1a8417421a90bd62a8d4870019559ebcf333e3de939e500d27e46a",
       "bytes": 5334
     },
     {
@@ -136,7 +136,7 @@
     },
     {
       "arquivo": "data/paineis/pib_ibge_serie_anual.json",
-      "sha256": "4fb788533a88552fae892e5866444e7a64a8be9de3844c12ad9e7ce2c8e1f7be",
+      "sha256": "4b0459701bfd864384a7db1d8f76cdfe72e6be408550c6b2db468f1a3db2d721",
       "bytes": 7092
     },
     {
@@ -146,8 +146,8 @@
     },
     {
       "arquivo": "data/paineis/populacao_ibge_serie_anual.json",
-      "sha256": "af62fe4af4dac121cd50f09645a2d7cf755117f54d074bb9269c41d2a57ea92e",
-      "bytes": 7869
+      "sha256": "3c7154949374db3b9f863072f62d3bd74e54fb7ad94602f0309dbc531c7c5da3",
+      "bytes": 7945
     },
     {
       "arquivo": "data/paineis/queimadas_inpe_serie_anual.json",
@@ -181,23 +181,23 @@
     },
     {
       "arquivo": "data/paineis/saude_sih_serie_anual.json",
-      "sha256": "399c73c2d7e0cd00a0b373062aa7c2e8ac86a224924cdaaed1648da1088bf3f6",
-      "bytes": 2914
+      "sha256": "773a7606220817932b8ca9ec595ff2b3a6acfa037539d895c82c239948a24dd9",
+      "bytes": 3813
     },
     {
       "arquivo": "data/paineis/saude_sim-afogamento-enchente_serie_quinquenal.json",
-      "sha256": "ba7f74fe780c86dad04c9dc21c5c7d8d03b0ece040cefef459e03fd8f792aad3",
+      "sha256": "e5c8b3cd03a76c107dd5800c26f79227efd7632acc82660c1a2447c6a2e56577",
       "bytes": 1801
     },
     {
       "arquivo": "data/paineis/saude_sim_serie_anual.json",
-      "sha256": "3e0bb6a5606b8983b4e823fdd6cee6614e70c37f842e089ddf69ef95dd94b229",
-      "bytes": 2777
+      "sha256": "d43b49e4ba56f20866f029a5ac4c7bc3b75a002ac2882e3ac32c2648c8150450",
+      "bytes": 3451
     },
     {
       "arquivo": "data/paineis/saude_sinan_serie_anual.json",
-      "sha256": "494784dd22da93cc3b10b5a87f90a367596c049bf0fc2d91bbb9474241ba09f8",
-      "bytes": 3860
+      "sha256": "99ed507d02857ac267bc5523188761d868f8a58c04b8e34e453469bdd06cc5ff",
+      "bytes": 3985
     },
     {
       "arquivo": "data/paineis/saude_unidades-esf-ubs_atual.json",
@@ -221,8 +221,8 @@
     },
     {
       "arquivo": "data/paineis/agropecuaria_ibge_serie_anual.json.json",
-      "sha256": "1e98cce0b849249925b2c8b9d4d55f494403589edea0feb3f0b346fb8e448e57",
-      "bytes": 1090
+      "sha256": "5523ae627644e27ccf13de202c5c1499161c982484820bedf21f18a2df3fede9",
+      "bytes": 1091
     },
     {
       "arquivo": "data/paineis/app-hidrica_ana-bho-mapbiomas_atual_curso.json.json",
@@ -251,7 +251,7 @@
     },
     {
       "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json.json",
-      "sha256": "4768f0c0c2e1869dfdff2db0c5481a8653299171e3a86a40ad7aa7fa3188ea27",
+      "sha256": "39267df24413d8a50ae5048542d24f2246b50a7ca973e29d2bff13780ae22fb6",
       "bytes": 929
     },
     {
@@ -261,17 +261,17 @@
     },
     {
       "arquivo": "data/paineis/clima_precipitacao-merge_serie_anual.json.json",
-      "sha256": "0b9a8e5739ac2e2e66e0a20498799770c872dabb654e74e7370ea8b73f829719",
+      "sha256": "3bd8faf282d5d4f876b6750f8693b327f4aa77db599557fea940cbc8612e3e23",
       "bytes": 1052
     },
     {
       "arquivo": "data/paineis/clima_precipitacao-merge_serie_mensal.json.json",
-      "sha256": "a4c9bd264b79dd28913549484242b0dff2a1eeeed68561627fe859c404cfc8e8",
+      "sha256": "ceb657c011afd5ae33bc0f5887a3a0996d5697a5ceed33fec9a1b3188f0599d6",
       "bytes": 1041
     },
     {
       "arquivo": "data/paineis/clima_tabela_serie_anual.json.json",
-      "sha256": "21285e2c6758a62a8ed697961cf25148f6c4dfb03ea79fd5f7c1353fed88c4f4",
+      "sha256": "ac4a26e6c77af00c746706847771aab77b1cabf8fcf2dc80bdc8ee2467fd304e",
       "bytes": 1274
     },
     {
@@ -286,27 +286,27 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json.json",
-      "sha256": "0e0e63607a67b5ff995553a2314a43408afcc2c338acbe037d6a800ed257880a",
+      "sha256": "497c245196fbc136a783c486bf96ac67b619a6537aebc8f9f1ac170f9de4c36a",
       "bytes": 1052
     },
     {
       "arquivo": "data/paineis/despesas_siconfi_serie_anual.json.json",
-      "sha256": "3946f44dd6451c3c5e675a30fced973b48551d856df418fe4ed6ef1fbad69675",
+      "sha256": "fa3276f9fcc8fe0d96c75a8074240c980145b863036cf089b757547d3da8c507",
       "bytes": 1318
     },
     {
       "arquivo": "data/paineis/emprego_caged_serie_mensal.json.json",
-      "sha256": "840eccf697c7113d88bb6d80c728e96b7e4071b9d4d4535730cb7cada94b3323",
+      "sha256": "5e81e0e3375a98753df0c5b3b088b35b7baabff6eb5b4e655032ef36426c110d",
       "bytes": 874
     },
     {
       "arquivo": "data/paineis/emprego_rais_atual_secao.json.json",
-      "sha256": "2b735f8df09ab2114b6c54749e8f895b03cbee4854759a6f930ee0e0833fb30b",
+      "sha256": "edfce3cf33c0aadd260d167b580a13c39460120245a137c15db8a1cf2b112d0c",
       "bytes": 1063
     },
     {
       "arquivo": "data/paineis/energia_aneel_serie_anual.json.json",
-      "sha256": "60225119adcaaaf0c4d6f40f2846edd9e438ad8836f4799283a0a30bad11c5d0",
+      "sha256": "383d7538ce8d2dbc58bd3ef4b78c16bf28db6c7f573b2e452be23b110e9f9709",
       "bytes": 897
     },
     {
@@ -336,7 +336,7 @@
     },
     {
       "arquivo": "data/paineis/pib_ibge_serie_anual.json.json",
-      "sha256": "b61570f561dfc54f4a2908e05fdecb1336224cff8061aef26bab47da444963c4",
+      "sha256": "9962d98ea50476d48c254d8d9ac222122dcb8ebbee25d7ee8987b352c6b428dd",
       "bytes": 1101
     },
     {
@@ -346,7 +346,7 @@
     },
     {
       "arquivo": "data/paineis/populacao_ibge_serie_anual.json.json",
-      "sha256": "e1787434edf123ad873277b4dfcb9862ebceef689360cbef06d272e5d5729f32",
+      "sha256": "036e4c5b57f5f18d302cf679bc5aa8514fcf980d6af385df818e64959c2ebd37",
       "bytes": 1163
     },
     {
@@ -381,22 +381,22 @@
     },
     {
       "arquivo": "data/paineis/saude_sih_serie_anual.json.json",
-      "sha256": "7bde18db7898157d6aee99347c2aea37903094497d2cbb15098a113eedf75c77",
-      "bytes": 1022
+      "sha256": "6f3b96cd07194e3a637b5b6da90f5c0ef945932b4af65dc02f81a0a419d1f527",
+      "bytes": 1149
     },
     {
       "arquivo": "data/paineis/saude_sim-afogamento-enchente_serie_quinquenal.json.json",
-      "sha256": "0ee15678915a4ea31be95db36fa75d6c9ff9992629a1e90d239f9033ac828039",
+      "sha256": "0e5fe46afc96323e9cb969ca1992d20ffb7e4fe3cd4a19ffd56e0c5740ff1ce9",
       "bytes": 852
     },
     {
       "arquivo": "data/paineis/saude_sim_serie_anual.json.json",
-      "sha256": "64e22cc3fecd3b24a21ba65424da2e55d1edc3794c5a4b7d37beb8e8798827b7",
+      "sha256": "06a46be91cd025e7f705dc0027b4e7fb254b1accc6f86d0ab404630335f7b55b",
       "bytes": 1140
     },
     {
       "arquivo": "data/paineis/saude_sinan_serie_anual.json.json",
-      "sha256": "7b18a96065d0721591241899aafc51c8b9640d03a8d1c97d136b590e06e8d4de",
+      "sha256": "4d1e992463612bc18b735af379793f70d3f66c64079c9b71541149aa75da1836",
       "bytes": 1563
     },
     {
@@ -466,5 +466,5 @@
   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T19:21:46Z"
+  "data_processamento": "2026-11-03T19:40:30Z"
 }

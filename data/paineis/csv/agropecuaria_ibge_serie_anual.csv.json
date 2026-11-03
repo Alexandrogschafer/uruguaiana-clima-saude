@@ -2,7 +2,7 @@
   "produto": "agropecuaria_ibge_serie_anual.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/agropecuaria_ibge_serie_anual.json",
-  "sha256_fonte": "52d3a6eedabf8a3732418602044366e4c590ae64f56cca21a8896b1cd2b5fff1",
+  "sha256_fonte": "66c9e4f242ca5553f9e76d09531447c47e5fb6cd35ebc886dc4bc3d29863432b",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "ano",
@@ -12,10 +12,10 @@
     "bovino_cabecas",
     "ovino_cabecas"
   ],
-  "n_linhas": 51,
+  "n_linhas": 52,
   "script": "scripts/paineis/exportar_csv.py",
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T16:33:06Z"
+  "data_processamento": "2026-11-03T19:38:49Z"
 }

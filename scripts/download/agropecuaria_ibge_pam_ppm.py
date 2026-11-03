@@ -79,6 +79,17 @@ logger = logging.getLogger(__name__)
 
 CODIGO_IBGE_DEFAULT = "4322400"  # Uruguaiana, RS
 DATA_ACESSO = date.today().isoformat()
+# rodada 121: último ano publicado, lido de /periodos das três tabelas (antes 2024 fixo); o menor dos três,
+# para as três séries terminarem no mesmo ano
+ANO_FIM: int | None = None
+
+
+def descobrir_ano_fim(sessao: requests.Session) -> int:
+    fins = []
+    for tabela in (5457, 3939, 74):
+        r = _requisitar_com_retry(sessao, f"{URL_SIDRA_BASE}/{tabela}/periodos", {})
+        fins.append(max(int(p["id"]) for p in r.json()))
+    return min(fins)
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (compativel; script-pesquisa-ClimaPampa/1.0)"}
 N_TENTATIVAS = 3
@@ -174,15 +185,15 @@ def salvar_com_metadados(df: pd.DataFrame, nome_arquivo: str, metadados: dict) -
 
 
 def baixar_pam(codigo_ibge: str, sessao: requests.Session) -> None:
-    df = consultar_sidra_long(5457, "1974-2024", "8331,216,214,215", "782[all]", codigo_ibge, sessao)
+    df = consultar_sidra_long(5457, f"1974-{ANO_FIM}", "8331,216,214,215", "782[all]", codigo_ibge, sessao)
     df = df.sort_values(["variavel_id", "categoria", "periodo"]).reset_index(drop=True)
     salvar_com_metadados(
-        df, "producao-agricola_ibge-sidra-tabela5457_1974-2024_municipal.csv",
+        df, f"producao-agricola_ibge-sidra-tabela5457_1974-{ANO_FIM}_municipal.csv",
         {
             "fonte": "IBGE — SIDRA, tabela 5457 (Produção Agrícola Municipal, 'Área plantada ou destinada à colheita, área colhida, quantidade produzida, rendimento médio e valor da produção das lavouras temporárias e permanentes')",
             "url_api": "https://servicodados.ibge.gov.br/api/v3/agregados/5457",
             "tabela_sidra": 5457,
-            "periodos": "1974-2024",
+            "periodos": f"1974-{ANO_FIM}",
             "codigo_ibge": codigo_ibge,
             "variaveis_baixadas": {
                 "8331": "Área plantada ou destinada à colheita (ha)",
@@ -198,15 +209,15 @@ def baixar_pam(codigo_ibge: str, sessao: requests.Session) -> None:
 
 
 def baixar_ppm_rebanho(codigo_ibge: str, sessao: requests.Session) -> None:
-    df = consultar_sidra_long(3939, "1974-2024", "105", "79[all]", codigo_ibge, sessao)
+    df = consultar_sidra_long(3939, f"1974-{ANO_FIM}", "105", "79[all]", codigo_ibge, sessao)
     df = df.sort_values(["categoria", "periodo"]).reset_index(drop=True)
     salvar_com_metadados(
-        df, "rebanho_ibge-sidra-tabela3939_1974-2024_municipal.csv",
+        df, f"rebanho_ibge-sidra-tabela3939_1974-{ANO_FIM}_municipal.csv",
         {
             "fonte": "IBGE — SIDRA, tabela 3939 (Pesquisa da Pecuária Municipal, 'Efetivo dos rebanhos, por tipo de rebanho')",
             "url_api": "https://servicodados.ibge.gov.br/api/v3/agregados/3939",
             "tabela_sidra": 3939,
-            "periodos": "1974-2024",
+            "periodos": f"1974-{ANO_FIM}",
             "codigo_ibge": codigo_ibge,
             "variavel": "Efetivo dos rebanhos (cabeças)",
             "categorias": "10 tipos de rebanho (Bovino, Bubalino, Equino, Suíno-total, Suíno-matrizes, Caprino, Ovino, Galináceos-total, Galináceos-galinhas, Codornas) — sem categoria 'Total' agregada na própria fonte (classificação não sumarizável)",
@@ -217,15 +228,15 @@ def baixar_ppm_rebanho(codigo_ibge: str, sessao: requests.Session) -> None:
 
 
 def baixar_ppm_producao_animal(codigo_ibge: str, sessao: requests.Session) -> None:
-    df = consultar_sidra_long(74, "1974-2024", "106,215", "80[all]", codigo_ibge, sessao)
+    df = consultar_sidra_long(74, f"1974-{ANO_FIM}", "106,215", "80[all]", codigo_ibge, sessao)
     df = df.sort_values(["variavel_id", "categoria", "periodo"]).reset_index(drop=True)
     salvar_com_metadados(
-        df, "producao-animal_ibge-sidra-tabela74_1974-2024_municipal.csv",
+        df, f"producao-animal_ibge-sidra-tabela74_1974-{ANO_FIM}_municipal.csv",
         {
             "fonte": "IBGE — SIDRA, tabela 74 (Pesquisa da Pecuária Municipal, 'Produção de origem animal, por tipo de produto')",
             "url_api": "https://servicodados.ibge.gov.br/api/v3/agregados/74",
             "tabela_sidra": 74,
-            "periodos": "1974-2024",
+            "periodos": f"1974-{ANO_FIM}",
             "codigo_ibge": codigo_ibge,
             "variaveis_baixadas": {
                 "106": "Produção de origem animal — UNIDADE MUDA POR CATEGORIA: mil litros (Leite), mil dúzias (Ovos de galinha/codorna), quilogramas (Mel de abelha, Casulos do bicho-da-seda, Lã) — não somar entre categorias sem converter",
@@ -238,9 +249,9 @@ def baixar_ppm_producao_animal(codigo_ibge: str, sessao: requests.Session) -> No
 
 
 TAREFAS = {
-    "pam": (baixar_pam, "producao-agricola_ibge-sidra-tabela5457_1974-2024_municipal.csv"),
-    "ppm_rebanho": (baixar_ppm_rebanho, "rebanho_ibge-sidra-tabela3939_1974-2024_municipal.csv"),
-    "ppm_producao_animal": (baixar_ppm_producao_animal, "producao-animal_ibge-sidra-tabela74_1974-2024_municipal.csv"),
+    "pam": (baixar_pam, lambda: f"producao-agricola_ibge-sidra-tabela5457_1974-{ANO_FIM}_municipal.csv"),
+    "ppm_rebanho": (baixar_ppm_rebanho, lambda: f"rebanho_ibge-sidra-tabela3939_1974-{ANO_FIM}_municipal.csv"),
+    "ppm_producao_animal": (baixar_ppm_producao_animal, lambda: f"producao-animal_ibge-sidra-tabela74_1974-{ANO_FIM}_municipal.csv"),
 }
 
 
@@ -257,8 +268,11 @@ def main() -> None:
     nome_municipio, uf = obter_municipio_uf(args.codigo_ibge, sessao)
     logger.info("Município: %s (%s) — código IBGE %s", nome_municipio, uf, args.codigo_ibge)
 
+    global ANO_FIM
+    ANO_FIM = descobrir_ano_fim(sessao)
+    logger.info("Último ano publicado nas três tabelas: %d", ANO_FIM)
     for chave, (funcao, nome_arquivo) in TAREFAS.items():
-        caminho = RAW_DIR / nome_arquivo
+        caminho = RAW_DIR / nome_arquivo()
         if caminho.exists() and not args.forcar:
             logger.info("%s já existe (%s) — pulando (use --forcar para refazer).", chave, caminho)
             continue
