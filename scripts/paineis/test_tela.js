@@ -490,6 +490,7 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
           marcaImg: marca ? marca.querySelectorAll("img, svg").length : null,
           umaLinha: !!(bm && bn && bn.top < bm.bottom && bm.top < bn.bottom),
           linhaTela: (document.querySelector(".masthead .linha-tela .atualizado-tela") || {}).textContent || "",
+          eyebrow: (document.querySelector(".masthead .eyebrow") || {}).textContent || "",
           herdado: masthead ? (/Painel \d de \d|\bColeta\b|Ver também/.exec(masthead.innerText) || [""])[0] : "",
         };
       })(),
@@ -502,6 +503,8 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
     if (largura === 1280 && !id.umaLinha) falhas.push("cabeçalho não cabe numa linha a 1280 px");
     if (!data.test(id.linhaTela)) falhas.push(`"Atualizado em" fora da linha da tela: "${id.linhaTela}"`);
     if (id.herdado) falhas.push(`texto herdado no masthead: "${id.herdado}"`);
+    // grafia única do programa (Parte 0 da rodada A2) e eyebrow terminado no nome da tela
+    if (!/^ClimaPampa · PET-Saúde: Clima · Uruguaiana \/ RS · \S/.test(id.eyebrow)) falhas.push(`eyebrow fora do padrão: "${id.eyebrow}"`);
     const rod = r.rodape.split("\n").map((l) => l.trim()).filter(Boolean);
     if (rod[0] !== "Realização: ClimaPampa — PET-Saúde: Clima · Unipampa e Secretaria Municipal de Saúde de Uruguaiana" || !rod[1].startsWith("Fontes:") || !data.test(rod[rod.length - 1]) || /Outros painéis/.test(r.rodape))
       falhas.push(`rodapé: ${JSON.stringify(rod)}`);
