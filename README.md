@@ -129,10 +129,29 @@ livres em `config/paineis_ativos.csv`. Os geradores leem de `data/raw/` e
 `data/processed/`; sem essas pastas não é possível regerar, mas a
 publicação continua funcionando com os JSON versionados.
 
+**Ids estáveis (desde a rodada 120):** o id do produto (nome do JSON) não
+carrega o período. Convenção `{tema}_{fonte}_{serie|atual}_{resolucao}`:
+`serie` para série temporal que cresce a cada coleta (ex.:
+`saude_sih_serie_anual`), `atual` para retrato que é substituído (ex.:
+`emprego_rais_atual_secao`). Período e `dados_ate` ficam dentro do JSON.
+Edições fixas da fonte mantêm o ano, que é a edição e não o período
+(`censo_ibge_2022_situacao-setor`, `areas-de-risco_ibge_2018_bater`,
+`risco-geologico_cprm_2021_classe`, `setorizacao-risco_sgb_2014_setor`,
+`areas-urbanizadas_ibge_2019_classe`), assim como os produtos do rio. Produto
+que mudou de id leva o campo `substitui` com o id antigo, também no
+manifesto; as telas pedem o produto ao manifesto (`js/paineis/dados.js`), que
+resolve id antigo pelo `substitui`. O manifesto lista só os ids declarados
+em `PRODUTOS` pelos geradores; JSON sem gerador é órfão.
+
+Quando mais de um bruto casa com o padrão de entrada de um gerador, vale o de
+`data_acesso` mais recente no `.json` irmão (sem `data_acesso`, o de
+`data_processamento`); o bruto antigo nunca é apagado.
+
 ```bash
 python scripts/paineis/gerar_todos.py                 # só regrava o que mudou
 python scripts/paineis/gerar_todos.py --forcar        # regrava tudo
 python scripts/paineis/gerar_todos.py --so <id>       # só um produto (id = nome do JSON sem extensão)
+python scripts/paineis/gerar_todos.py --limpar        # move JSON órfão para data/paineis/_orfaos/ (fora do site)
 ```
 
 ## Séries tabulares (nos painéis, fora do mapa)
@@ -234,7 +253,10 @@ irmão. Estão pendentes de conferência e nenhuma delas alimenta o portal.
   `data/catalogo_fontes.csv`.
 - **Nomenclatura de arquivos:**
   `{tema}_{fonte}_{ano-ou-periodo}_{resolucao}.{ext}`
-  ex.: `uso-solo_mapbiomas_2023_30m.tif`
+  ex.: `uso-solo_mapbiomas_2023_30m.tif`. Produtos dos painéis
+  (`data/paineis/`) seguem `{tema}_{fonte}_{serie|atual}_{resolucao}`, sem
+  período no id (ex.: `saude_sih_serie_anual`); o período fica dentro do
+  JSON.
 - **Metadados:** todo output processado tem um arquivo irmão `.json`
   descrevendo fonte, data de processamento e transformação aplicada.
 - **Replicabilidade:** a metodologia deve ser adaptável a outros

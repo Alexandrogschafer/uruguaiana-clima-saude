@@ -42,6 +42,13 @@ tomada de decisão territorial.
 - **Nomenclatura de arquivos:**
   `{tema}_{fonte}_{ano-ou-periodo}_{resolucao}.{ext}`
   ex.: `uso-solo_mapbiomas_2023_30m.tif`
+  Produtos dos painéis (`data/paineis/`, id = nome do JSON) usam id
+  estável `{tema}_{fonte}_{serie|atual}_{resolucao}`: `serie` para série que
+  cresce, `atual` para retrato substituído; o período fica dentro do JSON
+  (ex.: `saude_sih_serie_anual`, `emprego_rais_atual_secao`). Edições fixas
+  (censo 2022, BATER 2018, CPRM 2021, setorização 2014, urbanizadas 2019) e
+  os produtos do rio mantêm o id. Id trocado leva `substitui` com o antigo
+  (tabela em `scripts/paineis/comum.py`).
 - **Metadados:** todo output processado tem um `.json` irmão descrevendo
   fonte, data de processamento e transformação aplicada.
 - **Preferir API/Python** a download manual; documentar quando não for
