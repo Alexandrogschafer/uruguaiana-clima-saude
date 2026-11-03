@@ -24,13 +24,17 @@
 }
 :root {
   color-scheme: light;
-  --page:            #eef1ec;
+  --page:            #F7F6F3;
   --surface-card:    #ffffff;
-  --ink:             #132524;
-  --ink-secondary:   #4b5f5c;
-  --ink-muted:       #7c8f8c;
-  --accent:          #0f5c56;
-  --accent-soft:     #dbe8e3;
+  --ink:             #1F2B38;
+  --ink-secondary:   #54616F;
+  --ink-muted:       #5F6B78;   /* contraste no cartão branco 3,41 → 5,44 */
+  --accent:          #1B6E8A;
+  --accent-ink:      #FFFFFF;   /* texto sobre fundo --accent */
+  --accent-soft:     #E3F0F5;
+  --marca-1:         #1B6E8A;   /* "Clima" da marca em texto */
+  --marca-2:         #E0565D;   /* "Pampa": só na marca em texto (texto grande, 800) */
+  --rotulo:          #B83A42;   /* etiquetas (eyebrow) */
   --border:          rgba(19,37,36,0.12);
   --border-strong:   rgba(19,37,36,0.22);
   --grid:            #e3e7e1;
@@ -51,8 +55,12 @@
     --ink:             #eef1ec;
     --ink-secondary:   #9db3af;
     --ink-muted:       #6d8985;
-    --accent:          #57d6c9;
-    --accent-soft:     #163531;
+    --accent:          #5FB7D4;
+    --accent-ink:      #0b1414;
+    --accent-soft:     #13303A;
+    --marca-1:         #5FB7D4;
+    --marca-2:         #F07F84;
+    --rotulo:          #F07F84;
     --border:          rgba(238,241,236,0.12);
     --border-strong:   rgba(238,241,236,0.22);
     --grid:            #1d2c2a;
@@ -73,8 +81,12 @@
   --ink:             #eef1ec;
   --ink-secondary:   #9db3af;
   --ink-muted:       #6d8985;
-  --accent:          #57d6c9;
-  --accent-soft:     #163531;
+  --accent:          #5FB7D4;
+  --accent-ink:      #0b1414;
+  --accent-soft:     #13303A;
+  --marca-1:         #5FB7D4;
+  --marca-2:         #F07F84;
+  --rotulo:          #F07F84;
   --border:          rgba(238,241,236,0.12);
   --border-strong:   rgba(238,241,236,0.22);
   --grid:            #1d2c2a;
@@ -93,7 +105,8 @@ html, body { margin: 0; padding: 0; }
 body {
   background: var(--page);
   color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* texto em Plus Jakarta Sans (local); números e eixos continuam monoespaçados */
+  font-family: "Plus Jakarta Sans", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -101,8 +114,8 @@ body {
 
 .masthead { position: relative; padding: 36px 32px 30px; background: var(--surface-card); border: 1px solid var(--border); border-radius: 6px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 28px; }
 .masthead-contour { position: absolute; inset: 0; opacity: 0.5; pointer-events: none; }
-.eyebrow { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 10px; position: relative; }
-h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio L", serif; font-weight: 400; font-size: clamp(26px, 4vw, 34px); line-height: 1.15; margin: 0 0 8px; text-wrap: balance; max-width: 32ch; position: relative; }
+.eyebrow { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rotulo); display: block; margin-bottom: 10px; position: relative; }
+h1 { font-family: "Plus Jakarta Sans", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; font-weight: 800; letter-spacing: -0.01em; font-size: clamp(26px, 4vw, 34px); line-height: 1.15; margin: 0 0 8px; text-wrap: balance; max-width: 32ch; position: relative; }
 .masthead p { margin: 0; color: var(--ink-secondary); font-size: 15px; max-width: 66ch; position: relative; }
 .masthead-meta { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; gap: 24px; flex-wrap: wrap; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 12px; color: var(--ink-muted); position: relative; }
 .masthead-meta b { color: var(--ink-secondary); font-weight: 600; }
@@ -119,7 +132,7 @@ h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio
 .kpi-spark svg { display: block; width: 100%; height: 100%; }
 
 .section-head { display: flex; align-items: baseline; gap: 12px; margin: 40px 0 16px; }
-.section-head h2 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio L", serif; font-weight: 400; font-size: 21px; margin: 0; color: var(--ink); }
+.section-head h2 { font-family: "Plus Jakarta Sans", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; font-weight: 800; font-size: 21px; margin: 0; color: var(--ink); }
 .section-head .section-rule { flex: 1; height: 1px; background: var(--border-strong); }
 .section-note { font-size: 13px; color: var(--ink-muted); margin: -8px 0 18px; max-width: 72ch; }
 

@@ -47,7 +47,7 @@ a.nav-item:hover { color: var(--ink); border-color: var(--border-strong); }
 .aviso-lacuna, .aviso-parcial { border-left-color: var(--series-context); }
 .aviso-preliminar, .aviso-em_confirmacao { border-left-color: var(--series-orange); }
 .aviso-metodo { border-left-color: var(--accent); }
-.rotulo-provisorio { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 3px; border: 1px solid var(--series-orange); color: var(--ink-primary); background: color-mix(in srgb, var(--series-orange) 12%, transparent); vertical-align: middle; }
+.rotulo-provisorio { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 3px; border: 1px solid var(--series-orange); color: var(--ink); background: color-mix(in srgb, var(--series-orange) 12%, transparent); vertical-align: middle; }
 .leitura-rio { font-size: 13px; color: var(--ink-secondary); margin: 6px 0 0; }
 .aviso-evento_em_curso { border-left-color: var(--series-orange); font-weight: 600; }
 
@@ -106,7 +106,7 @@ details.recolhivel[open] > summary::before, details.detalhes-unidades[open] > su
 
 /* ---------- síntese e cheia e saúde ---------- */
 .faixa-rio { margin: 0 0 16px; padding: 10px 14px; border-radius: 6px; border: 1px solid var(--border-strong); background: var(--surface-card); font-size: 13.5px; line-height: 1.45; color: var(--ink-secondary); }
-.faixa-rio.faixa-evento { border-color: #d95926; background: color-mix(in srgb, #d95926 8%, var(--surface-card)); color: var(--ink-primary); }
+.faixa-rio.faixa-evento { border-color: #d95926; background: color-mix(in srgb, #d95926 8%, var(--surface-card)); color: var(--ink); }
 .lista-sintese { margin: 6px 0 8px; padding-left: 18px; font-size: 13.5px; line-height: 1.5; color: var(--ink-secondary); }
 .lista-sintese li { margin: 3px 0; }
 .links-sintese { margin: 8px 0 0; font-size: 13px; }
@@ -115,7 +115,7 @@ details.recolhivel[open] > summary::before, details.detalhes-unidades[open] > su
 .marca-preliminar { color: var(--ink-muted); font-style: italic; }
 .seletor-cota { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 12px; }
 .seletor-cota button { font: inherit; font-size: 13px; padding: 4px 11px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-card); color: var(--ink-secondary); cursor: pointer; }
-.seletor-cota button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.seletor-cota button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .mini-mapa { width: 100%; max-width: 520px; height: auto; display: block; margin: 6px auto 0; border-radius: 4px; }
 .tabela-cotas tr.linha-ativa td { background: color-mix(in srgb, var(--accent) 10%, transparent); font-weight: 600; }
 .lista-espera { columns: 2 260px; column-gap: 24px; font-size: 12.5px; line-height: 1.45; color: var(--ink-secondary); margin: 6px 0; padding-left: 18px; }
