@@ -97,7 +97,10 @@ details.recolhivel[open] > summary::before, details.detalhes-unidades[open] > su
 
 @media (max-width: 720px) {
   .cabecalho-comum { font-size: 12.5px; }
-  .menu-explorar-lista { left: 0; right: auto; }
+  /* no celular a lista abre na largura da linha do menu (ancorada na nav), sem passar da borda da tela */
+  .cabecalho-nav { position: relative; }
+  .menu-explorar { position: static; }
+  .menu-explorar-lista { left: 0; right: 0; min-width: 0; }
   /* um cartão por linha da tabela; o rótulo da coluna vem de data-rotulo */
   table.tabela-cartoes thead { display: none; }
   table.tabela-cartoes, table.tabela-cartoes tbody { display: block; }

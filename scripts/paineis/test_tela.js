@@ -538,6 +538,16 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
     }
   }
   await page.screenshot({ path: path.join(saida, `${def.pagina.split("/").pop().replace(".html", "")}_${largura}_${tema}.png`), fullPage: true });
+  if (largura === 390) {
+    // menu "Explorar" aberto no celular: lista dentro da tela e sem rolagem lateral (rodada A1)
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.click(".menu-explorar summary");
+    await page.waitForTimeout(150);
+    const m = await page.evaluate(() => { const l = document.querySelector(".menu-explorar-lista").getBoundingClientRect();
+      return { esq: l.left, dir: l.right, larg: document.documentElement.clientWidth, rolagem: document.documentElement.scrollWidth > document.documentElement.clientWidth }; });
+    if (m.esq < 0 || m.dir > m.larg || m.rolagem) falhas.push(`menu Explorar aberto passa da tela: ${JSON.stringify(m)}`);
+    await page.evaluate(() => { document.querySelector(".menu-explorar").open = false; });
+  }
   falhas.unshift(...erros.map((e) => `erro: ${e}`));
   await ctx.close();
   return { modo, falhas, altura: alturaRecolhida, dicas, toqueFecha, folgas: r.folgas };
