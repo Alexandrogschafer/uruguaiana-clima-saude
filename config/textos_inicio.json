@@ -1,0 +1,41 @@
+{
+  "descricao": "Textos da página inicial (index.html), num arquivo só para troca sem mexer no HTML. Provisórios (rodada A2). Os números da página não ficam aqui: vêm de data/paineis/inicio_resumo.json, gerado por scripts/paineis/dados_inicio.py.",
+  "etiqueta": "ClimaPampa · PET-Saúde: Clima · Eixo 3",
+  "titulo": "Clima, território e saúde de Uruguaiana em um só lugar",
+  "frase": "Dados abertos sobre Uruguaiana, para consulta rápida, com fonte e data em cada número.",
+  "paragrafo": "O geoportal é a plataforma digital do Eixo 3 do ClimaPampa, projeto da Unipampa com a Secretaria Municipal de Saúde de Uruguaiana no programa PET-Saúde: Clima, do Ministério da Saúde. Reúne mapas e painéis sobre clima, saúde, população, território, economia e riscos em Uruguaiana, na fronteira oeste do Rio Grande do Sul, às margens do rio Uruguai.",
+  "aviso_escopo": "Os dados são para consulta: não são em tempo real e não substituem avisos e alertas da Defesa Civil.",
+  "grupos": {
+    "dimensoes": "Dimensões",
+    "cruzamentos": "Cruzamentos e mapa",
+    "dados": "Dados",
+    "projeto": "O projeto"
+  },
+  "dimensoes": [
+    {"id": "clima", "nome": "Clima e ambiente", "linha": "Chuva, temperatura e dias de calor, focos de queimada e o nível do rio Uruguai.", "tela": "dashboards/clima.html"},
+    {"id": "saude", "nome": "Saúde", "linha": "Óbitos, internações respiratórias, arboviroses e as unidades de saúde da família e básicas.", "tela": "dashboards/saude.html"},
+    {"id": "populacao", "nome": "População", "linha": "População dos censos e das estimativas, envelhecimento e pirâmides etárias.", "tela": "dashboards/populacao.html"},
+    {"id": "territorio", "nome": "Território e meio físico", "linha": "Uso e cobertura do solo, geologia, relevo, solos, vegetação, poços e APP dos rios.", "tela": "dashboards/territorio.html"},
+    {"id": "economia", "nome": "Economia e vulnerabilidade", "linha": "Renda e saneamento do Censo, PIB, emprego, agropecuária, assistência social e despesas municipais.", "tela": "dashboards/economia.html"},
+    {"id": "riscos", "nome": "Riscos, desastres e infraestrutura", "linha": "Desastres reconhecidos, suscetibilidade, setores de risco e continuidade de energia.", "tela": "dashboards/riscos.html"}
+  ],
+  "cruzamentos": [
+    {"id": "cheia", "nome": "Cheia e acesso à saúde", "linha": "Manchas de inundação do Serviço Geológico do Brasil por cota do rio e a posição das unidades de saúde em relação a elas.", "tela": "dashboards/cheia-saude.html"},
+    {"id": "mapa", "nome": "Mapa", "linha": "Todas as camadas no mapa interativo: saúde, demografia, inundação, uso do solo, hidrografia e terreno, meio físico e infraestrutura.", "tela": "mapa.html"}
+  ],
+  "dados": {
+    "linha": "Todos os conjuntos de dados, com fonte, licença, período e selo, para baixar em CSV e JSON.",
+    "catalogo": {"nome": "Catálogo de dados", "href": "dashboards/catalogo.html"},
+    "como_ler": {"nome": "Como ler os selos e avisos", "href": "dashboards/catalogo.html#como-ler"}
+  },
+  "projeto": {
+    "linha": "Equipe, notícias, agenda e documentos do ClimaPampa estão no site do projeto.",
+    "site": "https://pet-saude-climapampa.github.io/",
+    "links": [
+      {"nome": "Equipe", "href": "https://pet-saude-climapampa.github.io/equipe/"},
+      {"nome": "Notícias", "href": "https://pet-saude-climapampa.github.io/noticias/"},
+      {"nome": "Agenda", "href": "https://pet-saude-climapampa.github.io/agenda/"},
+      {"nome": "Documentos", "href": "https://pet-saude-climapampa.github.io/documentos/"}
+    ]
+  }
+}

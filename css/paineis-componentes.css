@@ -131,3 +131,29 @@ details.recolhivel[open] > summary::before, details.detalhes-unidades[open] > su
 .lista-espera { columns: 2 260px; column-gap: 24px; font-size: 12.5px; line-height: 1.45; color: var(--ink-secondary); margin: 6px 0; padding-left: 18px; }
 .lista-espera li { break-inside: avoid; margin: 2px 0; }
 .lista-espera code { font-size: 11.5px; color: var(--ink-muted); }
+
+/* ---------- página inicial (index.html, rodada A2) ---------- */
+.masthead-inicio h1 { max-width: 28ch; }
+.masthead-inicio .frase-inicio { font-size: 17px; color: var(--ink); margin-bottom: 10px; }
+.masthead-inicio p + p { margin-top: 8px; }
+.aviso-escopo { max-width: 66ch; font-size: 13px; color: var(--ink); border-left-color: var(--accent); }
+.grade-inicio { align-items: stretch; }
+.cartao-inicio { display: flex; flex-direction: column; margin-bottom: 0; }
+.grade-inicio .cartao-inicio { margin-bottom: 0; }
+.cartao-inicio-titulo { font-size: 17px; font-weight: 800; margin: 0 0 4px; }
+.cartao-inicio-titulo a { color: var(--ink); text-decoration: none; }
+.cartao-inicio-titulo a:hover { color: var(--accent); }
+.cartao-inicio-linha { font-size: 13.5px; color: var(--ink-secondary); margin: 0 0 12px; max-width: 70ch; }
+.indicadores-inicio { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px 16px; margin-bottom: 10px; }
+.indicador-inicio { min-width: 0; }
+.indicador-inicio .kpi-label { font-size: 12px; margin-bottom: 4px; }
+.indicador-inicio .kpi-value { font-size: 20px; overflow-wrap: anywhere; }
+.indicador-inicio .kpi-sub { font-size: 11.5px; }
+.indicador-meta { font-size: 11px; color: var(--ink-muted); margin-top: 4px; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+.indicador-meta .selo { margin-left: 2px; }
+.indicador-aviso { font-size: 11.5px; color: var(--ink-secondary); margin-top: 4px; padding-left: 6px; border-left: 2px solid var(--series-orange); }
+.cartao-inicio-contagem { font-size: 13px; color: var(--ink-secondary); margin: 0 0 10px; font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+.cartao-inicio-pe { margin: auto 0 0; padding-top: 8px; font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 14px; justify-content: space-between; align-items: baseline; }
+.cartao-inicio-pe a, .cartao-inicio-linha a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+.cartao-inicio-data { font-size: 11.5px; color: var(--ink-muted); font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; }
+#cartao-dados .cartao-inicio-pe, #cartao-projeto .cartao-inicio-pe { justify-content: flex-start; }

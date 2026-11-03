@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-03T16:33:06Z",
+ "gerado_em": "2026-11-03T17:58:32Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_serie_anual",
@@ -343,6 +343,39 @@
    ],
    "bytes": 1977,
    "sha256": "9d782482162aee60f95000e92617c9734e69940ee5e5178e423b6602e9a7ff6f"
+  },
+  {
+   "id": "inicio_resumo",
+   "titulo": "Resumo da página inicial: indicadores por dimensão",
+   "ativos": [
+    "CA01",
+    "CA04",
+    "CA06",
+    "CA08",
+    "EV01",
+    "EV05",
+    "EV08",
+    "IF01",
+    "IN01",
+    "IN03",
+    "PD01",
+    "RD01",
+    "SA01",
+    "SA03",
+    "SA04",
+    "SA05",
+    "TB03",
+    "TB14"
+   ],
+   "selo": "em_confirmacao",
+   "autorizacao": "livre",
+   "dados_ate": "2026-08-09",
+   "gerado_em": "2026-11-03T17:58:32Z",
+   "telas": [
+    "inicio"
+   ],
+   "bytes": 11399,
+   "sha256": "6f55140a59f805c527c7f620634cb439a4b484d228ad8e3ba36dd9b418cfc6df"
   },
   {
    "id": "inundacao_sgb_cotas",

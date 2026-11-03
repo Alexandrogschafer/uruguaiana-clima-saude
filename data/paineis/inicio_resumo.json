@@ -1,0 +1,436 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "inicio_resumo",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "CA01",
+  "CA04",
+  "CA06",
+  "CA08",
+  "EV01",
+  "EV05",
+  "EV08",
+  "IF01",
+  "IN01",
+  "IN03",
+  "PD01",
+  "RD01",
+  "SA01",
+  "SA03",
+  "SA04",
+  "SA05",
+  "TB03",
+  "TB14"
+ ],
+ "titulo": "Resumo da página inicial: indicadores por dimensão",
+ "fonte_curta": "vários",
+ "fonte": "produtos publicados em data/paineis/ (ver a coluna produto de cada linha)",
+ "unidade_espacial": "município",
+ "unidade_medida": "vários (ver cada linha)",
+ "periodo": {
+  "inicio": "2022",
+  "fim": "2026-08-09"
+ },
+ "dados_ate": "2026-08-09",
+ "autorizacao": "livre",
+ "selo": "em_confirmacao",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "cópia dos indicadores do topo de cada tela, com o selo e o aviso do produto de origem; nenhum número do rio"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-03T17:58:32Z",
+ "script": "scripts/paineis/dados_inicio.py",
+ "colunas": [
+  {
+   "nome": "dimensao",
+   "tipo": "texto"
+  },
+  {
+   "nome": "ordem",
+   "tipo": "int"
+  },
+  {
+   "nome": "rotulo",
+   "tipo": "texto"
+  },
+  {
+   "nome": "prefixo",
+   "tipo": "texto"
+  },
+  {
+   "nome": "valor",
+   "tipo": "texto"
+  },
+  {
+   "nome": "unidade",
+   "tipo": "texto"
+  },
+  {
+   "nome": "sub",
+   "tipo": "texto"
+  },
+  {
+   "nome": "aviso",
+   "tipo": "texto"
+  },
+  {
+   "nome": "produto",
+   "tipo": "texto"
+  },
+  {
+   "nome": "fonte_curta",
+   "tipo": "texto"
+  },
+  {
+   "nome": "periodo",
+   "tipo": "texto"
+  },
+  {
+   "nome": "selo",
+   "tipo": "texto"
+  },
+  {
+   "nome": "dados_ate",
+   "tipo": "texto"
+  }
+ ],
+ "fonte_rodape": "CadÚnico e Bolsa Família — Ministério do Desenvolvimento Social (MDS), Relatório de Informações (RIv3). Censo — IBGE 2022 (Agregados por Setores Censitários + SIDRA). Temperatura — INMET, estação automática A809 (portal de dados históricos). Precipitação — MERGE/INPE-CPTEC, média de área com margem de 18 km; a A809 aparece só na comparação anual. Desastres — S2ID (Sistema Integrado de Informações sobre Desastres), SEDEC-MIDR. Continuidade de energia — ANEEL, indicadores DEC e FEC por conjunto consumidor. Manchas de inundação por cota — SGB (Serviço Geológico do Brasil), relatório de 2023. PIB dos Municípios — IBGE/SIDRA (tabela 5938), PIB per capita calculado localmente. Poços de água subterrânea — SIAGAS/CPRM. IBGE — API SIDRA/Agregados, tabelas 200 (Censos 1970-2010, sexo × situação do domicílio × grupo de idade), 9514 (Censo 2022, sexo × idade), 202 (situação do domicílio 1970-2010), 9923 (situação do domicílio 2022) e 6579 (estimativas populacionais anuais). A tabela 6706 (\"pirâmide etária\" nominal do SIDRA) é da PNAD Contínua, uma pesquisa amostral sem representatividade em nível de município pequeno — testada e confirmada sem dado para Uruguaiana em nenhum período; por isso a pirâmide etária aqui vem das tabelas de Censo (200 e 9514), que têm os mesmos 21 grupos etários de 5 anos nos 3 pontos comparados. Focos de queimada — INPE/BDQUEIMADAS. SIM, SINAN e SIH — DATASUS/Ministério da Saúde (FTP público, microdados individuais). Uso do solo — MapBiomas Coleção 10",
+ "telas": [
+  "inicio"
+ ],
+ "contagens": {
+  "grupos_camadas": 11,
+  "telas": 7,
+  "conjuntos_dados": 40,
+  "fontes": null
+ },
+ "produtos_usados": [
+  "cadunico_mds_serie_anual",
+  "censo_ibge_2022_situacao-setor",
+  "clima_inmet-a809_serie_anual",
+  "clima_precipitacao-merge_serie_anual",
+  "desastres_s2id_serie_anual",
+  "energia_aneel_serie_anual",
+  "inundacao_sgb_cotas",
+  "pib_ibge_serie_anual",
+  "pocos_siagas_atual_aquifero",
+  "populacao_ibge_serie_anual",
+  "queimadas_inpe_serie_anual",
+  "saude_sih_serie_anual",
+  "saude_sim_serie_anual",
+  "saude_sinan_serie_anual",
+  "uso-solo_mapbiomas_serie_classes"
+ ],
+ "dados": [
+  {
+   "dimensao": "clima",
+   "ordem": 1,
+   "rotulo": "Precipitação total · 2025",
+   "prefixo": "",
+   "valor": "1.255",
+   "unidade": "mm",
+   "sub": "MERGE/INPE · média 2010–2024: 1.201 mm",
+   "aviso": null,
+   "produto": "clima_precipitacao-merge_serie_anual",
+   "fonte_curta": "MERGE/INPE",
+   "periodo": "2010–2025",
+   "selo": "conferido",
+   "dados_ate": "2025-12-31"
+  },
+  {
+   "dimensao": "clima",
+   "ordem": 2,
+   "rotulo": "Dias de calor ≥35°C · 2025",
+   "prefixo": "",
+   "valor": "36",
+   "unidade": "dias",
+   "sub": "recorde: 51 dias (2023)",
+   "aviso": "parcial: dados até 18/08/2025",
+   "produto": "clima_inmet-a809_serie_anual",
+   "fonte_curta": "INMET A809",
+   "periodo": "2007–2025",
+   "selo": "conferido",
+   "dados_ate": "2025-08-18"
+  },
+  {
+   "dimensao": "clima",
+   "ordem": 3,
+   "rotulo": "Focos de queimada · 2025",
+   "prefixo": "",
+   "valor": "311",
+   "unidade": "focos",
+   "sub": "pico 2022: 404",
+   "aviso": null,
+   "produto": "queimadas_inpe_serie_anual",
+   "fonte_curta": "INPE/BDQUEIMADAS",
+   "periodo": "2010–2025",
+   "selo": "conferido",
+   "dados_ate": "2025-12-31"
+  },
+  {
+   "dimensao": "saude",
+   "ordem": 1,
+   "rotulo": "Óbitos totais · 2024",
+   "prefixo": "",
+   "valor": "960",
+   "unidade": "",
+   "sub": "dos quais 150 respiratórios",
+   "aviso": null,
+   "produto": "saude_sim_serie_anual",
+   "fonte_curta": "SIM/DATASUS",
+   "periodo": "2010–2024",
+   "selo": "conferido",
+   "dados_ate": "2024-12-31"
+  },
+  {
+   "dimensao": "saude",
+   "ordem": 2,
+   "rotulo": "Internações respiratórias · 2025",
+   "prefixo": "",
+   "valor": "838",
+   "unidade": "",
+   "sub": "12,9% das internações",
+   "aviso": null,
+   "produto": "saude_sih_serie_anual",
+   "fonte_curta": "SIH/DATASUS",
+   "periodo": "2010–2025",
+   "selo": "conferido",
+   "dados_ate": "2025-12-31"
+  },
+  {
+   "dimensao": "saude",
+   "ordem": 3,
+   "rotulo": "Notificações de dengue · 2025",
+   "prefixo": "",
+   "valor": "71",
+   "unidade": "",
+   "sub": "2024: 421",
+   "aviso": "2026 preliminar: 15",
+   "produto": "saude_sinan_serie_anual",
+   "fonte_curta": "SINAN/DATASUS",
+   "periodo": "2010–2026",
+   "selo": "conferido",
+   "dados_ate": "2026-08-02"
+  },
+  {
+   "dimensao": "populacao",
+   "ordem": 1,
+   "rotulo": "População (Censo 2022)",
+   "prefixo": "",
+   "valor": "117.210",
+   "unidade": "hab",
+   "sub": "94,9% urbana",
+   "aviso": null,
+   "produto": "populacao_ibge_serie_anual",
+   "fonte_curta": "IBGE",
+   "periodo": "1970–2025",
+   "selo": "conferido",
+   "dados_ate": "2025"
+  },
+  {
+   "dimensao": "populacao",
+   "ordem": 2,
+   "rotulo": "Taxa de crescimento 2010–2022",
+   "prefixo": "",
+   "valor": "-0,6",
+   "unidade": "%/ano",
+   "sub": "geométrica anual — população vem caindo",
+   "aviso": null,
+   "produto": "populacao_ibge_serie_anual",
+   "fonte_curta": "IBGE",
+   "periodo": "1970–2025",
+   "selo": "conferido",
+   "dados_ate": "2025"
+  },
+  {
+   "dimensao": "populacao",
+   "ordem": 3,
+   "rotulo": "Índice de envelhecimento",
+   "prefixo": "",
+   "valor": "83,9",
+   "unidade": "",
+   "sub": "60+ por 100 crianças de 0-14 anos",
+   "aviso": null,
+   "produto": "populacao_ibge_serie_anual",
+   "fonte_curta": "IBGE",
+   "periodo": "1970–2025",
+   "selo": "conferido",
+   "dados_ate": "2025"
+  },
+  {
+   "dimensao": "territorio",
+   "ordem": 1,
+   "rotulo": "Classe dominante",
+   "prefixo": "",
+   "valor": "2.573",
+   "unidade": "km²",
+   "sub": "Formação Campestre · 45,2% da área",
+   "aviso": null,
+   "produto": "uso-solo_mapbiomas_serie_classes",
+   "fonte_curta": "MapBiomas",
+   "periodo": "1985–2024",
+   "selo": "conferido",
+   "dados_ate": "2024"
+  },
+  {
+   "dimensao": "territorio",
+   "ordem": 2,
+   "rotulo": "Natural remanescente",
+   "prefixo": "",
+   "valor": "50,8",
+   "unidade": "%",
+   "sub": "2.890 km² — campestre, florestal, alagado, afloramento",
+   "aviso": null,
+   "produto": "uso-solo_mapbiomas_serie_classes",
+   "fonte_curta": "MapBiomas",
+   "periodo": "1985–2024",
+   "selo": "conferido",
+   "dados_ate": "2024"
+  },
+  {
+   "dimensao": "territorio",
+   "ordem": 3,
+   "rotulo": "Poços de água subterrânea (SIAGAS)",
+   "prefixo": "",
+   "valor": "340",
+   "unidade": "poços",
+   "sub": "Serra Geral (178) e Guarani (73) são os aquíferos predominantes",
+   "aviso": null,
+   "produto": "pocos_siagas_atual_aquifero",
+   "fonte_curta": "SIAGAS/CPRM",
+   "periodo": "atual",
+   "selo": "conferido",
+   "dados_ate": "2026-08-09"
+  },
+  {
+   "dimensao": "economia",
+   "ordem": 1,
+   "rotulo": "PIB per capita",
+   "prefixo": "R$ ",
+   "valor": "29.505,1",
+   "unidade": "",
+   "sub": "2022 · mais recente disponível",
+   "aviso": null,
+   "produto": "pib_ibge_serie_anual",
+   "fonte_curta": "IBGE/SIDRA",
+   "periodo": "2002–2023",
+   "selo": "conferido",
+   "dados_ate": "2023"
+  },
+  {
+   "dimensao": "economia",
+   "ordem": 2,
+   "rotulo": "Renda média domiciliar per capita",
+   "prefixo": "R$ ",
+   "valor": "1.566,2",
+   "unidade": "",
+   "sub": "nível municipal (Censo 2022)",
+   "aviso": null,
+   "produto": "censo_ibge_2022_situacao-setor",
+   "fonte_curta": "IBGE, Censo 2022",
+   "periodo": "2022",
+   "selo": "conferido",
+   "dados_ate": "2022"
+  },
+  {
+   "dimensao": "economia",
+   "ordem": 3,
+   "rotulo": "Famílias no CadÚnico",
+   "prefixo": "",
+   "valor": "21.162",
+   "unidade": "",
+   "sub": "jul/26 · mais recente disponível",
+   "aviso": null,
+   "produto": "cadunico_mds_serie_anual",
+   "fonte_curta": "MDS",
+   "periodo": "2012–2026",
+   "selo": "conferido",
+   "dados_ate": "2026-07"
+  },
+  {
+   "dimensao": "riscos",
+   "ordem": 1,
+   "rotulo": "Reconhecimentos federais",
+   "prefixo": "",
+   "valor": "17",
+   "unidade": "",
+   "sub": "2014–2025 · Situação de Emergência ou Calamidade",
+   "aviso": null,
+   "produto": "desastres_s2id_serie_anual",
+   "fonte_curta": "S2ID",
+   "periodo": "2014–2025",
+   "selo": "conferido",
+   "dados_ate": "2025"
+  },
+  {
+   "dimensao": "riscos",
+   "ordem": 2,
+   "rotulo": "Tipo mais frequente",
+   "prefixo": "",
+   "valor": "Inundação",
+   "unidade": "",
+   "sub": "7 de 17 (41,2%)",
+   "aviso": null,
+   "produto": "desastres_s2id_serie_anual",
+   "fonte_curta": "S2ID",
+   "periodo": "2014–2025",
+   "selo": "conferido",
+   "dados_ate": "2025"
+  },
+  {
+   "dimensao": "riscos",
+   "ordem": 3,
+   "rotulo": "DEC — duração de interrupção",
+   "prefixo": "",
+   "valor": "8,1 h",
+   "unidade": "",
+   "sub": "2025 · acumulado no ano",
+   "aviso": null,
+   "produto": "energia_aneel_serie_anual",
+   "fonte_curta": "ANEEL",
+   "periodo": "2000–2026",
+   "selo": "conferido",
+   "dados_ate": "2026"
+  },
+  {
+   "dimensao": "cheia",
+   "ordem": 1,
+   "rotulo": "Manchas de inundação do SGB",
+   "prefixo": "",
+   "valor": "4",
+   "unidade": "cotas",
+   "sub": "833, 952, 1.205 e 1.252 cm",
+   "aviso": null,
+   "produto": "inundacao_sgb_cotas",
+   "fonte_curta": "SGB",
+   "periodo": "2015–2023",
+   "selo": "em_confirmacao",
+   "dados_ate": "2023"
+  },
+  {
+   "dimensao": "cheia",
+   "ordem": 2,
+   "rotulo": "Tempo de retorno",
+   "prefixo": "",
+   "valor": "1,3 a 13,4",
+   "unidade": "anos",
+   "sub": "da menor à maior cota",
+   "aviso": "pessoas expostas e acesso: em conferência",
+   "produto": "inundacao_sgb_cotas",
+   "fonte_curta": "SGB",
+   "periodo": "2015–2023",
+   "selo": "em_confirmacao",
+   "dados_ate": "2023"
+  }
+ ]
+}

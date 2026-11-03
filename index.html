@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ClimaPampa — Geoportal Uruguaiana/RS</title>
+<meta name="description" content="Dados abertos sobre clima, território e saúde de Uruguaiana/RS: mapas e painéis por dimensão, com fonte e data em cada número.">
 <script>
 /* Endereços antigos do mapa: o mapa ficava em index.html até a rodada A2. Se a URL traz parâmetro de mapa,
    vai para mapa.html mantendo a busca e o #. Sem parâmetro de mapa (inclusive só ?origem= ou só #), fica aqui. */
@@ -18,17 +19,159 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>ClimaPampa — Geoportal Uruguaiana/RS</h1>
-  <ul>
-    <li><a href="mapa.html">Mapa</a></li>
-    <li><a href="dashboards/cheia-saude.html">Cheia e acesso à saúde</a></li>
-    <li><a href="dashboards/clima.html">Clima e ambiente</a></li>
-    <li><a href="dashboards/saude.html">Saúde</a></li>
-    <li><a href="dashboards/populacao.html">População</a></li>
-    <li><a href="dashboards/territorio.html">Território e meio físico</a></li>
-    <li><a href="dashboards/economia.html">Economia e vulnerabilidade</a></li>
-    <li><a href="dashboards/riscos.html">Riscos, desastres e infraestrutura</a></li>
-  </ul>
+
+  <header id="cabecalho-comum"></header>
+
+  <!-- textos: config/textos_inicio.json; números: data/paineis/inicio_resumo.json (scripts/paineis/dados_inicio.py) -->
+  <div class="masthead masthead-inicio">
+    <span class="eyebrow" data-texto="etiqueta"></span>
+    <h1 data-texto="titulo"></h1>
+    <p class="frase-inicio" data-texto="frase"></p>
+    <p data-texto="paragrafo"></p>
+    <p class="aviso aviso-escopo" role="note" data-texto="aviso_escopo"></p>
+  </div>
+
+  <div class="faixa-rio" id="faixa-rio" role="status"></div>
+
+  <section aria-labelledby="titulo-dimensoes">
+    <div class="section-head"><h2 id="titulo-dimensoes" data-grupo="dimensoes"></h2><div class="section-rule"></div></div>
+    <div class="chart-grid grade-inicio" id="cartoes-dimensoes"></div>
+  </section>
+
+  <section aria-labelledby="titulo-cruzamentos">
+    <div class="section-head"><h2 id="titulo-cruzamentos" data-grupo="cruzamentos"></h2><div class="section-rule"></div></div>
+    <div class="chart-grid grade-inicio" id="cartoes-cruzamentos"></div>
+  </section>
+
+  <section aria-labelledby="titulo-dados">
+    <div class="section-head"><h2 id="titulo-dados" data-grupo="dados"></h2><div class="section-rule"></div></div>
+    <div class="card cartao-inicio" id="cartao-dados"></div>
+  </section>
+
+  <section aria-labelledby="titulo-projeto">
+    <div class="section-head"><h2 id="titulo-projeto" data-grupo="projeto"></h2><div class="section-rule"></div></div>
+    <div class="card cartao-inicio" id="cartao-projeto"></div>
+  </section>
+
+  <footer id="rodape-comum"></footer>
 </div>
+
+<script src="js/paineis/componentes.js"></script>
+<script src="js/paineis/graficos.js"></script>
+<script src="js/paineis/dados.js"></script>
+<script src="js/paineis/filtros.js"></script>
+<script src="js/paineis/cabecalho.js"></script>
+<script src="js/paineis/rodape.js"></script>
+<script>
+/* Página inicial: índice por dimensão. Nenhum número fica neste arquivo: textos de config/textos_inicio.json,
+   indicadores e contagens de inicio_resumo.json e a faixa do rio da telemetria recente (provisória). */
+const P = window.Paineis;
+const IDS = {resumo: 'inicio_resumo', rio: 'rio_ana-77150000_telemetria-recente_diario'};
+const ROTULO_PROVISORIO = 'provisório';
+const criar = (tag, cls, txt) => { const e = document.createElement(tag); if(cls) e.className = cls; if(txt !== undefined) e.textContent = txt; return e; };
+// data dos dados como aparece na fonte: dia (DD/MM/AAAA), mês (MM/AAAA) ou ano
+const dataDados = s => { const m = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/.exec(String(s || '')); if(!m) return String(s || '');
+  return m[3] ? `${m[3]}/${m[2]}/${m[1]}` : (m[2] ? `${m[2]}/${m[1]}` : m[1]); };
+const maisRecente = linhas => linhas.map(r => String(r.dados_ate)).sort().pop();
+
+function indicador(r){
+  const d = criar('div', 'indicador-inicio');
+  d.appendChild(criar('div', 'kpi-label', r.rotulo));
+  const v = criar('div', 'kpi-value', `${r.prefixo || ''}${r.valor}`);
+  if(r.unidade) v.appendChild(criar('span', 'kpi-unit', r.unidade));
+  d.appendChild(v);
+  if(r.sub) d.appendChild(criar('div', 'kpi-sub', r.sub));
+  const meta = criar('div', 'indicador-meta', `${r.fonte_curta} · ${r.periodo} `);
+  meta.appendChild(P.selo(r.selo));
+  d.appendChild(meta);
+  if(r.aviso) d.appendChild(criar('div', 'indicador-aviso', r.aviso));
+  return d;
+}
+
+function cartao(def, linhas, extra){
+  const c = criar('article', 'card cartao-inicio');
+  c.id = `cartao-${def.id}`;
+  const h = criar('h3', 'cartao-inicio-titulo');
+  const a = criar('a', null, def.nome); a.href = def.tela;
+  h.appendChild(a); c.appendChild(h);
+  c.appendChild(criar('p', 'cartao-inicio-linha', def.linha));
+  if(linhas.length){
+    const g = criar('div', 'indicadores-inicio');
+    linhas.forEach(r => g.appendChild(indicador(r)));
+    c.appendChild(g);
+  }
+  if(extra) c.appendChild(extra);
+  const pe = criar('p', 'cartao-inicio-pe');
+  if(linhas.length) pe.appendChild(criar('span', 'cartao-inicio-data', `dados até ${dataDados(maisRecente(linhas))}`));
+  const abrir = criar('a', 'cartao-inicio-abrir', 'abrir →'); abrir.href = def.tela;
+  pe.appendChild(abrir); c.appendChild(pe);
+  return c;
+}
+
+function faixaRio(rio){
+  const f = document.getElementById('faixa-rio');
+  if(!rio || !rio.dados.length){ f.hidden = true; return; }
+  const u = rio.dados[rio.dados.length - 1], dh = rio.meta.ultima_leitura || '';
+  const metodo = rio.meta.avisos.filter(a => a.tipo === 'metodo' && /tempo real/.test(a.texto)).map(a => a.texto);
+  f.innerHTML = '';
+  f.appendChild(criar('b', null, `Rio Uruguai (${rio.meta.fonte_curta}), última leitura:`));
+  f.append(` nível ${P.valor(u.nivel_ultimo_cm, fmtInt)} cm em ${dataDados(dh)} ${dh.slice(11, 16)} · vazão ${P.valor(u.vazao_ultima_m3s, fmtInt)} m³/s `);
+  f.appendChild(criar('span', 'rotulo-provisorio', ROTULO_PROVISORIO));
+  if(metodo.length) f.append(` · ${metodo.join(' · ')}`);
+}
+
+async function iniciar(){
+  let textos = null;
+  try{
+    const r = await fetch('config/textos_inicio.json');
+    if(!r.ok) throw new Error(`HTTP ${r.status}`);
+    textos = await r.json();
+  }catch(e){ console.error(`textos da página inicial: ${e.message}`); }
+  const resumo = await P.carregar(IDS.resumo, 'cartoes-dimensoes');
+  const rio = await P.carregar(IDS.rio, 'faixa-rio');
+  P.iniciarFiltros({});
+  if(textos){
+    document.querySelectorAll('[data-texto]').forEach(e => { e.textContent = textos[e.dataset.texto] || ''; });
+    document.querySelectorAll('[data-grupo]').forEach(e => { e.textContent = textos.grupos[e.dataset.grupo] || ''; });
+  }
+  P.montarCabecalho();
+  faixaRio(rio);
+
+  const linhas = resumo ? resumo.dados : [];
+  const por = id => linhas.filter(r => r.dimensao === id).sort((a, b) => a.ordem - b.ordem);
+  const cont = resumo ? resumo.meta.contagens : {};
+  if(textos){
+    const dim = document.getElementById('cartoes-dimensoes');
+    textos.dimensoes.forEach(d => dim.appendChild(cartao(d, por(d.id))));
+    const cru = document.getElementById('cartoes-cruzamentos');
+    textos.cruzamentos.forEach(d => {
+      let extra = null;
+      if(d.id === 'mapa' && cont.grupos_camadas){ extra = criar('p', 'cartao-inicio-contagem', `${cont.grupos_camadas} grupos de camadas`); }
+      cru.appendChild(cartao(d, por(d.id), extra));
+    });
+    // dados: catálogo, como ler e as contagens (do gerador)
+    const cd = document.getElementById('cartao-dados');
+    cd.appendChild(criar('p', 'cartao-inicio-linha', textos.dados.linha));
+    const partes = [];
+    if(cont.telas) partes.push(`${cont.telas} telas`);
+    if(cont.conjuntos_dados) partes.push(`${cont.conjuntos_dados} conjuntos de dados`);
+    if(cont.fontes) partes.push(`${cont.fontes} fontes`);
+    if(cont.grupos_camadas) partes.push(`${cont.grupos_camadas} grupos de camadas no mapa`);
+    if(partes.length) cd.appendChild(criar('p', 'cartao-inicio-contagem', partes.join(' · ')));
+    const ld = criar('p', 'cartao-inicio-pe');
+    [textos.dados.catalogo, textos.dados.como_ler].forEach((x, i) => { if(i) ld.append(' · '); const a = criar('a', null, `${x.nome} →`); a.href = x.href; ld.appendChild(a); });
+    cd.appendChild(ld);
+    // o projeto: só links ao site do ClimaPampa (nova aba), sem copiar conteúdo
+    const cp = document.getElementById('cartao-projeto');
+    cp.appendChild(criar('p', 'cartao-inicio-linha', textos.projeto.linha));
+    const lp = criar('p', 'cartao-inicio-pe');
+    textos.projeto.links.forEach((x, i) => { if(i) lp.append(' · '); const a = criar('a', null, `${x.nome} ↗`); a.href = x.href; a.target = '_blank'; a.rel = 'noopener'; lp.appendChild(a); });
+    cp.appendChild(lp);
+  }
+  P.montarRodape();
+  document.documentElement.dataset.pronto = '1';
+}
+iniciar();
+</script>
 </body>
 </html>

@@ -1,0 +1,114 @@
+{
+  "produto": "inicio_resumo.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "produtos publicados em data/paineis/ (ver a coluna produto de cada linha)",
+  "transformacao_aplicada": "indicadores do topo das telas copiados dos produtos publicados; contagens de mapa.html, das telas, dos geradores e do catálogo",
+  "entradas": [
+    {
+      "arquivo": "data/paineis/cadunico_mds_serie_anual.json",
+      "sha256": "dbffbd9c95d7b366d418a4592d15b500712ca933bb25ac5024bd9b05f1058282",
+      "bytes": 3313
+    },
+    {
+      "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json",
+      "sha256": "6a82d73765b8aeb95862eb314dc28c0737949a8c9c5fd9df14680dfa1d9be325",
+      "bytes": 8110
+    },
+    {
+      "arquivo": "data/paineis/clima_inmet-a809_serie_anual.json",
+      "sha256": "d045c0efff5237f93cf392c91d483d885d081a62c81154a527493cb896fbc5d4",
+      "bytes": 4508
+    },
+    {
+      "arquivo": "data/paineis/clima_precipitacao-merge_serie_anual.json",
+      "sha256": "2f4c2e33d82ce81f70dbfe5b14172a0e39c93ce93c7fe2df960674e690aab5d6",
+      "bytes": 5109
+    },
+    {
+      "arquivo": "data/paineis/desastres_s2id_serie_anual.json",
+      "sha256": "8c6048316a2092f3f8b17740dbc8fab7ec96b88f67ed979885ede6f603392602",
+      "bytes": 7448
+    },
+    {
+      "arquivo": "data/paineis/energia_aneel_serie_anual.json",
+      "sha256": "bcb5cc156742a2d76d0af7e79e0c5080f69f37951754c9a60ed97e67c2cabd63",
+      "bytes": 5334
+    },
+    {
+      "arquivo": "data/paineis/inundacao_sgb_cotas.json",
+      "sha256": "8a2deda4b9223369a8009baf7f4add04e73aedf473aa427d993f4568b0542239",
+      "bytes": 4804
+    },
+    {
+      "arquivo": "data/paineis/pib_ibge_serie_anual.json",
+      "sha256": "4fb788533a88552fae892e5866444e7a64a8be9de3844c12ad9e7ce2c8e1f7be",
+      "bytes": 7092
+    },
+    {
+      "arquivo": "data/paineis/pocos_siagas_atual_aquifero.json",
+      "sha256": "408f145a88633dc3bdbfb43b9a88e42f60f115e73a3f3c045070034f152545ad",
+      "bytes": 1202
+    },
+    {
+      "arquivo": "data/paineis/populacao_ibge_serie_anual.json",
+      "sha256": "af62fe4af4dac121cd50f09645a2d7cf755117f54d074bb9269c41d2a57ea92e",
+      "bytes": 7869
+    },
+    {
+      "arquivo": "data/paineis/queimadas_inpe_serie_anual.json",
+      "sha256": "6596995e6cb913467a9268827ed4c04579d792337869f824e499ba9760e98999",
+      "bytes": 1722
+    },
+    {
+      "arquivo": "data/paineis/saude_sih_serie_anual.json",
+      "sha256": "399c73c2d7e0cd00a0b373062aa7c2e8ac86a224924cdaaed1648da1088bf3f6",
+      "bytes": 2914
+    },
+    {
+      "arquivo": "data/paineis/saude_sim_serie_anual.json",
+      "sha256": "3e0bb6a5606b8983b4e823fdd6cee6614e70c37f842e089ddf69ef95dd94b229",
+      "bytes": 2777
+    },
+    {
+      "arquivo": "data/paineis/saude_sinan_serie_anual.json",
+      "sha256": "494784dd22da93cc3b10b5a87f90a367596c049bf0fc2d91bbb9474241ba09f8",
+      "bytes": 3860
+    },
+    {
+      "arquivo": "data/paineis/uso-solo_mapbiomas_serie_classes.json",
+      "sha256": "c41fb39dde9f02c82a61fd1d9d75cca6d58e29ddb8ead466ec62e37d147ca202",
+      "bytes": 7526
+    },
+    {
+      "arquivo": "mapa.html",
+      "sha256": "68fc73e7fb4abb5253bfb24a399f1b71034ab51e9d3cc891b10770953dbad780",
+      "bytes": 18173
+    }
+  ],
+  "script": "scripts/paineis/dados_inicio.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "CA01",
+    "CA04",
+    "CA06",
+    "CA08",
+    "EV01",
+    "EV05",
+    "EV08",
+    "IF01",
+    "IN01",
+    "IN03",
+    "PD01",
+    "RD01",
+    "SA01",
+    "SA03",
+    "SA04",
+    "SA05",
+    "TB03",
+    "TB14"
+  ],
+  "autorizacao": "livre",
+  "selo": "em_confirmacao",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T17:58:32Z"
+}

@@ -5,5 +5,5 @@
   "transformacao_aplicada": "lista dos produtos com id, id substituído, título, ativos, selo, autorização, datas, telas, tamanho e sha256; JSON órfão fica fora",
   "script": "scripts/paineis/manifesto.py",
   "codigo_ibge": "4322400",
-  "data_processamento": "2026-11-03T16:33:06Z"
+  "data_processamento": "2026-11-03T17:58:32Z"
 }
