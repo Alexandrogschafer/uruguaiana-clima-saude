@@ -49,7 +49,8 @@ ESPECIAIS = {"manifesto.json", "paineis_espera.json"}
 DIMENSOES = {"clima": "Clima", "saude": "Saúde", "populacao": "População", "territorio": "Território",
              "economia": "Economia", "riscos": "Riscos", "cheia-saude": "Cheia e saúde", "mapa": "Mapa"}
 # licença que não identifica os termos de uso: a tela mostra "ver fonte"
-RE_SEM_LICENCA = re.compile(r"^\s*$|^n/?a$|não informad|sem licença explícita|licença não informada", re.IGNORECASE)
+# rodada 121: "documento público ..." descreve o acesso, não é licença (ex.: documentos_sgb_cheias_uruguai)
+RE_SEM_LICENCA = re.compile(r"^\s*$|^n/?a$|não informad|sem licença explícita|licença não informada|^documento público", re.IGNORECASE)
 
 
 def ler_csv(arq: Path) -> list[dict]:

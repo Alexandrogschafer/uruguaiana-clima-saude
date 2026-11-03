@@ -6,8 +6,8 @@
   "entradas": [
     {
       "arquivo": "data/catalogo_fontes.csv",
-      "sha256": "465761e9f13ec9546567142a8ba869d74655a58d97ee21d992b3e96d6aba990f",
-      "bytes": 122022
+      "sha256": "1c7bb071fe785cf8a90f27d6f0f4f976d87d5624f52b7cbf3d31f91ce02e42aa",
+      "bytes": 122888
     },
     {
       "arquivo": "config/catalogo_ligacao.csv",
@@ -466,5 +466,5 @@
   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T19:40:30Z"
+  "data_processamento": "2026-11-03T19:45:29Z"
 }

@@ -50,9 +50,9 @@
  "unidade_medida": "não se aplica",
  "periodo": {
   "inicio": "2026-07-27",
-  "fim": "2026-11-02"
+  "fim": "2026-11-03"
  },
- "dados_ate": "2026-11-02",
+ "dados_ate": "2026-11-03",
  "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
  "selo": "em_confirmacao",
  "avisos": [
@@ -69,7 +69,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T19:40:30Z",
+ "gerado_em": "2026-11-03T19:45:29Z",
  "script": "scripts/paineis/dados_catalogo.py",
  "colunas": [
   {
@@ -144,7 +144,7 @@
   "agropecuaria_ibge_serie_anual": {
    "titulo": "Área colhida (arroz, soja) e efetivo de rebanho (bovino, ovino)",
    "licenca": "dados abertos",
-   "data_coleta": "2026-08-11",
+   "data_coleta": "2026-11-03",
    "metodo": "área colhida (variável 216) de arroz, soja e total; efetivo bovino e ovino",
    "fontes_catalogo": [
     "agropecuaria_pam_ppm"
@@ -224,7 +224,7 @@
   "clima_precipitacao-merge_serie_anual": {
    "titulo": "Precipitação total por ano (MERGE) e comparação com a A809",
    "licenca": "dados abertos; domínio público",
-   "data_coleta": "2026-11-01",
+   "data_coleta": "2026-11-03",
    "metodo": "soma dos meses do MERGE por ano; média de referência sem o último ano; total anual da A809 e percentual de horas válidas sobre as horas do calendário, em UTC",
    "fontes_catalogo": [
     "precipitacao_merge-inpe",
@@ -235,7 +235,7 @@
   "clima_precipitacao-merge_serie_mensal": {
    "titulo": "Precipitação mensal (MERGE)",
    "licenca": "dados abertos; domínio público",
-   "data_coleta": "2026-11-01",
+   "data_coleta": "2026-11-03",
    "metodo": "soma dos meses do MERGE por ano; média de referência sem o último ano; total anual da A809 e percentual de horas válidas sobre as horas do calendário, em UTC",
    "fontes_catalogo": [
     "precipitacao_merge-inpe",
@@ -246,7 +246,7 @@
   "clima_tabela_serie_anual": {
    "titulo": "Dados climáticos anuais em tabela",
    "licenca": "dados abertos",
-   "data_coleta": "2026-11-01",
+   "data_coleta": "2026-11-03",
    "metodo": "junção por ano dos produtos anual da estação, precipitação do MERGE e focos de queimada; nota = tipo do aviso do ano (parcial ou lacuna)",
    "fontes_catalogo": [
     "clima_inmet",
@@ -258,7 +258,7 @@
   "demografia_ibge_censos_piramides": {
    "titulo": "Pirâmides etárias dos censos",
    "licenca": "dados abertos",
-   "data_coleta": "2026-08-10",
+   "data_coleta": "2026-11-03",
    "metodo": "homens e mulheres por grupo de idade (situação Total na tabela 200)",
    "fontes_catalogo": [
     "demografia_censitaria"
@@ -268,7 +268,7 @@
   "demografia_ibge_serie_indicadores": {
    "titulo": "Indicadores demográficos dos censos",
    "licenca": "derivado de dados abertos",
-   "data_coleta": "2026-08-10",
+   "data_coleta": "2026-11-03",
    "metodo": "indicadores como gravados por demografia_indicadores.py, colunas renomeadas",
    "fontes_catalogo": [
     "demografia_indicadores_derivados"
@@ -288,7 +288,7 @@
   "despesas_siconfi_serie_anual": {
    "titulo": "Despesas em Saúde e Assistência Social por habitante",
    "licenca": "dados abertos",
-   "data_coleta": "2026-08-11",
+   "data_coleta": "2026-11-03",
    "metodo": "valor da função / população do SICONFI; % do PIB com o PIB a preços correntes do mesmo ano",
    "fontes_catalogo": [
     "pib_municipal_ibge",
@@ -299,7 +299,7 @@
   "emprego_caged_serie_mensal": {
    "titulo": "Admissões, desligamentos e saldo acumulado (Novo CAGED)",
    "licenca": "dados abertos (microdados administrativos)",
-   "data_coleta": "2026-08-11",
+   "data_coleta": "2026-11-03",
    "metodo": "soma das seções CNAE por competência; saldo acumulado desde o primeiro mês",
    "fontes_catalogo": [
     "emprego_formal_rais_caged"
@@ -309,7 +309,7 @@
   "emprego_rais_atual_secao": {
    "titulo": "Vínculos formais ativos por seção CNAE (RAIS)",
    "licenca": "dados abertos (microdados administrativos)",
-   "data_coleta": "2026-08-11",
+   "data_coleta": "2026-11-03",
    "metodo": "vínculos por seção em ordem decrescente; gráfico com as 8 maiores e o resto somado",
    "fontes_catalogo": [
     "emprego_formal_rais_caged"
@@ -319,7 +319,7 @@
   "energia_aneel_serie_anual": {
    "titulo": "DEC e FEC anuais do município",
    "licenca": "dados abertos",
-   "data_coleta": "2026-08-11",
+   "data_coleta": "2026-11-03",
    "metodo": "por mês, média de DEC e FEC ponderada por NumCon dos conjuntos; soma dos meses no ano",
    "fontes_catalogo": [
     "continuidade_energia_aneel"
@@ -349,7 +349,7 @@
   },
   "inundacao_sgb_cotas": {
    "titulo": "Manchas de inundação por cota e ESF/UBS dentro delas",
-   "licenca": "dados abertos; documento público do SGB",
+   "licenca": "dados abertos; ver fonte",
    "data_coleta": "2026-10-08",
    "metodo": "união acumulada das manchas por cota em EPSG:31981; área; teste ponto-dentro das 21 ESF/UBS; mini-mapas em matplotlib",
    "fontes_catalogo": [
@@ -405,7 +405,7 @@
   "populacao_ibge_serie_anual": {
    "titulo": "População total: censos e estimativas anuais",
    "licenca": "dados abertos; derivado de dados abertos",
-   "data_coleta": "2026-08-10",
+   "data_coleta": "2026-11-03",
    "metodo": "série como gravada por demografia_ibge_sidra.py; textos e indicadores calculados dos dados",
    "fontes_catalogo": [
     "demografia_censitaria",
@@ -426,7 +426,7 @@
   "rio_ana-77150000_maximas-anuais": {
    "titulo": "Máxima anual da régua do rio",
    "licenca": "dados abertos",
-   "data_coleta": "2026-11-02",
+   "data_coleta": "2026-11-03",
    "metodo": "maior leitura das 7h ou 17h por ano civil; ano sem leitura = maior média diária; ano do evento em curso fora",
    "fontes_catalogo": [
     "nivel_rio_ana"
@@ -436,7 +436,7 @@
   "rio_ana-77150000_telemetria-recente_diario": {
    "titulo": "Nível e vazão do rio: telemetria recente (provisória)",
    "licenca": "dados abertos",
-   "data_coleta": "2026-11-02",
+   "data_coleta": "2026-11-03",
    "metodo": "máxima e última leitura de cada dia da telemetria de 15 min, do início da janela da série diária (no máximo 450 dias) até a última leitura; sem a trava do evento (produto provisório)",
    "fontes_catalogo": [
     "nivel_rio_ana",
@@ -447,7 +447,7 @@
   "rio_ana-77150000_ultima-leitura": {
    "titulo": "Última leitura do rio",
    "licenca": "dados abertos",
-   "data_coleta": "2026-11-02",
+   "data_coleta": "2026-11-03",
    "metodo": "última leitura da telemetria; com evento em curso, só o aviso",
    "fontes_catalogo": [
     "nivel_rio_ana",
@@ -458,7 +458,7 @@
   "rio_ana-77150000_ultimos-365-dias_diario": {
    "titulo": "Nível e vazão do rio: média diária dos últimos 365 dias",
    "licenca": "dados abertos",
-   "data_coleta": "2026-11-02",
+   "data_coleta": "2026-11-03",
    "metodo": "média diária das leituras de 15 min, últimos 365 dias; com evento em curso, até o fim do mês anterior ao mês do evento (MES_DO_EVENTO_COM_CORTE) ou até o dia anterior ao evento",
    "fontes_catalogo": [
     "nivel_rio_ana",
@@ -479,7 +479,7 @@
   "saude_sih_serie_anual": {
    "titulo": "Internações e internações respiratórias por ano",
    "licenca": "dados abertos (microdados individuais)",
-   "data_coleta": "2026-08-07",
+   "data_coleta": "2026-11-03",
    "metodo": "soma dos 12 meses por ano; no último ano, soma dos meses completos (mês com total menor que metade da média dos meses anteriores do ano fica de fora)",
    "fontes_catalogo": [
     "saude_internacoes_sih"
@@ -489,7 +489,7 @@
   "saude_sim-afogamento-enchente_serie_quinquenal": {
    "titulo": "Óbitos por afogamento ou relacionados a enchente, por quinquênio",
    "licenca": "dados abertos (microdados individuais)",
-   "data_coleta": "2026-08-07",
+   "data_coleta": "2026-11-03",
    "metodo": "soma dos óbitos por afogamento ou enchente em blocos de 5 anos; a série anual não é publicada; supressão de comum.py (limiar 5) aplicada aos quinquênios",
    "fontes_catalogo": [
     "saude_mortalidade_sim"
@@ -499,7 +499,7 @@
   "saude_sim_serie_anual": {
    "titulo": "Óbitos por ano: total e por causas respiratórias",
    "licenca": "dados abertos (microdados individuais)",
-   "data_coleta": "2026-08-07",
+   "data_coleta": "2026-11-03",
    "metodo": "seleção das colunas de óbitos totais e respiratórios (CID-10 J00-J99) por ano; sem a coluna de afogamento ou enchente, que vai em produto quinquenal",
    "fontes_catalogo": [
     "saude_mortalidade_sim"
@@ -509,7 +509,7 @@
   "saude_sinan_serie_anual": {
    "titulo": "Notificações de arboviroses por ano",
    "licenca": "dados abertos (microdados individuais)",
-   "data_coleta": "2026-08-07",
+   "data_coleta": "2026-11-03",
    "metodo": "soma dos meses por ano e agravo; ano sem nenhum mês com valor = null; ano em curso (arquivo preliminar) somado só nos meses com valor e marcado como preliminar",
    "fontes_catalogo": [
     "saude_arboviroses_sinan"
@@ -716,7 +716,7 @@
    "licenca": "dados abertos (microdados individuais)",
    "resolucao_espacial": "municipal (não espacializado por bairro/setor)",
    "resolucao_temporal": "anual",
-   "data_acesso": "2026-08-07",
+   "data_acesso": "2026-11-03",
    "selo": "conferido",
    "dimensoes": "Saúde",
    "telas": "saude",
@@ -731,7 +731,7 @@
    "licenca": "dados abertos (microdados individuais)",
    "resolucao_espacial": "municipal (não espacializado)",
    "resolucao_temporal": "mensal",
-   "data_acesso": "2026-08-07",
+   "data_acesso": "2026-11-03",
    "selo": "conferido",
    "dimensoes": "Saúde",
    "telas": "saude",
@@ -746,7 +746,7 @@
    "licenca": "dados abertos (microdados individuais)",
    "resolucao_espacial": "municipal (não espacializado)",
    "resolucao_temporal": "mensal",
-   "data_acesso": "2026-08-07",
+   "data_acesso": "2026-11-03",
    "selo": "conferido",
    "dimensoes": "Saúde",
    "telas": "saude",
@@ -761,7 +761,7 @@
    "licenca": "domínio público",
    "resolucao_espacial": "~0,1° (~10 km, MERGE) — CHIRPS teria ~0,05° (~5,5 km) mas não foi usado (bloqueio persistente)",
    "resolucao_temporal": "mensal",
-   "data_acesso": "2026-08-09",
+   "data_acesso": "2026-11-03",
    "selo": "conferido",
    "dimensoes": "Clima",
    "telas": "clima",
@@ -791,7 +791,7 @@
    "licenca": "dados abertos",
    "resolucao_espacial": "pontual (estação 77150000, Rio Uruguai, no próprio município)",
    "resolucao_temporal": "~15 minutos (telemetria; baixada de 2024-04-01 a 2024-06-30, de 2024-10-01 a 2026-10-18 e de 2026-10-18 a 2026-11-02, última leitura com valor 2026-11-02 12:30); diária (série histórica, 1940–2026, com valor até 2026-05-31; abril de 2026 sem registro na fonte)",
-   "data_acesso": "2026-11-02",
+   "data_acesso": "2026-11-03",
    "selo": "conferido",
    "dimensoes": "Cheia e saúde · Clima",
    "telas": "cheia-saude clima",
@@ -926,7 +926,7 @@
    "licenca": "dados abertos",
    "resolucao_espacial": "municipal (agregado; não por setor censitário)",
    "resolucao_temporal": "pontual nos anos de Censo (1970/1980/1991/2000/2010/2022) + anual entre censos (estimativas, 2001-2025 com lacunas em 2007/2010/2022/2023)",
-   "data_acesso": "2026-08-10",
+   "data_acesso": "2026-11-03",
    "selo": "conferido",
    "dimensoes": "População",
    "telas": "populacao",
@@ -940,8 +940,8 @@
    "tipo": "tabular",
    "licenca": "derivado de dados abertos",
    "resolucao_espacial": "municipal",
-   "resolucao_temporal": "pontual nos 6 censos (série de população: também anual 2001-2025)",
-   "data_acesso": "2026-08-10",
+   "resolucao_temporal": "pontual nos 6 censos (série de população: também anual 2001-2026)",
+   "data_acesso": "2026-11-03",
    "selo": "conferido",
    "dimensoes": "População",
    "telas": "populacao",
@@ -985,8 +985,8 @@
    "tipo": "tabular",
    "licenca": "dados abertos",
    "resolucao_espacial": "municipal (estimativa do IBGE — sem versão por setor censitário nem geolocalizada)",
-   "resolucao_temporal": "anual, 1974-2024 (série completa, sem lacunas)",
-   "data_acesso": "2026-08-11",
+   "resolucao_temporal": "anual, 1974-2025 (série completa, sem lacunas)",
+   "data_acesso": "2026-11-03",
    "selo": "conferido",
    "dimensoes": "Economia",
    "telas": "economia",
@@ -1075,8 +1075,8 @@
    "tipo": "tabular",
    "licenca": "dados abertos (microdados administrativos)",
    "resolucao_espacial": "municipal único (sem geolocalização de estabelecimento na versão pública)",
-   "resolucao_temporal": "CAGED: mensal, 2020-01 a 2026-06 (Novo CAGED); RAIS: só o ano mais recente (2025, estoque em 31/12)",
-   "data_acesso": "2026-08-11",
+   "resolucao_temporal": "CAGED: mensal, 2020-01 a 2026-08 (Novo CAGED); RAIS: só o ano mais recente (2025, estoque em 31/12)",
+   "data_acesso": "2026-11-03",
    "selo": "conferido",
    "dimensoes": "Economia",
    "telas": "economia",
@@ -1106,7 +1106,7 @@
    "licenca": "dados abertos",
    "resolucao_espacial": "conjunto de unidades consumidoras (unidade administrativa da distribuidora, mais fino que município — sem geometria publicada pela fonte)",
    "resolucao_temporal": "mensal, 2000-2026",
-   "data_acesso": "2026-08-11",
+   "data_acesso": "2026-11-03",
    "selo": "conferido",
    "dimensoes": "Riscos",
    "telas": "riscos",
@@ -1150,8 +1150,8 @@
    "tipo": "tabular",
    "licenca": "dados abertos",
    "resolucao_espacial": "municipal ÚNICO — RREO não abre despesa por bairro/setor; indicador de contexto, sem camada espacial (mesmo padrão de PIB/PAM-PPM/IDHM/RAIS-CAGED)",
-   "resolucao_temporal": "bimestral acumulado, série anual 2015-2026 (2026 até bimestre 3/junho, publicação mais recente)",
-   "data_acesso": "2026-08-11",
+   "resolucao_temporal": "bimestral acumulado, série anual 2015-2026 (2026 até bimestre 4/agosto, publicação mais recente)",
+   "data_acesso": "2026-11-03",
    "selo": "conferido",
    "dimensoes": "Economia",
    "telas": "economia",
@@ -1253,7 +1253,7 @@
    "tema": "documentos_sgb_cheias_uruguai",
    "fonte": "SGB — repositório institucional: estudo técnico do sistema de alerta da bacia do rio Uruguai (2017) e tempo de retorno de cotas e vazões de grandes cheias (2023)",
    "tipo": "documento",
-   "licenca": "documento público do SGB",
+   "licenca": "ver fonte",
    "resolucao_espacial": "estação e trecho do rio",
    "resolucao_temporal": "estático",
    "data_acesso": "2026-10-08",
@@ -1316,7 +1316,7 @@
    "licenca": "dados abertos",
    "resolucao_espacial": "média de área com margem de 18 km em torno do município; CRS não se aplica",
    "resolucao_temporal": "mensal e anual",
-   "data_acesso": "2026-11-01",
+   "data_acesso": "2026-11-03",
    "selo": "conferido",
    "dimensoes": "Clima",
    "telas": "clima",
