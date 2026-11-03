@@ -43,9 +43,9 @@ const trNaFrase = (r, lim) => {
   const c = r.tr_anos_camada, d = r.tr_anos_documento;
   return d != null && c !== d && Math.abs(c - d) < lim ? `cerca de ${fmtInt(Math.round((c + d) / 2))} anos` : `${dec1(c)} anos`;
 };
-// telemetria do rio na tela de clima: últimos 365 dias corridos até o último dia; provisório = depois de consolidado_ate
+// telemetria do rio na tela de clima: últimos 365 dias corridos até o último dia; provisório = depois de fim_serie_ana
 const rioJanela = (pr) => { const fim = diaNum(pr.meta.dados_ate); return pr.dados.filter((r) => diaNum(r.dia) > fim - 365); };
-const rioProvisorio = (pr, r) => pr.meta.provisorio === true && (!pr.meta.consolidado_ate || r.dia > pr.meta.consolidado_ate);
+const rioProvisorio = (pr, r) => pr.meta.provisorio === true && (!pr.meta.fim_serie_ana || r.dia > pr.meta.fim_serie_ana);
 const dataBR = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ""); return m ? `${m[3]}/${m[2]}/${m[1]}` : iso || ""; };
 
 // ------------------------------------------------------------------ telas
@@ -296,7 +296,8 @@ const TELAS = {
   "cheia-saude": {
     pagina: "dashboards/cheia-saude.html",
     produtos: { maximas: "rio_ana-77150000_maximas-anuais", diario: "rio_ana-77150000_ultimos-365-dias_diario", cotas: "inundacao_sgb_cotas",
-                unidades: "inundacao_sgb_unidades-cotas", setor: "setorizacao-risco_sgb_2014_setor", bater: "areas-de-risco_ibge_2018_bater" },
+                unidades: "inundacao_sgb_unidades-cotas", setor: "setorizacao-risco_sgb_2014_setor", bater: "areas-de-risco_ibge_2018_bater",
+                rio: "rio_ana-77150000_telemetria-recente_diario" },
     recolhiveis: ["det-filtros", "det-unidades", "det-delimitacoes", "det-espera"],
     kpis: () => [],
     graficos: (p) => {
@@ -666,7 +667,7 @@ async function testesExtrasClima(browser, base, prod) {
     if (r.amostra) falhas.push("texto de amostra na página");
     if (r.resumo !== "Ver nível e vazão diários do rio (telemetria, provisório)") falhas.push(`resumo da tabela: ${r.resumo}`);
     if (r.dias.length !== janelaDias.length || iso(r.dias[0]) !== m.dados_ate) falhas.push(`tabela: ${r.dias.length} linhas, primeira ${r.dias[0]}`);
-    if (r.situacao.filter((x) => x === "provisório").length !== nProv) falhas.push("coluna Situação difere de consolidado_ate");
+    if (r.situacao.filter((x) => x === "provisório").length !== nProv) falhas.push("coluna Situação difere de fim_serie_ana");
     if (m.dados_ate >= "2026-11-01" && !(r.dias.some((x) => iso(x).startsWith("2026-10")) && r.dias.some((x) => iso(x).startsWith("2026-11")))) falhas.push("tabela sem outubro e novembro de 2026");
     res.push({ nome: `clima: cartões do rio na telemetria provisória, última leitura ${dh(m.ultima_leitura)}, máxima do período, rótulo e dica "provisório" (${largura} px)`, ok: !falhas.length && erros.length === 0, detalhe: falhas.concat(erros).join(" | ") });
     await ctx.close();
@@ -803,6 +804,16 @@ async function testeSuprimidoSetor(browser, base, prod) {
 async function testesExtrasCheia(browser, base, prod) {
   const res = [];
   const pag = base + "dashboards/cheia-saude.html";
+  {
+    // rodada 121: "rio agora" lê a telemetria recente (provisória), nunca a última leitura consolidada
+    const { ctx, page, erros } = await abrir(browser, pag, {});
+    const f = await page.evaluate(() => ({ texto: document.getElementById("faixa-rio").innerText.replace(/\s+/g, " ").trim(), prov: !!document.querySelector("#faixa-rio .rotulo-provisorio") }));
+    await ctx.close();
+    const u = prod.rio.dados[prod.rio.dados.length - 1], dh = prod.rio.meta.ultima_leitura;
+    const esp = `nível ${fmtInt(u.nivel_ultimo_cm)} cm em ${dataBR(dh)} ${dh.slice(11, 16)} · vazão ${fmtInt(u.vazao_ultima_m3s)} m³/s`;
+    const ok = f.texto.includes(esp) && f.prov && /não é dado em tempo real/.test(f.texto) && !/pico|duração|posição|retorno|recorde|em preparação/i.test(f.texto);
+    res.push({ nome: "cheia e saúde: \"rio agora\" com a última leitura da telemetria recente, rótulo provisório; sem pico nem tempo de retorno", ok: ok && erros.length === 0, detalhe: f.texto });
+  }
   const espera = JSON.parse(fs.readFileSync(path.join(RAIZ, "data", "paineis", "paineis_espera.json"), "utf8"));
   for (const largura of [1280, 390]) {
     const { ctx, page, erros } = await abrir(browser, `${pag}?cota=952`, { largura });

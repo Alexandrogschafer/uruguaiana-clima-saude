@@ -161,17 +161,17 @@
     },
     {
       "arquivo": "data/paineis/rio_ana-77150000_telemetria-recente_diario.json",
-      "sha256": "37ee8dfb519d5a5ce59fb9a49ab6d3287de62b9e261613a7f5b466d7af90ad08",
-      "bytes": 79346
+      "sha256": "54497f7732f0ca3bb65d16a1165afb2772d70ba2215d9a6a732d668d4d41c1d8",
+      "bytes": 79568
     },
     {
       "arquivo": "data/paineis/rio_ana-77150000_ultima-leitura.json",
-      "sha256": "1864f203a304a39c7bf0615751c89e36062eaef094ce273fa12f147bfac7aa8c",
-      "bytes": 1577
+      "sha256": "aaaf4bc8869c1a1e1085dc0fc37e59690efb09d9a5e8d05f28d8a9f341e3b71e",
+      "bytes": 1546
     },
     {
       "arquivo": "data/paineis/rio_ana-77150000_ultimos-365-dias_diario.json",
-      "sha256": "b42a7a8903f12eca5649130c2d10231ad97e23f9247df5ad3f3ed0c1f0b2cbe0",
+      "sha256": "7cffe0679ebe7730ef2f8531ca058922a2110d4d2f9e6b33acdf7b99c5227f01",
       "bytes": 42141
     },
     {
@@ -361,18 +361,18 @@
     },
     {
       "arquivo": "data/paineis/rio_ana-77150000_telemetria-recente_diario.json.json",
-      "sha256": "08c353995f07d747b8a7378f51ea3d549ca245258cbf4aee98bd3131834b64bd",
-      "bytes": 2545
+      "sha256": "2592ac0e5165fe06b050295227e3605c5d8f2d46b3f0a5b5b5de98004c64bd61",
+      "bytes": 2759
     },
     {
       "arquivo": "data/paineis/rio_ana-77150000_ultima-leitura.json.json",
-      "sha256": "e14f9f3c5e0ecadf8d9bac20785ecb2a33df28b89ebdd35ac6a0266cbf992bc7",
-      "bytes": 2133
+      "sha256": "bce504c2a4f001837416ac9cf34a017d1aff9ef94e661b2c156f25840366dfee",
+      "bytes": 2347
     },
     {
       "arquivo": "data/paineis/rio_ana-77150000_ultimos-365-dias_diario.json.json",
-      "sha256": "7db63c4317e0ed0968e2b568d2326b028ff3a668d307fbd03187a71e0e6ee8ed",
-      "bytes": 2293
+      "sha256": "49346e0c2a3e1807584cb399ce7012c2b5a3cc7b0ea68686563fa4abb4633ed1",
+      "bytes": 2507
     },
     {
       "arquivo": "data/paineis/risco-geologico_cprm_2021_classe.json.json",
@@ -466,5 +466,5 @@
   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T18:28:17Z"
+  "data_processamento": "2026-11-03T19:21:46Z"
 }

@@ -2,7 +2,7 @@
   "produto": "rio_ana-77150000_ultima-leitura.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/rio_ana-77150000_ultima-leitura.json",
-  "sha256_fonte": "1864f203a304a39c7bf0615751c89e36062eaef094ce273fa12f147bfac7aa8c",
+  "sha256_fonte": "aaaf4bc8869c1a1e1085dc0fc37e59690efb09d9a5e8d05f28d8a9f341e3b71e",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "estado",
@@ -16,5 +16,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-02T16:43:48Z"
+  "data_processamento": "2026-11-03T19:18:40Z"
 }

@@ -28,6 +28,9 @@
   </details>
   <div class="chips-filtro" id="chips-filtro"></div>
 
+  <!-- rio agora (rodada 121): última leitura da telemetria recente, provisória; as séries abaixo seguem a trava do evento -->
+  <div class="faixa-rio" id="faixa-rio" role="status"></div>
+
   <!-- (1) régua do rio -->
   <div class="section-head"><h2>Régua do rio</h2><div class="section-rule"></div></div>
   <div class="card">
@@ -129,8 +132,9 @@
 const P = window.Paineis;
 const IDS = {maximas: 'rio_ana-77150000_maximas-anuais', diario: 'rio_ana-77150000_ultimos-365-dias_diario',
              cotas: 'inundacao_sgb_cotas', unidades: 'inundacao_sgb_unidades-cotas',
-             setor: 'setorizacao-risco_sgb_2014_setor', bater: 'areas-de-risco_ibge_2018_bater'};
-const BLOCOS = {maximas: 'chart-maximas', diario: 'chart-nivel', cotas: 'tabelaCotas', unidades: 'tabelaUnidades', setor: 'tabelaSetores', bater: 'tabelaBater'};
+             setor: 'setorizacao-risco_sgb_2014_setor', bater: 'areas-de-risco_ibge_2018_bater',
+             rio: 'rio_ana-77150000_telemetria-recente_diario'};
+const BLOCOS = {maximas: 'chart-maximas', diario: 'chart-nivel', cotas: 'tabelaCotas', unidades: 'tabelaUnidades', setor: 'tabelaSetores', bater: 'tabelaBater', rio: 'faixa-rio'};
 // ids em espera por caixa (o nome e o motivo vêm de paineis_espera.json)
 const ESPERA_MORADORES = ['IN09', 'IN10', 'IN11'];
 const ESPERA_ACESSO = ['SA09', 'SA11', 'SA12', 'SA13', 'SA15'];
@@ -148,6 +152,7 @@ const diaTxt = n => { const d = new Date(n * DIA); return `${String(d.getUTCDate
 async function iniciar(){
   const c = {};
   for(const [k, id] of Object.entries(IDS)) c[k] = await P.carregar(id, BLOCOS[k]);
+  P.faixaRioAgora('faixa-rio', c.rio);
   let espera = null;
   try{ const r = await fetch(P.urlProduto('paineis_espera')); if(r.ok) espera = await r.json(); else throw new Error(`HTTP ${r.status}`); }
   catch(e){ P.erroBloco(document.getElementById('lista-espera'), e.message); }

@@ -11,10 +11,10 @@
  "unidade_espacial": "estação fluviométrica",
  "unidade_medida": "cm; m³/s",
  "periodo": {
-  "inicio": "2026-11-02",
-  "fim": "2026-11-02"
+  "inicio": "2026-11-03",
+  "fim": "2026-11-03"
  },
- "dados_ate": "2026-11-02",
+ "dados_ate": "2026-11-03",
  "autorizacao": "livre",
  "selo": "conferido",
  "avisos": [
@@ -24,7 +24,7 @@
   },
   {
    "tipo": "metodo",
-   "texto": "não é dado em tempo real; atualizado em 02/11"
+   "texto": "não é dado em tempo real; atualizado em 03/11"
   }
  ],
  "supressao": {
@@ -35,7 +35,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T16:43:48Z",
+ "gerado_em": "2026-11-03T19:18:40Z",
  "script": "scripts/paineis/dados_rio.py",
  "colunas": [
   {
@@ -60,13 +60,10 @@
   }
  ],
  "fonte_rodape": "Nível e vazão do rio — ANA, estação 77150000 (série histórica diária e telemetria de 15 em 15 minutos)",
- "telas": [
-  "sintese",
-  "cheia-saude"
- ],
+ "telas": [],
  "evento_em_curso": true,
  "limiar_cm": 800.0,
- "atualizado_em": "2026-11-02",
+ "atualizado_em": "2026-11-03",
  "dados": [
   {
    "estado": "evento_em_curso",

@@ -2,7 +2,7 @@
   "produto": "rio_ana-77150000_ultimos-365-dias_diario.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/rio_ana-77150000_ultimos-365-dias_diario.json",
-  "sha256_fonte": "b42a7a8903f12eca5649130c2d10231ad97e23f9247df5ad3f3ed0c1f0b2cbe0",
+  "sha256_fonte": "7cffe0679ebe7730ef2f8531ca058922a2110d4d2f9e6b33acdf7b99c5227f01",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "dia",
@@ -15,5 +15,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T15:40:28Z"
+  "data_processamento": "2026-11-03T19:18:40Z"
 }

@@ -86,7 +86,7 @@
     },
     {
       "arquivo": "data/paineis/catalogo_dados.json",
-      "sha256": "3f090e79309a75f93b3acf2a977c99f30a38d11d111d9d4129fa9084662248a7",
+      "sha256": "7df62de4a2ee8192d09f821e08c2f4eb08e8053069b94fd61ffcb18ed5519e94",
       "bytes": 51060
     }
   ],
@@ -115,5 +115,5 @@
   "autorizacao": "livre",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T18:28:17Z"
+  "data_processamento": "2026-11-03T19:21:46Z"
 }

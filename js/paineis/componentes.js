@@ -86,6 +86,30 @@
     });
   };
 
+  // Faixa "rio agora" (rodada 121): última leitura da telemetria recente (rio_ana-<estação>_telemetria-recente_diario),
+  // com o rótulo "provisório" e o aviso "não é dado em tempo real". Sem pico, duração, posição nem tempo de retorno.
+  // opcoes.link = {texto, href} acrescenta um link no fim (o início leva à cheia e saúde).
+  P.faixaRioAgora = function(host, rio, opcoes){
+    const f = typeof host === 'string' ? document.getElementById(host) : host;
+    if(!f) return;
+    if(!rio || !rio.dados.length){ f.hidden = true; return; }
+    const novo = (tag, cls, txt) => { const e = document.createElement(tag); if(cls) e.className = cls; if(txt !== undefined) e.textContent = txt; return e; };
+    const u = rio.dados[rio.dados.length - 1], dh = rio.meta.ultima_leitura || '';
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(dh), dia = m ? `${m[3]}/${m[2]}/${m[1]}` : dh;
+    const metodo = rio.meta.avisos.filter(a => a.tipo === 'metodo' && /tempo real/.test(a.texto)).map(a => a.texto);
+    const inteiro = v => Math.round(v).toLocaleString('pt-BR');
+    f.innerHTML = '';
+    f.appendChild(novo('b', null, `Rio Uruguai (${rio.meta.fonte_curta}), última leitura:`));
+    f.append(` nível ${P.valor(u.nivel_ultimo_cm, inteiro)} cm em ${dia} ${dh.slice(11, 16)} · vazão ${P.valor(u.vazao_ultima_m3s, inteiro)} m³/s `);
+    f.appendChild(novo('span', 'rotulo-provisorio', 'provisório'));
+    if(metodo.length) f.append(` · ${metodo.join(' · ')}`);
+    if(opcoes && opcoes.link){
+      f.append(' · ');
+      const a = novo('a', 'faixa-rio-link', opcoes.link.texto); a.href = opcoes.link.href;
+      f.appendChild(a);
+    }
+  };
+
   // Chips dos filtros ativos (só os nomes passados), com botão para remover.
   P.montarChips = function(hostId, rotulos, textoValor){
     const host = document.getElementById(hostId);

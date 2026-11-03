@@ -12,9 +12,9 @@
  "unidade_medida": "cm; m³/s",
  "periodo": {
   "inicio": "2025-10-01",
-  "fim": "2026-11-02"
+  "fim": "2026-11-03"
  },
- "dados_ate": "2026-11-02",
+ "dados_ate": "2026-11-03",
  "autorizacao": "livre",
  "selo": "conferido",
  "avisos": [
@@ -24,7 +24,7 @@
   },
   {
    "tipo": "metodo",
-   "texto": "não é dado em tempo real; atualizado em 02/11"
+   "texto": "não é dado em tempo real; atualizado em 03/11"
   },
   {
    "tipo": "metodo",
@@ -39,7 +39,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T15:45:21Z",
+ "gerado_em": "2026-11-03T19:21:45Z",
  "script": "scripts/paineis/dados_rio.py",
  "colunas": [
   {
@@ -73,12 +73,14 @@
  ],
  "fonte_rodape": "Nível e vazão do rio — ANA, estação 77150000 (série histórica diária e telemetria de 15 em 15 minutos)",
  "telas": [
-  "clima"
+  "clima",
+  "cheia-saude",
+  "inicio"
  ],
  "provisorio": true,
  "fonte_tipo": "ANA telemetria",
- "ultima_leitura": "2026-11-02 12:30",
- "consolidado_ate": "2023-12-31",
+ "ultima_leitura": "2026-11-03 15:30",
+ "fim_serie_ana": "2026-05-31",
  "maxima_periodo": {
   "nivel_cm": 1004.0,
   "nivel_data_hora": "2026-10-16 14:45",
@@ -3662,11 +3664,20 @@
   {
    "dia": "2026-11-02",
    "nivel_max_cm": 783.2,
-   "nivel_ultimo_cm": 748.5,
+   "nivel_ultimo_cm": 721.5,
    "vazao_max_m3s": 11763.8,
-   "vazao_ultima_m3s": 10905.5,
-   "hora_ultima": "12:30",
-   "n_leituras": 51
+   "vazao_ultima_m3s": 10257.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 92
+  },
+  {
+   "dia": "2026-11-03",
+   "nivel_max_cm": 720.2,
+   "nivel_ultimo_cm": 675.3,
+   "vazao_max_m3s": 10226.2,
+   "vazao_ultima_m3s": 9186.9,
+   "hora_ultima": "15:30",
+   "n_leituras": 63
   }
  ]
 }

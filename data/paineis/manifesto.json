@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-03T18:28:17Z",
+ "gerado_em": "2026-11-03T19:21:46Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_serie_anual",
@@ -156,12 +156,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
    "dados_ate": "2026-11-02",
-   "gerado_em": "2026-11-03T18:28:17Z",
+   "gerado_em": "2026-11-03T19:21:46Z",
    "telas": [
     "catalogo"
    ],
    "bytes": 51060,
-   "sha256": "3f090e79309a75f93b3acf2a977c99f30a38d11d111d9d4129fa9084662248a7",
+   "sha256": "7df62de4a2ee8192d09f821e08c2f4eb08e8053069b94fd61ffcb18ed5519e94",
    "csv": "csv/catalogo_dados.csv"
   },
   {
@@ -445,12 +445,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2026-08-09",
-   "gerado_em": "2026-11-03T18:28:17Z",
+   "gerado_em": "2026-11-03T19:21:46Z",
    "telas": [
     "inicio"
    ],
    "bytes": 11397,
-   "sha256": "7d266e094fe2132b82493adc9757c8ef3d4b67ce8310f4f2f1e8b31318ff9e8d",
+   "sha256": "a7ab9404068264cc3fc03bbb042b16cbd145ce81895b15603ad623e20e3b7d4e",
    "csv": "csv/inicio_resumo.csv"
   },
   {
@@ -607,13 +607,15 @@
    ],
    "selo": "conferido",
    "autorizacao": "livre",
-   "dados_ate": "2026-11-02",
-   "gerado_em": "2026-11-03T15:45:21Z",
+   "dados_ate": "2026-11-03",
+   "gerado_em": "2026-11-03T19:21:45Z",
    "telas": [
-    "clima"
+    "clima",
+    "cheia-saude",
+    "inicio"
    ],
-   "bytes": 79346,
-   "sha256": "37ee8dfb519d5a5ce59fb9a49ab6d3287de62b9e261613a7f5b466d7af90ad08",
+   "bytes": 79568,
+   "sha256": "54497f7732f0ca3bb65d16a1165afb2772d70ba2215d9a6a732d668d4d41c1d8",
    "csv": "csv/rio_ana-77150000_telemetria-recente_diario.csv"
   },
   {
@@ -624,14 +626,11 @@
    ],
    "selo": "conferido",
    "autorizacao": "livre",
-   "dados_ate": "2026-11-02",
-   "gerado_em": "2026-11-02T16:43:48Z",
-   "telas": [
-    "sintese",
-    "cheia-saude"
-   ],
-   "bytes": 1577,
-   "sha256": "1864f203a304a39c7bf0615751c89e36062eaef094ce273fa12f147bfac7aa8c",
+   "dados_ate": "2026-11-03",
+   "gerado_em": "2026-11-03T19:18:40Z",
+   "telas": [],
+   "bytes": 1546,
+   "sha256": "aaaf4bc8869c1a1e1085dc0fc37e59690efb09d9a5e8d05f28d8a9f341e3b71e",
    "csv": "csv/rio_ana-77150000_ultima-leitura.csv"
   },
   {
@@ -643,12 +642,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2026-09-30",
-   "gerado_em": "2026-11-03T15:40:28Z",
+   "gerado_em": "2026-11-03T19:18:40Z",
    "telas": [
     "cheia-saude"
    ],
    "bytes": 42141,
-   "sha256": "b42a7a8903f12eca5649130c2d10231ad97e23f9247df5ad3f3ed0c1f0b2cbe0",
+   "sha256": "7cffe0679ebe7730ef2f8531ca058922a2110d4d2f9e6b33acdf7b99c5227f01",
    "csv": "csv/rio_ana-77150000_ultimos-365-dias_diario.csv"
   },
   {

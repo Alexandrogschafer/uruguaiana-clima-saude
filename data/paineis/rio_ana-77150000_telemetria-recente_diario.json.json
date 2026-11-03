@@ -40,6 +40,11 @@
       "bytes": 74265
     },
     {
+      "arquivo": "data/raw/nivel-rio_ana-telemetria-77150000_2026-11-02-a-2026-11-03_15min.csv",
+      "sha256": "61acd5b2c76887ff4fad8ca750328f9b4796bb1989ee54c75ff7c0a183f72049",
+      "bytes": 7956
+    },
+    {
       "arquivo": "data/raw/nivel-rio_ana-serie-historica-77150000_1940-01-01-a-2026-11-02_diario.csv",
       "sha256": "ea9b0b9ab5d8fe7770ca14603f41ef6d86a1ddf958569548834acbabcd728f59",
       "bytes": 3628926
@@ -53,7 +58,7 @@
   "autorizacao": "livre",
   "selo": "conferido",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T15:45:21Z",
+  "data_processamento": "2026-11-03T19:21:45Z",
   "supressao_nota": "não se aplica: medidas de nível e vazão, sem contagem de pessoas",
   "evento_em_curso": true
 }

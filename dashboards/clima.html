@@ -153,12 +153,12 @@ async function iniciar(){
     if(!c[chave]) BLOCOS[chave].forEach(b => P.erroBloco(document.getElementById(b), id));
   }
   const {anual, precip, mensal, queim, rio, tabela} = c;
-  // janela do rio: últimos DIAS_RIO dias corridos até o último dia com leitura; dia depois de consolidado_ate = provisório
+  // janela do rio: últimos DIAS_RIO dias corridos até o último dia com leitura; dia depois de fim_serie_ana (fim da série histórica da ANA) = provisório
   let rioDias = [], provisorio = () => false;
   if(rio){
     const fimRio = diaNum(rio.meta.dados_ate);
     rioDias = rio.dados.filter(r => diaNum(r.dia) > fimRio - DIAS_RIO);
-    const cons = rio.meta.consolidado_ate;
+    const cons = rio.meta.fim_serie_ana;
     provisorio = r => rio.meta.provisorio === true && (!cons || r.dia > cons);
   }
 

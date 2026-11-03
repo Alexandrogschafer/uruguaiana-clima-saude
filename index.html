@@ -67,7 +67,6 @@
    indicadores e contagens de inicio_resumo.json e a faixa do rio da telemetria recente (provisória). */
 const P = window.Paineis;
 const IDS = {resumo: 'inicio_resumo', rio: 'rio_ana-77150000_telemetria-recente_diario'};
-const ROTULO_PROVISORIO = 'provisório';
 const criar = (tag, cls, txt) => { const e = document.createElement(tag); if(cls) e.className = cls; if(txt !== undefined) e.textContent = txt; return e; };
 // data dos dados como aparece na fonte: dia (DD/MM/AAAA), mês (MM/AAAA) ou ano
 const dataDados = s => { const m = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/.exec(String(s || '')); if(!m) return String(s || '');
@@ -108,22 +107,6 @@ function cartao(def, linhas, extra){
   return c;
 }
 
-function faixaRio(rio){
-  const f = document.getElementById('faixa-rio');
-  if(!rio || !rio.dados.length){ f.hidden = true; return; }
-  const u = rio.dados[rio.dados.length - 1], dh = rio.meta.ultima_leitura || '';
-  const metodo = rio.meta.avisos.filter(a => a.tipo === 'metodo' && /tempo real/.test(a.texto)).map(a => a.texto);
-  f.innerHTML = '';
-  f.appendChild(criar('b', null, `Rio Uruguai (${rio.meta.fonte_curta}), última leitura:`));
-  f.append(` nível ${P.valor(u.nivel_ultimo_cm, fmtInt)} cm em ${dataDados(dh)} ${dh.slice(11, 16)} · vazão ${P.valor(u.vazao_ultima_m3s, fmtInt)} m³/s `);
-  f.appendChild(criar('span', 'rotulo-provisorio', ROTULO_PROVISORIO));
-  if(metodo.length) f.append(` · ${metodo.join(' · ')}`);
-  // leva à tela da cheia e saúde (manchas por cota e unidades de saúde); nenhum número novo aqui
-  f.append(' · ');
-  const a = criar('a', 'faixa-rio-link', 'ver cheia e saúde →'); a.href = 'dashboards/cheia-saude.html';
-  f.appendChild(a);
-}
-
 async function iniciar(){
   let textos = null;
   try{
@@ -139,7 +122,7 @@ async function iniciar(){
     document.querySelectorAll('[data-grupo]').forEach(e => { e.textContent = textos.grupos[e.dataset.grupo] || ''; });
   }
   P.montarCabecalho();
-  faixaRio(rio);
+  P.faixaRioAgora('faixa-rio', rio, {link: {texto: 'ver cheia e saúde →', href: 'dashboards/cheia-saude.html'}});
 
   const linhas = resumo ? resumo.dados : [];
   const por = id => linhas.filter(r => r.dimensao === id).sort((a, b) => a.ordem - b.ordem);
