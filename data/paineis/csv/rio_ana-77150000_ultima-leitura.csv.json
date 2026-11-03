@@ -1,0 +1,20 @@
+{
+  "produto": "rio_ana-77150000_ultima-leitura.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/rio_ana-77150000_ultima-leitura.json",
+  "sha256_fonte": "1864f203a304a39c7bf0615751c89e36062eaef094ce273fa12f147bfac7aa8c",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "estado",
+    "data_hora",
+    "nivel_cm",
+    "vazao_m3s",
+    "idade_dias"
+  ],
+  "n_linhas": 1,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-02T16:43:48Z"
+}

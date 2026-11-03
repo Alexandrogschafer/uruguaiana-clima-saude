@@ -1,0 +1,20 @@
+{
+  "produto": "rio_ana-77150000_maximas-anuais.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/rio_ana-77150000_maximas-anuais.json",
+  "sha256_fonte": "b7ebd8648027ba4a8cbd5ed3be2456b1a2e86ac5834ecad06c81a18526e88e03",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "ano",
+    "maximo_cm",
+    "origem",
+    "dias_com_valor_pct",
+    "lacuna"
+  ],
+  "n_linhas": 86,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-02T16:43:46Z"
+}

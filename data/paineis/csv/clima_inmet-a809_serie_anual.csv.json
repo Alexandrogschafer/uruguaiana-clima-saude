@@ -1,0 +1,21 @@
+{
+  "produto": "clima_inmet-a809_serie_anual.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/clima_inmet-a809_serie_anual.json",
+  "sha256_fonte": "d045c0efff5237f93cf392c91d483d885d081a62c81154a527493cb896fbc5d4",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "ano",
+    "temp_media_anual",
+    "temp_max_anual",
+    "temp_min_anual",
+    "dias_calor_extremo",
+    "dias_geada"
+  ],
+  "n_linhas": 19,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:05Z"
+}

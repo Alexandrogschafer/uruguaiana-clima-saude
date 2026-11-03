@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR" data-tela="catalogo" data-raiz="..">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo de dados — ClimaPampa, Uruguaiana/RS</title>
+<link rel="stylesheet" href="../css/paineis.css">
+<link rel="stylesheet" href="../css/paineis-componentes.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header id="cabecalho-comum"></header>
+
+  <div class="masthead">
+    <span class="eyebrow">ClimaPampa · PET-Saúde: Clima · Uruguaiana / RS · Dados</span>
+    <h1>Catálogo de dados</h1>
+    <p>As fontes de cada conjunto de dados publicado nas telas e no mapa: tipo, licença, resolução, data de acesso e selo, com os downloads em CSV e JSON (e GeoJSON das camadas do mapa).</p>
+  </div>
+
+  <div class="section-head"><h2>Fontes</h2><div class="section-rule"></div></div>
+  <p class="section-note" id="nota-catalogo"></p>
+  <div class="seletor-cota seletor-dimensao" id="seletor-dimensao" role="group" aria-label="Filtrar por dimensão"></div>
+  <div class="card">
+    <div class="tabela-cartoes-wrap">
+      <table class="data-table tabela-cartoes tabela-catalogo" id="tabelaCatalogo">
+        <thead><tr><th class="col-texto col-fonte">Fonte</th><th class="col-texto">Tipo</th><th class="col-texto">Licença</th><th class="col-texto col-resolucao">Resolução</th>
+          <th class="col-texto">Acesso e selo</th><th class="col-texto">Telas e downloads</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-head" id="como-ler"><h2>Como ler</h2><div class="section-rule"></div></div>
+  <div class="card como-ler">
+    <dl>
+      <dt>Selos</dt><dd id="como-ler-selos"></dd>
+      <dt>Avisos</dt><dd><b>parcial</b>: o período não está completo (ex.: o ano ainda não fechou ou a estação parou). <b>preliminar</b>: a fonte ainda pode revisar o número. <b>provisório</b>: leitura de telemetria, não consolidada. <b>em conferência</b>: o dado está publicado, mas uma parte ainda é conferida pela equipe. <b>lacuna</b>: falta dado no período; não é zero.</dd>
+      <dt>Valor suprimido</dt><dd id="como-ler-supressao"></dd>
+      <dt>Sem valor</dt><dd>"—" indica que a fonte não tem o dado naquele ponto; não é zero.</dd>
+      <dt>Tempo real</dt><dd>Nenhum dado do site é em tempo real. A data dos dados aparece em cada número, e "Atualizado em" mostra a última geração dos arquivos.</dd>
+      <dt>Downloads</dt><dd>CSV em UTF-8, separado por vírgula e com ponto decimal; célula vazia quando não há valor ou o valor foi suprimido. O JSON traz, além dos dados, a fonte, o período, o selo e os avisos.</dd>
+    </dl>
+  </div>
+
+  <footer id="rodape-comum"></footer>
+</div>
+
+<script src="../js/paineis/componentes.js"></script>
+<script src="../js/paineis/graficos.js"></script>
+<script src="../js/paineis/dados.js"></script>
+<script src="../js/paineis/filtros.js"></script>
+<script src="../js/paineis/cabecalho.js"></script>
+<script src="../js/paineis/rodape.js"></script>
+<script>
+/* Catálogo: lê data/paineis/catalogo_dados.json (scripts/paineis/dados_catalogo.py). Nenhum número fica neste arquivo. */
+const P = window.Paineis;
+const IDS = {catalogo: 'catalogo_dados'};
+const NOMES_TELA = {clima: 'Clima', saude: 'Saúde', populacao: 'População', territorio: 'Território', economia: 'Economia', riscos: 'Riscos', 'cheia-saude': 'Cheia e saúde'};
+const novo = (tag, cls, txt) => { const e = document.createElement(tag); if(cls) e.className = cls; if(txt !== undefined) e.textContent = txt; return e; };
+const link = (txt, href, baixar) => { const a = novo('a', null, txt); a.href = href; if(baixar) a.setAttribute('download', ''); return a; };
+const dataBR = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); return m ? `${m[3]}/${m[2]}/${m[1]}` : (s || '—'); };
+
+function celula(tr, rotulo, conteudo, cls){
+  const td = novo('td', cls || 'col-texto'); td.dataset.rotulo = rotulo;
+  if(conteudo instanceof Node) td.appendChild(conteudo); else td.textContent = conteudo == null || conteudo === '' ? '—' : conteudo;
+  tr.appendChild(td); return td;
+}
+
+function linha(r, sobre){
+  const tr = novo('tr');
+  tr.dataset.dimensoes = r.dimensoes;
+  const f = novo('div'); f.appendChild(novo('span', 'catalogo-fonte', r.fonte)); f.appendChild(novo('span', 'catalogo-tema', r.tema));
+  celula(tr, 'Fonte', f, 'col-texto col-nome');
+  celula(tr, 'Tipo', r.tipo); celula(tr, 'Licença', r.licenca);
+  const res = novo('div');
+  [['espacial', r.resolucao_espacial], ['temporal', r.resolucao_temporal]].forEach(([k, v]) => {
+    const d = novo('div', 'catalogo-resolucao'); d.appendChild(novo('span', 'catalogo-rotulo', `${k}: `)); d.append(v || '—'); res.appendChild(d); });
+  celula(tr, 'Resolução', res);
+  const ac = novo('div'); ac.appendChild(novo('div', null, dataBR(r.data_acesso))); if(r.selo) ac.appendChild(P.selo(r.selo));
+  celula(tr, 'Acesso e selo', ac);
+  const telas = novo('span', 'catalogo-links');
+  (r.telas ? r.telas.split(' ') : []).forEach(t => telas.appendChild(link(NOMES_TELA[t] || t, `${t}.html`)));
+  if(r.camadas) telas.appendChild(link('Mapa', '../mapa.html'));
+  const td = novo('div');
+  td.appendChild(telas.childNodes.length ? telas : novo('span', null, '—'));
+  const dl = novo('span', 'catalogo-links catalogo-downloads');
+  // um download por linha: título do conjunto de dados (ou nome da camada) e os formatos
+  (r.produtos ? r.produtos.split(' ') : []).forEach(id => {
+    const s = sobre[id] || {};
+    const g = novo('div', 'catalogo-produto');
+    g.appendChild(novo('span', 'catalogo-rotulo', `${s.titulo || id}: `));
+    if(s.csv){ g.appendChild(link('CSV', `../${s.csv}`, true)); g.append(' · '); }
+    g.appendChild(link('JSON', `../data/paineis/${id}.json`, true));
+    dl.appendChild(g);
+  });
+  (r.downloads_camadas ? r.downloads_camadas.split(' ') : []).forEach(arq => {
+    const g = novo('div', 'catalogo-produto');
+    g.appendChild(novo('span', 'catalogo-rotulo', `camada ${arq.split('/').pop().replace(/\.geojson$/, '')}: `));
+    g.appendChild(link('GeoJSON', `../${arq}`, true));
+    dl.appendChild(g);
+  });
+  if(dl.childNodes.length) td.appendChild(dl);
+  celula(tr, 'Telas e downloads', td);
+  return tr;
+}
+
+async function iniciar(){
+  const cat = await P.carregar(IDS.catalogo, 'tabelaCatalogo');
+  P.iniciarFiltros({});
+  P.montarCabecalho();
+  if(cat){
+    const sobre = cat.meta.sobre_produtos || {};
+    const tbody = document.querySelector('#tabelaCatalogo tbody');
+    cat.dados.forEach(r => tbody.appendChild(linha(r, sobre)));
+    document.getElementById('nota-catalogo').textContent =
+      `${cat.dados.length} fontes ligadas a conjuntos de dados das telas ou a camadas do mapa. Cada conjunto pode juntar mais de uma fonte. "ver fonte": a licença não está identificada no registro da coleta; consulte a fonte original.`;
+    // filtro por dimensão (botões, como o seletor de cota)
+    const sel = document.getElementById('seletor-dimensao');
+    const aplicar = d => {
+      sel.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.dim === d)));
+      tbody.querySelectorAll('tr').forEach(tr => { tr.hidden = !!d && !tr.dataset.dimensoes.split(' · ').includes(d); });
+    };
+    [''].concat(cat.meta.dimensoes).forEach(d => {
+      const b = novo('button', null, d || 'Todas'); b.type = 'button'; b.dataset.dim = d;
+      b.addEventListener('click', () => aplicar(d)); sel.appendChild(b);
+    });
+    aplicar('');
+    const sup = document.getElementById('como-ler-supressao');
+    sup.textContent = `Contagens maiores que zero e menores que ${cat.meta.limiar_supressao} aparecem como "<${cat.meta.limiar_supressao}", para proteger pessoas em grupos pequenos; o valor exato não é publicado.`;
+  }
+  const selos = document.getElementById('como-ler-selos');
+  [['conferido', 'a equipe conferiu o dado contra a fonte'], ['em_confirmacao', 'publicado, com uma parte ainda em conferência'],
+   ['pendente', 'conferência ainda não feita']].forEach(([s, t], i) => {
+    if(i) selos.append(' · ');
+    selos.appendChild(P.selo(s)); selos.append(` ${t}`);
+  });
+  P.montarRodape();
+  document.documentElement.dataset.pronto = '1';
+}
+iniciar();
+</script>
+</body>
+</html>

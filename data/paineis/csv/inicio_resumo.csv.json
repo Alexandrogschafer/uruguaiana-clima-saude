@@ -1,0 +1,28 @@
+{
+  "produto": "inicio_resumo.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/inicio_resumo.json",
+  "sha256_fonte": "db2891d33917ee52d320d5770efb9267e47086ee7488fc35d859a92a74e7aa36",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "dimensao",
+    "ordem",
+    "rotulo",
+    "prefixo",
+    "valor",
+    "unidade",
+    "sub",
+    "aviso",
+    "produto",
+    "fonte_curta",
+    "periodo",
+    "selo",
+    "dados_ate"
+  ],
+  "n_linhas": 20,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "em_confirmacao",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T18:03:08Z"
+}

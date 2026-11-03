@@ -1,0 +1,26 @@
+{
+  "produto": "demografia_ibge_serie_indicadores.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/demografia_ibge_serie_indicadores.json",
+  "sha256_fonte": "cd86e061e836068a41195baff56a4ecdefe35457fadb0df4ae8f28814f6046e0",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "periodo",
+    "populacao_total",
+    "taxa_crescimento",
+    "indice_envelhecimento",
+    "razao_dependencia",
+    "pct_urbano",
+    "pct_rural",
+    "pop_0_4",
+    "pct_pop_0_4",
+    "pop_60_mais",
+    "pct_pop_60_mais"
+  ],
+  "n_linhas": 6,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:06Z"
+}

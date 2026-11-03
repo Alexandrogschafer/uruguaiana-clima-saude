@@ -1,0 +1,17 @@
+{
+  "produto": "clima_precipitacao-merge_serie_mensal.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/clima_precipitacao-merge_serie_mensal.json",
+  "sha256_fonte": "89f973ced0ba686b630776b42374c2a6dc405dd8272b729feafbd8f1808c15e1",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "periodo",
+    "precipitacao_mm"
+  ],
+  "n_linhas": 192,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:05Z"
+}

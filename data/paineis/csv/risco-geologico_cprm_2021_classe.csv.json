@@ -1,0 +1,19 @@
+{
+  "produto": "risco-geologico_cprm_2021_classe.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/risco-geologico_cprm_2021_classe.json",
+  "sha256_fonte": "c1ad0bf482e293c203b76f67853046f26d0d7d0619aca15d0fed00a3c7dd8ca7",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "camada",
+    "classe",
+    "area_km2",
+    "n_poligonos"
+  ],
+  "n_linhas": 5,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-02T12:52:10Z"
+}

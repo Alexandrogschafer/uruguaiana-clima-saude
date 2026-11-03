@@ -1,0 +1,19 @@
+{
+  "produto": "saude_sim-afogamento-enchente_serie_quinquenal.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/saude_sim-afogamento-enchente_serie_quinquenal.json",
+  "sha256_fonte": "ba7f74fe780c86dad04c9dc21c5c7d8d03b0ece040cefef459e03fd8f792aad3",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "periodo",
+    "ano_inicio",
+    "ano_fim",
+    "obitos"
+  ],
+  "n_linhas": 3,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:05Z"
+}

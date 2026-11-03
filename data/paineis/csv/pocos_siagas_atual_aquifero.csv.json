@@ -1,0 +1,17 @@
+{
+  "produto": "pocos_siagas_atual_aquifero.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/pocos_siagas_atual_aquifero.json",
+  "sha256_fonte": "408f145a88633dc3bdbfb43b9a88e42f60f115e73a3f3c045070034f152545ad",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "aquifero",
+    "pocos"
+  ],
+  "n_linhas": 3,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-02T12:47:36Z"
+}

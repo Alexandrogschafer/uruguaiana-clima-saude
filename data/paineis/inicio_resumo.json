@@ -48,7 +48,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T17:58:32Z",
+ "gerado_em": "2026-11-03T18:03:08Z",
  "script": "scripts/paineis/dados_inicio.py",
  "colunas": [
   {
@@ -112,7 +112,7 @@
   "grupos_camadas": 11,
   "telas": 7,
   "conjuntos_dados": 40,
-  "fontes": null
+  "fontes": 47
  },
  "produtos_usados": [
   "cadunico_mds_serie_anual",

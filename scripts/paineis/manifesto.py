@@ -46,8 +46,11 @@ GERADORES: list[tuple[Path, str]] = [
     (AQUI / "dados_riscos.py", "gerar"),
     (AQUI / "dados_rio.py", "gerar"),
     (AQUI / "dados_inundacao.py", "gerar"),
-    # rodada A2: lê os produtos acima (por isso no fim)
+    # rodada A2: leem os produtos acima (por isso no fim); o catálogo antes do início (que conta as fontes)
+    # e os CSV por último (inclusive os do catálogo e do início)
+    (AQUI / "dados_catalogo.py", "gerar"),
     (AQUI / "dados_inicio.py", "gerar"),
+    (AQUI / "exportar_csv.py", "gerar"),
 ]
 
 
@@ -99,13 +102,15 @@ def gerar(codigo_ibge: str = "4322400", pasta: Path = comum.PASTA_PUBLICACAO,
             "id": prod["id"], **({"substitui": prod["substitui"]} if prod.get("substitui") else {}), "titulo": prod["titulo"], "ativos": prod["ativos"], "selo": prod["selo"],
             "autorizacao": prod["autorizacao"], "dados_ate": prod["dados_ate"], "gerado_em": prod["gerado_em"],
             "telas": prod.get("telas", []), "bytes": p.stat().st_size, "sha256": comum.sha256_arquivo(p),
+            # CSV derivado (scripts/paineis/exportar_csv.py), caminho relativo a data/paineis/
+            **({"csv": f"csv/{p.stem}.csv"} if (pasta / "csv" / f"{p.stem}.csv").exists() else {}),
         })
     gerado_em = max((i["gerado_em"] for i in itens), default=None)
     manifesto = {"esquema": ESQUEMA_MANIFESTO, "codigo_ibge": codigo_ibge, "gerado_em": gerado_em, "produtos": itens}
     meta_manifesto = {
         "produto": "manifesto.json", "esquema": ESQUEMA_MANIFESTO,
         "fonte": "produtos publicados em data/paineis/ declarados em PRODUTOS pelos geradores",
-        "transformacao_aplicada": "lista dos produtos com id, id substituído, título, ativos, selo, autorização, datas, telas, tamanho e sha256; JSON órfão fica fora",
+        "transformacao_aplicada": "lista dos produtos com id, id substituído, título, ativos, selo, autorização, datas, telas, tamanho, sha256 e CSV derivado; JSON órfão fica fora",
         "script": "scripts/paineis/manifesto.py", "codigo_ibge": codigo_ibge, "data_processamento": gerado_em,
     }
 

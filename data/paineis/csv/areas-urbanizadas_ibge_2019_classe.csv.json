@@ -1,0 +1,18 @@
+{
+  "produto": "areas-urbanizadas_ibge_2019_classe.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/areas-urbanizadas_ibge_2019_classe.json",
+  "sha256_fonte": "66aadf4f3978c86afb32ccdc2487729e52dec0318c4b4b9cd60b19f9bf28d7e4",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "tipo",
+    "densidade",
+    "area_km2"
+  ],
+  "n_linhas": 6,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-02T13:24:50Z"
+}

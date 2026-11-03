@@ -1,0 +1,19 @@
+{
+  "produto": "demografia_ibge_censos_piramides.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/demografia_ibge_censos_piramides.json",
+  "sha256_fonte": "186673bd44f515ce94bee1caa4938a897b869ee9d59ab605070b9650ad0172bc",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "ano",
+    "grupo_idade",
+    "homens",
+    "mulheres"
+  ],
+  "n_linhas": 63,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:06Z"
+}

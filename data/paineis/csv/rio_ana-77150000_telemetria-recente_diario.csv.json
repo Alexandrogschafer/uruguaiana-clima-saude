@@ -1,0 +1,22 @@
+{
+  "produto": "rio_ana-77150000_telemetria-recente_diario.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/rio_ana-77150000_telemetria-recente_diario.json",
+  "sha256_fonte": "37ee8dfb519d5a5ce59fb9a49ab6d3287de62b9e261613a7f5b466d7af90ad08",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "dia",
+    "nivel_max_cm",
+    "nivel_ultimo_cm",
+    "vazao_max_m3s",
+    "vazao_ultima_m3s",
+    "hora_ultima",
+    "n_leituras"
+  ],
+  "n_linhas": 398,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T15:45:21Z"
+}

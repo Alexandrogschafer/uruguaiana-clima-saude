@@ -1,0 +1,20 @@
+{
+  "produto": "saude_sinan_serie_anual.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/saude_sinan_serie_anual.json",
+  "sha256_fonte": "494784dd22da93cc3b10b5a87f90a367596c049bf0fc2d91bbb9474241ba09f8",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "ano",
+    "preliminar",
+    "dengue",
+    "chikungunya",
+    "zika"
+  ],
+  "n_linhas": 17,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:05Z"
+}

@@ -1,0 +1,23 @@
+{
+  "produto": "saude_unidades-esf-ubs_atual.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/saude_unidades-esf-ubs_atual.json",
+  "sha256_fonte": "8152114af8cf92f4afd05a1b58aa94231aa0983e44d714a150369a1f3fdb9a70",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "cnes",
+    "nome",
+    "classe",
+    "zona",
+    "bairro",
+    "fora_das_comparacoes",
+    "populacao_informada_2017",
+    "populacao_informada_2023"
+  ],
+  "n_linhas": 22,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "em_confirmacao",
+  "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
+  "data_processamento": "2026-11-03T16:33:06Z"
+}

@@ -1,0 +1,21 @@
+{
+  "produto": "despesas_siconfi_serie_anual.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/despesas_siconfi_serie_anual.json",
+  "sha256_fonte": "d63dc41b0092864034faffb002710ec9617ed2cc8bb2c59814eb39b077c63bf9",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "ano",
+    "bimestre",
+    "parcial",
+    "saude_per_capita_reais",
+    "assistencia_social_per_capita_reais",
+    "saude_pct_pib"
+  ],
+  "n_linhas": 12,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:06Z"
+}

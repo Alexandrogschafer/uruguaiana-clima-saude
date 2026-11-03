@@ -1,0 +1,22 @@
+{
+  "produto": "pib_ibge_serie_anual.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/pib_ibge_serie_anual.json",
+  "sha256_fonte": "4fb788533a88552fae892e5866444e7a64a8be9de3844c12ad9e7ce2c8e1f7be",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "ano",
+    "pib_mil_reais",
+    "pib_per_capita",
+    "vab_agropecuaria_pct",
+    "vab_industria_pct",
+    "vab_administracao_publica_pct",
+    "vab_servicos_pct"
+  ],
+  "n_linhas": 22,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:06Z"
+}

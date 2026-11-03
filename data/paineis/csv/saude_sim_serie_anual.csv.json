@@ -1,0 +1,18 @@
+{
+  "produto": "saude_sim_serie_anual.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/saude_sim_serie_anual.json",
+  "sha256_fonte": "3e0bb6a5606b8983b4e823fdd6cee6614e70c37f842e089ddf69ef95dd94b229",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "ano",
+    "obitos_total",
+    "obitos_respiratorios"
+  ],
+  "n_linhas": 15,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:05Z"
+}

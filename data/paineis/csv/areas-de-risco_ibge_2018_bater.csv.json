@@ -1,0 +1,18 @@
+{
+  "produto": "areas-de-risco_ibge_2018_bater.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/areas-de-risco_ibge_2018_bater.json",
+  "sha256_fonte": "81cf5d6e6d7f7c0516fcacec0dd5438d456148dd1d4a0195a4a7a531d9738c39",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "area_bater",
+    "origem",
+    "observacao"
+  ],
+  "n_linhas": 3,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-02T13:24:50Z"
+}

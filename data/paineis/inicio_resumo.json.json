@@ -83,6 +83,11 @@
       "arquivo": "mapa.html",
       "sha256": "68fc73e7fb4abb5253bfb24a399f1b71034ab51e9d3cc891b10770953dbad780",
       "bytes": 18173
+    },
+    {
+      "arquivo": "data/paineis/catalogo_dados.json",
+      "sha256": "0e1d0104f5fe90181d118ff093fbc1cad5bda9bcb00331e0348c022328f0c8cc",
+      "bytes": 48710
     }
   ],
   "script": "scripts/paineis/dados_inicio.py",
@@ -110,5 +115,5 @@
   "autorizacao": "livre",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T17:58:32Z"
+  "data_processamento": "2026-11-03T18:03:08Z"
 }

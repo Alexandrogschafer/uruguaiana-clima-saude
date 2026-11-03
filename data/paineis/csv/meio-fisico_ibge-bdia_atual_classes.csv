@@ -1,0 +1,35 @@
+tema,rotulo,classe,area_km2,n_feicoes
+geologia,Serra Geral,Serra Geral,4649.75,
+geologia,Dep. Aluv. Holocênicos,Depósitos Aluvionares Holocênicos,487.49,
+geologia,Corpo d'água,Corpo d'água continental,260.46,
+geologia,Botucatu,Botucatu,235.56,
+geologia,Arenitos Interderrames,Arenitos Interderrames,54.39,
+geologia,Dep. Aluv. Antigos,Depósitos Aluvionares Antigos,3.85,
+geomorfologia,Planalto da Campanha,2Planalto da Campanha,4945.58,
+geomorfologia,Planícies Alúvio-coluv.,1Planícies Alúvio-coluvionares,485.47,
+geomorfologia,Corpo d'água,6Corpo d´água continental,260.46,
+vegetacao,Agropecuária,3Ag - Agropecuária,5136.75,
+vegetacao,Veg. Secundária,3Vss - Vegetação Secundária sem palmeiras,262.19,
+vegetacao,Corpo d'água,5Corpo d'água continental,260.46,
+vegetacao,Influência urbana,3Iu - Influência urbana,32.1,
+pedologia,RLm,RLm - Neossolo Litólico Chernossólico,2945.87,11
+pedologia,MEk,MEk - Chernossolo Ebânico Carbonático,1561,25
+pedologia,Corpo d'água,Corpo d'água continental,260.46,410
+pedologia,SXe,SXe - Planossolo Háplico Eutrófico,246.44,4
+pedologia,FTd,FTd - Plintossolo Argilúvico Distrófico,230.72,2
+pedologia,VEk,VEk - Vertissolo Ebânico Carbonático,159.24,7
+pedologia,RLk,RLk - Neossolo Litólico Carbonático,101.03,1
+pedologia,PVva,PVva - Argissolo Vermelho Ta Alumínico,93.84,7
+pedologia,AR,AR - Afloramentos De Rochas,34.71,5
+pedologia,Área Urbana,Área Urbana,32.1,8
+pedologia,RLd,RLd - Neossolo Litólico Distrófico,19.68,1
+pedologia,RYve,RYve - Neossolo Flúvico Ta Eutrófico,6.19,4
+pedologia,RQo,RQo - Neossolo Quartzarênico Órtico,0.21,3
+pedologia_grafico,RLm,RLm - Neossolo Litólico Chernossólico,2945.87,
+pedologia_grafico,MEk,MEk - Chernossolo Ebânico Carbonático,1561,
+pedologia_grafico,Corpo d'água,Corpo d'água continental,260.46,
+pedologia_grafico,SXe,SXe - Planossolo Háplico Eutrófico,246.44,
+pedologia_grafico,FTd,FTd - Plintossolo Argilúvico Distrófico,230.72,
+pedologia_grafico,VEk,VEk - Vertissolo Ebânico Carbonático,159.24,
+pedologia_grafico,RLk,RLk - Neossolo Litólico Carbonático,101.03,
+pedologia_grafico,Outras (6),outras,186.73,

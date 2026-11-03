@@ -1,0 +1,23 @@
+{
+  "produto": "setorizacao-risco_sgb_2014_setor.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/setorizacao-risco_sgb_2014_setor.json",
+  "sha256_fonte": "160bfa510043014263dbf09e13e129484be3f815f51a8b8ed228850803b5490e",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "setor",
+    "local",
+    "tipologia",
+    "grau_risco",
+    "grau_vulnerabilidade",
+    "edificacoes",
+    "domicilios",
+    "pessoas"
+  ],
+  "n_linhas": 4,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-02T13:37:33Z"
+}

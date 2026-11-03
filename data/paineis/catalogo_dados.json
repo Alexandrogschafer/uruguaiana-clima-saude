@@ -1,0 +1,1279 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "catalogo_dados",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "CA01",
+  "CA04",
+  "CA06",
+  "CA08",
+  "EV01",
+  "EV02",
+  "EV03",
+  "EV04",
+  "EV05",
+  "EV06",
+  "EV07",
+  "EV08",
+  "IF01",
+  "IF09",
+  "IF10",
+  "IN01",
+  "IN03",
+  "IN04",
+  "IN05",
+  "PD01",
+  "PD02",
+  "PD14",
+  "RD01",
+  "RD02",
+  "RD03",
+  "RD04",
+  "SA01",
+  "SA02",
+  "SA03",
+  "SA04",
+  "SA05",
+  "TB03",
+  "TB10",
+  "TB11",
+  "TB12",
+  "TB13",
+  "TB14",
+  "TB15",
+  "TB16"
+ ],
+ "titulo": "Catálogo de dados: fontes dos produtos e das camadas publicados",
+ "fonte_curta": "catálogo",
+ "fonte": "data/catalogo_fontes.csv (linhas ligadas a produto ou camada publicados)",
+ "unidade_espacial": "não se aplica",
+ "unidade_medida": "não se aplica",
+ "periodo": {
+  "inicio": "2026-07-27",
+  "fim": "2026-11-02"
+ },
+ "dados_ate": "2026-11-02",
+ "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
+ "selo": "em_confirmacao",
+ "avisos": [
+  {
+   "tipo": "metodo",
+   "texto": "data de acesso é a da coleta registrada no catálogo; \"ver fonte\" quando a licença não está identificada"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-03T18:03:08Z",
+ "script": "scripts/paineis/dados_catalogo.py",
+ "colunas": [
+  {
+   "nome": "tema",
+   "tipo": "texto"
+  },
+  {
+   "nome": "fonte",
+   "tipo": "texto"
+  },
+  {
+   "nome": "tipo",
+   "tipo": "texto"
+  },
+  {
+   "nome": "licenca",
+   "tipo": "texto"
+  },
+  {
+   "nome": "resolucao_espacial",
+   "tipo": "texto"
+  },
+  {
+   "nome": "resolucao_temporal",
+   "tipo": "texto"
+  },
+  {
+   "nome": "data_acesso",
+   "tipo": "texto"
+  },
+  {
+   "nome": "selo",
+   "tipo": "texto"
+  },
+  {
+   "nome": "dimensoes",
+   "tipo": "texto"
+  },
+  {
+   "nome": "telas",
+   "tipo": "texto"
+  },
+  {
+   "nome": "produtos",
+   "tipo": "texto"
+  },
+  {
+   "nome": "camadas",
+   "tipo": "texto"
+  },
+  {
+   "nome": "downloads_camadas",
+   "tipo": "texto"
+  }
+ ],
+ "fonte_rodape": "Catálogo de fontes do projeto (data/catalogo_fontes.csv)",
+ "telas": [
+  "catalogo"
+ ],
+ "dimensoes": [
+  "Clima",
+  "Saúde",
+  "População",
+  "Território",
+  "Economia",
+  "Riscos",
+  "Cheia e saúde",
+  "Mapa"
+ ],
+ "limiar_supressao": 5,
+ "sobre_produtos": {
+  "agropecuaria_ibge_serie_anual": {
+   "titulo": "Área colhida (arroz, soja) e efetivo de rebanho (bovino, ovino)",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-08-11",
+   "metodo": "área colhida (variável 216) de arroz, soja e total; efetivo bovino e ovino",
+   "fontes_catalogo": [
+    "agropecuaria_pam_ppm"
+   ],
+   "csv": "data/paineis/csv/agropecuaria_ibge_serie_anual.csv"
+  },
+  "app-hidrica_ana-bho-mapbiomas_atual_curso": {
+   "titulo": "APP hídrica: área por curso d'água",
+   "licenca": "derivado de dados abertos",
+   "data_coleta": null,
+   "metodo": "áreas por curso e ocupação lidas dos metadados de app_hidrica.py",
+   "fontes_catalogo": [
+    "app_hidrica_calculada"
+   ],
+   "csv": "data/paineis/csv/app-hidrica_ana-bho-mapbiomas_atual_curso.csv"
+  },
+  "areas-de-risco_ibge_2018_bater": {
+   "titulo": "Áreas de risco do IBGE (BATER 2018) no município",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-10-03",
+   "metodo": "áreas BATER do município (sem geometria)",
+   "fontes_catalogo": [
+    "populacao_areas_de_risco_ibge"
+   ],
+   "csv": "data/paineis/csv/areas-de-risco_ibge_2018_bater.csv"
+  },
+  "areas-urbanizadas_ibge_2019_classe": {
+   "titulo": "Áreas urbanizadas por tipo e densidade (2019)",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-10-06",
+   "metodo": "soma das áreas (km², EPSG:31981) por tipo e densidade",
+   "fontes_catalogo": [
+    "areas_urbanizadas_ibge"
+   ],
+   "csv": "data/paineis/csv/areas-urbanizadas_ibge_2019_classe.csv"
+  },
+  "bolsa-familia_mds_atual_mes": {
+   "titulo": "Bolsa Família no mês mais recente",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-08-11",
+   "metodo": "linha única do mês de referência",
+   "fontes_catalogo": [
+    "assistencia_social_cadunico_bolsa_familia"
+   ],
+   "csv": "data/paineis/csv/bolsa-familia_mds_atual_mes.csv"
+  },
+  "cadunico_mds_serie_anual": {
+   "titulo": "Famílias no CadÚnico e taxa de atualização",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-08-11",
+   "metodo": "dezembro de cada ano; último ponto no mês mais recente publicado",
+   "fontes_catalogo": [
+    "assistencia_social_cadunico_bolsa_familia"
+   ],
+   "csv": "data/paineis/csv/cadunico_mds_serie_anual.csv"
+  },
+  "censo_ibge_2022_situacao-setor": {
+   "titulo": "População e setores por situação (Censo 2022)",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-07-27",
+   "metodo": "soma da população e contagem de setores por situação; indicadores municipais do mesmo arquivo; supressão de comum.py nas populações",
+   "fontes_catalogo": [
+    "vulnerabilidade_censo"
+   ],
+   "csv": "data/paineis/csv/censo_ibge_2022_situacao-setor.csv"
+  },
+  "clima_inmet-a809_serie_anual": {
+   "titulo": "Temperatura, calor extremo e geada por ano",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-07-27",
+   "metodo": "média das médias diárias (dia em UTC) de temp_ar_c; extremos de temp_max_c e temp_min_c; dias com máxima >= 35 °C e com mínima <= 0 °C; aviso de lacuna em ano com menos de 90% das horas válidas",
+   "fontes_catalogo": [
+    "clima_inmet"
+   ],
+   "csv": "data/paineis/csv/clima_inmet-a809_serie_anual.csv"
+  },
+  "clima_precipitacao-merge_serie_anual": {
+   "titulo": "Precipitação total por ano (MERGE) e comparação com a A809",
+   "licenca": "dados abertos; domínio público",
+   "data_coleta": "2026-11-01",
+   "metodo": "soma dos meses do MERGE por ano; média de referência sem o último ano; total anual da A809 e percentual de horas válidas sobre as horas do calendário, em UTC",
+   "fontes_catalogo": [
+    "precipitacao_merge-inpe",
+    "precipitacao_merge-inpe_painel"
+   ],
+   "csv": "data/paineis/csv/clima_precipitacao-merge_serie_anual.csv"
+  },
+  "clima_precipitacao-merge_serie_mensal": {
+   "titulo": "Precipitação mensal (MERGE)",
+   "licenca": "dados abertos; domínio público",
+   "data_coleta": "2026-11-01",
+   "metodo": "soma dos meses do MERGE por ano; média de referência sem o último ano; total anual da A809 e percentual de horas válidas sobre as horas do calendário, em UTC",
+   "fontes_catalogo": [
+    "precipitacao_merge-inpe",
+    "precipitacao_merge-inpe_painel"
+   ],
+   "csv": "data/paineis/csv/clima_precipitacao-merge_serie_mensal.csv"
+  },
+  "clima_tabela_serie_anual": {
+   "titulo": "Dados climáticos anuais em tabela",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-11-01",
+   "metodo": "junção por ano dos produtos anual da estação, precipitação do MERGE e focos de queimada; nota = tipo do aviso do ano (parcial ou lacuna)",
+   "fontes_catalogo": [
+    "clima_inmet",
+    "focos_queimada_inpe",
+    "precipitacao_merge-inpe_painel"
+   ],
+   "csv": "data/paineis/csv/clima_tabela_serie_anual.csv"
+  },
+  "demografia_ibge_censos_piramides": {
+   "titulo": "Pirâmides etárias dos censos",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-08-10",
+   "metodo": "homens e mulheres por grupo de idade (situação Total na tabela 200)",
+   "fontes_catalogo": [
+    "demografia_censitaria"
+   ],
+   "csv": "data/paineis/csv/demografia_ibge_censos_piramides.csv"
+  },
+  "demografia_ibge_serie_indicadores": {
+   "titulo": "Indicadores demográficos dos censos",
+   "licenca": "derivado de dados abertos",
+   "data_coleta": "2026-08-10",
+   "metodo": "indicadores como gravados por demografia_indicadores.py, colunas renomeadas",
+   "fontes_catalogo": [
+    "demografia_indicadores_derivados"
+   ],
+   "csv": "data/paineis/csv/demografia_ibge_serie_indicadores.csv"
+  },
+  "desastres_s2id_serie_anual": {
+   "titulo": "Reconhecimentos federais de desastre por ano e tipo",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-08-11",
+   "metodo": "contagem de reconhecimentos por ano e categoria (tipologia agrupada)",
+   "fontes_catalogo": [
+    "desastres_reconhecimentos_federais"
+   ],
+   "csv": "data/paineis/csv/desastres_s2id_serie_anual.csv"
+  },
+  "despesas_siconfi_serie_anual": {
+   "titulo": "Despesas em Saúde e Assistência Social por habitante",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-08-11",
+   "metodo": "valor da função / população do SICONFI; % do PIB com o PIB a preços correntes do mesmo ano",
+   "fontes_catalogo": [
+    "pib_municipal_ibge",
+    "despesas_municipais_por_funcao_siconfi"
+   ],
+   "csv": "data/paineis/csv/despesas_siconfi_serie_anual.csv"
+  },
+  "emprego_caged_serie_mensal": {
+   "titulo": "Admissões, desligamentos e saldo acumulado (Novo CAGED)",
+   "licenca": "dados abertos (microdados administrativos)",
+   "data_coleta": "2026-08-11",
+   "metodo": "soma das seções CNAE por competência; saldo acumulado desde o primeiro mês",
+   "fontes_catalogo": [
+    "emprego_formal_rais_caged"
+   ],
+   "csv": "data/paineis/csv/emprego_caged_serie_mensal.csv"
+  },
+  "emprego_rais_atual_secao": {
+   "titulo": "Vínculos formais ativos por seção CNAE (RAIS)",
+   "licenca": "dados abertos (microdados administrativos)",
+   "data_coleta": "2026-08-11",
+   "metodo": "vínculos por seção em ordem decrescente; gráfico com as 8 maiores e o resto somado",
+   "fontes_catalogo": [
+    "emprego_formal_rais_caged"
+   ],
+   "csv": "data/paineis/csv/emprego_rais_atual_secao.csv"
+  },
+  "energia_aneel_serie_anual": {
+   "titulo": "DEC e FEC anuais do município",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-08-11",
+   "metodo": "por mês, média de DEC e FEC ponderada por NumCon dos conjuntos; soma dos meses no ano",
+   "fontes_catalogo": [
+    "continuidade_energia_aneel"
+   ],
+   "csv": "data/paineis/csv/energia_aneel_serie_anual.csv"
+  },
+  "idhm_atlas_censos": {
+   "titulo": "IDHM e componentes",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-08-11",
+   "metodo": "IDHM e componentes do município e IDHM do Brasil por censo",
+   "fontes_catalogo": [
+    "idhm_atlas_brasil"
+   ],
+   "csv": "data/paineis/csv/idhm_atlas_censos.csv"
+  },
+  "infraestrutura_indisponivel_atual": {
+   "titulo": "Saneamento e malha estadual: fontes indisponíveis",
+   "licenca": "dados abertos (com restrição de acesso ao arquivo bruto); ver fonte",
+   "data_coleta": "2026-08-11",
+   "metodo": "situação registrada nos metadados de indisponibilidade",
+   "fontes_catalogo": [
+    "saneamento_snis",
+    "malha_viaria_estadual_daer"
+   ],
+   "csv": "data/paineis/csv/infraestrutura_indisponivel_atual.csv"
+  },
+  "inundacao_sgb_cotas": {
+   "titulo": "Manchas de inundação por cota e ESF/UBS dentro delas",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-07-27",
+   "metodo": "união acumulada das manchas por cota em EPSG:31981; área; teste ponto-dentro das 21 ESF/UBS; mini-mapas em matplotlib",
+   "fontes_catalogo": [
+    "cotas_inundacao"
+   ],
+   "csv": "data/paineis/csv/inundacao_sgb_cotas.csv"
+  },
+  "inundacao_sgb_unidades-cotas": {
+   "titulo": "ESF/UBS em relação às manchas de inundação",
+   "licenca": "dados abertos; ver fonte",
+   "data_coleta": "2026-10-02",
+   "metodo": "teste ponto-dentro de cada unidade contra a mancha acumulada de cada cota",
+   "fontes_catalogo": [
+    "cotas_inundacao",
+    "saude_unidades_esf_ubs_revisadas"
+   ],
+   "csv": "data/paineis/csv/inundacao_sgb_unidades-cotas.csv"
+  },
+  "meio-fisico_ibge-bdia_atual_classes": {
+   "titulo": "Meio físico: área por classe (BDiA)",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-08-09",
+   "metodo": "área por classe dos metadados de cada tema; pedologia_grafico = 7 maiores e o resto somado",
+   "fontes_catalogo": [
+    "vegetacao_nativa",
+    "geologia",
+    "geomorfologia",
+    "pedologia"
+   ],
+   "csv": "data/paineis/csv/meio-fisico_ibge-bdia_atual_classes.csv"
+  },
+  "pib_ibge_serie_anual": {
+   "titulo": "PIB per capita e composição do VAB",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-08-11",
+   "metodo": "PIB per capita do CSV processado; percentuais do VAB da tabela 5938; null onde a fonte não publica",
+   "fontes_catalogo": [
+    "pib_municipal_ibge"
+   ],
+   "csv": "data/paineis/csv/pib_ibge_serie_anual.csv"
+  },
+  "pocos_siagas_atual_aquifero": {
+   "titulo": "Poços de água subterrânea por aquífero",
+   "licenca": "dados abertos (cadastro público)",
+   "data_coleta": "2026-08-09",
+   "metodo": "contagem por aquífero (vazio e classes raras = Outros/sem dado); profundidade média, mediana e % sem dado",
+   "fontes_catalogo": [
+    "aguas_subterraneas_siagas"
+   ],
+   "csv": "data/paineis/csv/pocos_siagas_atual_aquifero.csv"
+  },
+  "populacao_ibge_serie_anual": {
+   "titulo": "População total: censos e estimativas anuais",
+   "licenca": "dados abertos; derivado de dados abertos",
+   "data_coleta": "2026-08-10",
+   "metodo": "série como gravada por demografia_ibge_sidra.py; textos e indicadores calculados dos dados",
+   "fontes_catalogo": [
+    "demografia_censitaria",
+    "demografia_indicadores_derivados"
+   ],
+   "csv": "data/paineis/csv/populacao_ibge_serie_anual.csv"
+  },
+  "queimadas_inpe_serie_anual": {
+   "titulo": "Focos de queimada por ano",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-08-07",
+   "metodo": "contagem de focos por ano",
+   "fontes_catalogo": [
+    "focos_queimada_inpe"
+   ],
+   "csv": "data/paineis/csv/queimadas_inpe_serie_anual.csv"
+  },
+  "rio_ana-77150000_maximas-anuais": {
+   "titulo": "Máxima anual da régua do rio",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-11-02",
+   "metodo": "maior leitura das 7h ou 17h por ano civil; ano sem leitura = maior média diária; ano do evento em curso fora",
+   "fontes_catalogo": [
+    "nivel_rio_ana"
+   ],
+   "csv": "data/paineis/csv/rio_ana-77150000_maximas-anuais.csv"
+  },
+  "rio_ana-77150000_telemetria-recente_diario": {
+   "titulo": "Nível e vazão do rio: telemetria recente (provisória)",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-11-02",
+   "metodo": "máxima e última leitura de cada dia da telemetria de 15 min, do início da janela da série diária (no máximo 450 dias) até a última leitura; sem a trava do evento (produto provisório)",
+   "fontes_catalogo": [
+    "nivel_rio_ana"
+   ],
+   "csv": "data/paineis/csv/rio_ana-77150000_telemetria-recente_diario.csv"
+  },
+  "rio_ana-77150000_ultima-leitura": {
+   "titulo": "Última leitura do rio",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-11-02",
+   "metodo": "última leitura da telemetria; com evento em curso, só o aviso",
+   "fontes_catalogo": [
+    "nivel_rio_ana"
+   ],
+   "csv": "data/paineis/csv/rio_ana-77150000_ultima-leitura.csv"
+  },
+  "rio_ana-77150000_ultimos-365-dias_diario": {
+   "titulo": "Nível e vazão do rio: média diária dos últimos 365 dias",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-11-02",
+   "metodo": "média diária das leituras de 15 min, últimos 365 dias; com evento em curso, até o fim do mês anterior ao mês do evento (MES_DO_EVENTO_COM_CORTE) ou até o dia anterior ao evento",
+   "fontes_catalogo": [
+    "nivel_rio_ana"
+   ],
+   "csv": "data/paineis/csv/rio_ana-77150000_ultimos-365-dias_diario.csv"
+  },
+  "risco-geologico_cprm_2021_classe": {
+   "titulo": "Suscetibilidade a inundação e movimento de massa: área e polígonos por classe",
+   "licenca": "dados abertos",
+   "data_coleta": "2026-08-07",
+   "metodo": "área e número de polígonos por classe, do metadado de risco_geologico_cprm.py",
+   "fontes_catalogo": [
+    "risco_geologico_cprm"
+   ],
+   "csv": "data/paineis/csv/risco-geologico_cprm_2021_classe.csv"
+  },
+  "saude_sih_serie_anual": {
+   "titulo": "Internações e internações respiratórias por ano",
+   "licenca": "dados abertos (microdados individuais)",
+   "data_coleta": "2026-08-07",
+   "metodo": "soma dos 12 meses por ano",
+   "fontes_catalogo": [
+    "saude_internacoes_sih"
+   ],
+   "csv": "data/paineis/csv/saude_sih_serie_anual.csv"
+  },
+  "saude_sim-afogamento-enchente_serie_quinquenal": {
+   "titulo": "Óbitos por afogamento ou relacionados a enchente, por quinquênio",
+   "licenca": "dados abertos (microdados individuais)",
+   "data_coleta": "2026-08-07",
+   "metodo": "soma dos óbitos por afogamento ou enchente em blocos de 5 anos; a série anual não é publicada; supressão de comum.py (limiar 5) aplicada aos quinquênios",
+   "fontes_catalogo": [
+    "saude_mortalidade_sim"
+   ],
+   "csv": "data/paineis/csv/saude_sim-afogamento-enchente_serie_quinquenal.csv"
+  },
+  "saude_sim_serie_anual": {
+   "titulo": "Óbitos por ano: total e por causas respiratórias",
+   "licenca": "dados abertos (microdados individuais)",
+   "data_coleta": "2026-08-07",
+   "metodo": "seleção das colunas de óbitos totais e respiratórios (CID-10 J00-J99) por ano; sem a coluna de afogamento ou enchente, que vai em produto quinquenal",
+   "fontes_catalogo": [
+    "saude_mortalidade_sim"
+   ],
+   "csv": "data/paineis/csv/saude_sim_serie_anual.csv"
+  },
+  "saude_sinan_serie_anual": {
+   "titulo": "Notificações de arboviroses por ano",
+   "licenca": "dados abertos (microdados individuais)",
+   "data_coleta": "2026-08-07",
+   "metodo": "soma dos meses por ano e agravo; ano sem nenhum mês com valor = null; ano em curso (arquivo preliminar) somado só nos meses com valor e marcado como preliminar",
+   "fontes_catalogo": [
+    "saude_arboviroses_sinan"
+   ],
+   "csv": "data/paineis/csv/saude_sinan_serie_anual.csv"
+  },
+  "saude_unidades-esf-ubs_atual": {
+   "titulo": "Unidades de saúde da atenção primária (ESF/UBS) e população informada",
+   "licenca": "ver fonte",
+   "data_coleta": "2026-10-02",
+   "metodo": "seleção de CNES, nome, classe, zona, bairro e população informada de 2017 e 2023; sem coordenadas, sem 2026 e sem soma; Prisional sem população e com fora_das_comparacoes = true",
+   "fontes_catalogo": [
+    "saude_unidades_esf_ubs_revisadas"
+   ],
+   "csv": "data/paineis/csv/saude_unidades-esf-ubs_atual.csv"
+  },
+  "setorizacao-risco_sgb_2014_setor": {
+   "titulo": "Setores de risco do SGB (2014)",
+   "licenca": "ver fonte",
+   "data_coleta": "2026-10-03",
+   "metodo": "atributos por setor, sem geometria; supressão de comum.py nas contagens",
+   "fontes_catalogo": [
+    "setorizacao_risco_sgb"
+   ],
+   "csv": "data/paineis/csv/setorizacao-risco_sgb_2014_setor.csv"
+  },
+  "uso-solo_mapbiomas_atual_todas-classes": {
+   "titulo": "Uso do solo em 2024, todas as classes",
+   "licenca": "dados abertos (uso não comercial)",
+   "data_coleta": "2026-07-28",
+   "metodo": "classes do último ano em ordem de área, arredondadas a 2 casas",
+   "fontes_catalogo": [
+    "uso_cobertura_solo"
+   ],
+   "csv": "data/paineis/csv/uso-solo_mapbiomas_atual_todas-classes.csv"
+  },
+  "uso-solo_mapbiomas_serie_classes": {
+   "titulo": "Uso do solo por classe (6 classes em destaque)",
+   "licenca": "dados abertos (uso não comercial)",
+   "data_coleta": "2026-07-28",
+   "metodo": "área por classe e ano como no CSV de uso-solo_mapbiomas.py",
+   "fontes_catalogo": [
+    "uso_cobertura_solo"
+   ],
+   "csv": "data/paineis/csv/uso-solo_mapbiomas_serie_classes.csv"
+  },
+  "catalogo_dados": {
+   "titulo": null,
+   "licenca": "ver as fontes de cada linha",
+   "data_coleta": null,
+   "metodo": null,
+   "fontes_catalogo": [],
+   "csv": "data/paineis/csv/catalogo_dados.csv"
+  },
+  "inicio_resumo": {
+   "titulo": null,
+   "licenca": "ver as fontes de cada linha",
+   "data_coleta": null,
+   "metodo": null,
+   "fontes_catalogo": [],
+   "csv": "data/paineis/csv/inicio_resumo.csv"
+  }
+ },
+ "dados": [
+  {
+   "tema": "limite_municipal",
+   "fonte": "IBGE (malhas territoriais)",
+   "tipo": "vetor",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "municipal",
+   "resolucao_temporal": "estático (ano de referência)",
+   "data_acesso": null,
+   "selo": "conferido",
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "limite-municipal",
+   "downloads_camadas": "data/geoportal/limite-municipal.geojson"
+  },
+  {
+   "tema": "uso_cobertura_solo",
+   "fonte": "MapBiomas",
+   "tipo": "raster",
+   "licenca": "dados abertos (uso não comercial)",
+   "resolucao_espacial": "30m (nativa; ~27m após reprojeção UTM)",
+   "resolucao_temporal": "série temporal a cada 5 anos (1985-2020) + ano mais recente (2024)",
+   "data_acesso": "2026-07-28",
+   "selo": "conferido",
+   "dimensoes": "Território · Mapa",
+   "telas": "territorio",
+   "produtos": "uso-solo_mapbiomas_atual_todas-classes uso-solo_mapbiomas_serie_classes",
+   "camadas": "uso-solo/",
+   "downloads_camadas": null
+  },
+  {
+   "tema": "mdt_terreno",
+   "fonte": "ANADEM (HGE/IPH-UFRGS + ANA)",
+   "tipo": "raster",
+   "licenca": "MIT (código); dado aberto",
+   "resolucao_espacial": "30m (nativa; ~27,4m após reprojeção UTM)",
+   "resolucao_temporal": "estático (v1.0, 2024-02-20)",
+   "data_acesso": "2026-08-07",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "terreno/",
+   "downloads_camadas": null
+  },
+  {
+   "tema": "bacias_hidrograficas",
+   "fonte": "ANA — Base Hidrográfica Ottocodificada Multiescalas 6 (BHO 6)",
+   "tipo": "vetor",
+   "licenca": "dados abertos (acesso livre)",
+   "resolucao_espacial": "ottobacias (área de contribuição), níveis Otto Pfafstetter 1 a 7 (7 = mais fino)",
+   "resolucao_temporal": "estático (versão 6.2.4, publicada 2022-10-20)",
+   "data_acesso": "2026-08-07",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "bacias/",
+   "downloads_camadas": null
+  },
+  {
+   "tema": "cotas_inundacao",
+   "fonte": "SGB (Serviço Geológico do Brasil)",
+   "tipo": "vetor",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "seção/estação Uruguaiana",
+   "resolucao_temporal": "estático",
+   "data_acesso": "2026-07-27",
+   "selo": "em_confirmacao",
+   "dimensoes": "Cheia e saúde · Mapa",
+   "telas": "cheia-saude",
+   "produtos": "inundacao_sgb_cotas inundacao_sgb_unidades-cotas",
+   "camadas": "cotas-inundacao estatisticas-por-cota",
+   "downloads_camadas": "data/geoportal/cotas-inundacao.geojson"
+  },
+  {
+   "tema": "malha_viaria",
+   "fonte": "OpenStreetMap (via osmnx/Overpass API)",
+   "tipo": "vetor",
+   "licenca": "ODbL",
+   "resolucao_espacial": "variável (mapeamento colaborativo)",
+   "resolucao_temporal": "contínuo (dado vivo)",
+   "data_acesso": "2026-07-27",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "malha-viaria",
+   "downloads_camadas": "data/geoportal/malha-viaria.geojson"
+  },
+  {
+   "tema": "clima_inmet",
+   "fonte": "INMET (estações automáticas + portal de dados históricos)",
+   "tipo": "vetor (estações) + tabular (série horária)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "pontual (estação A809, Uruguaiana)",
+   "resolucao_temporal": "horária",
+   "data_acesso": "2026-07-27",
+   "selo": "conferido",
+   "dimensoes": "Clima · Mapa",
+   "telas": "clima",
+   "produtos": "clima_inmet-a809_serie_anual clima_tabela_serie_anual",
+   "camadas": "estacoes-clima",
+   "downloads_camadas": "data/geoportal/estacoes-clima.geojson"
+  },
+  {
+   "tema": "setores_censitarios",
+   "fonte": "IBGE (Malha de Setores Censitários — Divisões Intramunicipais)",
+   "tipo": "vetor",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "setor censitário",
+   "resolucao_temporal": "estático (Censo 2022)",
+   "data_acesso": "2026-07-27",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "densidade-populacional criancas-0-4 idosos-60-mais",
+   "downloads_camadas": "data/geoportal/densidade-populacional.geojson data/geoportal/criancas-0-4.geojson data/geoportal/idosos-60-mais.geojson"
+  },
+  {
+   "tema": "vulnerabilidade_censo",
+   "fonte": "IBGE (Censo 2022: Agregados por Setores Censitários + API de Agregados/SIDRA)",
+   "tipo": "tabular (join por cd_setor com a malha de setores)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "setor censitário (renda/água/esgoto aproximados por município)",
+   "resolucao_temporal": "estático (Censo 2022)",
+   "data_acesso": "2026-07-27",
+   "selo": "conferido",
+   "dimensoes": "Economia · Mapa",
+   "telas": "economia",
+   "produtos": "censo_ibge_2022_situacao-setor",
+   "camadas": "criancas-0-4 idosos-60-mais indicadores-municipais",
+   "downloads_camadas": "data/geoportal/criancas-0-4.geojson data/geoportal/idosos-60-mais.geojson"
+  },
+  {
+   "tema": "saude_mortalidade_sim",
+   "fonte": "SIM (Sistema de Informação sobre Mortalidade) / DATASUS",
+   "tipo": "tabular",
+   "licenca": "dados abertos (microdados individuais)",
+   "resolucao_espacial": "municipal (não espacializado por bairro/setor)",
+   "resolucao_temporal": "anual",
+   "data_acesso": "2026-08-07",
+   "selo": "conferido",
+   "dimensoes": "Saúde",
+   "telas": "saude",
+   "produtos": "saude_sim-afogamento-enchente_serie_quinquenal saude_sim_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "saude_arboviroses_sinan",
+   "fonte": "SINAN (Sistema de Informação de Agravos de Notificação) / DATASUS",
+   "tipo": "tabular",
+   "licenca": "dados abertos (microdados individuais)",
+   "resolucao_espacial": "municipal (não espacializado)",
+   "resolucao_temporal": "mensal",
+   "data_acesso": "2026-08-07",
+   "selo": "conferido",
+   "dimensoes": "Saúde",
+   "telas": "saude",
+   "produtos": "saude_sinan_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "saude_internacoes_sih",
+   "fonte": "SIH (Sistema de Informação Hospitalar), grupo RD / DATASUS",
+   "tipo": "tabular",
+   "licenca": "dados abertos (microdados individuais)",
+   "resolucao_espacial": "municipal (não espacializado)",
+   "resolucao_temporal": "mensal",
+   "data_acesso": "2026-08-07",
+   "selo": "conferido",
+   "dimensoes": "Saúde",
+   "telas": "saude",
+   "produtos": "saude_sih_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "precipitacao_merge-inpe",
+   "fonte": "MERGE (CPTEC/INPE), grade diária agregada para total mensal — fonte padrão do script desde 2026-11-02; CHIRPS v2.0 (UCSB) opcional",
+   "tipo": "raster (extraído como série tabular)",
+   "licenca": "domínio público",
+   "resolucao_espacial": "~0,1° (~10 km, MERGE) — CHIRPS teria ~0,05° (~5,5 km) mas não foi usado (bloqueio persistente)",
+   "resolucao_temporal": "mensal",
+   "data_acesso": "2026-08-09",
+   "selo": "conferido",
+   "dimensoes": "Clima",
+   "telas": "clima",
+   "produtos": "clima_precipitacao-merge_serie_anual clima_precipitacao-merge_serie_mensal",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "focos_queimada_inpe",
+   "fonte": "INPE — Programa Queimadas (BDQUEIMADAS), dados abertos anuais",
+   "tipo": "vetor (pontual)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "pontual (foco de calor)",
+   "resolucao_temporal": "por detecção de satélite (agregado em arquivos anuais)",
+   "data_acesso": "2026-08-07",
+   "selo": "conferido",
+   "dimensoes": "Clima",
+   "telas": "clima",
+   "produtos": "clima_tabela_serie_anual queimadas_inpe_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "nivel_rio_ana",
+   "fonte": "ANA — estação telemétrica (operada por SGB-CPRM), Web Service legado telemetriaws1.ana.gov.br",
+   "tipo": "tabular (série temporal: telemetria de 15 min e série histórica diária)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "pontual (estação 77150000, Rio Uruguai, no próprio município)",
+   "resolucao_temporal": "~15 minutos (telemetria; baixada de 2024-04-01 a 2024-06-30, de 2024-10-01 a 2026-10-18 e de 2026-10-18 a 2026-11-02, última leitura com valor 2026-11-02 12:30); diária (série histórica, 1940–2026, com valor até 2026-05-31; abril de 2026 sem registro na fonte)",
+   "data_acesso": "2026-11-02",
+   "selo": "conferido",
+   "dimensoes": "Cheia e saúde · Clima",
+   "telas": "cheia-saude clima",
+   "produtos": "rio_ana-77150000_maximas-anuais rio_ana-77150000_telemetria-recente_diario rio_ana-77150000_ultima-leitura rio_ana-77150000_ultimos-365-dias_diario",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "risco_geologico_cprm",
+   "fonte": "CPRM/SGB — Carta de Suscetibilidade a Movimentos Gravitacionais de Massa e Inundações",
+   "tipo": "vetor (polígonos)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "municipal (mapeamento por polígono, não é malha regular)",
+   "resolucao_temporal": "estático (validado em campo em 2021)",
+   "data_acesso": "2026-08-07",
+   "selo": "conferido",
+   "dimensoes": "Riscos",
+   "telas": "riscos",
+   "produtos": "risco-geologico_cprm_2021_classe",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "saneamento_snis",
+   "fonte": "SNIS (Sistema Nacional de Informações sobre Saneamento) / Ministério das Cidades-MDR",
+   "tipo": "tabular",
+   "licenca": "dados abertos (com restrição de acesso ao arquivo bruto)",
+   "resolucao_espacial": "municipal",
+   "resolucao_temporal": "anual",
+   "data_acesso": "2026-08-07",
+   "selo": "conferido",
+   "dimensoes": "Riscos",
+   "telas": "riscos",
+   "produtos": "infraestrutura_indisponivel_atual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "aguas_subterraneas_siagas",
+   "fonte": "SGB/CPRM — SIAGAS (Sistema de Informações de Águas Subterrâneas)",
+   "tipo": "vetor (pontual)",
+   "licenca": "dados abertos (cadastro público)",
+   "resolucao_espacial": "pontual (poço)",
+   "resolucao_temporal": "atualização contínua (snapshot no acesso)",
+   "data_acesso": "2026-08-09",
+   "selo": "conferido",
+   "dimensoes": "Território · Mapa",
+   "telas": "territorio",
+   "produtos": "pocos_siagas_atual_aquifero",
+   "camadas": "pocos-agua-subterranea",
+   "downloads_camadas": "data/geoportal/pocos-agua-subterranea.geojson"
+  },
+  {
+   "tema": "vegetacao_nativa",
+   "fonte": "IBGE — Banco de Dados de Informações Ambientais (BDiA), tema Vegetação",
+   "tipo": "vetor (polígonos)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "escala 1:250.000",
+   "resolucao_temporal": "estático (mapeamento sistemático nacional)",
+   "data_acesso": "2026-08-09",
+   "selo": "conferido",
+   "dimensoes": "Território · Mapa",
+   "telas": "territorio",
+   "produtos": "meio-fisico_ibge-bdia_atual_classes",
+   "camadas": "vegetacao",
+   "downloads_camadas": "data/geoportal/vegetacao.geojson"
+  },
+  {
+   "tema": "app_hidrica_calculada",
+   "fonte": "Derivado — rede-hidrografica_ana-bho + vegetacao_ibge-bdia (largura do rio Uruguai) + uso-solo_mapbiomas 2024 (ocupação)",
+   "tipo": "vetor (polígonos, derivado) + tabular (ocupação por classe)",
+   "licenca": "derivado de dados abertos",
+   "resolucao_espacial": "faixa de APP por curso d'água (30m rede local; 200m rio Uruguai)",
+   "resolucao_temporal": "estático (calculado a partir da rede de drenagem atual + MapBiomas 2024)",
+   "data_acesso": null,
+   "selo": "conferido",
+   "dimensoes": "Território · Mapa",
+   "telas": "territorio",
+   "produtos": "app-hidrica_ana-bho-mapbiomas_atual_curso",
+   "camadas": "app-hidrica app-hidrica-ocupacao",
+   "downloads_camadas": "data/geoportal/app-hidrica.geojson"
+  },
+  {
+   "tema": "geologia",
+   "fonte": "IBGE — Banco de Dados de Informações Ambientais (BDiA), tema Geologia",
+   "tipo": "vetor (polígonos)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "escala 1:250.000",
+   "resolucao_temporal": "estático (mapeamento sistemático nacional)",
+   "data_acesso": "2026-08-09",
+   "selo": "conferido",
+   "dimensoes": "Território · Mapa",
+   "telas": "territorio",
+   "produtos": "meio-fisico_ibge-bdia_atual_classes",
+   "camadas": "geologia",
+   "downloads_camadas": "data/geoportal/geologia.geojson"
+  },
+  {
+   "tema": "geomorfologia",
+   "fonte": "IBGE — Banco de Dados de Informações Ambientais (BDiA), tema Geomorfologia",
+   "tipo": "vetor (polígonos)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "escala 1:250.000",
+   "resolucao_temporal": "estático (mapeamento sistemático nacional)",
+   "data_acesso": "2026-08-09",
+   "selo": "conferido",
+   "dimensoes": "Território · Mapa",
+   "telas": "territorio",
+   "produtos": "meio-fisico_ibge-bdia_atual_classes",
+   "camadas": "geomorfologia",
+   "downloads_camadas": "data/geoportal/geomorfologia.geojson"
+  },
+  {
+   "tema": "pedologia",
+   "fonte": "IBGE — Banco de Dados de Informações Ambientais (BDiA), tema Pedologia",
+   "tipo": "vetor (polígonos)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "escala 1:250.000",
+   "resolucao_temporal": "estático (mapeamento sistemático nacional)",
+   "data_acesso": "2026-08-09",
+   "selo": "conferido",
+   "dimensoes": "Território · Mapa",
+   "telas": "territorio",
+   "produtos": "meio-fisico_ibge-bdia_atual_classes",
+   "camadas": "pedologia",
+   "downloads_camadas": "data/geoportal/pedologia.geojson"
+  },
+  {
+   "tema": "demografia_censitaria",
+   "fonte": "IBGE — API SIDRA/Agregados (tabelas 200/202/9514/9923/6579/6706)",
+   "tipo": "tabular",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "municipal (agregado; não por setor censitário)",
+   "resolucao_temporal": "pontual nos anos de Censo (1970/1980/1991/2000/2010/2022) + anual entre censos (estimativas, 2001-2025 com lacunas em 2007/2010/2022/2023)",
+   "data_acesso": "2026-08-10",
+   "selo": "conferido",
+   "dimensoes": "População",
+   "telas": "populacao",
+   "produtos": "demografia_ibge_censos_piramides populacao_ibge_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "demografia_indicadores_derivados",
+   "fonte": "Derivado — SIDRA tabelas 200/202/9514/9923/6579 (Etapa B)",
+   "tipo": "tabular",
+   "licenca": "derivado de dados abertos",
+   "resolucao_espacial": "municipal",
+   "resolucao_temporal": "pontual nos 6 censos (série de população: também anual 2001-2025)",
+   "data_acesso": "2026-08-10",
+   "selo": "conferido",
+   "dimensoes": "População",
+   "telas": "populacao",
+   "produtos": "demografia_ibge_serie_indicadores populacao_ibge_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "setores_censitarios_historicos",
+   "fonte": "IBGE (Malha de Setores Censitários + Agregado por Setores, Censos 2000 e 2010)",
+   "tipo": "vetor + tabular (join por cd_setor)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "setor censitário",
+   "resolucao_temporal": "estático (Censos 2000 e 2010)",
+   "data_acesso": "2026-08-10",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "densidade-populacional-2010 densidade-populacional-2000",
+   "downloads_camadas": "data/geoportal/densidade-populacional-2010.geojson data/geoportal/densidade-populacional-2000.geojson"
+  },
+  {
+   "tema": "desastres_reconhecimentos_federais",
+   "fonte": "S2ID (Sistema Integrado de Informações sobre Desastres) / SEDEC-MIDR",
+   "tipo": "tabular",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "municipal (Código IBGE); baixado por UF e filtrado localmente",
+   "resolucao_temporal": "por evento (data do decreto/portaria), 2013-2026",
+   "data_acesso": "2026-08-11",
+   "selo": "conferido",
+   "dimensoes": "Riscos",
+   "telas": "riscos",
+   "produtos": "desastres_s2id_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "agropecuaria_pam_ppm",
+   "fonte": "IBGE — SIDRA (Produção Agrícola Municipal / Pesquisa da Pecuária Municipal)",
+   "tipo": "tabular",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "municipal (estimativa do IBGE — sem versão por setor censitário nem geolocalizada)",
+   "resolucao_temporal": "anual, 1974-2024 (série completa, sem lacunas)",
+   "data_acesso": "2026-08-11",
+   "selo": "conferido",
+   "dimensoes": "Economia",
+   "telas": "economia",
+   "produtos": "agropecuaria_ibge_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "estrutura_fundiaria_car",
+   "fonte": "CAR (Cadastro Ambiental Rural) / SICAR — SFB/MMA",
+   "tipo": "vetor (polígono)",
+   "licenca": "dados abertos (cadastro público)",
+   "resolucao_espacial": "imóvel rural individual",
+   "resolucao_temporal": "atualização contínua (snapshot no acesso)",
+   "data_acesso": "2026-08-11",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "estrutura-fundiaria",
+   "downloads_camadas": "data/geoportal/estrutura-fundiaria.geojson"
+  },
+  {
+   "tema": "idhm_atlas_brasil",
+   "fonte": "Atlas do Desenvolvimento Humano no Brasil — PNUD, Ipea, Fundação João Pinheiro",
+   "tipo": "tabular",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "municipal ÚNICO (sem abertura por setor censitário nem geolocalização)",
+   "resolucao_temporal": "pontual nos 3 Censos (1991, 2000, 2010) — sem versão 2022",
+   "data_acesso": "2026-08-11",
+   "selo": "conferido",
+   "dimensoes": "Economia",
+   "telas": "economia",
+   "produtos": "idhm_atlas_censos",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "assistencia_social_cadunico_bolsa_familia",
+   "fonte": "MDS — Cadastro Único e Programa Bolsa Família, via 'Relatório de Informações' (aplicacoes.mds.gov.br/sagi/RIv3)",
+   "tipo": "tabular",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "municipal (sem abertura por bairro/setor/faixa de renda nesta consulta)",
+   "resolucao_temporal": "CadÚnico: anual (dezembro) 2012-2026 + mês mais recente; Bolsa Família: só mês mais recente",
+   "data_acesso": "2026-08-11",
+   "selo": "conferido",
+   "dimensoes": "Economia",
+   "telas": "economia",
+   "produtos": "bolsa-familia_mds_atual_mes cadunico_mds_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "pib_municipal_ibge",
+   "fonte": "IBGE — SIDRA (Produto Interno Bruto dos Municípios, Referência 2010)",
+   "tipo": "tabular",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "municipal único (sem abertura por distrito/setor)",
+   "resolucao_temporal": "anual, 2002-2023 (PIB total); detalhamento por atividade econômica só até 2021",
+   "data_acesso": "2026-08-11",
+   "selo": "conferido",
+   "dimensoes": "Economia",
+   "telas": "economia",
+   "produtos": "despesas_siconfi_serie_anual pib_ibge_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "escolas_inep_censo_escolar",
+   "fonte": "INEP — Catálogo de Escolas (InepData/Oracle Analytics) + Microdados do Censo Escolar",
+   "tipo": "vetor (pontual)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "pontual (escola individual)",
+   "resolucao_temporal": "localização: retrato atual (sem filtro de ano); infraestrutura: Censo Escolar 2024",
+   "data_acesso": "2026-08-11",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "escolas-inep",
+   "downloads_camadas": "data/geoportal/escolas-inep.geojson"
+  },
+  {
+   "tema": "emprego_formal_rais_caged",
+   "fonte": "RAIS e Novo CAGED — Ministério do Trabalho e Emprego (MTE), via FTP público de microdados",
+   "tipo": "tabular",
+   "licenca": "dados abertos (microdados administrativos)",
+   "resolucao_espacial": "municipal único (sem geolocalização de estabelecimento na versão pública)",
+   "resolucao_temporal": "CAGED: mensal, 2020-01 a 2026-06 (Novo CAGED); RAIS: só o ano mais recente (2025, estoque em 31/12)",
+   "data_acesso": "2026-08-11",
+   "selo": "conferido",
+   "dimensoes": "Economia",
+   "telas": "economia",
+   "produtos": "emprego_caged_serie_mensal emprego_rais_atual_secao",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "cobertura_movel_anatel",
+   "fonte": "ANATEL — Painel de Dados de Infraestrutura, Cobertura da Telefonia Móvel",
+   "tipo": "tabular (pronto para join espacial)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "setor censitário (código IBGE 15 dígitos) x operadora — granularidade maior que a assumida originalmente (município)",
+   "resolucao_temporal": "trimestral, 2021-11 a 2026-06 (16 períodos)",
+   "data_acesso": "2026-08-11",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "cobertura-movel-anatel",
+   "downloads_camadas": "data/geoportal/cobertura-movel-anatel.geojson"
+  },
+  {
+   "tema": "continuidade_energia_aneel",
+   "fonte": "ANEEL — Dados Abertos, Indicadores Coletivos de Continuidade (DEC e FEC)",
+   "tipo": "tabular",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "conjunto de unidades consumidoras (unidade administrativa da distribuidora, mais fino que município — sem geometria publicada pela fonte)",
+   "resolucao_temporal": "mensal, 2000-2026",
+   "data_acesso": "2026-08-11",
+   "selo": "conferido",
+   "dimensoes": "Riscos",
+   "telas": "riscos",
+   "produtos": "energia_aneel_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "malha_viaria_federal_dnit",
+   "fonte": "DNIT — Sistema Nacional de Viação (SNV), base geométrica oficial das rodovias federais",
+   "tipo": "vetor (linha)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "trecho rodoviário federal (segmento entre marcos de km), recortado pela área de estudo",
+   "resolucao_temporal": "estático (versão 202607A, publicações periódicas — script sempre pega a mais recente)",
+   "data_acesso": "2026-08-11",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "malha-viaria-dnit",
+   "downloads_camadas": "data/geoportal/malha-viaria-dnit.geojson"
+  },
+  {
+   "tema": "malha_viaria_estadual_daer",
+   "fonte": "DAER-RS (Departamento Autônomo de Estradas de Rodagem do Rio Grande do Sul)",
+   "tipo": "vetor (indisponível)",
+   "licenca": "ver fonte",
+   "resolucao_espacial": "n/a — não baixado",
+   "resolucao_temporal": "n/a",
+   "data_acesso": "2026-08-11",
+   "selo": "conferido",
+   "dimensoes": "Riscos",
+   "telas": "riscos",
+   "produtos": "infraestrutura_indisponivel_atual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "despesas_municipais_por_funcao_siconfi",
+   "fonte": "SICONFI (Sistema de Informações Contábeis e Fiscais do Setor Público Brasileiro) — Secretaria do Tesouro Nacional, RREO-Anexo 02",
+   "tipo": "tabular",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "municipal ÚNICO — RREO não abre despesa por bairro/setor; indicador de contexto, sem camada espacial (mesmo padrão de PIB/PAM-PPM/IDHM/RAIS-CAGED)",
+   "resolucao_temporal": "bimestral acumulado, série anual 2015-2026 (2026 até bimestre 3/junho, publicação mais recente)",
+   "data_acesso": "2026-08-11",
+   "selo": "conferido",
+   "dimensoes": "Economia",
+   "telas": "economia",
+   "produtos": "despesas_siconfi_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "saude_unidades_esf_ubs_revisadas",
+   "fonte": "CNES (Ministério da Saúde), revisado e corrigido pela equipe do projeto com informações dos profissionais de saúde do município — versão 4, 2026",
+   "tipo": "vetor (pontos)",
+   "licenca": "ver fonte",
+   "resolucao_espacial": "pontual (estabelecimento)",
+   "resolucao_temporal": "versão 4, 2026 (estático)",
+   "data_acesso": "2026-10-02",
+   "selo": "em_confirmacao",
+   "dimensoes": "Cheia e saúde · Saúde · Mapa",
+   "telas": "cheia-saude saude",
+   "produtos": "inundacao_sgb_unidades-cotas saude_unidades-esf-ubs_atual",
+   "camadas": "unidades-saude-esf-ubs",
+   "downloads_camadas": "data/geoportal/unidades-saude-esf-ubs.geojson"
+  },
+  {
+   "tema": "setorizacao_risco_sgb",
+   "fonte": "SGB — setorização de risco (MapServer gestaoterritorial/risco, camada 0)",
+   "tipo": "vetor (polígonos)",
+   "licenca": "ver fonte",
+   "resolucao_espacial": "setor de risco (mapeamento de campo)",
+   "resolucao_temporal": "estático (data de cada setor no atributo data_setor)",
+   "data_acesso": "2026-10-03",
+   "selo": "conferido",
+   "dimensoes": "Riscos",
+   "telas": "riscos",
+   "produtos": "setorizacao-risco_sgb_2014_setor",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "populacao_areas_de_risco_ibge",
+   "fonte": "IBGE — População em áreas de risco no Brasil (2018), base territorial estatística de áreas de risco (BATER)",
+   "tipo": "vetor (polígonos)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "área de risco (BATER); população do Censo 2010",
+   "resolucao_temporal": "estático (publicação de 2018)",
+   "data_acesso": "2026-10-03",
+   "selo": "conferido",
+   "dimensoes": "Riscos",
+   "telas": "riscos",
+   "produtos": "areas-de-risco_ibge_2018_bater",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "bairros_ibge",
+   "fonte": "IBGE — Malha de Bairros do Censo Demográfico 2022 (Divisões Intramunicipais)",
+   "tipo": "vetor (polígonos)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "bairro",
+   "resolucao_temporal": "estático (Censo 2022)",
+   "data_acesso": "2026-10-04",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "bairros",
+   "downloads_camadas": "data/geoportal/bairros.geojson"
+  },
+  {
+   "tema": "areas_urbanizadas_ibge",
+   "fonte": "IBGE — Áreas Urbanizadas do Brasil 2019",
+   "tipo": "vetor (polígonos)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "polígono de área urbanizada",
+   "resolucao_temporal": "estático (referência 2019)",
+   "data_acesso": "2026-10-06",
+   "selo": "conferido",
+   "dimensoes": "Território",
+   "telas": "territorio",
+   "produtos": "areas-urbanizadas_ibge_2019_classe",
+   "camadas": null,
+   "downloads_camadas": null
+  },
+  {
+   "tema": "rede_hidrografica",
+   "fonte": "ANA — Base Hidrográfica Ottocodificada Multiescalas 6 (BHO 6), versão 6.2.4 (publicada em 2022-10-20); camadas curso_dagua, trecho_drenagem e ponto_drenagem",
+   "tipo": "vetor (linhas e pontos)",
+   "licenca": "dados abertos (acesso livre)",
+   "resolucao_espacial": "trecho e curso d'água ottocodificados; escala equivalente declarada na ficha de metadados: 1:100.000 (valor único para o conjunto); escala local: 1:50.000 — no Rio Grande do Sul a BHO 6 usa a hidrografia do mapeamento sistemático terrestre do Exército Brasileiro (Nota Técnica nº 5/2024/CCOGI/SHE da ANA, § 36, p. 9; a nota não cita a Região Hidrográfica do Uruguai pelo nome, a escala vem do estado)",
+   "resolucao_temporal": "estático (versão 6.2.4, publicada 2022-10-20)",
+   "data_acesso": "2026-08-07",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "rede-hidrografica",
+   "downloads_camadas": "data/geoportal/rede-hidrografica.geojson"
+  },
+  {
+   "tema": "densidade_edificacoes_250m",
+   "fonte": "Derivado: Overture Maps Foundation — tema buildings, release 2026-09-23.1 (conflação de Google Open Buildings, Microsoft ML Buildings e OpenStreetMap), agregado em grade de 250 m",
+   "tipo": "vetor (polígonos de grade), derivado",
+   "licenca": "ODbL 1.0 (base derivada de dados sob ODbL: OSM e Microsoft declaram ODbL-1.0 no campo sources do release; registros Google Open Buildings sem licença no campo sources, publicados pelo Google sob CC BY 4.0 e ODbL; redistribuição do agregado permitida com atribuição); atribuição: Edificações: Overture Maps Foundation (inclui © contribuidores do OpenStreetMap, Microsoft e Google)",
+   "resolucao_espacial": "célula de 250 m (6,25 ha), alinhada em EPSG:31981",
+   "resolucao_temporal": "estático (release 2026-09-23.1)",
+   "data_acesso": "2026-10-21",
+   "selo": null,
+   "dimensoes": "Mapa",
+   "telas": null,
+   "produtos": null,
+   "camadas": "densidade-edificacoes-250m",
+   "downloads_camadas": "data/geoportal/densidade-edificacoes-250m.geojson"
+  },
+  {
+   "tema": "precipitacao_merge-inpe_painel",
+   "fonte": "MERGE (CPTEC/INPE), com total anual e horas válidas da INMET A809 para comparação",
+   "tipo": "tabular (produto derivado)",
+   "licenca": "dados abertos",
+   "resolucao_espacial": "média de área com margem de 18 km em torno do município; CRS não se aplica",
+   "resolucao_temporal": "mensal e anual",
+   "data_acesso": "2026-11-01",
+   "selo": "conferido",
+   "dimensoes": "Clima",
+   "telas": "clima",
+   "produtos": "clima_precipitacao-merge_serie_anual clima_precipitacao-merge_serie_mensal clima_tabela_serie_anual",
+   "camadas": null,
+   "downloads_camadas": null
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+  "produto": "cadunico_mds_serie_anual.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/cadunico_mds_serie_anual.json",
+  "sha256_fonte": "dbffbd9c95d7b366d418a4592d15b500712ca933bb25ac5024bd9b05f1058282",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "ano",
+    "mes",
+    "rotulo",
+    "familias_cadastradas",
+    "taxa_atualizacao_pct"
+  ],
+  "n_linhas": 15,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:06Z"
+}

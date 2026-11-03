@@ -1,0 +1,21 @@
+{
+  "produto": "bolsa-familia_mds_atual_mes.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/bolsa-familia_mds_atual_mes.json",
+  "sha256_fonte": "0ad5b98bd8f3efd23bdcf264da6a9515d230a5b571e3dfe80664125bd629f3e1",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "mes_referencia",
+    "ano_referencia",
+    "familias_atendidas",
+    "pessoas_beneficiadas",
+    "investimento_total_reais",
+    "beneficio_medio_reais"
+  ],
+  "n_linhas": 1,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:06Z"
+}

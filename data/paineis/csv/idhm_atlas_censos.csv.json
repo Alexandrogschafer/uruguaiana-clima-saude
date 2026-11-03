@@ -1,0 +1,21 @@
+{
+  "produto": "idhm_atlas_censos.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/idhm_atlas_censos.json",
+  "sha256_fonte": "ed6a25bde11982207f0c06f6ddb985810e7cb9e7cfca7e41928924ede0b382a9",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "ano",
+    "idhm",
+    "idhm_brasil",
+    "idhm_renda",
+    "idhm_longevidade",
+    "idhm_educacao"
+  ],
+  "n_linhas": 3,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:06Z"
+}

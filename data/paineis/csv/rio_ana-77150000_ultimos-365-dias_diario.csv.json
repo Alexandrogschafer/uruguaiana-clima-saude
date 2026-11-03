@@ -1,0 +1,19 @@
+{
+  "produto": "rio_ana-77150000_ultimos-365-dias_diario.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/rio_ana-77150000_ultimos-365-dias_diario.json",
+  "sha256_fonte": "b42a7a8903f12eca5649130c2d10231ad97e23f9247df5ad3f3ed0c1f0b2cbe0",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "dia",
+    "nivel_medio_cm",
+    "vazao_media_m3s",
+    "n_leituras"
+  ],
+  "n_linhas": 365,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T15:40:28Z"
+}

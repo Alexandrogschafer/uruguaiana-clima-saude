@@ -1,0 +1,19 @@
+{
+  "produto": "infraestrutura_indisponivel_atual.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/infraestrutura_indisponivel_atual.json",
+  "sha256_fonte": "9d782482162aee60f95000e92617c9734e69940ee5e5178e423b6602e9a7ff6f",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "tema",
+    "fonte",
+    "situacao",
+    "motivo"
+  ],
+  "n_linhas": 2,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-02T13:24:50Z"
+}

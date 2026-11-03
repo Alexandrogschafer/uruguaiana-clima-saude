@@ -1,0 +1,18 @@
+{
+  "produto": "saude_sih_serie_anual.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/saude_sih_serie_anual.json",
+  "sha256_fonte": "399c73c2d7e0cd00a0b373062aa7c2e8ac86a224924cdaaed1648da1088bf3f6",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "ano",
+    "internacoes_total",
+    "internacoes_respiratorias"
+  ],
+  "n_linhas": 16,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:05Z"
+}

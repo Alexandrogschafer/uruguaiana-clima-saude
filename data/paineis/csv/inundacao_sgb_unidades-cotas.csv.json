@@ -1,0 +1,23 @@
+{
+  "produto": "inundacao_sgb_unidades-cotas.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/inundacao_sgb_unidades-cotas.json",
+  "sha256_fonte": "8d33fd93e21fa61f25ae3d8fb177ee5cc691054e50f1a4590473945ea6e55885",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "cnes",
+    "nome",
+    "classe",
+    "fora_das_comparacoes",
+    "dentro_833",
+    "dentro_952",
+    "dentro_1205",
+    "dentro_1252"
+  ],
+  "n_linhas": 22,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "em_confirmacao",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-02T14:11:27Z"
+}

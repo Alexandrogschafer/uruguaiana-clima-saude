@@ -1,0 +1,28 @@
+{
+  "produto": "catalogo_dados.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/catalogo_dados.json",
+  "sha256_fonte": "0e1d0104f5fe90181d118ff093fbc1cad5bda9bcb00331e0348c022328f0c8cc",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "tema",
+    "fonte",
+    "tipo",
+    "licenca",
+    "resolucao_espacial",
+    "resolucao_temporal",
+    "data_acesso",
+    "selo",
+    "dimensoes",
+    "telas",
+    "produtos",
+    "camadas",
+    "downloads_camadas"
+  ],
+  "n_linhas": 47,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "em_confirmacao",
+  "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
+  "data_processamento": "2026-11-03T18:03:08Z"
+}

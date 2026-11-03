@@ -1,0 +1,18 @@
+{
+  "produto": "app-hidrica_ana-bho-mapbiomas_atual_curso.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/app-hidrica_ana-bho-mapbiomas_atual_curso.json",
+  "sha256_fonte": "2224847473d56ae37b0f93379d55ac6111875a9a5324e6620b8506c7dd6e396a",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "curso",
+    "rotulo",
+    "area_km2"
+  ],
+  "n_linhas": 2,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:06Z"
+}

@@ -1,0 +1,24 @@
+{
+  "produto": "inundacao_sgb_cotas.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/inundacao_sgb_cotas.json",
+  "sha256_fonte": "8a2deda4b9223369a8009baf7f4add04e73aedf473aa427d993f4568b0542239",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "cota_cm",
+    "tr_anos_camada",
+    "tr_anos_documento",
+    "area_km2",
+    "area_no_municipio_km2",
+    "periodo_referencia",
+    "esf_ubs_dentro",
+    "imagem",
+    "alt"
+  ],
+  "n_linhas": 4,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "em_confirmacao",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-02T15:40:19Z"
+}

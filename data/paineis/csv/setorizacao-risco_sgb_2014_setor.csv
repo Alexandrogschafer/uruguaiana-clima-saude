@@ -1,0 +1,5 @@
+setor,local,tipologia,grau_risco,grau_vulnerabilidade,edificacoes,domicilios,pessoas
+RS_UR_SR_01_CPRM,Alexandre Zachia/N.Esperança,Inundação,Alto,Médio,730,1500,2920
+RS_UR_SR_02_CPRM,Bela Vista/Boa Vista,Inundação,Alto,Médio,240,457,960
+RS_UR_SR_03_CPRM,Mascarenhas de Moraes/Santana,Inundação,Alto,Alto,543,717,2173
+RS_UR_SR_04_CPRM,Joquei Clube/Cidade Nova,Inundação,Alto,Baixo,234,320,936

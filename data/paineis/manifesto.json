@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-03T17:58:32Z",
+ "gerado_em": "2026-11-03T18:03:08Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_serie_anual",
@@ -18,7 +18,8 @@
     "economia"
    ],
    "bytes": 11108,
-   "sha256": "52d3a6eedabf8a3732418602044366e4c590ae64f56cca21a8896b1cd2b5fff1"
+   "sha256": "52d3a6eedabf8a3732418602044366e4c590ae64f56cca21a8896b1cd2b5fff1",
+   "csv": "csv/agropecuaria_ibge_serie_anual.csv"
   },
   {
    "id": "app-hidrica_ana-bho-mapbiomas_atual_curso",
@@ -35,7 +36,8 @@
     "territorio"
    ],
    "bytes": 1643,
-   "sha256": "2224847473d56ae37b0f93379d55ac6111875a9a5324e6620b8506c7dd6e396a"
+   "sha256": "2224847473d56ae37b0f93379d55ac6111875a9a5324e6620b8506c7dd6e396a",
+   "csv": "csv/app-hidrica_ana-bho-mapbiomas_atual_curso.csv"
   },
   {
    "id": "areas-de-risco_ibge_2018_bater",
@@ -51,7 +53,8 @@
     "riscos"
    ],
    "bytes": 1670,
-   "sha256": "81cf5d6e6d7f7c0516fcacec0dd5438d456148dd1d4a0195a4a7a531d9738c39"
+   "sha256": "81cf5d6e6d7f7c0516fcacec0dd5438d456148dd1d4a0195a4a7a531d9738c39",
+   "csv": "csv/areas-de-risco_ibge_2018_bater.csv"
   },
   {
    "id": "areas-urbanizadas_ibge_2019_classe",
@@ -67,7 +70,8 @@
     "territorio"
    ],
    "bytes": 2040,
-   "sha256": "66aadf4f3978c86afb32ccdc2487729e52dec0318c4b4b9cd60b19f9bf28d7e4"
+   "sha256": "66aadf4f3978c86afb32ccdc2487729e52dec0318c4b4b9cd60b19f9bf28d7e4",
+   "csv": "csv/areas-urbanizadas_ibge_2019_classe.csv"
   },
   {
    "id": "bolsa-familia_mds_atual_mes",
@@ -84,7 +88,8 @@
     "economia"
    ],
    "bytes": 1655,
-   "sha256": "0ad5b98bd8f3efd23bdcf264da6a9515d230a5b571e3dfe80664125bd629f3e1"
+   "sha256": "0ad5b98bd8f3efd23bdcf264da6a9515d230a5b571e3dfe80664125bd629f3e1",
+   "csv": "csv/bolsa-familia_mds_atual_mes.csv"
   },
   {
    "id": "cadunico_mds_serie_anual",
@@ -101,7 +106,63 @@
     "economia"
    ],
    "bytes": 3313,
-   "sha256": "dbffbd9c95d7b366d418a4592d15b500712ca933bb25ac5024bd9b05f1058282"
+   "sha256": "dbffbd9c95d7b366d418a4592d15b500712ca933bb25ac5024bd9b05f1058282",
+   "csv": "csv/cadunico_mds_serie_anual.csv"
+  },
+  {
+   "id": "catalogo_dados",
+   "titulo": "Catálogo de dados: fontes dos produtos e das camadas publicados",
+   "ativos": [
+    "CA01",
+    "CA04",
+    "CA06",
+    "CA08",
+    "EV01",
+    "EV02",
+    "EV03",
+    "EV04",
+    "EV05",
+    "EV06",
+    "EV07",
+    "EV08",
+    "IF01",
+    "IF09",
+    "IF10",
+    "IN01",
+    "IN03",
+    "IN04",
+    "IN05",
+    "PD01",
+    "PD02",
+    "PD14",
+    "RD01",
+    "RD02",
+    "RD03",
+    "RD04",
+    "SA01",
+    "SA02",
+    "SA03",
+    "SA04",
+    "SA05",
+    "TB03",
+    "TB10",
+    "TB11",
+    "TB12",
+    "TB13",
+    "TB14",
+    "TB15",
+    "TB16"
+   ],
+   "selo": "em_confirmacao",
+   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
+   "dados_ate": "2026-11-02",
+   "gerado_em": "2026-11-03T18:03:08Z",
+   "telas": [
+    "catalogo"
+   ],
+   "bytes": 48710,
+   "sha256": "0e1d0104f5fe90181d118ff093fbc1cad5bda9bcb00331e0348c022328f0c8cc",
+   "csv": "csv/catalogo_dados.csv"
   },
   {
    "id": "censo_ibge_2022_situacao-setor",
@@ -118,7 +179,8 @@
     "economia"
    ],
    "bytes": 8110,
-   "sha256": "6a82d73765b8aeb95862eb314dc28c0737949a8c9c5fd9df14680dfa1d9be325"
+   "sha256": "6a82d73765b8aeb95862eb314dc28c0737949a8c9c5fd9df14680dfa1d9be325",
+   "csv": "csv/censo_ibge_2022_situacao-setor.csv"
   },
   {
    "id": "clima_inmet-a809_serie_anual",
@@ -135,7 +197,8 @@
     "clima"
    ],
    "bytes": 4508,
-   "sha256": "d045c0efff5237f93cf392c91d483d885d081a62c81154a527493cb896fbc5d4"
+   "sha256": "d045c0efff5237f93cf392c91d483d885d081a62c81154a527493cb896fbc5d4",
+   "csv": "csv/clima_inmet-a809_serie_anual.csv"
   },
   {
    "id": "clima_precipitacao-merge_serie_anual",
@@ -153,7 +216,8 @@
     "clima"
    ],
    "bytes": 5109,
-   "sha256": "2f4c2e33d82ce81f70dbfe5b14172a0e39c93ce93c7fe2df960674e690aab5d6"
+   "sha256": "2f4c2e33d82ce81f70dbfe5b14172a0e39c93ce93c7fe2df960674e690aab5d6",
+   "csv": "csv/clima_precipitacao-merge_serie_anual.csv"
   },
   {
    "id": "clima_precipitacao-merge_serie_mensal",
@@ -170,7 +234,8 @@
     "clima"
    ],
    "bytes": 13243,
-   "sha256": "89f973ced0ba686b630776b42374c2a6dc405dd8272b729feafbd8f1808c15e1"
+   "sha256": "89f973ced0ba686b630776b42374c2a6dc405dd8272b729feafbd8f1808c15e1",
+   "csv": "csv/clima_precipitacao-merge_serie_mensal.csv"
   },
   {
    "id": "clima_tabela_serie_anual",
@@ -189,7 +254,8 @@
     "clima"
    ],
    "bytes": 6183,
-   "sha256": "c9e8174d7192036525af25aa40a3160b7b55ba7c7ff27b30e911b5a36be12c39"
+   "sha256": "c9e8174d7192036525af25aa40a3160b7b55ba7c7ff27b30e911b5a36be12c39",
+   "csv": "csv/clima_tabela_serie_anual.csv"
   },
   {
    "id": "demografia_ibge_censos_piramides",
@@ -206,7 +272,8 @@
     "populacao"
    ],
    "bytes": 8381,
-   "sha256": "186673bd44f515ce94bee1caa4938a897b869ee9d59ab605070b9650ad0172bc"
+   "sha256": "186673bd44f515ce94bee1caa4938a897b869ee9d59ab605070b9650ad0172bc",
+   "csv": "csv/demografia_ibge_censos_piramides.csv"
   },
   {
    "id": "demografia_ibge_serie_indicadores",
@@ -223,7 +290,8 @@
     "populacao"
    ],
    "bytes": 4142,
-   "sha256": "cd86e061e836068a41195baff56a4ecdefe35457fadb0df4ae8f28814f6046e0"
+   "sha256": "cd86e061e836068a41195baff56a4ecdefe35457fadb0df4ae8f28814f6046e0",
+   "csv": "csv/demografia_ibge_serie_indicadores.csv"
   },
   {
    "id": "desastres_s2id_serie_anual",
@@ -240,7 +308,8 @@
     "riscos"
    ],
    "bytes": 7448,
-   "sha256": "8c6048316a2092f3f8b17740dbc8fab7ec96b88f67ed979885ede6f603392602"
+   "sha256": "8c6048316a2092f3f8b17740dbc8fab7ec96b88f67ed979885ede6f603392602",
+   "csv": "csv/desastres_s2id_serie_anual.csv"
   },
   {
    "id": "despesas_siconfi_serie_anual",
@@ -257,7 +326,8 @@
     "economia"
    ],
    "bytes": 4301,
-   "sha256": "d63dc41b0092864034faffb002710ec9617ed2cc8bb2c59814eb39b077c63bf9"
+   "sha256": "d63dc41b0092864034faffb002710ec9617ed2cc8bb2c59814eb39b077c63bf9",
+   "csv": "csv/despesas_siconfi_serie_anual.csv"
   },
   {
    "id": "emprego_caged_serie_mensal",
@@ -274,7 +344,8 @@
     "economia"
    ],
    "bytes": 12917,
-   "sha256": "ffb3ac865d95d978be14e3ebc10699bf6a505234f946555777bdee8c53e4557d"
+   "sha256": "ffb3ac865d95d978be14e3ebc10699bf6a505234f946555777bdee8c53e4557d",
+   "csv": "csv/emprego_caged_serie_mensal.csv"
   },
   {
    "id": "emprego_rais_atual_secao",
@@ -291,7 +362,8 @@
     "economia"
    ],
    "bytes": 3721,
-   "sha256": "cb8d5f2d4d157cdcd00aa66c38beeb4071062efbc316b0f2df5369f08180d02a"
+   "sha256": "cb8d5f2d4d157cdcd00aa66c38beeb4071062efbc316b0f2df5369f08180d02a",
+   "csv": "csv/emprego_rais_atual_secao.csv"
   },
   {
    "id": "energia_aneel_serie_anual",
@@ -308,7 +380,8 @@
     "riscos"
    ],
    "bytes": 5334,
-   "sha256": "bcb5cc156742a2d76d0af7e79e0c5080f69f37951754c9a60ed97e67c2cabd63"
+   "sha256": "bcb5cc156742a2d76d0af7e79e0c5080f69f37951754c9a60ed97e67c2cabd63",
+   "csv": "csv/energia_aneel_serie_anual.csv"
   },
   {
    "id": "idhm_atlas_censos",
@@ -325,7 +398,8 @@
     "economia"
    ],
    "bytes": 2495,
-   "sha256": "ed6a25bde11982207f0c06f6ddb985810e7cb9e7cfca7e41928924ede0b382a9"
+   "sha256": "ed6a25bde11982207f0c06f6ddb985810e7cb9e7cfca7e41928924ede0b382a9",
+   "csv": "csv/idhm_atlas_censos.csv"
   },
   {
    "id": "infraestrutura_indisponivel_atual",
@@ -342,7 +416,8 @@
     "riscos"
    ],
    "bytes": 1977,
-   "sha256": "9d782482162aee60f95000e92617c9734e69940ee5e5178e423b6602e9a7ff6f"
+   "sha256": "9d782482162aee60f95000e92617c9734e69940ee5e5178e423b6602e9a7ff6f",
+   "csv": "csv/infraestrutura_indisponivel_atual.csv"
   },
   {
    "id": "inicio_resumo",
@@ -370,12 +445,13 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2026-08-09",
-   "gerado_em": "2026-11-03T17:58:32Z",
+   "gerado_em": "2026-11-03T18:03:08Z",
    "telas": [
     "inicio"
    ],
-   "bytes": 11399,
-   "sha256": "6f55140a59f805c527c7f620634cb439a4b484d228ad8e3ba36dd9b418cfc6df"
+   "bytes": 11397,
+   "sha256": "db2891d33917ee52d320d5770efb9267e47086ee7488fc35d859a92a74e7aa36",
+   "csv": "csv/inicio_resumo.csv"
   },
   {
    "id": "inundacao_sgb_cotas",
@@ -394,7 +470,8 @@
     "cheia-saude"
    ],
    "bytes": 4804,
-   "sha256": "8a2deda4b9223369a8009baf7f4add04e73aedf473aa427d993f4568b0542239"
+   "sha256": "8a2deda4b9223369a8009baf7f4add04e73aedf473aa427d993f4568b0542239",
+   "csv": "csv/inundacao_sgb_cotas.csv"
   },
   {
    "id": "inundacao_sgb_unidades-cotas",
@@ -411,7 +488,8 @@
     "cheia-saude"
    ],
    "bytes": 6292,
-   "sha256": "8d33fd93e21fa61f25ae3d8fb177ee5cc691054e50f1a4590473945ea6e55885"
+   "sha256": "8d33fd93e21fa61f25ae3d8fb177ee5cc691054e50f1a4590473945ea6e55885",
+   "csv": "csv/inundacao_sgb_unidades-cotas.csv"
   },
   {
    "id": "meio-fisico_ibge-bdia_atual_classes",
@@ -430,7 +508,8 @@
     "territorio"
    ],
    "bytes": 6488,
-   "sha256": "0cf49e8507be54be2b7c066e465d3e64c9d87df6cc17c49f7f07f84fddb08439"
+   "sha256": "0cf49e8507be54be2b7c066e465d3e64c9d87df6cc17c49f7f07f84fddb08439",
+   "csv": "csv/meio-fisico_ibge-bdia_atual_classes.csv"
   },
   {
    "id": "pib_ibge_serie_anual",
@@ -447,7 +526,8 @@
     "economia"
    ],
    "bytes": 7092,
-   "sha256": "4fb788533a88552fae892e5866444e7a64a8be9de3844c12ad9e7ce2c8e1f7be"
+   "sha256": "4fb788533a88552fae892e5866444e7a64a8be9de3844c12ad9e7ce2c8e1f7be",
+   "csv": "csv/pib_ibge_serie_anual.csv"
   },
   {
    "id": "pocos_siagas_atual_aquifero",
@@ -463,7 +543,8 @@
     "territorio"
    ],
    "bytes": 1202,
-   "sha256": "408f145a88633dc3bdbfb43b9a88e42f60f115e73a3f3c045070034f152545ad"
+   "sha256": "408f145a88633dc3bdbfb43b9a88e42f60f115e73a3f3c045070034f152545ad",
+   "csv": "csv/pocos_siagas_atual_aquifero.csv"
   },
   {
    "id": "populacao_ibge_serie_anual",
@@ -480,7 +561,8 @@
     "populacao"
    ],
    "bytes": 7869,
-   "sha256": "af62fe4af4dac121cd50f09645a2d7cf755117f54d074bb9269c41d2a57ea92e"
+   "sha256": "af62fe4af4dac121cd50f09645a2d7cf755117f54d074bb9269c41d2a57ea92e",
+   "csv": "csv/populacao_ibge_serie_anual.csv"
   },
   {
    "id": "queimadas_inpe_serie_anual",
@@ -497,7 +579,8 @@
     "clima"
    ],
    "bytes": 1722,
-   "sha256": "6596995e6cb913467a9268827ed4c04579d792337869f824e499ba9760e98999"
+   "sha256": "6596995e6cb913467a9268827ed4c04579d792337869f824e499ba9760e98999",
+   "csv": "csv/queimadas_inpe_serie_anual.csv"
   },
   {
    "id": "rio_ana-77150000_maximas-anuais",
@@ -513,7 +596,8 @@
     "cheia-saude"
    ],
    "bytes": 13965,
-   "sha256": "b7ebd8648027ba4a8cbd5ed3be2456b1a2e86ac5834ecad06c81a18526e88e03"
+   "sha256": "b7ebd8648027ba4a8cbd5ed3be2456b1a2e86ac5834ecad06c81a18526e88e03",
+   "csv": "csv/rio_ana-77150000_maximas-anuais.csv"
   },
   {
    "id": "rio_ana-77150000_telemetria-recente_diario",
@@ -529,7 +613,8 @@
     "clima"
    ],
    "bytes": 79346,
-   "sha256": "37ee8dfb519d5a5ce59fb9a49ab6d3287de62b9e261613a7f5b466d7af90ad08"
+   "sha256": "37ee8dfb519d5a5ce59fb9a49ab6d3287de62b9e261613a7f5b466d7af90ad08",
+   "csv": "csv/rio_ana-77150000_telemetria-recente_diario.csv"
   },
   {
    "id": "rio_ana-77150000_ultima-leitura",
@@ -546,7 +631,8 @@
     "cheia-saude"
    ],
    "bytes": 1577,
-   "sha256": "1864f203a304a39c7bf0615751c89e36062eaef094ce273fa12f147bfac7aa8c"
+   "sha256": "1864f203a304a39c7bf0615751c89e36062eaef094ce273fa12f147bfac7aa8c",
+   "csv": "csv/rio_ana-77150000_ultima-leitura.csv"
   },
   {
    "id": "rio_ana-77150000_ultimos-365-dias_diario",
@@ -562,7 +648,8 @@
     "cheia-saude"
    ],
    "bytes": 42141,
-   "sha256": "b42a7a8903f12eca5649130c2d10231ad97e23f9247df5ad3f3ed0c1f0b2cbe0"
+   "sha256": "b42a7a8903f12eca5649130c2d10231ad97e23f9247df5ad3f3ed0c1f0b2cbe0",
+   "csv": "csv/rio_ana-77150000_ultimos-365-dias_diario.csv"
   },
   {
    "id": "risco-geologico_cprm_2021_classe",
@@ -578,7 +665,8 @@
     "riscos"
    ],
    "bytes": 2037,
-   "sha256": "c1ad0bf482e293c203b76f67853046f26d0d7d0619aca15d0fed00a3c7dd8ca7"
+   "sha256": "c1ad0bf482e293c203b76f67853046f26d0d7d0619aca15d0fed00a3c7dd8ca7",
+   "csv": "csv/risco-geologico_cprm_2021_classe.csv"
   },
   {
    "id": "saude_sih_serie_anual",
@@ -595,7 +683,8 @@
     "saude"
    ],
    "bytes": 2914,
-   "sha256": "399c73c2d7e0cd00a0b373062aa7c2e8ac86a224924cdaaed1648da1088bf3f6"
+   "sha256": "399c73c2d7e0cd00a0b373062aa7c2e8ac86a224924cdaaed1648da1088bf3f6",
+   "csv": "csv/saude_sih_serie_anual.csv"
   },
   {
    "id": "saude_sim-afogamento-enchente_serie_quinquenal",
@@ -612,7 +701,8 @@
     "saude"
    ],
    "bytes": 1801,
-   "sha256": "ba7f74fe780c86dad04c9dc21c5c7d8d03b0ece040cefef459e03fd8f792aad3"
+   "sha256": "ba7f74fe780c86dad04c9dc21c5c7d8d03b0ece040cefef459e03fd8f792aad3",
+   "csv": "csv/saude_sim-afogamento-enchente_serie_quinquenal.csv"
   },
   {
    "id": "saude_sim_serie_anual",
@@ -629,7 +719,8 @@
     "saude"
    ],
    "bytes": 2777,
-   "sha256": "3e0bb6a5606b8983b4e823fdd6cee6614e70c37f842e089ddf69ef95dd94b229"
+   "sha256": "3e0bb6a5606b8983b4e823fdd6cee6614e70c37f842e089ddf69ef95dd94b229",
+   "csv": "csv/saude_sim_serie_anual.csv"
   },
   {
    "id": "saude_sinan_serie_anual",
@@ -646,7 +737,8 @@
     "saude"
    ],
    "bytes": 3860,
-   "sha256": "494784dd22da93cc3b10b5a87f90a367596c049bf0fc2d91bbb9474241ba09f8"
+   "sha256": "494784dd22da93cc3b10b5a87f90a367596c049bf0fc2d91bbb9474241ba09f8",
+   "csv": "csv/saude_sinan_serie_anual.csv"
   },
   {
    "id": "saude_unidades-esf-ubs_atual",
@@ -664,7 +756,8 @@
     "saude"
    ],
    "bytes": 7787,
-   "sha256": "8152114af8cf92f4afd05a1b58aa94231aa0983e44d714a150369a1f3fdb9a70"
+   "sha256": "8152114af8cf92f4afd05a1b58aa94231aa0983e44d714a150369a1f3fdb9a70",
+   "csv": "csv/saude_unidades-esf-ubs_atual.csv"
   },
   {
    "id": "setorizacao-risco_sgb_2014_setor",
@@ -680,7 +773,8 @@
     "riscos"
    ],
    "bytes": 3274,
-   "sha256": "160bfa510043014263dbf09e13e129484be3f815f51a8b8ed228850803b5490e"
+   "sha256": "160bfa510043014263dbf09e13e129484be3f815f51a8b8ed228850803b5490e",
+   "csv": "csv/setorizacao-risco_sgb_2014_setor.csv"
   },
   {
    "id": "uso-solo_mapbiomas_atual_todas-classes",
@@ -697,7 +791,8 @@
     "territorio"
    ],
    "bytes": 2179,
-   "sha256": "193e3f39950d70d70515ccbc67d659d26175d4e3cffc07c6d70551a092d61e8f"
+   "sha256": "193e3f39950d70d70515ccbc67d659d26175d4e3cffc07c6d70551a092d61e8f",
+   "csv": "csv/uso-solo_mapbiomas_atual_todas-classes.csv"
   },
   {
    "id": "uso-solo_mapbiomas_serie_classes",
@@ -714,7 +809,8 @@
     "territorio"
    ],
    "bytes": 7526,
-   "sha256": "c41fb39dde9f02c82a61fd1d9d75cca6d58e29ddb8ead466ec62e37d147ca202"
+   "sha256": "c41fb39dde9f02c82a61fd1d9d75cca6d58e29ddb8ead466ec62e37d147ca202",
+   "csv": "csv/uso-solo_mapbiomas_serie_classes.csv"
   }
  ]
 }

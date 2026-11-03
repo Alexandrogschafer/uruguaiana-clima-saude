@@ -1,0 +1,21 @@
+{
+  "produto": "emprego_caged_serie_mensal.csv",
+  "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
+  "fonte": "data/paineis/emprego_caged_serie_mensal.json",
+  "sha256_fonte": "ffb3ac865d95d978be14e3ebc10699bf6a505234f946555777bdee8c53e4557d",
+  "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
+  "colunas": [
+    "competencia",
+    "rotulo",
+    "admissoes",
+    "desligamentos",
+    "saldo",
+    "saldo_acumulado"
+  ],
+  "n_linhas": 78,
+  "script": "scripts/paineis/exportar_csv.py",
+  "codigo_ibge": "4322400",
+  "selo": "conferido",
+  "autorizacao": "livre",
+  "data_processamento": "2026-11-03T16:33:06Z"
+}

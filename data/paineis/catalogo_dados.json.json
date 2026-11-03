@@ -1,0 +1,470 @@
+{
+  "produto": "catalogo_dados.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "data/catalogo_fontes.csv (linhas ligadas a produto ou camada publicados)",
+  "transformacao_aplicada": "linhas de catalogo_fontes.csv ligadas (config/catalogo_ligacao.csv) a produto ou camada publicados; sem observacao, url e script",
+  "entradas": [
+    {
+      "arquivo": "data/catalogo_fontes.csv",
+      "sha256": "465761e9f13ec9546567142a8ba869d74655a58d97ee21d992b3e96d6aba990f",
+      "bytes": 122022
+    },
+    {
+      "arquivo": "config/catalogo_ligacao.csv",
+      "sha256": "b552284d90fe6c5dd662b3fd3e777b3231298e9b26e852ebb4068d835cf822c4",
+      "bytes": 4533
+    },
+    {
+      "arquivo": "config/paineis_ativos.csv",
+      "sha256": "db420cff708800e35a11a568ee9e04dbde7b87945f582bdb1b13cd45ba176a28",
+      "bytes": 14480
+    },
+    {
+      "arquivo": "data/paineis/agropecuaria_ibge_serie_anual.json",
+      "sha256": "52d3a6eedabf8a3732418602044366e4c590ae64f56cca21a8896b1cd2b5fff1",
+      "bytes": 11108
+    },
+    {
+      "arquivo": "data/paineis/app-hidrica_ana-bho-mapbiomas_atual_curso.json",
+      "sha256": "2224847473d56ae37b0f93379d55ac6111875a9a5324e6620b8506c7dd6e396a",
+      "bytes": 1643
+    },
+    {
+      "arquivo": "data/paineis/areas-de-risco_ibge_2018_bater.json",
+      "sha256": "81cf5d6e6d7f7c0516fcacec0dd5438d456148dd1d4a0195a4a7a531d9738c39",
+      "bytes": 1670
+    },
+    {
+      "arquivo": "data/paineis/areas-urbanizadas_ibge_2019_classe.json",
+      "sha256": "66aadf4f3978c86afb32ccdc2487729e52dec0318c4b4b9cd60b19f9bf28d7e4",
+      "bytes": 2040
+    },
+    {
+      "arquivo": "data/paineis/bolsa-familia_mds_atual_mes.json",
+      "sha256": "0ad5b98bd8f3efd23bdcf264da6a9515d230a5b571e3dfe80664125bd629f3e1",
+      "bytes": 1655
+    },
+    {
+      "arquivo": "data/paineis/cadunico_mds_serie_anual.json",
+      "sha256": "dbffbd9c95d7b366d418a4592d15b500712ca933bb25ac5024bd9b05f1058282",
+      "bytes": 3313
+    },
+    {
+      "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json",
+      "sha256": "6a82d73765b8aeb95862eb314dc28c0737949a8c9c5fd9df14680dfa1d9be325",
+      "bytes": 8110
+    },
+    {
+      "arquivo": "data/paineis/clima_inmet-a809_serie_anual.json",
+      "sha256": "d045c0efff5237f93cf392c91d483d885d081a62c81154a527493cb896fbc5d4",
+      "bytes": 4508
+    },
+    {
+      "arquivo": "data/paineis/clima_precipitacao-merge_serie_anual.json",
+      "sha256": "2f4c2e33d82ce81f70dbfe5b14172a0e39c93ce93c7fe2df960674e690aab5d6",
+      "bytes": 5109
+    },
+    {
+      "arquivo": "data/paineis/clima_precipitacao-merge_serie_mensal.json",
+      "sha256": "89f973ced0ba686b630776b42374c2a6dc405dd8272b729feafbd8f1808c15e1",
+      "bytes": 13243
+    },
+    {
+      "arquivo": "data/paineis/clima_tabela_serie_anual.json",
+      "sha256": "c9e8174d7192036525af25aa40a3160b7b55ba7c7ff27b30e911b5a36be12c39",
+      "bytes": 6183
+    },
+    {
+      "arquivo": "data/paineis/demografia_ibge_censos_piramides.json",
+      "sha256": "186673bd44f515ce94bee1caa4938a897b869ee9d59ab605070b9650ad0172bc",
+      "bytes": 8381
+    },
+    {
+      "arquivo": "data/paineis/demografia_ibge_serie_indicadores.json",
+      "sha256": "cd86e061e836068a41195baff56a4ecdefe35457fadb0df4ae8f28814f6046e0",
+      "bytes": 4142
+    },
+    {
+      "arquivo": "data/paineis/desastres_s2id_serie_anual.json",
+      "sha256": "8c6048316a2092f3f8b17740dbc8fab7ec96b88f67ed979885ede6f603392602",
+      "bytes": 7448
+    },
+    {
+      "arquivo": "data/paineis/despesas_siconfi_serie_anual.json",
+      "sha256": "d63dc41b0092864034faffb002710ec9617ed2cc8bb2c59814eb39b077c63bf9",
+      "bytes": 4301
+    },
+    {
+      "arquivo": "data/paineis/emprego_caged_serie_mensal.json",
+      "sha256": "ffb3ac865d95d978be14e3ebc10699bf6a505234f946555777bdee8c53e4557d",
+      "bytes": 12917
+    },
+    {
+      "arquivo": "data/paineis/emprego_rais_atual_secao.json",
+      "sha256": "cb8d5f2d4d157cdcd00aa66c38beeb4071062efbc316b0f2df5369f08180d02a",
+      "bytes": 3721
+    },
+    {
+      "arquivo": "data/paineis/energia_aneel_serie_anual.json",
+      "sha256": "bcb5cc156742a2d76d0af7e79e0c5080f69f37951754c9a60ed97e67c2cabd63",
+      "bytes": 5334
+    },
+    {
+      "arquivo": "data/paineis/idhm_atlas_censos.json",
+      "sha256": "ed6a25bde11982207f0c06f6ddb985810e7cb9e7cfca7e41928924ede0b382a9",
+      "bytes": 2495
+    },
+    {
+      "arquivo": "data/paineis/infraestrutura_indisponivel_atual.json",
+      "sha256": "9d782482162aee60f95000e92617c9734e69940ee5e5178e423b6602e9a7ff6f",
+      "bytes": 1977
+    },
+    {
+      "arquivo": "data/paineis/inundacao_sgb_cotas.json",
+      "sha256": "8a2deda4b9223369a8009baf7f4add04e73aedf473aa427d993f4568b0542239",
+      "bytes": 4804
+    },
+    {
+      "arquivo": "data/paineis/inundacao_sgb_unidades-cotas.json",
+      "sha256": "8d33fd93e21fa61f25ae3d8fb177ee5cc691054e50f1a4590473945ea6e55885",
+      "bytes": 6292
+    },
+    {
+      "arquivo": "data/paineis/meio-fisico_ibge-bdia_atual_classes.json",
+      "sha256": "0cf49e8507be54be2b7c066e465d3e64c9d87df6cc17c49f7f07f84fddb08439",
+      "bytes": 6488
+    },
+    {
+      "arquivo": "data/paineis/pib_ibge_serie_anual.json",
+      "sha256": "4fb788533a88552fae892e5866444e7a64a8be9de3844c12ad9e7ce2c8e1f7be",
+      "bytes": 7092
+    },
+    {
+      "arquivo": "data/paineis/pocos_siagas_atual_aquifero.json",
+      "sha256": "408f145a88633dc3bdbfb43b9a88e42f60f115e73a3f3c045070034f152545ad",
+      "bytes": 1202
+    },
+    {
+      "arquivo": "data/paineis/populacao_ibge_serie_anual.json",
+      "sha256": "af62fe4af4dac121cd50f09645a2d7cf755117f54d074bb9269c41d2a57ea92e",
+      "bytes": 7869
+    },
+    {
+      "arquivo": "data/paineis/queimadas_inpe_serie_anual.json",
+      "sha256": "6596995e6cb913467a9268827ed4c04579d792337869f824e499ba9760e98999",
+      "bytes": 1722
+    },
+    {
+      "arquivo": "data/paineis/rio_ana-77150000_maximas-anuais.json",
+      "sha256": "b7ebd8648027ba4a8cbd5ed3be2456b1a2e86ac5834ecad06c81a18526e88e03",
+      "bytes": 13965
+    },
+    {
+      "arquivo": "data/paineis/rio_ana-77150000_telemetria-recente_diario.json",
+      "sha256": "37ee8dfb519d5a5ce59fb9a49ab6d3287de62b9e261613a7f5b466d7af90ad08",
+      "bytes": 79346
+    },
+    {
+      "arquivo": "data/paineis/rio_ana-77150000_ultima-leitura.json",
+      "sha256": "1864f203a304a39c7bf0615751c89e36062eaef094ce273fa12f147bfac7aa8c",
+      "bytes": 1577
+    },
+    {
+      "arquivo": "data/paineis/rio_ana-77150000_ultimos-365-dias_diario.json",
+      "sha256": "b42a7a8903f12eca5649130c2d10231ad97e23f9247df5ad3f3ed0c1f0b2cbe0",
+      "bytes": 42141
+    },
+    {
+      "arquivo": "data/paineis/risco-geologico_cprm_2021_classe.json",
+      "sha256": "c1ad0bf482e293c203b76f67853046f26d0d7d0619aca15d0fed00a3c7dd8ca7",
+      "bytes": 2037
+    },
+    {
+      "arquivo": "data/paineis/saude_sih_serie_anual.json",
+      "sha256": "399c73c2d7e0cd00a0b373062aa7c2e8ac86a224924cdaaed1648da1088bf3f6",
+      "bytes": 2914
+    },
+    {
+      "arquivo": "data/paineis/saude_sim-afogamento-enchente_serie_quinquenal.json",
+      "sha256": "ba7f74fe780c86dad04c9dc21c5c7d8d03b0ece040cefef459e03fd8f792aad3",
+      "bytes": 1801
+    },
+    {
+      "arquivo": "data/paineis/saude_sim_serie_anual.json",
+      "sha256": "3e0bb6a5606b8983b4e823fdd6cee6614e70c37f842e089ddf69ef95dd94b229",
+      "bytes": 2777
+    },
+    {
+      "arquivo": "data/paineis/saude_sinan_serie_anual.json",
+      "sha256": "494784dd22da93cc3b10b5a87f90a367596c049bf0fc2d91bbb9474241ba09f8",
+      "bytes": 3860
+    },
+    {
+      "arquivo": "data/paineis/saude_unidades-esf-ubs_atual.json",
+      "sha256": "8152114af8cf92f4afd05a1b58aa94231aa0983e44d714a150369a1f3fdb9a70",
+      "bytes": 7787
+    },
+    {
+      "arquivo": "data/paineis/setorizacao-risco_sgb_2014_setor.json",
+      "sha256": "160bfa510043014263dbf09e13e129484be3f815f51a8b8ed228850803b5490e",
+      "bytes": 3274
+    },
+    {
+      "arquivo": "data/paineis/uso-solo_mapbiomas_atual_todas-classes.json",
+      "sha256": "193e3f39950d70d70515ccbc67d659d26175d4e3cffc07c6d70551a092d61e8f",
+      "bytes": 2179
+    },
+    {
+      "arquivo": "data/paineis/uso-solo_mapbiomas_serie_classes.json",
+      "sha256": "c41fb39dde9f02c82a61fd1d9d75cca6d58e29ddb8ead466ec62e37d147ca202",
+      "bytes": 7526
+    },
+    {
+      "arquivo": "data/paineis/agropecuaria_ibge_serie_anual.json.json",
+      "sha256": "1e98cce0b849249925b2c8b9d4d55f494403589edea0feb3f0b346fb8e448e57",
+      "bytes": 1090
+    },
+    {
+      "arquivo": "data/paineis/app-hidrica_ana-bho-mapbiomas_atual_curso.json.json",
+      "sha256": "ce3bf100371cf05dbf6c24808944b13b79ef08eccaabee37c2c50647fe3fa934",
+      "bytes": 927
+    },
+    {
+      "arquivo": "data/paineis/areas-de-risco_ibge_2018_bater.json.json",
+      "sha256": "97d86c9d1797a1a73d683a46ccf55b698e26d137bbc8013dc1c0925797e5736b",
+      "bytes": 854
+    },
+    {
+      "arquivo": "data/paineis/areas-urbanizadas_ibge_2019_classe.json.json",
+      "sha256": "c071caa0d5be4f964f144097a00545c45eeb9b367b429a15853197760d4f066e",
+      "bytes": 712
+    },
+    {
+      "arquivo": "data/paineis/bolsa-familia_mds_atual_mes.json.json",
+      "sha256": "ea6932c85288e7062d0e0bd54afc76a24263592f52c5a7a6cea3449d8fcb2742",
+      "bytes": 816
+    },
+    {
+      "arquivo": "data/paineis/cadunico_mds_serie_anual.json.json",
+      "sha256": "a728025009fbbaef839482b9b49c1cc451373ce917191adcc1cadf45a86342bf",
+      "bytes": 843
+    },
+    {
+      "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json.json",
+      "sha256": "4768f0c0c2e1869dfdff2db0c5481a8653299171e3a86a40ad7aa7fa3188ea27",
+      "bytes": 929
+    },
+    {
+      "arquivo": "data/paineis/clima_inmet-a809_serie_anual.json.json",
+      "sha256": "49c7177ec1d18f7d3f6a831567011c34fb710c9e4416d977ec5d0ddbc8d853cb",
+      "bytes": 879
+    },
+    {
+      "arquivo": "data/paineis/clima_precipitacao-merge_serie_anual.json.json",
+      "sha256": "0b9a8e5739ac2e2e66e0a20498799770c872dabb654e74e7370ea8b73f829719",
+      "bytes": 1052
+    },
+    {
+      "arquivo": "data/paineis/clima_precipitacao-merge_serie_mensal.json.json",
+      "sha256": "a4c9bd264b79dd28913549484242b0dff2a1eeeed68561627fe859c404cfc8e8",
+      "bytes": 1041
+    },
+    {
+      "arquivo": "data/paineis/clima_tabela_serie_anual.json.json",
+      "sha256": "21285e2c6758a62a8ed697961cf25148f6c4dfb03ea79fd5f7c1353fed88c4f4",
+      "bytes": 1274
+    },
+    {
+      "arquivo": "data/paineis/demografia_ibge_censos_piramides.json.json",
+      "sha256": "7ca456f6d62c295bcb2395bf88e7010e276fe86c04647a51077aa6e334528c0c",
+      "bytes": 1226
+    },
+    {
+      "arquivo": "data/paineis/demografia_ibge_serie_indicadores.json.json",
+      "sha256": "1d7e28e707f6c9d87bb2156bee42fac4d2caf0ce56cbfdf2763dcaf91ab66f58",
+      "bytes": 960
+    },
+    {
+      "arquivo": "data/paineis/desastres_s2id_serie_anual.json.json",
+      "sha256": "0e0e63607a67b5ff995553a2314a43408afcc2c338acbe037d6a800ed257880a",
+      "bytes": 1052
+    },
+    {
+      "arquivo": "data/paineis/despesas_siconfi_serie_anual.json.json",
+      "sha256": "3946f44dd6451c3c5e675a30fced973b48551d856df418fe4ed6ef1fbad69675",
+      "bytes": 1318
+    },
+    {
+      "arquivo": "data/paineis/emprego_caged_serie_mensal.json.json",
+      "sha256": "840eccf697c7113d88bb6d80c728e96b7e4071b9d4d4535730cb7cada94b3323",
+      "bytes": 874
+    },
+    {
+      "arquivo": "data/paineis/emprego_rais_atual_secao.json.json",
+      "sha256": "2b735f8df09ab2114b6c54749e8f895b03cbee4854759a6f930ee0e0833fb30b",
+      "bytes": 1063
+    },
+    {
+      "arquivo": "data/paineis/energia_aneel_serie_anual.json.json",
+      "sha256": "60225119adcaaaf0c4d6f40f2846edd9e438ad8836f4799283a0a30bad11c5d0",
+      "bytes": 897
+    },
+    {
+      "arquivo": "data/paineis/idhm_atlas_censos.json.json",
+      "sha256": "58d48ae126e0df909c0ded8e37118615fc2fcaa1416d6990316d542717d6674a",
+      "bytes": 850
+    },
+    {
+      "arquivo": "data/paineis/infraestrutura_indisponivel_atual.json.json",
+      "sha256": "bc526a1e1fb19e38b07e8bf85b0e1763a5d71dab86428f58abb7e5ba0aca3218",
+      "bytes": 1017
+    },
+    {
+      "arquivo": "data/paineis/inundacao_sgb_cotas.json.json",
+      "sha256": "e4965c861bb243eef493ec6d83d7547da05af5665ea12f7d11495ff114911318",
+      "bytes": 1528
+    },
+    {
+      "arquivo": "data/paineis/inundacao_sgb_unidades-cotas.json.json",
+      "sha256": "82eefeb0c6520f22ee9072102883d64c4587c41fc9ad73b79d2de5194c1ad002",
+      "bytes": 1465
+    },
+    {
+      "arquivo": "data/paineis/meio-fisico_ibge-bdia_atual_classes.json.json",
+      "sha256": "21dd5aab49781dcb9dc323044e917a84b4f2fca1d7d060e21c4f8644761421f6",
+      "bytes": 1378
+    },
+    {
+      "arquivo": "data/paineis/pib_ibge_serie_anual.json.json",
+      "sha256": "b61570f561dfc54f4a2908e05fdecb1336224cff8061aef26bab47da444963c4",
+      "bytes": 1101
+    },
+    {
+      "arquivo": "data/paineis/pocos_siagas_atual_aquifero.json.json",
+      "sha256": "a87a8801950579df4cff32b3a875a73532baef012fe224db1b117b9c75646fd1",
+      "bytes": 738
+    },
+    {
+      "arquivo": "data/paineis/populacao_ibge_serie_anual.json.json",
+      "sha256": "e1787434edf123ad873277b4dfcb9862ebceef689360cbef06d272e5d5729f32",
+      "bytes": 1163
+    },
+    {
+      "arquivo": "data/paineis/queimadas_inpe_serie_anual.json.json",
+      "sha256": "3738f70dd2ba7ab85366840f25d0370bd82a89e3a9bfc92aa455e45bc196502c",
+      "bytes": 698
+    },
+    {
+      "arquivo": "data/paineis/rio_ana-77150000_maximas-anuais.json.json",
+      "sha256": "d14c568e6a8f329961d1abbfe155f0f7981f6b92555e70786fa2b97941918397",
+      "bytes": 949
+    },
+    {
+      "arquivo": "data/paineis/rio_ana-77150000_telemetria-recente_diario.json.json",
+      "sha256": "08c353995f07d747b8a7378f51ea3d549ca245258cbf4aee98bd3131834b64bd",
+      "bytes": 2545
+    },
+    {
+      "arquivo": "data/paineis/rio_ana-77150000_ultima-leitura.json.json",
+      "sha256": "e14f9f3c5e0ecadf8d9bac20785ecb2a33df28b89ebdd35ac6a0266cbf992bc7",
+      "bytes": 2133
+    },
+    {
+      "arquivo": "data/paineis/rio_ana-77150000_ultimos-365-dias_diario.json.json",
+      "sha256": "7db63c4317e0ed0968e2b568d2326b028ff3a668d307fbd03187a71e0e6ee8ed",
+      "bytes": 2293
+    },
+    {
+      "arquivo": "data/paineis/risco-geologico_cprm_2021_classe.json.json",
+      "sha256": "9d09cf44e9da34780e12b95fb9d2b635255e492f10ef66125f2ab0182335be23",
+      "bytes": 893
+    },
+    {
+      "arquivo": "data/paineis/saude_sih_serie_anual.json.json",
+      "sha256": "7bde18db7898157d6aee99347c2aea37903094497d2cbb15098a113eedf75c77",
+      "bytes": 1022
+    },
+    {
+      "arquivo": "data/paineis/saude_sim-afogamento-enchente_serie_quinquenal.json.json",
+      "sha256": "0ee15678915a4ea31be95db36fa75d6c9ff9992629a1e90d239f9033ac828039",
+      "bytes": 852
+    },
+    {
+      "arquivo": "data/paineis/saude_sim_serie_anual.json.json",
+      "sha256": "64e22cc3fecd3b24a21ba65424da2e55d1edc3794c5a4b7d37beb8e8798827b7",
+      "bytes": 1140
+    },
+    {
+      "arquivo": "data/paineis/saude_sinan_serie_anual.json.json",
+      "sha256": "7b18a96065d0721591241899aafc51c8b9640d03a8d1c97d136b590e06e8d4de",
+      "bytes": 1563
+    },
+    {
+      "arquivo": "data/paineis/saude_unidades-esf-ubs_atual.json.json",
+      "sha256": "4b38e1e1db608aebbd2a8fa072a39ccf2aadf683a89cd8e8a62e11634cf901e7",
+      "bytes": 1101
+    },
+    {
+      "arquivo": "data/paineis/setorizacao-risco_sgb_2014_setor.json.json",
+      "sha256": "b09f6e0898dcbb46e70c0073644cbe277f76b1605174ea85e48a20653f178b9d",
+      "bytes": 864
+    },
+    {
+      "arquivo": "data/paineis/uso-solo_mapbiomas_atual_todas-classes.json.json",
+      "sha256": "cac0a2ee458d87005b7eeb109344a14c3d221ba91a8f07e4d41a8bae2930164b",
+      "bytes": 709
+    },
+    {
+      "arquivo": "data/paineis/uso-solo_mapbiomas_serie_classes.json.json",
+      "sha256": "e7d26966f3251dd940a0bef2510dc37c25a72219d35a86f6864366924fcfb671",
+      "bytes": 730
+    }
+  ],
+  "script": "scripts/paineis/dados_catalogo.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "CA01",
+    "CA04",
+    "CA06",
+    "CA08",
+    "EV01",
+    "EV02",
+    "EV03",
+    "EV04",
+    "EV05",
+    "EV06",
+    "EV07",
+    "EV08",
+    "IF01",
+    "IF09",
+    "IF10",
+    "IN01",
+    "IN03",
+    "IN04",
+    "IN05",
+    "PD01",
+    "PD02",
+    "PD14",
+    "RD01",
+    "RD02",
+    "RD03",
+    "RD04",
+    "SA01",
+    "SA02",
+    "SA03",
+    "SA04",
+    "SA05",
+    "TB03",
+    "TB10",
+    "TB11",
+    "TB12",
+    "TB13",
+    "TB14",
+    "TB15",
+    "TB16"
+  ],
+  "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
+  "selo": "em_confirmacao",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T18:03:08Z"
+}

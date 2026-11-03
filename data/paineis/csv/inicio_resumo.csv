@@ -1,0 +1,21 @@
+dimensao,ordem,rotulo,prefixo,valor,unidade,sub,aviso,produto,fonte_curta,periodo,selo,dados_ate
+clima,1,Precipitação total · 2025,,1.255,mm,MERGE/INPE · média 2010–2024: 1.201 mm,,clima_precipitacao-merge_serie_anual,MERGE/INPE,2010–2025,conferido,2025-12-31
+clima,2,Dias de calor ≥35°C · 2025,,36,dias,recorde: 51 dias (2023),parcial: dados até 18/08/2025,clima_inmet-a809_serie_anual,INMET A809,2007–2025,conferido,2025-08-18
+clima,3,Focos de queimada · 2025,,311,focos,pico 2022: 404,,queimadas_inpe_serie_anual,INPE/BDQUEIMADAS,2010–2025,conferido,2025-12-31
+saude,1,Óbitos totais · 2024,,960,,dos quais 150 respiratórios,,saude_sim_serie_anual,SIM/DATASUS,2010–2024,conferido,2024-12-31
+saude,2,Internações respiratórias · 2025,,838,,"12,9% das internações",,saude_sih_serie_anual,SIH/DATASUS,2010–2025,conferido,2025-12-31
+saude,3,Notificações de dengue · 2025,,71,,2024: 421,2026 preliminar: 15,saude_sinan_serie_anual,SINAN/DATASUS,2010–2026,conferido,2026-08-02
+populacao,1,População (Censo 2022),,117.210,hab,"94,9% urbana",,populacao_ibge_serie_anual,IBGE,1970–2025,conferido,2025
+populacao,2,Taxa de crescimento 2010–2022,,"-0,6",%/ano,geométrica anual — população vem caindo,,populacao_ibge_serie_anual,IBGE,1970–2025,conferido,2025
+populacao,3,Índice de envelhecimento,,"83,9",,60+ por 100 crianças de 0-14 anos,,populacao_ibge_serie_anual,IBGE,1970–2025,conferido,2025
+territorio,1,Classe dominante,,2.573,km²,"Formação Campestre · 45,2% da área",,uso-solo_mapbiomas_serie_classes,MapBiomas,1985–2024,conferido,2024
+territorio,2,Natural remanescente,,"50,8",%,"2.890 km² — campestre, florestal, alagado, afloramento",,uso-solo_mapbiomas_serie_classes,MapBiomas,1985–2024,conferido,2024
+territorio,3,Poços de água subterrânea (SIAGAS),,340,poços,Serra Geral (178) e Guarani (73) são os aquíferos predominantes,,pocos_siagas_atual_aquifero,SIAGAS/CPRM,atual,conferido,2026-08-09
+economia,1,PIB per capita,R$ ,"29.505,1",,2022 · mais recente disponível,,pib_ibge_serie_anual,IBGE/SIDRA,2002–2023,conferido,2023
+economia,2,Renda média domiciliar per capita,R$ ,"1.566,2",,nível municipal (Censo 2022),,censo_ibge_2022_situacao-setor,"IBGE, Censo 2022",2022,conferido,2022
+economia,3,Famílias no CadÚnico,,21.162,,jul/26 · mais recente disponível,,cadunico_mds_serie_anual,MDS,2012–2026,conferido,2026-07
+riscos,1,Reconhecimentos federais,,17,,2014–2025 · Situação de Emergência ou Calamidade,,desastres_s2id_serie_anual,S2ID,2014–2025,conferido,2025
+riscos,2,Tipo mais frequente,,Inundação,,"7 de 17 (41,2%)",,desastres_s2id_serie_anual,S2ID,2014–2025,conferido,2025
+riscos,3,DEC — duração de interrupção,,"8,1 h",,2025 · acumulado no ano,,energia_aneel_serie_anual,ANEEL,2000–2026,conferido,2026
+cheia,1,Manchas de inundação do SGB,,4,cotas,"833, 952, 1.205 e 1.252 cm",,inundacao_sgb_cotas,SGB,2015–2023,em_confirmacao,2023
+cheia,2,Tempo de retorno,,"1,3 a 13,4",anos,da menor à maior cota,pessoas expostas e acesso: em conferência,inundacao_sgb_cotas,SGB,2015–2023,em_confirmacao,2023
