@@ -168,6 +168,38 @@ Para regerar tudo: `python scripts/paineis/gerar_todos.py` (idempotente; uma
 segunda execução não grava nada). `--forcar` regrava; `--so <id>` gera um
 produto.
 
+**Atualização das fontes e rótulos (rodada 121):**
+
+- Rótulos:
+  - **provisório:** dado que a fonte ainda revisa ou não consolida, como a
+    telemetria do rio ou os meses de outubro de 2026 em diante;
+  - **parcial:** ano incompleto;
+  - **preliminar:** arquivo preliminar da fonte, como o SIM e o SINAN do
+    PRELIM.
+- O ano preliminar ou parcial aparece com `*` e trecho tracejado nos
+  gráficos e nas tabelas. Os indicadores do topo e do início usam o último
+  ano fechado, e o preliminar ou parcial vai como aviso.
+- **Decisão C1.** Dado de `comum.PROVISORIO_DESDE` (2026-10) em diante só é
+  publicado marcado: `provisorio: true`, `provisorio_desde` ou aviso
+  `parcial` do ano. A regra `n` de `test_regras_publicas.py` confere, e o
+  `test_tela.js` confere o rótulo na tela.
+- **Bruto mais recente.** Cada coletor grava `data_acesso` no `.json` irmão
+  do bruto. O gerador escolhe o bruto pelo `data_acesso`
+  (`comum.bruto_mais_recente`); numa atualização, o anterior vai para
+  `data/raw/_substituidos/` (fora do git).
+- Opções novas dos coletores:
+  - `precipitacao_merge.py --ano-fim 2026 --mes-fim 2026-10 --continuar-de <csv anterior>`:
+    corta no último mês completo e baixa só os meses novos;
+  - `saude_sim_obitos.py --prelim-ate 2025`: os anos ainda não
+    consolidados vêm do PRELIM;
+  - `saude_sih_internacoes.py --ano-fim 2026`: ano parcial. No gerador, o
+    mês com total menor que 50% da média dos meses anteriores do ano fica
+    de fora;
+  - `queimadas_inpe_mensal.py --inicio AAAA-MM --mes-fim AAAA-MM`: CSV
+    mensal do INPE, lido por partes, sem guardar o arquivo nacional.
+    Usado só para conferir; 2026 não foi publicado (ver o catálogo);
+  - agropecuária, PIB e tabela 6579 leem o último ano em `/periodos`.
+
 **Ids estáveis (desde a rodada 120):** o id do produto (nome do JSON) não
 carrega o período. Convenção `{tema}_{fonte}_{serie|atual}_{resolucao}`:
 `serie` para série temporal que cresce a cada coleta (ex.:
