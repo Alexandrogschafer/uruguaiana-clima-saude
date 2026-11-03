@@ -221,22 +221,22 @@ const TELAS = {
   },
   territorio: {
     pagina: "dashboards/territorio.html", enderecoAntigo: "dashboards/painel-territorio.html",
-    produtos: { serie: "uso-solo_mapbiomas_serie_classes", classes: "uso-solo_mapbiomas_atual_todas-classes", meio: "meio-fisico_ibge-bdia_atual_classes",
+    // meio físico do BDiA fora da tela desde a rodada A5 (testesExtrasTerritorio confere que não volta)
+    produtos: { serie: "uso-solo_mapbiomas_serie_classes", classes: "uso-solo_mapbiomas_atual_todas-classes",
                 pocos: "pocos_siagas_atual_aquifero", app: "app-hidrica_ana-bho-mapbiomas_atual_curso", urb: "areas-urbanizadas_ibge_2019_classe" },
-    recolhiveis: ["det-uso", "det-meio"],
-    extras: async (browser, base, prod) => testePeriodoRecolhivel(browser, base, "dashboards/territorio.html", { "det-uso": true, "det-meio": false }),
+    recolhiveis: ["det-uso"],
+    extras: async (browser, base, prod) => [...await testePeriodoRecolhivel(browser, base, "dashboards/territorio.html", { "det-uso": true }),
+      ...await testesExtrasTerritorio(browser, base)],
     kpisCompletos: true,
     kpis: (p) => kpisTexto([...p.serie.meta.kpis_uso, ...p.serie.meta.kpis_meio]),
     graficos: (p) => {
-      const S = p.serie.dados, fs = p.serie.meta.fonte_curta, fm = p.meio.meta.fonte_curta;
+      const S = p.serie.dados, fs = p.serie.meta.fonte_curta;
       const uso = (classe, nome, fmt) => S.map((r) => [r.ano, [[fmt(r[classe]), `${nome} · ${fs}`]]]);
-      const tema = (t) => p.meio.dados.filter((r) => r.tema === t).map((r) => [r.rotulo, [[fmtInt(r.area_km2), `km² · ${fm}`]]]);
       return {
         campestre: uso("Formação Campestre", "Formação Campestre", fmtInt), arroz: uso("Arroz", "Arroz", fmtInt), urbano: uso("Área Urbanizada", "Área urbanizada", fmt1),
         mosaico: uso("Mosaico de Usos", "Mosaico de Usos", fmtInt), "outras-lavouras": uso("Outras Lavouras Temporárias", "Outras Lavouras Temporárias", fmtInt),
         florestal: uso("Formação Florestal", "Formação Florestal", fmtInt),
         "uso-solo-2024": p.classes.dados.map((r) => [r.classe, [[fmtInt(r.area_km2) + " km²", `km² · ${p.classes.meta.fonte_curta}`]]]),
-        geologia: tema("geologia"), geomorfologia: tema("geomorfologia"), "vegetacao-bdia": tema("vegetacao"), pedologia: tema("pedologia_grafico"),
         "pocos-aquifero": p.pocos.dados.map((r) => [r.aquifero, [[fmtInt(r.pocos), `poços · ${p.pocos.meta.fonte_curta}`]]]),
         "app-curso": p.app.dados.map((r) => [r.rotulo, [[fmtInt(r.area_km2) + " km²", `km² · ${p.app.meta.fonte_curta}`]]]),
         urbanizadas: p.urb.dados.map((r) => [r.tipo === r.densidade ? r.tipo : `${r.tipo} (${r.densidade.toLowerCase()})`, [[fmt1(r.area_km2) + " km²", `km² · ${p.urb.meta.fonte_curta}`]]]),
@@ -244,7 +244,6 @@ const TELAS = {
     },
     tabelas: (p) => ({
       tabelaUso: p.serie.dados.map((r) => [String(r.ano), fmt1(r["Formação Campestre"]), fmt1(r["Arroz"]), fmt1(r["Área Urbanizada"])]),
-      tabelaPedologia: p.meio.dados.filter((r) => r.tema === "pedologia").map((r) => [r.classe, fmt1(r.area_km2), fmtInt(r.n_feicoes)]),
     }),
   },
   economia: {
@@ -814,6 +813,35 @@ async function testesExtrasSaude(browser, base, prod) {
 }
 
 // ?periodo= válido abre os blocos recolhidos que ele afeta (a 390 px); os outros continuam fechados
+// Território sem o meio físico do BDiA (rodada A5): nenhum gráfico, tabela ou texto do BDiA na tela; o produto segue
+// gerado, no manifesto com telas vazio, no catálogo e com CSV
+const ID_BDIA = "meio-fisico_ibge-bdia_atual_classes";
+async function testesExtrasTerritorio(browser, base) {
+  const { ctx, page, erros } = await abrir(browser, base + "dashboards/territorio.html", {});
+  await page.waitForSelector("#dados-tela summary", { timeout: 10000 }).catch(() => null);  // "Dados desta tela" entra na busca
+  await page.evaluate(() => document.querySelectorAll("details").forEach((d) => { d.open = true; }));
+  const r = await page.evaluate(() => ({
+    graficos: ["geologia", "geomorfologia", "vegetacao-bdia", "pedologia"].filter((g) => document.getElementById(`chart-${g}`)),
+    tabela: !!document.getElementById("tabelaPedologia"), detMeio: !!document.getElementById("det-meio"),
+    // "vegetação nativa" fica de fora: a nota do uso do solo usa o termo para as classes naturais do MapBiomas
+    texto: (document.body.innerText.match(/BDiA|meio físico|geologia|geomorfologia|pedologia|vegetação \(BDiA\)/gi) || []),
+    titulo: document.querySelector(".masthead h1").textContent,
+  }));
+  // "meio físico" só no nome da tela (h1), enquanto o nome não mudar; BDiA e os quatro temas, em lugar nenhum
+  const noTexto = r.texto.filter((s) => /meio físico/i.test(s)).length - (r.titulo.match(/meio físico/gi) || []).length;
+  const outros = r.texto.filter((s) => !/meio físico/i.test(s));
+  const okTela = !r.graficos.length && !r.tabela && !r.detMeio && !outros.length && noTexto <= 0 && erros.length === 0;
+  const man = JSON.parse(fs.readFileSync(path.join(RAIZ, "data", "paineis", "manifesto.json"), "utf8")).produtos.find((x) => x.id === ID_BDIA);
+  const cat = JSON.parse(fs.readFileSync(path.join(RAIZ, "data", "paineis", "catalogo_dados.json"), "utf8"));
+  const okDados = !!man && Array.isArray(man.telas) && man.telas.length === 0 && !!man.csv && fs.existsSync(path.join(RAIZ, "data", "paineis", man.csv)) &&
+    !!cat.sobre_produtos[ID_BDIA] && cat.dados.some((x) => (x.produtos || "").split(" ").includes(ID_BDIA));
+  await ctx.close();
+  return [
+    { nome: "território sem meio físico do BDiA: nenhum gráfico, tabela nem texto do BDiA na tela", ok: okTela, detalhe: JSON.stringify({ ...r, erros }) },
+    { nome: "produto do BDiA segue gerado: manifesto com telas vazio, CSV, catálogo e \"Sobre este dado\"", ok: okDados, detalhe: JSON.stringify(man) },
+  ];
+}
+
 async function testePeriodoRecolhivel(browser, base, pagina, esperado) {
   const { ctx, page, erros } = await abrir(browser, `${base}${pagina}?periodo=2015-2020`, { largura: 390 });
   const alturaRecolhida = await page.evaluate(() => document.documentElement.scrollHeight);
