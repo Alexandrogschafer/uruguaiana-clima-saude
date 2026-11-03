@@ -64,7 +64,14 @@ function tituloEsperado(pagina) {
 // "geoportal" fora de caminho, arquivo e URL (tokens com / ou terminados em extensão de arquivo não contam)
 const semCaminhos = (s) => String(s || "").split(/\s+/).filter((w) => !/[/\\]|\.(geo)?json\b|\.html?\b|\.png\b|\.csv\b|\.js\b/i.test(w)).join(" ");
 const temGeoportal = (s) => /geoportal/i.test(semCaminhos(s));
+// nome da série = rótulo da coluna no produto (campo "rotulo" de colunas, rodada A6)
+const rotC = (pr, campo) => ((pr.meta.colunas || []).find((c) => c.nome === campo) || {}).rotulo;
 const dataBR = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ""); return m ? `${m[3]}/${m[2]}/${m[1]}` : iso || ""; };
+
+// colunas das séries com legenda na tela de economia, na ordem do gráfico
+const VAB = ["vab_servicos_pct", "vab_administracao_publica_pct", "vab_agropecuaria_pct", "vab_industria_pct"];
+const PAM = ["arroz_area_colhida_ha", "soja_area_colhida_ha"], PPM = ["bovino_cabecas", "ovino_cabecas"], CAGED = ["admissoes", "desligamentos"];
+const IDHM = ["idhm", "idhm_longevidade", "idhm_renda", "idhm_educacao"];
 
 // ------------------------------------------------------------------ telas
 const TELAS = {
@@ -127,6 +134,7 @@ const TELAS = {
       };
     },
     extras: async (browser, base, prod) => testesExtrasClima(browser, base, prod),
+    legendas: (p) => ({ comparacao: [p.precip.meta.fonte_curta, p.precip.meta.fonte_curta_comparacao] }),
   },
   saude: {
     pagina: "dashboards/saude.html",
@@ -147,9 +155,9 @@ const TELAS = {
       const arbo = (ag) => p.sinan.dados.map((r, i) => [rot(r), [[v("sinan", ag)(r, i), `notificações · ${fc("sinan")}`]]]);
       return {
         // rodada 121: ano preliminar (SIM) e parcial (SIH) com * no rótulo
-        obitos: p.sim.dados.map((r) => [r.preliminar ? `${r.ano}*` : r.ano, [[fmtInt(r.obitos_total), `Óbitos totais · ${fc("sim")}`], [fmtInt(r.obitos_respiratorios), `Óbitos por causas respiratórias · ${fc("sim")}`]]]),
+        obitos: p.sim.dados.map((r) => [r.preliminar ? `${r.ano}*` : r.ano, [[fmtInt(r.obitos_total), `${rotC(p.sim, "obitos_total")} · ${fc("sim")}`], [fmtInt(r.obitos_respiratorios), `${rotC(p.sim, "obitos_respiratorios")} · ${fc("sim")}`]]]),
         afogamento: p.afog.dados.map((r, i) => [r.periodo, [[v("afog", "obitos")(r, i), `óbitos · ${fc("afog")}`]]]),
-        sih: p.sih.dados.map((r) => [r.parcial ? `${r.ano}*` : r.ano, [[fmtInt(r.internacoes_total), `Internações totais · ${fc("sih")}`], [fmtInt(r.internacoes_respiratorias), `Internações respiratórias · ${fc("sih")}`]]]),
+        sih: p.sih.dados.map((r) => [r.parcial ? `${r.ano}*` : r.ano, [[fmtInt(r.internacoes_total), `${rotC(p.sih, "internacoes_total")} · ${fc("sih")}`], [fmtInt(r.internacoes_respiratorias), `${rotC(p.sih, "internacoes_respiratorias")} · ${fc("sih")}`]]]),
         dengue: arbo("dengue"), chik: arbo("chikungunya"), zika: arbo("zika"),
       };
     },
@@ -191,11 +199,14 @@ const TELAS = {
       };
     },
     extras: async (browser, base, prod) => testesExtrasSaude(browser, base, prod),
+    legendas: (p) => ({ obitos: ["obitos_total", "obitos_respiratorios"].map((c) => rotC(p.sim, c)), sih: ["internacoes_total", "internacoes_respiratorias"].map((c) => rotC(p.sih, c)) }),
   },
   populacao: {
     pagina: "dashboards/populacao.html", enderecoAntigo: "dashboards/painel-demografia.html",
     produtos: { serie: "populacao_ibge_serie_anual", ind: "demografia_ibge_serie_indicadores", pir: "demografia_ibge_censos_piramides" },
     recolhiveis: ["det-piramides"], extras: async (browser, base, prod) => testePeriodoRecolhivel(browser, base, "dashboards/populacao.html", { "det-piramides": false }),
+    legendas: (p) => Object.fromEntries([["urbano-rural", ["pct_urbano", "pct_rural"].map((c) => rotC(p.ind, c))],
+      ...[...new Set(p.pir.dados.map((r) => r.ano))].map((a) => [`piramide-${a}`, ["homens", "mulheres"].map((c) => rotC(p.pir, c))])]),
     kpisCompletos: true,
     kpis: (p) => kpisTexto(p.serie.meta.kpis),
     graficos: (p) => {
@@ -205,12 +216,12 @@ const TELAS = {
         populacao: p.serie.dados.map((r) => [r.ano, [[fmtInt(r.populacao), `População total · ${p.serie.meta.fonte_curta}`]]]),
         envelhecimento: tl("indice_envelhecimento", "Índice de envelhecimento", fmt1),
         dependencia: tl("razao_dependencia", "Razão de dependência", fmt1),
-        "urbano-rural": I.map((r) => [r.periodo, [[fmt1(r.pct_urbano) + "%", `Urbana · ${fi}`], [fmt1(r.pct_rural) + "%", `Rural · ${fi}`]]]),
+        "urbano-rural": I.map((r) => [r.periodo, [[fmt1(r.pct_urbano) + "%", `${rotC(p.ind, "pct_urbano")} · ${fi}`], [fmt1(r.pct_rural) + "%", `${rotC(p.ind, "pct_rural")} · ${fi}`]]]),
         "criancas-abs": tl("pop_0_4", "Crianças 0-4", fmtInt), "criancas-pct": tl("pct_pop_0_4", "Crianças 0-4 (%)", (v) => fmt1(v) + "%"),
         "idosos-abs": tl("pop_60_mais", "Idosos 60+", fmtInt), "idosos-pct": tl("pct_pop_60_mais", "Idosos 60+ (%)", (v) => fmt1(v) + "%"),
       };
       for (const ano of [...new Set(p.pir.dados.map((r) => r.ano))]) {
-        g[`piramide-${ano}`] = p.pir.dados.filter((r) => r.ano === ano).reverse().map((r) => [r.grupo_idade, [[fmtInt(r.homens), `Homens · ${fp}`], [fmtInt(r.mulheres), `Mulheres · ${fp}`]]]);
+        g[`piramide-${ano}`] = p.pir.dados.filter((r) => r.ano === ano).reverse().map((r) => [r.grupo_idade, [[fmtInt(r.homens), `${rotC(p.pir, "homens")} · ${fp}`], [fmtInt(r.mulheres), `${rotC(p.pir, "mulheres")} · ${fp}`]]]);
       }
       return g;
     },
@@ -261,16 +272,15 @@ const TELAS = {
       const sf = p.siconfi.dados.filter((r) => !r.parcial), sp = sf.filter((r) => r.saude_pct_pib !== null);
       const ser = (linhas, rot, defs) => linhas.map((r) => [rot(r), defs.map(([campo, nome, fmt, k]) => [fmt(r[campo]), `${nome} · ${f(k)}`])]);
       return {
-        "pop-situacao": p.censo.dados.map((r) => [r.situacao, [[fmtInt(r.populacao), `habitantes · ${f("censo")}`]]]),
         "pib-per-capita": ser(pc, (r) => r.ano, [["pib_per_capita", "PIB per capita", (v) => "R$ " + fmtInt(v), "pib"]]),
-        "pib-composicao": ser(cp, (r) => r.ano, [["vab_servicos_pct", "Serviços"], ["vab_administracao_publica_pct", "Adm. pública"], ["vab_agropecuaria_pct", "Agropecuária"], ["vab_industria_pct", "Indústria"]].map(([c, n]) => [c, n, (v) => fmt1(v) + "%", "pib"])),
-        "pam-area": ser(p.pam.dados, (r) => r.ano, [["arroz_area_colhida_ha", "Arroz", (v) => fmtInt(v) + " ha", "pam"], ["soja_area_colhida_ha", "Soja", (v) => fmtInt(v) + " ha", "pam"]]),
-        "ppm-rebanho": ser(p.pam.dados, (r) => r.ano, [["bovino_cabecas", "Bovino", fmtInt, "pam"], ["ovino_cabecas", "Ovino", fmtInt, "pam"]]),
-        "caged-fluxo": ser(p.caged.dados, (r) => r.rotulo, [["admissoes", "Admissões", fmtInt, "caged"], ["desligamentos", "Desligamentos", fmtInt, "caged"]]),
+        "pib-composicao": ser(cp, (r) => r.ano, VAB.map((c) => [c, rotC(p.pib, c), (v) => fmt1(v) + "%", "pib"])),
+        "pam-area": ser(p.pam.dados, (r) => r.ano, PAM.map((c) => [c, rotC(p.pam, c), (v) => fmtInt(v) + " ha", "pam"])),
+        "ppm-rebanho": ser(p.pam.dados, (r) => r.ano, PPM.map((c) => [c, rotC(p.pam, c), fmtInt, "pam"])),
+        "caged-fluxo": ser(p.caged.dados, (r) => r.rotulo, CAGED.map((c) => [c, rotC(p.caged, c), fmtInt, "caged"])),
         "caged-saldo": ser(p.caged.dados, (r) => r.rotulo, [["saldo_acumulado", "Saldo acumulado", fmtInt, "caged"]]),
         "rais-setor": p.rais.meta.grafico.map((r) => [r.rotulo, [[fmtInt(r.vinculos), `vínculos · ${f("rais")}`]]]),
-        "idhm-componentes": ser(p.idhm.dados, (r) => r.ano, [["idhm", "IDHM"], ["idhm_longevidade", "Longevidade"], ["idhm_renda", "Renda"], ["idhm_educacao", "Educação"]].map(([c, n]) => [c, n, fmt3, "idhm"])),
-        "idhm-brasil": ser(p.idhm.dados, (r) => r.ano, [["idhm", "Uruguaiana", fmt3, "idhm"], ["idhm_brasil", "Brasil", fmt3, "idhm"]]),
+        "idhm-componentes": ser(p.idhm.dados, (r) => r.ano, IDHM.map((c) => [c, rotC(p.idhm, c), fmt3, "idhm"])),
+        "idhm-brasil": ser(p.idhm.dados, (r) => r.ano, [["idhm", p.idhm.meta.nome_municipio, fmt3, "idhm"], ["idhm_brasil", rotC(p.idhm, "idhm_brasil"), fmt3, "idhm"]]),
         "cadunico-familias": ser(p.cadunico.dados, (r) => r.rotulo, [["familias_cadastradas", "Famílias cadastradas", fmtInt, "cadunico"]]),
         "cadunico-taxa": ser(p.cadunico.dados, (r) => r.rotulo, [["taxa_atualizacao_pct", "Taxa de atualização", (v) => fmt1(v) + "%", "cadunico"]]),
         "siconfi-saude-pc": ser(sf, (r) => r.ano, [["saude_per_capita_reais", "Saúde per capita", (v) => "R$ " + fmtInt(v), "siconfi"]]),
@@ -279,12 +289,16 @@ const TELAS = {
       };
     },
     tabelas: (p) => ({ tabelaRais: p.rais.dados.map((r) => [r.rotulo, fmtInt(r.vinculos), fmt1((100 * r.vinculos) / p.rais.meta.total) + "%"]) }),
+    legendas: (p) => ({ "pib-composicao": VAB.map((c) => rotC(p.pib, c)), "pam-area": PAM.map((c) => rotC(p.pam, c)), "ppm-rebanho": PPM.map((c) => rotC(p.pam, c)),
+      "caged-fluxo": CAGED.map((c) => rotC(p.caged, c)), "idhm-componentes": IDHM.map((c) => rotC(p.idhm, c)),
+      "idhm-brasil": [p.idhm.meta.nome_municipio, rotC(p.idhm, "idhm_brasil")] }),
   },
   riscos: {
     pagina: "dashboards/riscos.html",
     produtos: { s2id: "desastres_s2id_serie_anual", cprm: "risco-geologico_cprm_2021_classe", aneel: "energia_aneel_serie_anual",
                 setor: "setorizacao-risco_sgb_2014_setor", bater: "areas-de-risco_ibge_2018_bater", indisp: "infraestrutura_indisponivel_atual" },
     recolhiveis: ["det-setorizacao", "det-indisponivel"], extras: async (browser, base, prod) => testeSuprimidoSetor(browser, base, prod),
+    legendas: (p) => ({ "s2id-anual": p.s2id.meta.categorias }),
     kpisCompletos: true,
     kpis: (p) => kpisTexto([...p.s2id.meta.kpis_s2id, ...p.aneel.meta.kpis_aneel]),
     graficos: (p) => {
@@ -486,7 +500,7 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
     const svgNaN = Array.from(document.querySelectorAll("svg *")).filter((e) => Array.from(e.attributes).some((a) => /NaN|undefined/.test(a.value))).length;
     const texto = document.body.innerText;
     const folgas = {};
-    document.querySelectorAll('[id^="chart-"] svg').forEach((svg) => {
+    document.querySelectorAll('[id^="chart-"] svg.chart-svg').forEach((svg) => {
       const h = svg.dataset.alturaEixo ? +svg.dataset.alturaEixo : +svg.getAttribute("height");
       const cx = Array.from(svg.querySelectorAll("text.axis-label, text.axis-x")).filter((t) => Math.abs(+t.getAttribute("y") - (h - 6)) < 3)
         .map((t) => { const b = t.getBBox(); return [b.x, b.x + b.width]; }).sort((a, b) => a[0] - b[0]);
@@ -495,8 +509,27 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
       folgas[svg.parentElement.id.replace("chart-", "")] = cx.length > 1 ? +f.toFixed(1) : null;
     });
     const finais = {};
-    document.querySelectorAll('[id^="chart-"] svg').forEach((svg) => {
+    document.querySelectorAll('[id^="chart-"] svg.chart-svg').forEach((svg) => {
       finais[svg.parentElement.id.replace("chart-", "")] = Array.from(svg.querySelectorAll("text.end-label, text.bar-label")).map((t) => t.textContent);
+    });
+    // legenda comum (rodada A6): itens (nome e cor do traço) por gráfico; caixas dos rótulos finais por gráfico
+    const legendas = {};
+    document.querySelectorAll('[id^="chart-"] > .chart-legenda').forEach((l) => {
+      legendas[l.parentElement.id.replace("chart-", "")] = [...l.querySelectorAll(".legend-item")].map((it) => ({
+        nome: it.querySelector(".legend-nome").textContent, tracos: it.querySelectorAll("svg.legend-traco line").length }));
+    });
+    const sobreposicoes = [];
+    document.querySelectorAll('[id^="chart-"] svg.chart-svg').forEach((svg) => {
+      const g = svg.parentElement.id.replace("chart-", ""), area = svg.getBoundingClientRect();
+      const cx = [...svg.querySelectorAll("g.rotulo-final")].map((e) => ({ b: e.getBoundingClientRect(), t: e.textContent }));
+      for (let i = 0; i < cx.length; i++) {
+        const a = cx[i].b;
+        if (a.left < area.left - 0.5 || a.right > area.right + 0.5 || a.top < area.top - 0.5 || a.bottom > area.bottom + 0.5) sobreposicoes.push(`${g}: "${cx[i].t}" fora do gráfico`);
+        for (let j = i + 1; j < cx.length; j++) {
+          const b = cx[j].b;
+          if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) sobreposicoes.push(`${g}: "${cx[i].t}" sobre "${cx[j].t}"`);
+        }
+      }
     });
     const tabelas = {};
     document.querySelectorAll("table.data-table").forEach((t) => {
@@ -509,7 +542,7 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
       fundo: getComputedStyle(document.body).backgroundColor,
       kpis: Array.from(document.querySelectorAll(".kpi-value")).map((e) => e.textContent),
       kpisCompletos: Array.from(document.querySelectorAll(".kpi-tile")).map((e) => e.innerText.replace(/\s+/g, " ").trim()),
-      folgas, finais, tabelas,
+      folgas, finais, tabelas, legendas, sobreposicoes,
       rodape: document.getElementById("rodape-comum") ? document.getElementById("rodape-comum").innerText : "",
       textoTela: document.body.innerText,
       titulo: document.title,
@@ -558,6 +591,19 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
     const rod = r.rodape.split("\n").map((l) => l.trim()).filter(Boolean);
     if (rod[0] !== "Realização: ClimaPampa — PET-Saúde: Clima · Unipampa e Secretaria Municipal de Saúde de Uruguaiana" || !rod[1].startsWith("Fontes:") || !data.test(rod[rod.length - 1]) || /Outros painéis/.test(r.rodape))
       falhas.push(`rodapé: ${JSON.stringify(rod)}`);
+  }
+  // legenda comum (rodada A6): todo gráfico multissérie com legenda (tantos itens quanto séries, nomes do produto, traço em
+  // cada item) e nenhum gráfico de série única com legenda; rótulos finais sem sobreposição e dentro do gráfico
+  {
+    const esp = def.legendas ? def.legendas(prod) : {};
+    for (const [g, nomes] of Object.entries(esp)) {
+      const obt = r.legendas[g];
+      if (!obt) { falhas.push(`legenda ausente em ${g}`); continue; }
+      if (JSON.stringify(obt.map((x) => x.nome)) !== JSON.stringify(nomes)) falhas.push(`legenda ${g}: ${JSON.stringify(obt.map((x) => x.nome))} ≠ ${JSON.stringify(nomes)}`);
+      if (obt.some((x) => x.tracos !== 1)) falhas.push(`legenda ${g}: item sem traço`);
+    }
+    for (const g of Object.keys(r.legendas)) if (!(g in esp)) falhas.push(`legenda em gráfico sem legenda prevista: ${g}`);
+    r.sobreposicoes.forEach((s) => falhas.push(`rótulo final: ${s}`));
   }
   const modo = `${largura}px ${tema}`;
   if (r.svgNaN) falhas.push(`${r.svgNaN} atributos SVG com NaN/undefined`);
@@ -623,7 +669,7 @@ async function testeFalhaDeCarga(browser, base, def) {
   await page.route(`**/data/paineis/${alvo}.json`, (route) => route.fulfill({ status: 404, body: "" }));
   await page.goto(base + def.pagina, { waitUntil: "networkidle" });
   await page.waitForFunction(() => document.documentElement.dataset.pronto === "1", null, { timeout: 10000 });
-  const r = await page.evaluate(() => ({ erroBloco: document.querySelectorAll(".erro-bloco").length, svgs: document.querySelectorAll('[id^="chart-"] svg').length }));
+  const r = await page.evaluate(() => ({ erroBloco: document.querySelectorAll(".erro-bloco").length, svgs: document.querySelectorAll('[id^="chart-"] svg.chart-svg').length }));
   await ctx.close();
   return { ok: r.erroBloco > 0 && (r.svgs > 0 || !!def.semGraficos) && erros.length === 0, ...r, errosDePagina: erros.length };
 }
