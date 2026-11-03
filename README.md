@@ -361,3 +361,11 @@ python scripts/paineis/test_rio.py
 - `scripts/paineis/test_comum.py`: funções comuns dos geradores.
 - `scripts/paineis/test_rio.py`: trava da cheia em curso nos produtos do
   rio, com leituras simuladas.
+
+## Créditos
+
+- **Fonte tipográfica:** Plus Jakarta Sans — Copyright 2020 The Plus Jakarta
+  Sans Project Authors (https://github.com/tokotype/PlusJakartaSans), sob a
+  SIL Open Font License 1.1. Os arquivos e a licença estão em
+  `fonts/plus-jakarta-sans/` (`OFL.txt`) e são servidos do próprio
+  repositório, sem chamada a serviços externos de fontes.

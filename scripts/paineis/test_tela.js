@@ -23,7 +23,7 @@ const os = require("os");
 const { chromium } = require("playwright");
 
 const RAIZ = path.resolve(__dirname, "..", "..");
-const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png" };
+const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".woff2": "font/woff2" };
 const FUNDO_ESCURO = "rgb(11, 20, 20)";
 
 // Formatação igual à do painel (pt-BR), recalculada aqui a partir do JSON.
