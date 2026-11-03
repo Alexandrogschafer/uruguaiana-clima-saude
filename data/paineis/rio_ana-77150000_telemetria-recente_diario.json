@@ -1,0 +1,3672 @@
+{
+ "esquema": "climapampa-painel/1",
+ "id": "rio_ana-77150000_telemetria-recente_diario",
+ "codigo_ibge": "4322400",
+ "ativos": [
+  "IN05"
+ ],
+ "titulo": "Nível e vazão do rio: telemetria recente (provisória)",
+ "fonte_curta": "ANA 77150000",
+ "fonte": "ANA, telemetria da estação 77150000 (leituras de 15 em 15 minutos, não consolidadas)",
+ "unidade_espacial": "estação fluviométrica",
+ "unidade_medida": "cm; m³/s",
+ "periodo": {
+  "inicio": "2025-10-01",
+  "fim": "2026-11-02"
+ },
+ "dados_ate": "2026-11-02",
+ "autorizacao": "livre",
+ "selo": "conferido",
+ "avisos": [
+  {
+   "tipo": "preliminar",
+   "texto": "dados de telemetria, não consolidados"
+  },
+  {
+   "tipo": "metodo",
+   "texto": "não é dado em tempo real; atualizado em 02/11"
+  },
+  {
+   "tipo": "metodo",
+   "texto": "máxima e última leitura de cada dia, no fuso em que o serviço as devolve (não informado); dia sem leitura fica fora"
+  }
+ ],
+ "supressao": {
+  "limiar": 5,
+  "campos": [],
+  "suprimir_zero": false,
+  "n_suprimidos": 0,
+  "n_secundarios": 0
+ },
+ "suprimidos": [],
+ "gerado_em": "2026-11-03T15:45:21Z",
+ "script": "scripts/paineis/dados_rio.py",
+ "colunas": [
+  {
+   "nome": "dia",
+   "tipo": "texto"
+  },
+  {
+   "nome": "nivel_max_cm",
+   "tipo": "float"
+  },
+  {
+   "nome": "nivel_ultimo_cm",
+   "tipo": "float"
+  },
+  {
+   "nome": "vazao_max_m3s",
+   "tipo": "float"
+  },
+  {
+   "nome": "vazao_ultima_m3s",
+   "tipo": "float"
+  },
+  {
+   "nome": "hora_ultima",
+   "tipo": "texto"
+  },
+  {
+   "nome": "n_leituras",
+   "tipo": "int"
+  }
+ ],
+ "fonte_rodape": "Nível e vazão do rio — ANA, estação 77150000 (série histórica diária e telemetria de 15 em 15 minutos)",
+ "telas": [
+  "clima"
+ ],
+ "provisorio": true,
+ "fonte_tipo": "ANA telemetria",
+ "ultima_leitura": "2026-11-02 12:30",
+ "consolidado_ate": "2023-12-31",
+ "maxima_periodo": {
+  "nivel_cm": 1004.0,
+  "nivel_data_hora": "2026-10-16 14:45",
+  "vazao_m3s": 18203.2,
+  "vazao_data_hora": "2026-10-16 14:45"
+ },
+ "dados": [
+  {
+   "dia": "2025-10-01",
+   "nivel_max_cm": 757.0,
+   "nivel_ultimo_cm": 739.0,
+   "vazao_max_m3s": 11113.2,
+   "vazao_ultima_m3s": 10675.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-02",
+   "nivel_max_cm": 739.0,
+   "nivel_ultimo_cm": 727.0,
+   "vazao_max_m3s": 10675.4,
+   "vazao_ultima_m3s": 10387.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-03",
+   "nivel_max_cm": 727.0,
+   "nivel_ultimo_cm": 710.0,
+   "vazao_max_m3s": 10387.7,
+   "vazao_ultima_m3s": 9985.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-04",
+   "nivel_max_cm": 711.0,
+   "nivel_ultimo_cm": 703.0,
+   "vazao_max_m3s": 10009.4,
+   "vazao_ultima_m3s": 9822.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-05",
+   "nivel_max_cm": 703.0,
+   "nivel_ultimo_cm": 703.0,
+   "vazao_max_m3s": 9822.5,
+   "vazao_ultima_m3s": 9822.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-06",
+   "nivel_max_cm": 701.0,
+   "nivel_ultimo_cm": 692.0,
+   "vazao_max_m3s": 9776.0,
+   "vazao_ultima_m3s": 9567.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-07",
+   "nivel_max_cm": 694.0,
+   "nivel_ultimo_cm": 687.0,
+   "vazao_max_m3s": 9614.0,
+   "vazao_ultima_m3s": 9453.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-08",
+   "nivel_max_cm": 687.0,
+   "nivel_ultimo_cm": 674.0,
+   "vazao_max_m3s": 9453.2,
+   "vazao_ultima_m3s": 9157.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-09",
+   "nivel_max_cm": 674.0,
+   "nivel_ultimo_cm": 668.0,
+   "vazao_max_m3s": 9157.6,
+   "vazao_ultima_m3s": 9022.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-10",
+   "nivel_max_cm": 668.0,
+   "nivel_ultimo_cm": 667.0,
+   "vazao_max_m3s": 9022.5,
+   "vazao_ultima_m3s": 9000.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-11",
+   "nivel_max_cm": 666.0,
+   "nivel_ultimo_cm": 652.0,
+   "vazao_max_m3s": 8977.7,
+   "vazao_ultima_m3s": 8666.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-12",
+   "nivel_max_cm": 651.0,
+   "nivel_ultimo_cm": 619.0,
+   "vazao_max_m3s": 8644.5,
+   "vazao_ultima_m3s": 7951.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-13",
+   "nivel_max_cm": 619.0,
+   "nivel_ultimo_cm": 604.0,
+   "vazao_max_m3s": 7951.7,
+   "vazao_ultima_m3s": 7635.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-14",
+   "nivel_max_cm": 604.0,
+   "nivel_ultimo_cm": 599.0,
+   "vazao_max_m3s": 7635.5,
+   "vazao_ultima_m3s": 7531.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-15",
+   "nivel_max_cm": 599.0,
+   "nivel_ultimo_cm": 585.0,
+   "vazao_max_m3s": 7531.4,
+   "vazao_ultima_m3s": 7242.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 78
+  },
+  {
+   "dia": "2025-10-16",
+   "nivel_max_cm": 587.0,
+   "nivel_ultimo_cm": 586.0,
+   "vazao_max_m3s": 7283.8,
+   "vazao_ultima_m3s": 7263.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-17",
+   "nivel_max_cm": 586.0,
+   "nivel_ultimo_cm": 571.0,
+   "vazao_max_m3s": 7263.4,
+   "vazao_ultima_m3s": 6959.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-18",
+   "nivel_max_cm": 569.0,
+   "nivel_ultimo_cm": 561.0,
+   "vazao_max_m3s": 6919.2,
+   "vazao_ultima_m3s": 6759.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-19",
+   "nivel_max_cm": 599.0,
+   "nivel_ultimo_cm": 599.0,
+   "vazao_max_m3s": 7531.4,
+   "vazao_ultima_m3s": 7531.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-20",
+   "nivel_max_cm": 651.0,
+   "nivel_ultimo_cm": 651.0,
+   "vazao_max_m3s": 8644.5,
+   "vazao_ultima_m3s": 8644.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-21",
+   "nivel_max_cm": 683.0,
+   "nivel_ultimo_cm": 683.0,
+   "vazao_max_m3s": 9361.8,
+   "vazao_ultima_m3s": 9361.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-22",
+   "nivel_max_cm": 685.0,
+   "nivel_ultimo_cm": 676.0,
+   "vazao_max_m3s": 9407.4,
+   "vazao_ultima_m3s": 9202.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-23",
+   "nivel_max_cm": 676.0,
+   "nivel_ultimo_cm": 635.0,
+   "vazao_max_m3s": 9202.8,
+   "vazao_ultima_m3s": 8295.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-24",
+   "nivel_max_cm": 635.0,
+   "nivel_ultimo_cm": 576.0,
+   "vazao_max_m3s": 8295.0,
+   "vazao_ultima_m3s": 7060.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-25",
+   "nivel_max_cm": 576.0,
+   "nivel_ultimo_cm": 532.0,
+   "vazao_max_m3s": 7060.1,
+   "vazao_ultima_m3s": 6195.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-26",
+   "nivel_max_cm": 532.0,
+   "nivel_ultimo_cm": 494.0,
+   "vazao_max_m3s": 6195.0,
+   "vazao_ultima_m3s": 5487.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-27",
+   "nivel_max_cm": 493.0,
+   "nivel_ultimo_cm": 464.0,
+   "vazao_max_m3s": 5468.9,
+   "vazao_ultima_m3s": 4954.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-28",
+   "nivel_max_cm": 465.0,
+   "nivel_ultimo_cm": 444.0,
+   "vazao_max_m3s": 4971.7,
+   "vazao_ultima_m3s": 4612.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-29",
+   "nivel_max_cm": 445.0,
+   "nivel_ultimo_cm": 437.0,
+   "vazao_max_m3s": 4629.0,
+   "vazao_ultima_m3s": 4494.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 92
+  },
+  {
+   "dia": "2025-10-30",
+   "nivel_max_cm": 443.0,
+   "nivel_ultimo_cm": 443.0,
+   "vazao_max_m3s": 4595.3,
+   "vazao_ultima_m3s": 4595.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-10-31",
+   "nivel_max_cm": 477.0,
+   "nivel_ultimo_cm": 477.0,
+   "vazao_max_m3s": 5182.3,
+   "vazao_ultima_m3s": 5182.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-01",
+   "nivel_max_cm": 508.0,
+   "nivel_ultimo_cm": 508.0,
+   "vazao_max_m3s": 5743.6,
+   "vazao_ultima_m3s": 5743.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-02",
+   "nivel_max_cm": 516.0,
+   "nivel_ultimo_cm": 515.0,
+   "vazao_max_m3s": 5892.4,
+   "vazao_ultima_m3s": 5873.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 92
+  },
+  {
+   "dia": "2025-11-03",
+   "nivel_max_cm": 515.0,
+   "nivel_ultimo_cm": 498.0,
+   "vazao_max_m3s": 5873.8,
+   "vazao_ultima_m3s": 5559.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-04",
+   "nivel_max_cm": 498.0,
+   "nivel_ultimo_cm": 470.0,
+   "vazao_max_m3s": 5559.9,
+   "vazao_ultima_m3s": 5059.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-05",
+   "nivel_max_cm": 470.0,
+   "nivel_ultimo_cm": 445.0,
+   "vazao_max_m3s": 5059.0,
+   "vazao_ultima_m3s": 4629.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-06",
+   "nivel_max_cm": 445.0,
+   "nivel_ultimo_cm": 431.0,
+   "vazao_max_m3s": 4629.0,
+   "vazao_ultima_m3s": 4395.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-07",
+   "nivel_max_cm": 435.0,
+   "nivel_ultimo_cm": 428.0,
+   "vazao_max_m3s": 4461.6,
+   "vazao_ultima_m3s": 4346.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-08",
+   "nivel_max_cm": 443.0,
+   "nivel_ultimo_cm": 443.0,
+   "vazao_max_m3s": 4595.3,
+   "vazao_ultima_m3s": 4595.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-09",
+   "nivel_max_cm": 484.0,
+   "nivel_ultimo_cm": 484.0,
+   "vazao_max_m3s": 5306.9,
+   "vazao_ultima_m3s": 5306.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-10",
+   "nivel_max_cm": 516.0,
+   "nivel_ultimo_cm": 516.0,
+   "vazao_max_m3s": 5892.4,
+   "vazao_ultima_m3s": 5892.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-11",
+   "nivel_max_cm": 534.0,
+   "nivel_ultimo_cm": 534.0,
+   "vazao_max_m3s": 6233.2,
+   "vazao_ultima_m3s": 6233.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-12",
+   "nivel_max_cm": 535.0,
+   "nivel_ultimo_cm": 528.0,
+   "vazao_max_m3s": 6252.4,
+   "vazao_ultima_m3s": 6118.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-13",
+   "nivel_max_cm": 528.0,
+   "nivel_ultimo_cm": 498.0,
+   "vazao_max_m3s": 6118.7,
+   "vazao_ultima_m3s": 5559.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-14",
+   "nivel_max_cm": 497.0,
+   "nivel_ultimo_cm": 455.0,
+   "vazao_max_m3s": 5541.6,
+   "vazao_ultima_m3s": 4799.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-15",
+   "nivel_max_cm": 455.0,
+   "nivel_ultimo_cm": 410.0,
+   "vazao_max_m3s": 4799.1,
+   "vazao_ultima_m3s": 4054.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-16",
+   "nivel_max_cm": 410.0,
+   "nivel_ultimo_cm": 392.0,
+   "vazao_max_m3s": 4054.6,
+   "vazao_ultima_m3s": 3772.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-17",
+   "nivel_max_cm": 394.0,
+   "nivel_ultimo_cm": 386.0,
+   "vazao_max_m3s": 3803.0,
+   "vazao_ultima_m3s": 3679.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-18",
+   "nivel_max_cm": 386.0,
+   "nivel_ultimo_cm": 383.0,
+   "vazao_max_m3s": 3679.7,
+   "vazao_ultima_m3s": 3634.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-19",
+   "nivel_max_cm": 389.0,
+   "nivel_ultimo_cm": 389.0,
+   "vazao_max_m3s": 3725.7,
+   "vazao_ultima_m3s": 3725.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-20",
+   "nivel_max_cm": 398.0,
+   "nivel_ultimo_cm": 398.0,
+   "vazao_max_m3s": 3865.2,
+   "vazao_ultima_m3s": 3865.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-21",
+   "nivel_max_cm": 404.0,
+   "nivel_ultimo_cm": 398.0,
+   "vazao_max_m3s": 3959.5,
+   "vazao_ultima_m3s": 3865.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-22",
+   "nivel_max_cm": 401.0,
+   "nivel_ultimo_cm": 394.0,
+   "vazao_max_m3s": 3912.2,
+   "vazao_ultima_m3s": 3803.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-23",
+   "nivel_max_cm": 395.0,
+   "nivel_ultimo_cm": 383.0,
+   "vazao_max_m3s": 3818.5,
+   "vazao_ultima_m3s": 3634.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-24",
+   "nivel_max_cm": 382.0,
+   "nivel_ultimo_cm": 369.0,
+   "vazao_max_m3s": 3618.8,
+   "vazao_ultima_m3s": 3423.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-25",
+   "nivel_max_cm": 369.0,
+   "nivel_ultimo_cm": 356.0,
+   "vazao_max_m3s": 3423.6,
+   "vazao_ultima_m3s": 3233.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-26",
+   "nivel_max_cm": 356.0,
+   "nivel_ultimo_cm": 339.0,
+   "vazao_max_m3s": 3233.1,
+   "vazao_ultima_m3s": 2991.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-27",
+   "nivel_max_cm": 339.0,
+   "nivel_ultimo_cm": 319.0,
+   "vazao_max_m3s": 2991.1,
+   "vazao_ultima_m3s": 2716.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-28",
+   "nivel_max_cm": 319.0,
+   "nivel_ultimo_cm": 297.0,
+   "vazao_max_m3s": 2716.7,
+   "vazao_ultima_m3s": 2449.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-29",
+   "nivel_max_cm": 297.0,
+   "nivel_ultimo_cm": 281.0,
+   "vazao_max_m3s": 2449.0,
+   "vazao_ultima_m3s": 2243.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-11-30",
+   "nivel_max_cm": 282.0,
+   "nivel_ultimo_cm": 277.0,
+   "vazao_max_m3s": 2255.8,
+   "vazao_ultima_m3s": 2192.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-01",
+   "nivel_max_cm": 280.0,
+   "nivel_ultimo_cm": 279.0,
+   "vazao_max_m3s": 2230.5,
+   "vazao_ultima_m3s": 2217.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-02",
+   "nivel_max_cm": 285.0,
+   "nivel_ultimo_cm": 283.0,
+   "vazao_max_m3s": 2293.9,
+   "vazao_ultima_m3s": 2268.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-03",
+   "nivel_max_cm": 287.0,
+   "nivel_ultimo_cm": 285.0,
+   "vazao_max_m3s": 2319.4,
+   "vazao_ultima_m3s": 2293.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-04",
+   "nivel_max_cm": 286.0,
+   "nivel_ultimo_cm": 286.0,
+   "vazao_max_m3s": 2306.6,
+   "vazao_ultima_m3s": 2306.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-05",
+   "nivel_max_cm": 294.0,
+   "nivel_ultimo_cm": 294.0,
+   "vazao_max_m3s": 2409.8,
+   "vazao_ultima_m3s": 2409.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 94
+  },
+  {
+   "dia": "2025-12-06",
+   "nivel_max_cm": 295.0,
+   "nivel_ultimo_cm": 295.0,
+   "vazao_max_m3s": 2422.9,
+   "vazao_ultima_m3s": 2422.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-07",
+   "nivel_max_cm": 295.0,
+   "nivel_ultimo_cm": 288.0,
+   "vazao_max_m3s": 2422.9,
+   "vazao_ultima_m3s": 2332.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-08",
+   "nivel_max_cm": 287.0,
+   "nivel_ultimo_cm": 279.0,
+   "vazao_max_m3s": 2319.4,
+   "vazao_ultima_m3s": 2217.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-09",
+   "nivel_max_cm": 280.0,
+   "nivel_ultimo_cm": 275.0,
+   "vazao_max_m3s": 2230.5,
+   "vazao_ultima_m3s": 2167.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-10",
+   "nivel_max_cm": 276.0,
+   "nivel_ultimo_cm": 268.0,
+   "vazao_max_m3s": 2180.4,
+   "vazao_ultima_m3s": 2081.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-11",
+   "nivel_max_cm": 272.0,
+   "nivel_ultimo_cm": 269.0,
+   "vazao_max_m3s": 2130.7,
+   "vazao_ultima_m3s": 2093.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-12",
+   "nivel_max_cm": 271.0,
+   "nivel_ultimo_cm": 271.0,
+   "vazao_max_m3s": 2118.4,
+   "vazao_ultima_m3s": 2118.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-13",
+   "nivel_max_cm": 278.0,
+   "nivel_ultimo_cm": 278.0,
+   "vazao_max_m3s": 2205.4,
+   "vazao_ultima_m3s": 2205.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-14",
+   "nivel_max_cm": 287.0,
+   "nivel_ultimo_cm": 286.0,
+   "vazao_max_m3s": 2319.4,
+   "vazao_ultima_m3s": 2306.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-15",
+   "nivel_max_cm": 295.0,
+   "nivel_ultimo_cm": 293.0,
+   "vazao_max_m3s": 2422.9,
+   "vazao_ultima_m3s": 2396.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-16",
+   "nivel_max_cm": 309.0,
+   "nivel_ultimo_cm": 309.0,
+   "vazao_max_m3s": 2583.7,
+   "vazao_ultima_m3s": 2583.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-17",
+   "nivel_max_cm": 316.0,
+   "nivel_ultimo_cm": 315.0,
+   "vazao_max_m3s": 2676.5,
+   "vazao_ultima_m3s": 2663.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-18",
+   "nivel_max_cm": 315.0,
+   "nivel_ultimo_cm": 311.0,
+   "vazao_max_m3s": 2663.2,
+   "vazao_ultima_m3s": 2610.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-19",
+   "nivel_max_cm": 311.0,
+   "nivel_ultimo_cm": 299.0,
+   "vazao_max_m3s": 2610.1,
+   "vazao_ultima_m3s": 2475.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-20",
+   "nivel_max_cm": 299.0,
+   "nivel_ultimo_cm": 292.0,
+   "vazao_max_m3s": 2475.3,
+   "vazao_ultima_m3s": 2383.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-21",
+   "nivel_max_cm": 301.0,
+   "nivel_ultimo_cm": 298.0,
+   "vazao_max_m3s": 2479.4,
+   "vazao_ultima_m3s": 2462.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-22",
+   "nivel_max_cm": 306.0,
+   "nivel_ultimo_cm": 306.0,
+   "vazao_max_m3s": 2544.4,
+   "vazao_ultima_m3s": 2544.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-23",
+   "nivel_max_cm": 331.0,
+   "nivel_ultimo_cm": 331.0,
+   "vazao_max_m3s": 2879.9,
+   "vazao_ultima_m3s": 2879.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-24",
+   "nivel_max_cm": 407.0,
+   "nivel_ultimo_cm": 407.0,
+   "vazao_max_m3s": 4006.9,
+   "vazao_ultima_m3s": 4006.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-25",
+   "nivel_max_cm": 481.0,
+   "nivel_ultimo_cm": 481.0,
+   "vazao_max_m3s": 5253.4,
+   "vazao_ultima_m3s": 5253.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-26",
+   "nivel_max_cm": 534.0,
+   "nivel_ultimo_cm": 534.0,
+   "vazao_max_m3s": 6233.2,
+   "vazao_ultima_m3s": 6233.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-27",
+   "nivel_max_cm": 580.0,
+   "nivel_ultimo_cm": 580.0,
+   "vazao_max_m3s": 7141.1,
+   "vazao_ultima_m3s": 7141.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-28",
+   "nivel_max_cm": 604.0,
+   "nivel_ultimo_cm": 604.0,
+   "vazao_max_m3s": 7635.5,
+   "vazao_ultima_m3s": 7635.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-29",
+   "nivel_max_cm": 613.0,
+   "nivel_ultimo_cm": 613.0,
+   "vazao_max_m3s": 7824.6,
+   "vazao_ultima_m3s": 7824.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 88
+  },
+  {
+   "dia": "2025-12-30",
+   "nivel_max_cm": 613.0,
+   "nivel_ultimo_cm": 612.0,
+   "vazao_max_m3s": 7824.6,
+   "vazao_ultima_m3s": 7803.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2025-12-31",
+   "nivel_max_cm": 621.0,
+   "nivel_ultimo_cm": 621.0,
+   "vazao_max_m3s": 7994.3,
+   "vazao_ultima_m3s": 7994.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-01",
+   "nivel_max_cm": 631.0,
+   "nivel_ultimo_cm": 631.0,
+   "vazao_max_m3s": 8208.6,
+   "vazao_ultima_m3s": 8208.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-02",
+   "nivel_max_cm": 631.0,
+   "nivel_ultimo_cm": 629.0,
+   "vazao_max_m3s": 8208.6,
+   "vazao_ultima_m3s": 8165.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-03",
+   "nivel_max_cm": 629.0,
+   "nivel_ultimo_cm": 629.0,
+   "vazao_max_m3s": 8165.5,
+   "vazao_ultima_m3s": 8165.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-04",
+   "nivel_max_cm": 663.0,
+   "nivel_ultimo_cm": 663.0,
+   "vazao_max_m3s": 8910.6,
+   "vazao_ultima_m3s": 8910.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-05",
+   "nivel_max_cm": 685.0,
+   "nivel_ultimo_cm": 685.0,
+   "vazao_max_m3s": 9407.4,
+   "vazao_ultima_m3s": 9407.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-06",
+   "nivel_max_cm": 686.0,
+   "nivel_ultimo_cm": 669.0,
+   "vazao_max_m3s": 9430.3,
+   "vazao_ultima_m3s": 9045.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-07",
+   "nivel_max_cm": 669.0,
+   "nivel_ultimo_cm": 620.0,
+   "vazao_max_m3s": 9045.0,
+   "vazao_ultima_m3s": 7973.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-08",
+   "nivel_max_cm": 619.0,
+   "nivel_ultimo_cm": 556.0,
+   "vazao_max_m3s": 7951.7,
+   "vazao_ultima_m3s": 6660.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-09",
+   "nivel_max_cm": 556.0,
+   "nivel_ultimo_cm": 513.0,
+   "vazao_max_m3s": 6660.9,
+   "vazao_ultima_m3s": 5836.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-10",
+   "nivel_max_cm": 513.0,
+   "nivel_ultimo_cm": 471.0,
+   "vazao_max_m3s": 5836.4,
+   "vazao_ultima_m3s": 5076.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-11",
+   "nivel_max_cm": 473.0,
+   "nivel_ultimo_cm": 437.0,
+   "vazao_max_m3s": 5111.7,
+   "vazao_ultima_m3s": 4494.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-12",
+   "nivel_max_cm": 437.0,
+   "nivel_ultimo_cm": 413.0,
+   "vazao_max_m3s": 4494.9,
+   "vazao_ultima_m3s": 4102.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-13",
+   "nivel_max_cm": 413.0,
+   "nivel_ultimo_cm": 399.0,
+   "vazao_max_m3s": 4102.6,
+   "vazao_ultima_m3s": 3880.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-14",
+   "nivel_max_cm": 399.0,
+   "nivel_ultimo_cm": 391.0,
+   "vazao_max_m3s": 3880.9,
+   "vazao_ultima_m3s": 3756.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-15",
+   "nivel_max_cm": 391.0,
+   "nivel_ultimo_cm": 376.0,
+   "vazao_max_m3s": 3756.6,
+   "vazao_ultima_m3s": 3528.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-16",
+   "nivel_max_cm": 378.0,
+   "nivel_ultimo_cm": 370.0,
+   "vazao_max_m3s": 3558.2,
+   "vazao_ultima_m3s": 3438.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-17",
+   "nivel_max_cm": 369.0,
+   "nivel_ultimo_cm": 363.0,
+   "vazao_max_m3s": 3423.6,
+   "vazao_ultima_m3s": 3335.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-18",
+   "nivel_max_cm": 363.0,
+   "nivel_ultimo_cm": 347.0,
+   "vazao_max_m3s": 3335.1,
+   "vazao_ultima_m3s": 3104.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-19",
+   "nivel_max_cm": 346.0,
+   "nivel_ultimo_cm": 337.0,
+   "vazao_max_m3s": 3089.8,
+   "vazao_ultima_m3s": 2963.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-20",
+   "nivel_max_cm": 338.0,
+   "nivel_ultimo_cm": 336.0,
+   "vazao_max_m3s": 2977.1,
+   "vazao_ultima_m3s": 2949.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-21",
+   "nivel_max_cm": 336.0,
+   "nivel_ultimo_cm": 330.0,
+   "vazao_max_m3s": 2949.2,
+   "vazao_ultima_m3s": 2866.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-22",
+   "nivel_max_cm": 331.0,
+   "nivel_ultimo_cm": 326.0,
+   "vazao_max_m3s": 2879.9,
+   "vazao_ultima_m3s": 2811.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 92
+  },
+  {
+   "dia": "2026-01-23",
+   "nivel_max_cm": 326.0,
+   "nivel_ultimo_cm": 317.0,
+   "vazao_max_m3s": 2811.4,
+   "vazao_ultima_m3s": 2689.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-24",
+   "nivel_max_cm": 317.0,
+   "nivel_ultimo_cm": 308.0,
+   "vazao_max_m3s": 2689.8,
+   "vazao_ultima_m3s": 2570.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-25",
+   "nivel_max_cm": 308.0,
+   "nivel_ultimo_cm": 294.0,
+   "vazao_max_m3s": 2570.6,
+   "vazao_ultima_m3s": 2409.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-26",
+   "nivel_max_cm": 294.0,
+   "nivel_ultimo_cm": 280.0,
+   "vazao_max_m3s": 2409.8,
+   "vazao_ultima_m3s": 2230.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-27",
+   "nivel_max_cm": 280.0,
+   "nivel_ultimo_cm": 263.0,
+   "vazao_max_m3s": 2230.5,
+   "vazao_ultima_m3s": 2020.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-28",
+   "nivel_max_cm": 265.0,
+   "nivel_ultimo_cm": 245.0,
+   "vazao_max_m3s": 2045.1,
+   "vazao_ultima_m3s": 1808.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-29",
+   "nivel_max_cm": 245.0,
+   "nivel_ultimo_cm": 231.0,
+   "vazao_max_m3s": 1808.7,
+   "vazao_ultima_m3s": 1650.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-30",
+   "nivel_max_cm": 231.0,
+   "nivel_ultimo_cm": 216.0,
+   "vazao_max_m3s": 1650.7,
+   "vazao_ultima_m3s": 1488.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-01-31",
+   "nivel_max_cm": 225.0,
+   "nivel_ultimo_cm": 225.0,
+   "vazao_max_m3s": 1584.8,
+   "vazao_ultima_m3s": 1584.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 92
+  },
+  {
+   "dia": "2026-02-01",
+   "nivel_max_cm": 239.0,
+   "nivel_ultimo_cm": 239.0,
+   "vazao_max_m3s": 1740.2,
+   "vazao_ultima_m3s": 1740.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-02",
+   "nivel_max_cm": 255.0,
+   "nivel_ultimo_cm": 255.0,
+   "vazao_max_m3s": 1925.3,
+   "vazao_ultima_m3s": 1925.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-03",
+   "nivel_max_cm": 257.0,
+   "nivel_ultimo_cm": 257.0,
+   "vazao_max_m3s": 1949.0,
+   "vazao_ultima_m3s": 1949.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 92
+  },
+  {
+   "dia": "2026-02-04",
+   "nivel_max_cm": 257.0,
+   "nivel_ultimo_cm": 249.0,
+   "vazao_max_m3s": 1949.0,
+   "vazao_ultima_m3s": 1854.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-05",
+   "nivel_max_cm": 248.0,
+   "nivel_ultimo_cm": 235.0,
+   "vazao_max_m3s": 1843.3,
+   "vazao_ultima_m3s": 1695.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-06",
+   "nivel_max_cm": 235.0,
+   "nivel_ultimo_cm": 222.0,
+   "vazao_max_m3s": 1695.2,
+   "vazao_ultima_m3s": 1552.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-07",
+   "nivel_max_cm": 222.0,
+   "nivel_ultimo_cm": 222.0,
+   "vazao_max_m3s": 1552.4,
+   "vazao_ultima_m3s": 1552.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-08",
+   "nivel_max_cm": 231.0,
+   "nivel_ultimo_cm": 231.0,
+   "vazao_max_m3s": 1650.7,
+   "vazao_ultima_m3s": 1650.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-09",
+   "nivel_max_cm": 243.0,
+   "nivel_ultimo_cm": 242.0,
+   "vazao_max_m3s": 1785.7,
+   "vazao_ultima_m3s": 1774.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-10",
+   "nivel_max_cm": 252.0,
+   "nivel_ultimo_cm": 252.0,
+   "vazao_max_m3s": 1890.0,
+   "vazao_ultima_m3s": 1890.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-11",
+   "nivel_max_cm": 252.0,
+   "nivel_ultimo_cm": 246.0,
+   "vazao_max_m3s": 1890.0,
+   "vazao_ultima_m3s": 1820.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-12",
+   "nivel_max_cm": 247.0,
+   "nivel_ultimo_cm": 233.0,
+   "vazao_max_m3s": 1831.7,
+   "vazao_ultima_m3s": 1672.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-13",
+   "nivel_max_cm": 235.0,
+   "nivel_ultimo_cm": 226.0,
+   "vazao_max_m3s": 1695.2,
+   "vazao_ultima_m3s": 1595.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-14",
+   "nivel_max_cm": 226.0,
+   "nivel_ultimo_cm": 224.0,
+   "vazao_max_m3s": 1595.7,
+   "vazao_ultima_m3s": 1574.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-15",
+   "nivel_max_cm": 229.0,
+   "nivel_ultimo_cm": 228.0,
+   "vazao_max_m3s": 1628.6,
+   "vazao_ultima_m3s": 1617.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 92
+  },
+  {
+   "dia": "2026-02-16",
+   "nivel_max_cm": 238.0,
+   "nivel_ultimo_cm": 238.0,
+   "vazao_max_m3s": 1728.9,
+   "vazao_ultima_m3s": 1728.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-17",
+   "nivel_max_cm": 256.0,
+   "nivel_ultimo_cm": 255.0,
+   "vazao_max_m3s": 1937.1,
+   "vazao_ultima_m3s": 1925.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-18",
+   "nivel_max_cm": 264.0,
+   "nivel_ultimo_cm": 261.0,
+   "vazao_max_m3s": 2032.9,
+   "vazao_ultima_m3s": 1996.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-19",
+   "nivel_max_cm": 264.0,
+   "nivel_ultimo_cm": 262.0,
+   "vazao_max_m3s": 2032.9,
+   "vazao_ultima_m3s": 2008.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-20",
+   "nivel_max_cm": 262.0,
+   "nivel_ultimo_cm": 256.0,
+   "vazao_max_m3s": 2008.8,
+   "vazao_ultima_m3s": 1937.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-21",
+   "nivel_max_cm": 260.0,
+   "nivel_ultimo_cm": 260.0,
+   "vazao_max_m3s": 1984.8,
+   "vazao_ultima_m3s": 1984.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-22",
+   "nivel_max_cm": 263.0,
+   "nivel_ultimo_cm": 260.0,
+   "vazao_max_m3s": 2020.9,
+   "vazao_ultima_m3s": 1984.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-23",
+   "nivel_max_cm": 276.0,
+   "nivel_ultimo_cm": 276.0,
+   "vazao_max_m3s": 2180.4,
+   "vazao_ultima_m3s": 2180.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-24",
+   "nivel_max_cm": 296.0,
+   "nivel_ultimo_cm": 296.0,
+   "vazao_max_m3s": 2435.9,
+   "vazao_ultima_m3s": 2435.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-25",
+   "nivel_max_cm": 301.0,
+   "nivel_ultimo_cm": 291.0,
+   "vazao_max_m3s": 2479.4,
+   "vazao_ultima_m3s": 2370.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-26",
+   "nivel_max_cm": 291.0,
+   "nivel_ultimo_cm": 274.0,
+   "vazao_max_m3s": 2370.9,
+   "vazao_ultima_m3s": 2155.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-27",
+   "nivel_max_cm": 273.0,
+   "nivel_ultimo_cm": 254.0,
+   "vazao_max_m3s": 2143.1,
+   "vazao_ultima_m3s": 1913.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-02-28",
+   "nivel_max_cm": 253.0,
+   "nivel_ultimo_cm": 248.0,
+   "vazao_max_m3s": 1901.7,
+   "vazao_ultima_m3s": 1843.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-01",
+   "nivel_max_cm": 256.0,
+   "nivel_ultimo_cm": 255.0,
+   "vazao_max_m3s": 1937.1,
+   "vazao_ultima_m3s": 1925.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-02",
+   "nivel_max_cm": 258.0,
+   "nivel_ultimo_cm": 256.0,
+   "vazao_max_m3s": 1960.9,
+   "vazao_ultima_m3s": 1937.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-03",
+   "nivel_max_cm": 258.0,
+   "nivel_ultimo_cm": 254.0,
+   "vazao_max_m3s": 1960.9,
+   "vazao_ultima_m3s": 1913.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-04",
+   "nivel_max_cm": 255.0,
+   "nivel_ultimo_cm": 248.0,
+   "vazao_max_m3s": 1925.3,
+   "vazao_ultima_m3s": 1843.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-05",
+   "nivel_max_cm": 248.0,
+   "nivel_ultimo_cm": 235.0,
+   "vazao_max_m3s": 1843.3,
+   "vazao_ultima_m3s": 1695.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-06",
+   "nivel_max_cm": 235.0,
+   "nivel_ultimo_cm": 216.0,
+   "vazao_max_m3s": 1695.2,
+   "vazao_ultima_m3s": 1488.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-07",
+   "nivel_max_cm": 216.0,
+   "nivel_ultimo_cm": 202.0,
+   "vazao_max_m3s": 1488.3,
+   "vazao_ultima_m3s": 1343.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-08",
+   "nivel_max_cm": 202.0,
+   "nivel_ultimo_cm": 193.0,
+   "vazao_max_m3s": 1343.4,
+   "vazao_ultima_m3s": 1253.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-09",
+   "nivel_max_cm": 194.0,
+   "nivel_ultimo_cm": 192.0,
+   "vazao_max_m3s": 1263.4,
+   "vazao_ultima_m3s": 1243.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-10",
+   "nivel_max_cm": 194.0,
+   "nivel_ultimo_cm": 193.0,
+   "vazao_max_m3s": 1263.4,
+   "vazao_ultima_m3s": 1253.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-11",
+   "nivel_max_cm": 197.0,
+   "nivel_ultimo_cm": 194.0,
+   "vazao_max_m3s": 1293.2,
+   "vazao_ultima_m3s": 1263.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-12",
+   "nivel_max_cm": 197.0,
+   "nivel_ultimo_cm": 192.0,
+   "vazao_max_m3s": 1293.2,
+   "vazao_ultima_m3s": 1243.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-13",
+   "nivel_max_cm": 194.0,
+   "nivel_ultimo_cm": 192.0,
+   "vazao_max_m3s": 1263.4,
+   "vazao_ultima_m3s": 1243.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-14",
+   "nivel_max_cm": 192.0,
+   "nivel_ultimo_cm": 183.0,
+   "vazao_max_m3s": 1243.8,
+   "vazao_ultima_m3s": 1157.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-15",
+   "nivel_max_cm": 184.0,
+   "nivel_ultimo_cm": 179.0,
+   "vazao_max_m3s": 1166.5,
+   "vazao_ultima_m3s": 1119.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-16",
+   "nivel_max_cm": 179.0,
+   "nivel_ultimo_cm": 176.0,
+   "vazao_max_m3s": 1119.3,
+   "vazao_ultima_m3s": 1091.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-17",
+   "nivel_max_cm": 182.0,
+   "nivel_ultimo_cm": 180.0,
+   "vazao_max_m3s": 1147.5,
+   "vazao_ultima_m3s": 1128.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-18",
+   "nivel_max_cm": 181.0,
+   "nivel_ultimo_cm": 170.0,
+   "vazao_max_m3s": 1138.1,
+   "vazao_ultima_m3s": 1036.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-19",
+   "nivel_max_cm": 171.0,
+   "nivel_ultimo_cm": 161.0,
+   "vazao_max_m3s": 1045.5,
+   "vazao_ultima_m3s": 956.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-20",
+   "nivel_max_cm": 162.0,
+   "nivel_ultimo_cm": 147.0,
+   "vazao_max_m3s": 965.1,
+   "vazao_ultima_m3s": 837.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-21",
+   "nivel_max_cm": 148.0,
+   "nivel_ultimo_cm": 140.0,
+   "vazao_max_m3s": 845.5,
+   "vazao_ultima_m3s": 780.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-22",
+   "nivel_max_cm": 152.0,
+   "nivel_ultimo_cm": 151.0,
+   "vazao_max_m3s": 879.0,
+   "vazao_ultima_m3s": 870.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-23",
+   "nivel_max_cm": 172.0,
+   "nivel_ultimo_cm": 171.0,
+   "vazao_max_m3s": 1054.6,
+   "vazao_ultima_m3s": 1045.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-24",
+   "nivel_max_cm": 181.0,
+   "nivel_ultimo_cm": 180.0,
+   "vazao_max_m3s": 1138.1,
+   "vazao_ultima_m3s": 1128.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-25",
+   "nivel_max_cm": 187.0,
+   "nivel_ultimo_cm": 187.0,
+   "vazao_max_m3s": 1195.2,
+   "vazao_ultima_m3s": 1195.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-26",
+   "nivel_max_cm": 187.0,
+   "nivel_ultimo_cm": 185.0,
+   "vazao_max_m3s": 1195.2,
+   "vazao_ultima_m3s": 1176.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-27",
+   "nivel_max_cm": 187.0,
+   "nivel_ultimo_cm": 186.0,
+   "vazao_max_m3s": 1195.2,
+   "vazao_ultima_m3s": 1185.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-28",
+   "nivel_max_cm": 191.0,
+   "nivel_ultimo_cm": 191.0,
+   "vazao_max_m3s": 1234.0,
+   "vazao_ultima_m3s": 1234.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 92
+  },
+  {
+   "dia": "2026-03-29",
+   "nivel_max_cm": 205.0,
+   "nivel_ultimo_cm": 205.0,
+   "vazao_max_m3s": 1373.9,
+   "vazao_ultima_m3s": 1373.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-30",
+   "nivel_max_cm": 216.0,
+   "nivel_ultimo_cm": 216.0,
+   "vazao_max_m3s": 1488.3,
+   "vazao_ultima_m3s": 1488.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-03-31",
+   "nivel_max_cm": 220.0,
+   "nivel_ultimo_cm": 219.0,
+   "vazao_max_m3s": 1530.9,
+   "vazao_ultima_m3s": 1520.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-01",
+   "nivel_max_cm": 222.0,
+   "nivel_ultimo_cm": 218.0,
+   "vazao_max_m3s": 1552.4,
+   "vazao_ultima_m3s": 1509.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-02",
+   "nivel_max_cm": 220.0,
+   "nivel_ultimo_cm": 208.0,
+   "vazao_max_m3s": 1530.9,
+   "vazao_ultima_m3s": 1404.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-03",
+   "nivel_max_cm": 209.0,
+   "nivel_ultimo_cm": 197.0,
+   "vazao_max_m3s": 1415.0,
+   "vazao_ultima_m3s": 1293.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-04",
+   "nivel_max_cm": 197.0,
+   "nivel_ultimo_cm": 181.0,
+   "vazao_max_m3s": 1293.2,
+   "vazao_ultima_m3s": 1138.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-05",
+   "nivel_max_cm": 182.0,
+   "nivel_ultimo_cm": 177.0,
+   "vazao_max_m3s": 1147.5,
+   "vazao_ultima_m3s": 1100.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-06",
+   "nivel_max_cm": 177.0,
+   "nivel_ultimo_cm": 175.0,
+   "vazao_max_m3s": 1100.6,
+   "vazao_ultima_m3s": 1082.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-07",
+   "nivel_max_cm": 193.0,
+   "nivel_ultimo_cm": 192.0,
+   "vazao_max_m3s": 1253.6,
+   "vazao_ultima_m3s": 1243.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-08",
+   "nivel_max_cm": 204.0,
+   "nivel_ultimo_cm": 202.0,
+   "vazao_max_m3s": 1363.7,
+   "vazao_ultima_m3s": 1343.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-09",
+   "nivel_max_cm": 228.0,
+   "nivel_ultimo_cm": 228.0,
+   "vazao_max_m3s": 1617.6,
+   "vazao_ultima_m3s": 1617.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-10",
+   "nivel_max_cm": 254.0,
+   "nivel_ultimo_cm": 254.0,
+   "vazao_max_m3s": 1913.5,
+   "vazao_ultima_m3s": 1913.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-11",
+   "nivel_max_cm": 279.0,
+   "nivel_ultimo_cm": 279.0,
+   "vazao_max_m3s": 2217.9,
+   "vazao_ultima_m3s": 2217.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-12",
+   "nivel_max_cm": 303.0,
+   "nivel_ultimo_cm": 303.0,
+   "vazao_max_m3s": 2505.3,
+   "vazao_ultima_m3s": 2505.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-13",
+   "nivel_max_cm": 321.0,
+   "nivel_ultimo_cm": 321.0,
+   "vazao_max_m3s": 2743.6,
+   "vazao_ultima_m3s": 2743.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-14",
+   "nivel_max_cm": 334.0,
+   "nivel_ultimo_cm": 334.0,
+   "vazao_max_m3s": 2921.4,
+   "vazao_ultima_m3s": 2921.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-15",
+   "nivel_max_cm": 350.0,
+   "nivel_ultimo_cm": 349.0,
+   "vazao_max_m3s": 3146.8,
+   "vazao_ultima_m3s": 3132.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-16",
+   "nivel_max_cm": 357.0,
+   "nivel_ultimo_cm": 352.0,
+   "vazao_max_m3s": 3247.6,
+   "vazao_ultima_m3s": 3175.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-17",
+   "nivel_max_cm": 354.0,
+   "nivel_ultimo_cm": 339.0,
+   "vazao_max_m3s": 3204.2,
+   "vazao_ultima_m3s": 2991.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-18",
+   "nivel_max_cm": 339.0,
+   "nivel_ultimo_cm": 313.0,
+   "vazao_max_m3s": 2991.1,
+   "vazao_ultima_m3s": 2636.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-19",
+   "nivel_max_cm": 313.0,
+   "nivel_ultimo_cm": 292.0,
+   "vazao_max_m3s": 2636.6,
+   "vazao_ultima_m3s": 2383.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-20",
+   "nivel_max_cm": 291.0,
+   "nivel_ultimo_cm": 279.0,
+   "vazao_max_m3s": 2370.9,
+   "vazao_ultima_m3s": 2217.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-21",
+   "nivel_max_cm": 279.0,
+   "nivel_ultimo_cm": 271.0,
+   "vazao_max_m3s": 2217.9,
+   "vazao_ultima_m3s": 2118.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-22",
+   "nivel_max_cm": 271.0,
+   "nivel_ultimo_cm": 256.0,
+   "vazao_max_m3s": 2118.4,
+   "vazao_ultima_m3s": 1937.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-23",
+   "nivel_max_cm": 256.0,
+   "nivel_ultimo_cm": 249.0,
+   "vazao_max_m3s": 1937.1,
+   "vazao_ultima_m3s": 1854.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-24",
+   "nivel_max_cm": 249.0,
+   "nivel_ultimo_cm": 243.0,
+   "vazao_max_m3s": 1854.9,
+   "vazao_ultima_m3s": 1785.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-25",
+   "nivel_max_cm": 244.0,
+   "nivel_ultimo_cm": 244.0,
+   "vazao_max_m3s": 1797.2,
+   "vazao_ultima_m3s": 1797.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-26",
+   "nivel_max_cm": 284.0,
+   "nivel_ultimo_cm": 284.0,
+   "vazao_max_m3s": 2281.1,
+   "vazao_ultima_m3s": 2281.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-27",
+   "nivel_max_cm": 345.0,
+   "nivel_ultimo_cm": 345.0,
+   "vazao_max_m3s": 3075.6,
+   "vazao_ultima_m3s": 3075.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-28",
+   "nivel_max_cm": 385.0,
+   "nivel_ultimo_cm": 383.0,
+   "vazao_max_m3s": 3664.4,
+   "vazao_ultima_m3s": 3634.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-29",
+   "nivel_max_cm": 394.0,
+   "nivel_ultimo_cm": 393.0,
+   "vazao_max_m3s": 3803.0,
+   "vazao_ultima_m3s": 3787.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-04-30",
+   "nivel_max_cm": 393.0,
+   "nivel_ultimo_cm": 375.0,
+   "vazao_max_m3s": 3787.5,
+   "vazao_ultima_m3s": 3513.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-01",
+   "nivel_max_cm": 374.0,
+   "nivel_ultimo_cm": 368.0,
+   "vazao_max_m3s": 3498.1,
+   "vazao_ultima_m3s": 3408.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-02",
+   "nivel_max_cm": 368.0,
+   "nivel_ultimo_cm": 355.0,
+   "vazao_max_m3s": 3408.8,
+   "vazao_ultima_m3s": 3218.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-03",
+   "nivel_max_cm": 356.0,
+   "nivel_ultimo_cm": 352.0,
+   "vazao_max_m3s": 3233.1,
+   "vazao_ultima_m3s": 3175.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-04",
+   "nivel_max_cm": 412.0,
+   "nivel_ultimo_cm": 412.0,
+   "vazao_max_m3s": 4086.6,
+   "vazao_ultima_m3s": 4086.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-05",
+   "nivel_max_cm": 484.0,
+   "nivel_ultimo_cm": 484.0,
+   "vazao_max_m3s": 5306.9,
+   "vazao_ultima_m3s": 5306.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-06",
+   "nivel_max_cm": 521.0,
+   "nivel_ultimo_cm": 521.0,
+   "vazao_max_m3s": 5986.3,
+   "vazao_ultima_m3s": 5986.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-07",
+   "nivel_max_cm": 537.0,
+   "nivel_ultimo_cm": 526.0,
+   "vazao_max_m3s": 6290.8,
+   "vazao_ultima_m3s": 6080.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-08",
+   "nivel_max_cm": 535.0,
+   "nivel_ultimo_cm": 524.0,
+   "vazao_max_m3s": 6252.4,
+   "vazao_ultima_m3s": 6042.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-09",
+   "nivel_max_cm": 532.0,
+   "nivel_ultimo_cm": 527.0,
+   "vazao_max_m3s": 6195.0,
+   "vazao_ultima_m3s": 6099.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-10",
+   "nivel_max_cm": 529.0,
+   "nivel_ultimo_cm": 527.0,
+   "vazao_max_m3s": 6137.8,
+   "vazao_ultima_m3s": 6099.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-11",
+   "nivel_max_cm": 528.0,
+   "nivel_ultimo_cm": 519.0,
+   "vazao_max_m3s": 6118.7,
+   "vazao_ultima_m3s": 5948.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-12",
+   "nivel_max_cm": 519.0,
+   "nivel_ultimo_cm": 496.0,
+   "vazao_max_m3s": 5948.7,
+   "vazao_ultima_m3s": 5523.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-13",
+   "nivel_max_cm": 495.0,
+   "nivel_ultimo_cm": 462.0,
+   "vazao_max_m3s": 5505.2,
+   "vazao_ultima_m3s": 4919.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-14",
+   "nivel_max_cm": 462.0,
+   "nivel_ultimo_cm": 426.0,
+   "vazao_max_m3s": 4919.6,
+   "vazao_ultima_m3s": 4313.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-15",
+   "nivel_max_cm": 425.0,
+   "nivel_ultimo_cm": 391.0,
+   "vazao_max_m3s": 4296.8,
+   "vazao_ultima_m3s": 3756.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-16",
+   "nivel_max_cm": 391.0,
+   "nivel_ultimo_cm": 362.0,
+   "vazao_max_m3s": 3756.6,
+   "vazao_ultima_m3s": 3320.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-17",
+   "nivel_max_cm": 362.0,
+   "nivel_ultimo_cm": 336.0,
+   "vazao_max_m3s": 3320.5,
+   "vazao_ultima_m3s": 2949.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-18",
+   "nivel_max_cm": 336.0,
+   "nivel_ultimo_cm": 318.0,
+   "vazao_max_m3s": 2949.2,
+   "vazao_ultima_m3s": 2703.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-19",
+   "nivel_max_cm": 318.0,
+   "nivel_ultimo_cm": 305.0,
+   "vazao_max_m3s": 2703.2,
+   "vazao_ultima_m3s": 2531.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-20",
+   "nivel_max_cm": 305.0,
+   "nivel_ultimo_cm": 290.0,
+   "vazao_max_m3s": 2531.3,
+   "vazao_ultima_m3s": 2358.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-21",
+   "nivel_max_cm": 291.0,
+   "nivel_ultimo_cm": 278.0,
+   "vazao_max_m3s": 2370.9,
+   "vazao_ultima_m3s": 2205.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-22",
+   "nivel_max_cm": 278.0,
+   "nivel_ultimo_cm": 259.0,
+   "vazao_max_m3s": 2205.4,
+   "vazao_ultima_m3s": 1972.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-23",
+   "nivel_max_cm": 260.0,
+   "nivel_ultimo_cm": 247.0,
+   "vazao_max_m3s": 1984.8,
+   "vazao_ultima_m3s": 1831.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-24",
+   "nivel_max_cm": 247.0,
+   "nivel_ultimo_cm": 241.0,
+   "vazao_max_m3s": 1831.7,
+   "vazao_ultima_m3s": 1762.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-25",
+   "nivel_max_cm": 240.0,
+   "nivel_ultimo_cm": 234.0,
+   "vazao_max_m3s": 1751.5,
+   "vazao_ultima_m3s": 1684.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-26",
+   "nivel_max_cm": 235.0,
+   "nivel_ultimo_cm": 227.0,
+   "vazao_max_m3s": 1695.2,
+   "vazao_ultima_m3s": 1606.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-27",
+   "nivel_max_cm": 226.0,
+   "nivel_ultimo_cm": 221.0,
+   "vazao_max_m3s": 1595.7,
+   "vazao_ultima_m3s": 1541.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-28",
+   "nivel_max_cm": 222.0,
+   "nivel_ultimo_cm": 220.0,
+   "vazao_max_m3s": 1552.4,
+   "vazao_ultima_m3s": 1530.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-29",
+   "nivel_max_cm": 229.0,
+   "nivel_ultimo_cm": 229.0,
+   "vazao_max_m3s": 1628.6,
+   "vazao_ultima_m3s": 1628.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-30",
+   "nivel_max_cm": 247.0,
+   "nivel_ultimo_cm": 247.0,
+   "vazao_max_m3s": 1831.7,
+   "vazao_ultima_m3s": 1831.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-05-31",
+   "nivel_max_cm": 273.0,
+   "nivel_ultimo_cm": 273.0,
+   "vazao_max_m3s": 2143.1,
+   "vazao_ultima_m3s": 2143.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-01",
+   "nivel_max_cm": 289.0,
+   "nivel_ultimo_cm": 287.0,
+   "vazao_max_m3s": 2345.1,
+   "vazao_ultima_m3s": 2319.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-02",
+   "nivel_max_cm": 295.0,
+   "nivel_ultimo_cm": 293.0,
+   "vazao_max_m3s": 2422.9,
+   "vazao_ultima_m3s": 2396.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-03",
+   "nivel_max_cm": 293.0,
+   "nivel_ultimo_cm": 287.0,
+   "vazao_max_m3s": 2396.8,
+   "vazao_ultima_m3s": 2319.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-04",
+   "nivel_max_cm": 286.0,
+   "nivel_ultimo_cm": 272.0,
+   "vazao_max_m3s": 2306.6,
+   "vazao_ultima_m3s": 2130.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-05",
+   "nivel_max_cm": 272.0,
+   "nivel_ultimo_cm": 262.0,
+   "vazao_max_m3s": 2130.7,
+   "vazao_ultima_m3s": 2008.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-06",
+   "nivel_max_cm": 261.0,
+   "nivel_ultimo_cm": 259.0,
+   "vazao_max_m3s": 1996.8,
+   "vazao_ultima_m3s": 1972.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-07",
+   "nivel_max_cm": 259.0,
+   "nivel_ultimo_cm": 258.0,
+   "vazao_max_m3s": 1972.8,
+   "vazao_ultima_m3s": 1960.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-08",
+   "nivel_max_cm": 260.0,
+   "nivel_ultimo_cm": 255.0,
+   "vazao_max_m3s": 1984.8,
+   "vazao_ultima_m3s": 1925.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-09",
+   "nivel_max_cm": 256.0,
+   "nivel_ultimo_cm": 249.0,
+   "vazao_max_m3s": 1937.1,
+   "vazao_ultima_m3s": 1854.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-10",
+   "nivel_max_cm": 250.0,
+   "nivel_ultimo_cm": 245.0,
+   "vazao_max_m3s": 1866.6,
+   "vazao_ultima_m3s": 1808.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-11",
+   "nivel_max_cm": 254.0,
+   "nivel_ultimo_cm": 252.0,
+   "vazao_max_m3s": 1913.5,
+   "vazao_ultima_m3s": 1890.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-12",
+   "nivel_max_cm": 270.0,
+   "nivel_ultimo_cm": 269.0,
+   "vazao_max_m3s": 2106.1,
+   "vazao_ultima_m3s": 2093.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-13",
+   "nivel_max_cm": 279.0,
+   "nivel_ultimo_cm": 279.0,
+   "vazao_max_m3s": 2217.9,
+   "vazao_ultima_m3s": 2217.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-14",
+   "nivel_max_cm": 287.0,
+   "nivel_ultimo_cm": 286.0,
+   "vazao_max_m3s": 2319.4,
+   "vazao_ultima_m3s": 2306.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-15",
+   "nivel_max_cm": 299.0,
+   "nivel_ultimo_cm": 299.0,
+   "vazao_max_m3s": 2475.3,
+   "vazao_ultima_m3s": 2475.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-16",
+   "nivel_max_cm": 304.0,
+   "nivel_ultimo_cm": 300.0,
+   "vazao_max_m3s": 2518.3,
+   "vazao_ultima_m3s": 2488.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-17",
+   "nivel_max_cm": 302.0,
+   "nivel_ultimo_cm": 291.0,
+   "vazao_max_m3s": 2492.4,
+   "vazao_ultima_m3s": 2370.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-18",
+   "nivel_max_cm": 292.0,
+   "nivel_ultimo_cm": 288.0,
+   "vazao_max_m3s": 2383.8,
+   "vazao_ultima_m3s": 2332.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-19",
+   "nivel_max_cm": 294.0,
+   "nivel_ultimo_cm": 292.0,
+   "vazao_max_m3s": 2409.8,
+   "vazao_ultima_m3s": 2383.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-20",
+   "nivel_max_cm": 300.0,
+   "nivel_ultimo_cm": 298.0,
+   "vazao_max_m3s": 2488.5,
+   "vazao_ultima_m3s": 2462.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-21",
+   "nivel_max_cm": 300.0,
+   "nivel_ultimo_cm": 299.0,
+   "vazao_max_m3s": 2488.5,
+   "vazao_ultima_m3s": 2475.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-22",
+   "nivel_max_cm": 300.0,
+   "nivel_ultimo_cm": 293.0,
+   "vazao_max_m3s": 2488.5,
+   "vazao_ultima_m3s": 2396.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-23",
+   "nivel_max_cm": 300.0,
+   "nivel_ultimo_cm": 294.0,
+   "vazao_max_m3s": 2488.5,
+   "vazao_ultima_m3s": 2409.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-24",
+   "nivel_max_cm": 303.0,
+   "nivel_ultimo_cm": 303.0,
+   "vazao_max_m3s": 2505.3,
+   "vazao_ultima_m3s": 2505.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-25",
+   "nivel_max_cm": 336.0,
+   "nivel_ultimo_cm": 336.0,
+   "vazao_max_m3s": 2949.2,
+   "vazao_ultima_m3s": 2949.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-26",
+   "nivel_max_cm": 381.0,
+   "nivel_ultimo_cm": 381.0,
+   "vazao_max_m3s": 3603.6,
+   "vazao_ultima_m3s": 3603.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-27",
+   "nivel_max_cm": 407.0,
+   "nivel_ultimo_cm": 407.0,
+   "vazao_max_m3s": 4006.9,
+   "vazao_ultima_m3s": 4006.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-28",
+   "nivel_max_cm": 411.0,
+   "nivel_ultimo_cm": 401.0,
+   "vazao_max_m3s": 4070.6,
+   "vazao_ultima_m3s": 3912.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-29",
+   "nivel_max_cm": 403.0,
+   "nivel_ultimo_cm": 402.0,
+   "vazao_max_m3s": 3943.7,
+   "vazao_ultima_m3s": 3927.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-06-30",
+   "nivel_max_cm": 512.0,
+   "nivel_ultimo_cm": 512.0,
+   "vazao_max_m3s": 5817.8,
+   "vazao_ultima_m3s": 5817.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-01",
+   "nivel_max_cm": 625.0,
+   "nivel_ultimo_cm": 625.0,
+   "vazao_max_m3s": 8079.7,
+   "vazao_ultima_m3s": 8079.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-02",
+   "nivel_max_cm": 691.0,
+   "nivel_ultimo_cm": 691.0,
+   "vazao_max_m3s": 9544.9,
+   "vazao_ultima_m3s": 9544.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-03",
+   "nivel_max_cm": 723.0,
+   "nivel_ultimo_cm": 722.0,
+   "vazao_max_m3s": 10292.6,
+   "vazao_ultima_m3s": 10268.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-04",
+   "nivel_max_cm": 740.0,
+   "nivel_ultimo_cm": 740.0,
+   "vazao_max_m3s": 10699.5,
+   "vazao_ultima_m3s": 10699.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-05",
+   "nivel_max_cm": 759.0,
+   "nivel_ultimo_cm": 758.0,
+   "vazao_max_m3s": 11162.3,
+   "vazao_ultima_m3s": 11137.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-06",
+   "nivel_max_cm": 778.0,
+   "nivel_ultimo_cm": 778.0,
+   "vazao_max_m3s": 11633.4,
+   "vazao_ultima_m3s": 11633.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-07",
+   "nivel_max_cm": 780.0,
+   "nivel_ultimo_cm": 772.0,
+   "vazao_max_m3s": 11683.5,
+   "vazao_ultima_m3s": 11483.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 95
+  },
+  {
+   "dia": "2026-07-08",
+   "nivel_max_cm": 773.0,
+   "nivel_ultimo_cm": 730.0,
+   "vazao_max_m3s": 11508.6,
+   "vazao_ultima_m3s": 10459.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-09",
+   "nivel_max_cm": 730.0,
+   "nivel_ultimo_cm": 657.0,
+   "vazao_max_m3s": 10459.3,
+   "vazao_ultima_m3s": 8777.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-10",
+   "nivel_max_cm": 656.0,
+   "nivel_ultimo_cm": 577.0,
+   "vazao_max_m3s": 8754.9,
+   "vazao_ultima_m3s": 7080.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-11",
+   "nivel_max_cm": 577.0,
+   "nivel_ultimo_cm": 507.0,
+   "vazao_max_m3s": 7080.3,
+   "vazao_ultima_m3s": 5725.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-12",
+   "nivel_max_cm": 504.0,
+   "nivel_ultimo_cm": 451.0,
+   "vazao_max_m3s": 5669.8,
+   "vazao_ultima_m3s": 4730.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-13",
+   "nivel_max_cm": 451.0,
+   "nivel_ultimo_cm": 439.0,
+   "vazao_max_m3s": 4730.7,
+   "vazao_ultima_m3s": 4528.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-14",
+   "nivel_max_cm": 466.0,
+   "nivel_ultimo_cm": 466.0,
+   "vazao_max_m3s": 4989.1,
+   "vazao_ultima_m3s": 4989.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-15",
+   "nivel_max_cm": 481.0,
+   "nivel_ultimo_cm": 481.0,
+   "vazao_max_m3s": 5253.4,
+   "vazao_ultima_m3s": 5253.4,
+   "hora_ultima": "16:30",
+   "n_leituras": 67
+  },
+  {
+   "dia": "2026-07-16",
+   "nivel_max_cm": 515.0,
+   "nivel_ultimo_cm": 515.0,
+   "vazao_max_m3s": 5873.8,
+   "vazao_ultima_m3s": 5873.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 62
+  },
+  {
+   "dia": "2026-07-17",
+   "nivel_max_cm": 522.0,
+   "nivel_ultimo_cm": 519.0,
+   "vazao_max_m3s": 6005.1,
+   "vazao_ultima_m3s": 5948.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-18",
+   "nivel_max_cm": 517.0,
+   "nivel_ultimo_cm": 506.0,
+   "vazao_max_m3s": 5911.2,
+   "vazao_ultima_m3s": 5706.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-19",
+   "nivel_max_cm": 522.0,
+   "nivel_ultimo_cm": 521.0,
+   "vazao_max_m3s": 6005.1,
+   "vazao_ultima_m3s": 5986.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-20",
+   "nivel_max_cm": 521.0,
+   "nivel_ultimo_cm": 499.0,
+   "vazao_max_m3s": 5986.3,
+   "vazao_ultima_m3s": 5578.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-21",
+   "nivel_max_cm": 503.0,
+   "nivel_ultimo_cm": 501.0,
+   "vazao_max_m3s": 5651.4,
+   "vazao_ultima_m3s": 5614.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-22",
+   "nivel_max_cm": 524.0,
+   "nivel_ultimo_cm": 524.0,
+   "vazao_max_m3s": 6042.9,
+   "vazao_ultima_m3s": 6042.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-23",
+   "nivel_max_cm": 616.0,
+   "nivel_ultimo_cm": 616.0,
+   "vazao_max_m3s": 7888.0,
+   "vazao_ultima_m3s": 7888.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-24",
+   "nivel_max_cm": 706.0,
+   "nivel_ultimo_cm": 706.0,
+   "vazao_max_m3s": 9892.4,
+   "vazao_ultima_m3s": 9892.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-25",
+   "nivel_max_cm": 783.0,
+   "nivel_ultimo_cm": 783.0,
+   "vazao_max_m3s": 11758.8,
+   "vazao_ultima_m3s": 11758.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-26",
+   "nivel_max_cm": 839.0,
+   "nivel_ultimo_cm": 839.0,
+   "vazao_max_m3s": 13264.6,
+   "vazao_ultima_m3s": 13264.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-27",
+   "nivel_max_cm": 883.0,
+   "nivel_ultimo_cm": 883.0,
+   "vazao_max_m3s": 14520.6,
+   "vazao_ultima_m3s": 14520.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-28",
+   "nivel_max_cm": 908.0,
+   "nivel_ultimo_cm": 908.0,
+   "vazao_max_m3s": 15254.3,
+   "vazao_ultima_m3s": 15254.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-29",
+   "nivel_max_cm": 922.0,
+   "nivel_ultimo_cm": 920.0,
+   "vazao_max_m3s": 15671.4,
+   "vazao_ultima_m3s": 15611.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-30",
+   "nivel_max_cm": 921.0,
+   "nivel_ultimo_cm": 912.0,
+   "vazao_max_m3s": 15641.5,
+   "vazao_ultima_m3s": 15373.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-07-31",
+   "nivel_max_cm": 912.0,
+   "nivel_ultimo_cm": 895.0,
+   "vazao_max_m3s": 15373.0,
+   "vazao_ultima_m3s": 14871.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-01",
+   "nivel_max_cm": 900.0,
+   "nivel_ultimo_cm": 893.0,
+   "vazao_max_m3s": 15018.0,
+   "vazao_ultima_m3s": 14812.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-02",
+   "nivel_max_cm": 897.0,
+   "nivel_ultimo_cm": 897.0,
+   "vazao_max_m3s": 14929.7,
+   "vazao_ultima_m3s": 14929.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-03",
+   "nivel_max_cm": 905.0,
+   "nivel_ultimo_cm": 905.0,
+   "vazao_max_m3s": 15165.5,
+   "vazao_ultima_m3s": 15165.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-04",
+   "nivel_max_cm": 909.0,
+   "nivel_ultimo_cm": 905.0,
+   "vazao_max_m3s": 15284.0,
+   "vazao_ultima_m3s": 15165.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-05",
+   "nivel_max_cm": 905.0,
+   "nivel_ultimo_cm": 883.0,
+   "vazao_max_m3s": 15165.5,
+   "vazao_ultima_m3s": 14520.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-06",
+   "nivel_max_cm": 882.0,
+   "nivel_ultimo_cm": 845.0,
+   "vazao_max_m3s": 14491.6,
+   "vazao_ultima_m3s": 13433.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-07",
+   "nivel_max_cm": 854.0,
+   "nivel_ultimo_cm": 813.0,
+   "vazao_max_m3s": 13687.7,
+   "vazao_ultima_m3s": 12543.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-08",
+   "nivel_max_cm": 813.0,
+   "nivel_ultimo_cm": 785.0,
+   "vazao_max_m3s": 12543.7,
+   "vazao_ultima_m3s": 11809.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-09",
+   "nivel_max_cm": 784.0,
+   "nivel_ultimo_cm": 760.0,
+   "vazao_max_m3s": 11783.9,
+   "vazao_ultima_m3s": 11186.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-10",
+   "nivel_max_cm": 760.0,
+   "nivel_ultimo_cm": 743.0,
+   "vazao_max_m3s": 11186.9,
+   "vazao_ultima_m3s": 10772.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-11",
+   "nivel_max_cm": 744.0,
+   "nivel_ultimo_cm": 732.0,
+   "vazao_max_m3s": 10796.2,
+   "vazao_ultima_m3s": 10507.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-12",
+   "nivel_max_cm": 732.0,
+   "nivel_ultimo_cm": 714.0,
+   "vazao_max_m3s": 10507.2,
+   "vazao_ultima_m3s": 10079.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-13",
+   "nivel_max_cm": 714.0,
+   "nivel_ultimo_cm": 696.0,
+   "vazao_max_m3s": 10079.9,
+   "vazao_ultima_m3s": 9660.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-14",
+   "nivel_max_cm": 700.0,
+   "nivel_ultimo_cm": 699.0,
+   "vazao_max_m3s": 9752.8,
+   "vazao_ultima_m3s": 9729.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-15",
+   "nivel_max_cm": 700.0,
+   "nivel_ultimo_cm": 699.0,
+   "vazao_max_m3s": 9752.8,
+   "vazao_ultima_m3s": 9729.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-16",
+   "nivel_max_cm": 700.0,
+   "nivel_ultimo_cm": 700.0,
+   "vazao_max_m3s": 9752.8,
+   "vazao_ultima_m3s": 9752.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-17",
+   "nivel_max_cm": 717.0,
+   "nivel_ultimo_cm": 716.0,
+   "vazao_max_m3s": 10150.5,
+   "vazao_ultima_m3s": 10127.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-18",
+   "nivel_max_cm": 723.0,
+   "nivel_ultimo_cm": 721.0,
+   "vazao_max_m3s": 10292.6,
+   "vazao_ultima_m3s": 10245.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-19",
+   "nivel_max_cm": 723.0,
+   "nivel_ultimo_cm": 722.0,
+   "vazao_max_m3s": 10292.6,
+   "vazao_ultima_m3s": 10268.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-20",
+   "nivel_max_cm": 726.0,
+   "nivel_ultimo_cm": 714.0,
+   "vazao_max_m3s": 10363.9,
+   "vazao_ultima_m3s": 10079.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-21",
+   "nivel_max_cm": 714.0,
+   "nivel_ultimo_cm": 671.0,
+   "vazao_max_m3s": 10079.9,
+   "vazao_ultima_m3s": 9089.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-22",
+   "nivel_max_cm": 671.0,
+   "nivel_ultimo_cm": 625.0,
+   "vazao_max_m3s": 9089.9,
+   "vazao_ultima_m3s": 8079.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-23",
+   "nivel_max_cm": 624.0,
+   "nivel_ultimo_cm": 588.0,
+   "vazao_max_m3s": 8058.3,
+   "vazao_ultima_m3s": 7304.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-24",
+   "nivel_max_cm": 588.0,
+   "nivel_ultimo_cm": 563.0,
+   "vazao_max_m3s": 7304.3,
+   "vazao_ultima_m3s": 6799.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-25",
+   "nivel_max_cm": 563.0,
+   "nivel_ultimo_cm": 542.0,
+   "vazao_max_m3s": 6799.4,
+   "vazao_ultima_m3s": 6387.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-26",
+   "nivel_max_cm": 542.0,
+   "nivel_ultimo_cm": 523.0,
+   "vazao_max_m3s": 6387.3,
+   "vazao_ultima_m3s": 6024.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-27",
+   "nivel_max_cm": 523.0,
+   "nivel_ultimo_cm": 506.0,
+   "vazao_max_m3s": 6024.0,
+   "vazao_ultima_m3s": 5706.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-28",
+   "nivel_max_cm": 505.0,
+   "nivel_ultimo_cm": 491.0,
+   "vazao_max_m3s": 5688.2,
+   "vazao_ultima_m3s": 5432.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-29",
+   "nivel_max_cm": 491.0,
+   "nivel_ultimo_cm": 489.0,
+   "vazao_max_m3s": 5432.8,
+   "vazao_ultima_m3s": 5396.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-30",
+   "nivel_max_cm": 512.0,
+   "nivel_ultimo_cm": 512.0,
+   "vazao_max_m3s": 5817.8,
+   "vazao_ultima_m3s": 5817.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-08-31",
+   "nivel_max_cm": 522.0,
+   "nivel_ultimo_cm": 520.0,
+   "vazao_max_m3s": 6005.1,
+   "vazao_ultima_m3s": 5967.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-01",
+   "nivel_max_cm": 520.0,
+   "nivel_ultimo_cm": 514.0,
+   "vazao_max_m3s": 5967.5,
+   "vazao_ultima_m3s": 5855.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-02",
+   "nivel_max_cm": 515.0,
+   "nivel_ultimo_cm": 515.0,
+   "vazao_max_m3s": 5873.8,
+   "vazao_ultima_m3s": 5873.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-03",
+   "nivel_max_cm": 590.0,
+   "nivel_ultimo_cm": 590.0,
+   "vazao_max_m3s": 7345.4,
+   "vazao_ultima_m3s": 7345.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-04",
+   "nivel_max_cm": 680.0,
+   "nivel_ultimo_cm": 680.0,
+   "vazao_max_m3s": 9293.5,
+   "vazao_ultima_m3s": 9293.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-05",
+   "nivel_max_cm": 719.0,
+   "nivel_ultimo_cm": 718.0,
+   "vazao_max_m3s": 10197.8,
+   "vazao_ultima_m3s": 10174.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-06",
+   "nivel_max_cm": 732.0,
+   "nivel_ultimo_cm": 732.0,
+   "vazao_max_m3s": 10507.2,
+   "vazao_ultima_m3s": 10507.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-07",
+   "nivel_max_cm": 732.0,
+   "nivel_ultimo_cm": 715.0,
+   "vazao_max_m3s": 10507.2,
+   "vazao_ultima_m3s": 10103.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-08",
+   "nivel_max_cm": 714.0,
+   "nivel_ultimo_cm": 660.0,
+   "vazao_max_m3s": 10079.9,
+   "vazao_ultima_m3s": 8843.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-09",
+   "nivel_max_cm": 659.0,
+   "nivel_ultimo_cm": 582.0,
+   "vazao_max_m3s": 8821.5,
+   "vazao_ultima_m3s": 7181.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 92
+  },
+  {
+   "dia": "2026-09-10",
+   "nivel_max_cm": 581.0,
+   "nivel_ultimo_cm": 499.0,
+   "vazao_max_m3s": 7161.4,
+   "vazao_ultima_m3s": 5578.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-11",
+   "nivel_max_cm": 499.0,
+   "nivel_ultimo_cm": 448.0,
+   "vazao_max_m3s": 5578.1,
+   "vazao_ultima_m3s": 4679.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-12",
+   "nivel_max_cm": 447.0,
+   "nivel_ultimo_cm": 434.0,
+   "vazao_max_m3s": 4662.8,
+   "vazao_ultima_m3s": 4445.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-13",
+   "nivel_max_cm": 470.0,
+   "nivel_ultimo_cm": 470.0,
+   "vazao_max_m3s": 5059.0,
+   "vazao_ultima_m3s": 5059.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-14",
+   "nivel_max_cm": 616.0,
+   "nivel_ultimo_cm": 616.0,
+   "vazao_max_m3s": 7888.0,
+   "vazao_ultima_m3s": 7888.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-15",
+   "nivel_max_cm": 710.0,
+   "nivel_ultimo_cm": 710.0,
+   "vazao_max_m3s": 9985.9,
+   "vazao_ultima_m3s": 9985.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-16",
+   "nivel_max_cm": 750.0,
+   "nivel_ultimo_cm": 750.0,
+   "vazao_max_m3s": 10942.0,
+   "vazao_ultima_m3s": 10942.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-17",
+   "nivel_max_cm": 760.0,
+   "nivel_ultimo_cm": 758.0,
+   "vazao_max_m3s": 11186.9,
+   "vazao_ultima_m3s": 11137.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-18",
+   "nivel_max_cm": 758.0,
+   "nivel_ultimo_cm": 737.0,
+   "vazao_max_m3s": 11137.7,
+   "vazao_ultima_m3s": 10627.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-19",
+   "nivel_max_cm": 736.0,
+   "nivel_ultimo_cm": 682.0,
+   "vazao_max_m3s": 10603.1,
+   "vazao_ultima_m3s": 9339.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-20",
+   "nivel_max_cm": 682.0,
+   "nivel_ultimo_cm": 600.0,
+   "vazao_max_m3s": 9339.0,
+   "vazao_ultima_m3s": 7552.1,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-21",
+   "nivel_max_cm": 597.0,
+   "nivel_ultimo_cm": 532.0,
+   "vazao_max_m3s": 7489.9,
+   "vazao_ultima_m3s": 6195.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-22",
+   "nivel_max_cm": 531.0,
+   "nivel_ultimo_cm": 531.0,
+   "vazao_max_m3s": 6175.9,
+   "vazao_ultima_m3s": 6175.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-23",
+   "nivel_max_cm": 561.0,
+   "nivel_ultimo_cm": 561.0,
+   "vazao_max_m3s": 6759.7,
+   "vazao_ultima_m3s": 6759.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-24",
+   "nivel_max_cm": 588.0,
+   "nivel_ultimo_cm": 588.0,
+   "vazao_max_m3s": 7304.3,
+   "vazao_ultima_m3s": 7304.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-25",
+   "nivel_max_cm": 627.0,
+   "nivel_ultimo_cm": 627.0,
+   "vazao_max_m3s": 8122.6,
+   "vazao_ultima_m3s": 8122.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-26",
+   "nivel_max_cm": 658.0,
+   "nivel_ultimo_cm": 658.0,
+   "vazao_max_m3s": 8799.3,
+   "vazao_ultima_m3s": 8799.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-27",
+   "nivel_max_cm": 666.0,
+   "nivel_ultimo_cm": 661.0,
+   "vazao_max_m3s": 8977.7,
+   "vazao_ultima_m3s": 8866.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-28",
+   "nivel_max_cm": 662.0,
+   "nivel_ultimo_cm": 650.0,
+   "vazao_max_m3s": 8888.3,
+   "vazao_ultima_m3s": 8622.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-29",
+   "nivel_max_cm": 651.0,
+   "nivel_ultimo_cm": 639.0,
+   "vazao_max_m3s": 8644.5,
+   "vazao_ultima_m3s": 8381.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-09-30",
+   "nivel_max_cm": 639.0,
+   "nivel_ultimo_cm": 622.0,
+   "vazao_max_m3s": 8381.8,
+   "vazao_ultima_m3s": 8015.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-01",
+   "nivel_max_cm": 620.0,
+   "nivel_ultimo_cm": 620.0,
+   "vazao_max_m3s": 7973.0,
+   "vazao_ultima_m3s": 7973.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-02",
+   "nivel_max_cm": 674.0,
+   "nivel_ultimo_cm": 674.0,
+   "vazao_max_m3s": 9157.6,
+   "vazao_ultima_m3s": 9157.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-03",
+   "nivel_max_cm": 758.0,
+   "nivel_ultimo_cm": 758.0,
+   "vazao_max_m3s": 11137.7,
+   "vazao_ultima_m3s": 11137.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-04",
+   "nivel_max_cm": 828.0,
+   "nivel_ultimo_cm": 828.0,
+   "vazao_max_m3s": 12957.6,
+   "vazao_ultima_m3s": 12957.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-05",
+   "nivel_max_cm": 877.0,
+   "nivel_ultimo_cm": 876.0,
+   "vazao_max_m3s": 14346.7,
+   "vazao_ultima_m3s": 14317.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-06",
+   "nivel_max_cm": 912.0,
+   "nivel_ultimo_cm": 912.0,
+   "vazao_max_m3s": 15373.0,
+   "vazao_ultima_m3s": 15373.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-07",
+   "nivel_max_cm": 937.0,
+   "nivel_ultimo_cm": 937.0,
+   "vazao_max_m3s": 16123.3,
+   "vazao_ultima_m3s": 16123.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-08",
+   "nivel_max_cm": 966.0,
+   "nivel_ultimo_cm": 965.0,
+   "vazao_max_m3s": 17011.2,
+   "vazao_ultima_m3s": 16980.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-09",
+   "nivel_max_cm": 979.0,
+   "nivel_ultimo_cm": 974.0,
+   "vazao_max_m3s": 17415.4,
+   "vazao_ultima_m3s": 17259.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-10",
+   "nivel_max_cm": 978.0,
+   "nivel_ultimo_cm": 975.0,
+   "vazao_max_m3s": 17384.2,
+   "vazao_ultima_m3s": 17290.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-11",
+   "nivel_max_cm": 980.0,
+   "nivel_ultimo_cm": 978.0,
+   "vazao_max_m3s": 17446.6,
+   "vazao_ultima_m3s": 17384.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-12",
+   "nivel_max_cm": 984.0,
+   "nivel_ultimo_cm": 984.0,
+   "vazao_max_m3s": 17571.8,
+   "vazao_ultima_m3s": 17571.8,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-13",
+   "nivel_max_cm": 990.0,
+   "nivel_ultimo_cm": 990.0,
+   "vazao_max_m3s": 17760.3,
+   "vazao_ultima_m3s": 17760.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-14",
+   "nivel_max_cm": 999.0,
+   "nivel_ultimo_cm": 997.0,
+   "vazao_max_m3s": 18044.5,
+   "vazao_ultima_m3s": 17981.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-15",
+   "nivel_max_cm": 1003.0,
+   "nivel_ultimo_cm": 1002.0,
+   "vazao_max_m3s": 18171.4,
+   "vazao_ultima_m3s": 18139.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-16",
+   "nivel_max_cm": 1004.0,
+   "nivel_ultimo_cm": 1001.0,
+   "vazao_max_m3s": 18203.2,
+   "vazao_ultima_m3s": 18107.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-17",
+   "nivel_max_cm": 1001.0,
+   "nivel_ultimo_cm": 995.0,
+   "vazao_max_m3s": 18107.9,
+   "vazao_ultima_m3s": 17918.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-18",
+   "nivel_max_cm": 996.0,
+   "nivel_ultimo_cm": 983.0,
+   "vazao_max_m3s": 17949.6,
+   "vazao_ultima_m3s": 17540.5,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-19",
+   "nivel_max_cm": 983.0,
+   "nivel_ultimo_cm": 959.0,
+   "vazao_max_m3s": 17540.5,
+   "vazao_ultima_m3s": 16795.2,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-20",
+   "nivel_max_cm": 959.0,
+   "nivel_ultimo_cm": 920.0,
+   "vazao_max_m3s": 16795.2,
+   "vazao_ultima_m3s": 15611.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-21",
+   "nivel_max_cm": 920.0,
+   "nivel_ultimo_cm": 866.0,
+   "vazao_max_m3s": 15611.6,
+   "vazao_ultima_m3s": 14030.0,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-22",
+   "nivel_max_cm": 865.0,
+   "nivel_ultimo_cm": 804.0,
+   "vazao_max_m3s": 14001.4,
+   "vazao_ultima_m3s": 12297.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-23",
+   "nivel_max_cm": 804.0,
+   "nivel_ultimo_cm": 738.0,
+   "vazao_max_m3s": 12297.9,
+   "vazao_ultima_m3s": 10651.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-24",
+   "nivel_max_cm": 738.0,
+   "nivel_ultimo_cm": 685.0,
+   "vazao_max_m3s": 10651.3,
+   "vazao_ultima_m3s": 9407.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-25",
+   "nivel_max_cm": 691.0,
+   "nivel_ultimo_cm": 691.0,
+   "vazao_max_m3s": 9544.9,
+   "vazao_ultima_m3s": 9544.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-26",
+   "nivel_max_cm": 754.0,
+   "nivel_ultimo_cm": 754.0,
+   "vazao_max_m3s": 11039.7,
+   "vazao_ultima_m3s": 11039.7,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-27",
+   "nivel_max_cm": 806.0,
+   "nivel_ultimo_cm": 806.0,
+   "vazao_max_m3s": 12352.4,
+   "vazao_ultima_m3s": 12352.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-28",
+   "nivel_max_cm": 843.0,
+   "nivel_ultimo_cm": 843.0,
+   "vazao_max_m3s": 13376.9,
+   "vazao_ultima_m3s": 13376.9,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-29",
+   "nivel_max_cm": 866.0,
+   "nivel_ultimo_cm": 865.0,
+   "vazao_max_m3s": 14030.0,
+   "vazao_ultima_m3s": 14001.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-10-30",
+   "nivel_max_cm": 867.0,
+   "nivel_ultimo_cm": 860.8,
+   "vazao_max_m3s": 14058.7,
+   "vazao_ultima_m3s": 13881.3,
+   "hora_ultima": "23:45",
+   "n_leituras": 91
+  },
+  {
+   "dia": "2026-10-31",
+   "nivel_max_cm": 860.7,
+   "nivel_ultimo_cm": 833.1,
+   "vazao_max_m3s": 13878.4,
+   "vazao_ultima_m3s": 13099.6,
+   "hora_ultima": "23:45",
+   "n_leituras": 96
+  },
+  {
+   "dia": "2026-11-01",
+   "nivel_max_cm": 832.7,
+   "nivel_ultimo_cm": 783.7,
+   "vazao_max_m3s": 13088.4,
+   "vazao_ultima_m3s": 11776.4,
+   "hora_ultima": "23:45",
+   "n_leituras": 92
+  },
+  {
+   "dia": "2026-11-02",
+   "nivel_max_cm": 783.2,
+   "nivel_ultimo_cm": 748.5,
+   "vazao_max_m3s": 11763.8,
+   "vazao_ultima_m3s": 10905.5,
+   "hora_ultima": "12:30",
+   "n_leituras": 51
+  }
+ ]
+}

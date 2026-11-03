@@ -39,7 +39,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T16:51:41Z",
+ "gerado_em": "2026-11-03T15:40:28Z",
  "script": "scripts/paineis/dados_rio.py",
  "colunas": [
   {
@@ -61,8 +61,7 @@
  ],
  "fonte_rodape": "Nível e vazão do rio — ANA, estação 77150000 (série histórica diária e telemetria de 15 em 15 minutos)",
  "telas": [
-  "cheia-saude",
-  "clima"
+  "cheia-saude"
  ],
  "evento_em_curso": true,
  "dados": [

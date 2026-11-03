@@ -1,0 +1,59 @@
+{
+  "produto": "rio_ana-77150000_telemetria-recente_diario.json",
+  "esquema": "climapampa-painel/1",
+  "fonte": "ANA, telemetria da estação 77150000 (leituras de 15 em 15 minutos, não consolidadas)",
+  "transformacao_aplicada": "máxima e última leitura de cada dia da telemetria de 15 min, do início da janela da série diária (no máximo 450 dias) até a última leitura; sem a trava do evento (produto provisório)",
+  "entradas": [
+    {
+      "arquivo": "data/raw/nivel-rio_ana-telemetria-77150000_2015-07-01-a-2015-08-15_15min.csv",
+      "sha256": "2f57e2b3416b1064a298f86bf2f30e5c7673177a8e8943972b893a0809fcf3c6",
+      "bytes": 217971
+    },
+    {
+      "arquivo": "data/raw/nivel-rio_ana-telemetria-77150000_2015-11-15-a-2016-01-31_15min.csv",
+      "sha256": "791782274da5de8eb01a7771f3a3914cc7c95ff7ccbfc7884492d0ecabb460bc",
+      "bytes": 372924
+    },
+    {
+      "arquivo": "data/raw/nivel-rio_ana-telemetria-77150000_2017-05-15-a-2017-07-05_15min.csv",
+      "sha256": "366cc92c60063fb16d38ad1353718b5a9227987250db03f7d9407dcbdb6f13dd",
+      "bytes": 249986
+    },
+    {
+      "arquivo": "data/raw/nivel-rio_ana-telemetria-77150000_2024-04-01-a-2024-06-30_15min.csv",
+      "sha256": "8aa5c7379cbfb5c7856fb1b739a5b08baeabe3d148c25f4386a4dc154809c1b1",
+      "bytes": 434136
+    },
+    {
+      "arquivo": "data/raw/nivel-rio_ana-telemetria-77150000_2024-10-01-a-2026-10-09_15min.csv",
+      "sha256": "6bb62abd603be5bae83843ba5980a9d37a34eedc214d77b722fe84daa429e372",
+      "bytes": 3328541
+    },
+    {
+      "arquivo": "data/raw/nivel-rio_ana-telemetria-77150000_2026-09-01-a-2026-10-18_15min.csv",
+      "sha256": "63998797cf2a867ec556e412b7422d515ea1fcc07f3c1a40cdfd3017f9d72d18",
+      "bytes": 226614
+    },
+    {
+      "arquivo": "data/raw/nivel-rio_ana-telemetria-77150000_2026-10-18-a-2026-11-02_15min.csv",
+      "sha256": "7e7fd50274aca5f28c45be9e880e77f940d4482ec5041fd6b38bdba058211cb2",
+      "bytes": 74265
+    },
+    {
+      "arquivo": "data/raw/nivel-rio_ana-serie-historica-77150000_1940-01-01-a-2026-11-02_diario.csv",
+      "sha256": "ea9b0b9ab5d8fe7770ca14603f41ef6d86a1ddf958569548834acbabcd728f59",
+      "bytes": 3628926
+    }
+  ],
+  "script": "scripts/paineis/dados_rio.py",
+  "codigo_ibge": "4322400",
+  "ativos": [
+    "IN05"
+  ],
+  "autorizacao": "livre",
+  "selo": "conferido",
+  "crs": "não se aplica (produto tabular)",
+  "data_processamento": "2026-11-03T15:45:21Z",
+  "supressao_nota": "não se aplica: medidas de nível e vazão, sem contagem de pessoas",
+  "evento_em_curso": true
+}

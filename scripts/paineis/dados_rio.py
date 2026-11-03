@@ -1,9 +1,23 @@
 """
-Produtos do rio (estação ANA 77150000) para as telas de síntese e de cheia, em data/paineis/:
+Produtos do rio (estação ANA 77150000) para as telas de síntese, de cheia e de clima, em data/paineis/:
 
     rio_ana-<estacao>_maximas-anuais          máxima de cada ano civil, do primeiro ano da série ao último ano completo
     rio_ana-<estacao>_ultimos-365-dias_diario média diária de nível e de vazão
     rio_ana-<estacao>_ultima-leitura          última leitura (ou só o aviso, com evento em curso)
+    rio_ana-<estacao>_telemetria-recente_diario  telemetria recente, provisória: máxima e última leitura do dia,
+                                              do início da janela da série diária até a última leitura (sem trava;
+                                              no máximo DIAS_MAX_TELEMETRIA dias)
+
+Dois tipos de produto (rodada 118):
+    - consolidados (máximas anuais, média diária dos últimos 365 dias, última leitura): seguem a trava do
+      evento em curso descrita em "Regras"; são os que entram em máximas anuais, séries históricas e em
+      qualquer conta de recorrência;
+    - telemetria recente: nível e vazão como a ANA os devolve, publicados todos os dias, inclusive durante o
+      evento, com "provisorio": true, o aviso "dados de telemetria, não consolidados" e a data/hora da
+      última leitura. A trava NÃO se aplica a ele. Traz a máxima do período só como leitura de telemetria
+      (maior nível e maior vazão da janela, com data e hora); nenhum campo de duração, posição histórica
+      ou tempo de retorno. Dia "consolidado" = dia com dado consistido (nivel_consistencia 2) na série
+      histórica; o campo consolidado_ate diz até onde isso vai, e todo dia depois dele é provisório.
 
 Fontes (data/raw, com os metadados .json irmãos):
     - série histórica diária: nivel-rio_ana-serie-historica-<estacao>_1940-*_diario.csv
@@ -23,6 +37,7 @@ Regras:
       anterior ao do evento quando ele começa em MES_DO_EVENTO_COM_CORTE (30/09/2026 para a cheia de outubro
       de 2026), ou no dia anterior ao primeiro dia acima do limiar nos demais casos; as máximas anuais não incluem o ano do evento; a última
       leitura só traz o aviso, sem valor; nenhum campo de pico, duração ou posição histórica do evento.
+      Essas regras valem só para os produtos consolidados; a telemetria recente não tem corte.
 CRS não se aplica (séries tabulares).
 
 Uso:
@@ -52,9 +67,13 @@ INICIO_BUSCA_EVENTO = "2026-10-01"
 COBERTURA_MIN = 0.80
 DIAS_SERIE = 365
 DIAS_LEITURA_ANTIGA = 3
+# teto da janela da telemetria recente: ~200 bytes por dia no JSON; 450 dias ficam abaixo de 100 kB (regra f).
+# Enquanto a trava segura o consolidado, a janela cresce um dia por dia; passando do teto, o início anda.
+DIAS_MAX_TELEMETRIA = 450
 FONTE_RODAPE = "Nível e vazão do rio — ANA, estação 77150000 (série histórica diária e telemetria de 15 em 15 minutos)"
 NOTA_SUPRESSAO = "não se aplica: medidas de nível e vazão, sem contagem de pessoas"
 AVISO_PREPARACAO = "cheia de outubro de 2026: números em preparação"
+AVISO_PROVISORIO = "dados de telemetria, não consolidados"
 # Corte da série diária enquanto o evento estiver em curso: se o primeiro dia acima de LIMIAR_CM cair neste
 # mês, a série termina no último dia do mês anterior (cheia de outubro de 2026 → série até 30/09/2026), para
 # não publicar nenhum valor do mês do evento. Sai (vira None) quando os números do evento forem conferidos;
@@ -172,8 +191,47 @@ def ultima_leitura(t: pd.DataFrame, ev: dict, hoje: date) -> tuple[dict, list]:
     return linha, [aviso_rt] + ([{"tipo": "parcial", "texto": "leitura antiga"}] if idade > DIAS_LEITURA_ANTIGA else [])
 
 
+def consolidado_ate(arq: Path) -> str | None:
+    """Último dia com dado consistido (nivel_consistencia 2) na série histórica; depois dele, tudo é provisório."""
+    h = pd.read_csv(arq, dtype={"codigo_estacao": str}, usecols=["codigo_estacao", "data", "nivel_consistencia", "cota_cm"])
+    h = h[(h["codigo_estacao"] == ESTACAO) & (h["nivel_consistencia"] == 2)].dropna(subset=["cota_cm"])
+    return str(h["data"].max()) if len(h) else None
+
+
+def _num(v) -> float | None:
+    return None if pd.isna(v) else round(float(v), 1)
+
+
+def telemetria_recente(t: pd.DataFrame, inicio: str) -> list:
+    """Máxima e última leitura de cada dia, de `inicio` até a última leitura, sem corte de evento."""
+    t = t[t["dia"] >= inicio]
+    linhas = []
+    for dia, g in t.groupby("dia"):
+        u = g.iloc[-1]
+        linhas.append({"dia": dia, "nivel_max_cm": _num(g["nivel_cm"].max()), "nivel_ultimo_cm": _num(u["nivel_cm"]),
+                       "vazao_max_m3s": _num(g["vazao_m3s"].max()), "vazao_ultima_m3s": _num(u["vazao_m3s"]),
+                       "hora_ultima": str(u["data_hora"])[11:16], "n_leituras": int(len(g))})
+    return linhas
+
+
+def maxima_periodo(t: pd.DataFrame, inicio: str) -> dict:
+    """Maior nível e maior vazão da janela, cada um com a data/hora da leitura (só leitura de telemetria)."""
+    t = t[t["dia"] >= inicio].reset_index(drop=True)  # índice repetido depois do concat das coletas
+
+    def maior(col: str) -> tuple:
+        v = t.dropna(subset=[col])
+        if not len(v):
+            return None, None
+        r = v.loc[v[col].idxmax()]
+        return _num(r[col]), str(r["data_hora"])[:16]
+
+    (n, n_dh), (q, q_dh) = maior("nivel_cm"), maior("vazao_m3s")
+    return {"nivel_cm": n, "nivel_data_hora": n_dh, "vazao_m3s": q, "vazao_data_hora": q_dh}
+
+
 def ids() -> dict:
-    return {"max": f"rio_ana-{ESTACAO}_maximas-anuais", "dia": f"rio_ana-{ESTACAO}_ultimos-365-dias_diario", "ult": f"rio_ana-{ESTACAO}_ultima-leitura"}
+    return {"max": f"rio_ana-{ESTACAO}_maximas-anuais", "dia": f"rio_ana-{ESTACAO}_ultimos-365-dias_diario", "ult": f"rio_ana-{ESTACAO}_ultima-leitura",
+            "tel": f"rio_ana-{ESTACAO}_telemetria-recente_diario"}
 
 
 def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = None, hoje: date | None = None) -> dict[str, bool]:
@@ -207,7 +265,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
         avisos=[aviso_rt, {"tipo": "metodo", "texto": "média das leituras do dia, no fuso em que o serviço as devolve (não informado); dia sem leitura fica fora"}] + (
             [{"tipo": "evento_em_curso", "texto": aviso_corte(fim_excl)}] if ev["em_curso"] else []),
         colunas=[{"nome": "dia", "tipo": "texto"}, {"nome": "nivel_medio_cm", "tipo": "float"}, {"nome": "vazao_media_m3s", "tipo": "float"}, {"nome": "n_leituras", "tipo": "int"}],
-        dados=dd, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["cheia-saude", "clima"], "evento_em_curso": ev["em_curso"]}),
+        dados=dd, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["cheia-saude"], "evento_em_curso": ev["em_curso"]}),
         e["telemetria"], "média diária das leituras de 15 min, últimos 365 dias; com evento em curso, até o fim do mês anterior ao mês do evento (MES_DO_EVENTO_COM_CORTE) ou até o dia anterior ao evento"))
     linha, av_ult = ultima_leitura(t, ev, hoje)
     defs.append((n["ult"], ["IN05"], dict(
@@ -217,6 +275,25 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
         dados=[linha], extras={"fonte_rodape": FONTE_RODAPE, "telas": ["sintese", "cheia-saude"], "evento_em_curso": ev["em_curso"],
                                "limiar_cm": LIMIAR_CM, "atualizado_em": f"{dia_ult:%Y-%m-%d}"}),
         e["telemetria"], "última leitura da telemetria; com evento em curso, só o aviso"))
+    # telemetria recente: sem a trava; começa onde começa a janela da série diária consolidada (01/10/2025 com o
+    # corte de 30/09/2026), limitada a DIAS_MAX_TELEMETRIA, e vai até a última leitura, para cobrir o trecho que o
+    # consolidado ainda não publica
+    ini_tel = max(dd[0]["dia"], (dia_ult.normalize() - pd.Timedelta(days=DIAS_MAX_TELEMETRIA - 1)).strftime("%Y-%m-%d"))
+    tel = telemetria_recente(t, ini_tel)
+    cons = consolidado_ate(e["serie"])
+    ult_dh = str(t.iloc[-1]["data_hora"])[:16]
+    defs.append((n["tel"], ["IN05"], dict(
+        titulo="Nível e vazão do rio: telemetria recente (provisória)", fonte_curta=f"ANA {ESTACAO}",
+        fonte=f"ANA, telemetria da estação {ESTACAO} (leituras de 15 em 15 minutos, não consolidadas)",
+        unidade_medida="cm; m³/s", periodo={"inicio": tel[0]["dia"], "fim": tel[-1]["dia"]}, dados_ate=tel[-1]["dia"],
+        avisos=[{"tipo": "preliminar", "texto": AVISO_PROVISORIO}, aviso_rt,
+                {"tipo": "metodo", "texto": "máxima e última leitura de cada dia, no fuso em que o serviço as devolve (não informado); dia sem leitura fica fora"}],
+        colunas=[{"nome": "dia", "tipo": "texto"}, {"nome": "nivel_max_cm", "tipo": "float"}, {"nome": "nivel_ultimo_cm", "tipo": "float"},
+                 {"nome": "vazao_max_m3s", "tipo": "float"}, {"nome": "vazao_ultima_m3s", "tipo": "float"}, {"nome": "hora_ultima", "tipo": "texto"},
+                 {"nome": "n_leituras", "tipo": "int"}],
+        dados=tel, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["clima"], "provisorio": True, "fonte_tipo": "ANA telemetria",
+                           "ultima_leitura": ult_dh, "consolidado_ate": cons, "maxima_periodo": maxima_periodo(t, ini_tel)}),
+        e["telemetria"] + [e["serie"]], "máxima e última leitura de cada dia da telemetria de 15 min, do início da janela da série diária (no máximo 450 dias) até a última leitura; sem a trava do evento (produto provisório)"))
     out = {}
     for pid, ativos, kw, ent, transf in defs:
         if so and so != pid:

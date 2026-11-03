@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-02T16:51:41Z",
+ "gerado_em": "2026-11-03T15:45:21Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_1974-2024_anual",
@@ -480,6 +480,22 @@
    "sha256": "b7ebd8648027ba4a8cbd5ed3be2456b1a2e86ac5834ecad06c81a18526e88e03"
   },
   {
+   "id": "rio_ana-77150000_telemetria-recente_diario",
+   "titulo": "Nível e vazão do rio: telemetria recente (provisória)",
+   "ativos": [
+    "IN05"
+   ],
+   "selo": "conferido",
+   "autorizacao": "livre",
+   "dados_ate": "2026-11-02",
+   "gerado_em": "2026-11-03T15:45:21Z",
+   "telas": [
+    "clima"
+   ],
+   "bytes": 79346,
+   "sha256": "37ee8dfb519d5a5ce59fb9a49ab6d3287de62b9e261613a7f5b466d7af90ad08"
+  },
+  {
    "id": "rio_ana-77150000_ultima-leitura",
    "titulo": "Última leitura do rio",
    "ativos": [
@@ -505,13 +521,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2026-09-30",
-   "gerado_em": "2026-11-02T16:51:41Z",
+   "gerado_em": "2026-11-03T15:40:28Z",
    "telas": [
-    "cheia-saude",
-    "clima"
+    "cheia-saude"
    ],
-   "bytes": 42152,
-   "sha256": "fe9712fc63ca53d2e443ae2f67471da2cf1a5e48dff43fe00b45115fa1d925fb"
+   "bytes": 42141,
+   "sha256": "b42a7a8903f12eca5649130c2d10231ad97e23f9247df5ad3f3ed0c1f0b2cbe0"
   },
   {
    "id": "risco-geologico_cprm_2021_classe",
