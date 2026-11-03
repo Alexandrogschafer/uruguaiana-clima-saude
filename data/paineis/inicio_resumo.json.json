@@ -11,8 +11,8 @@
     },
     {
       "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json",
-      "sha256": "8823d46840af52824564d2e212df50ff39eb79cb75fc016ee62c0d531234d5bc",
-      "bytes": 8112
+      "sha256": "87aad5d7dfff492709eefb45cbf68da6402d02fb34eeb98d9d1ea472d1cbed44",
+      "bytes": 8097
     },
     {
       "arquivo": "data/paineis/clima_inmet-a809_serie_anual.json",
@@ -26,8 +26,8 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json",
-      "sha256": "b1294f4bb886679975f02f8fa0807554f88a70fc1b9489819e5cd08fa26df79d",
-      "bytes": 7447
+      "sha256": "d3400019e443ad8c1b11312c2634857e358489c94c69b27e085a2cb4024e6402",
+      "bytes": 7437
     },
     {
       "arquivo": "data/paineis/energia_aneel_serie_anual.json",
@@ -81,12 +81,12 @@
     },
     {
       "arquivo": "mapa.html",
-      "sha256": "68fc73e7fb4abb5253bfb24a399f1b71034ab51e9d3cc891b10770953dbad780",
-      "bytes": 18173
+      "sha256": "cca4fb865d9c20d035956333c25d82da05429a880b909f3af90cf01e3a1b1d91",
+      "bytes": 18175
     },
     {
       "arquivo": "data/paineis/catalogo_dados.json",
-      "sha256": "fc0a08d220950317d448b5cedd11dcab7a74db6d0c358a1d2a38b2d87fd6a212",
+      "sha256": "390862aa887912bc1990bfb96d46f228ffff9b0506ca1028b95d1b6c91976603",
       "bytes": 51156
     }
   ],
@@ -115,5 +115,5 @@
   "autorizacao": "livre",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T19:45:29Z"
+  "data_processamento": "2026-11-03T22:43:20Z"
 }

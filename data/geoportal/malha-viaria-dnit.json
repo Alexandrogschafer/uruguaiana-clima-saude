@@ -1,5 +1,5 @@
 {
-  "descricao": "Malha viária federal oficial (DNIT/SNV) — segunda fonte da camada 'Malha viária' do geoportal, ao lado de malha-viaria.geojson (OSM). Estilizada por pavimentação (Pavimentada/Planejada).",
+  "descricao": "Malha viária federal oficial (DNIT/SNV) — segunda fonte da camada 'Malha viária' do mapa, ao lado de malha-viaria.geojson (OSM). Estilizada por pavimentação (Pavimentada/Planejada).",
   "fonte": {
     "caminho_origem": "data/raw/vetor/malha-viaria_dnit-snv_202607A_vetorial.gpkg"
   },

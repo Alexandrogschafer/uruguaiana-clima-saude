@@ -61,7 +61,7 @@ def main() -> None:
         caminho_saida,
         descricao=(
             "Malha viária federal oficial (DNIT/SNV) — segunda fonte da camada "
-            "'Malha viária' do geoportal, ao lado de malha-viaria.geojson (OSM). "
+            "'Malha viária' do mapa, ao lado de malha-viaria.geojson (OSM). "
             "Estilizada por pavimentação (Pavimentada/Planejada)."
         ),
         fonte={"caminho_origem": str(CAMINHO_ORIGEM.relative_to(RAIZ_PROJETO))},

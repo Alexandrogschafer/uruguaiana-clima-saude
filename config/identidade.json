@@ -8,9 +8,21 @@
     ],
     "fonte": "Plus Jakarta Sans",
     "peso": 800,
-    "linha_pequena": "Geoportal · Uruguaiana/RS",
+    "linha_pequena": "Painéis · Uruguaiana/RS",
     "destino": "index.html",
     "observacao": "Só a marca em texto e os nomes por extenso; nenhum logo até haver autorização (ver marcas_liberadas)."
+  },
+  "nome_sistema": {
+    "nome": "Painéis ClimaPampa",
+    "descritor": "painéis de dados de Uruguaiana",
+    "nome_mapa": "Mapa",
+    "titulos": {
+      "inicio": "{nome} — Uruguaiana/RS",
+      "mapa": "{nome_mapa} — {nome}",
+      "tela": "{tela} — {nome}",
+      "catalogo": "Dados — {nome}"
+    },
+    "observacao": "Decisão da rodada A4: o sistema se chama Painéis ClimaPampa e a tela do mapa, só Mapa; a palavra geoportal sai de texto visível, <title> e metadados (fica só em caminhos, URLs e código). <tela> = nome da dimensão ou do cruzamento em config/textos_inicio.json. As páginas são HTML estático e o cabeçalho não lê este arquivo (uma requisição a mais por tela); test_regras_publicas.py e test_tela.js conferem <title>, linha da marca e parágrafo do início contra este bloco."
   },
   "realizacao_texto": "ClimaPampa — PET-Saúde: Clima · Unipampa e Secretaria Municipal de Saúde de Uruguaiana",
   "cores": {

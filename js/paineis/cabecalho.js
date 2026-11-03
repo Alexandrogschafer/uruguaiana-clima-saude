@@ -29,8 +29,10 @@
   // site do projeto: lido de config/textos_inicio.json seria uma requisição a mais em toda tela; fica aqui
   const SITE_PROJETO = {rotulo: 'ClimaPampa ↗', href: 'https://pet-saude-climapampa.github.io/'};
 
-  // linha pequena da marca (o município entra aqui; o resto da marca não muda entre municípios)
-  const LINHA_MARCA = 'Geoportal · Uruguaiana/RS';
+  // nome do sistema e linha pequena da marca: cópia de config/identidade.json (nome_sistema.nome e
+  // marca_texto.linha_pequena; test_regras_publicas.py confere). O município entra na linha pequena.
+  const NOME_SISTEMA = 'Painéis ClimaPampa';
+  const LINHA_MARCA = 'Painéis · Uruguaiana/RS';
 
   // data de geração do manifesto de data/paineis/ como DD/MM/AAAA (ou '' se faltar); usada também no rodapé
   P.dataAtualizacao = function(){
@@ -69,7 +71,7 @@
     const marca = document.createElement('a');
     marca.href = `${P.raiz ? P.raiz() : '..'}/index.html`;
     marca.className = 'cabecalho-marca';
-    marca.setAttribute('aria-label', `ClimaPampa — ${LINHA_MARCA}`);
+    marca.setAttribute('aria-label', `${NOME_SISTEMA} — página inicial`);
     marca.innerHTML = '<span class="marca-texto" aria-hidden="true"><span class="marca-clima">Clima</span><span class="marca-pampa">Pampa</span></span>' +
       '<span class="marca-linha" aria-hidden="true"></span>';
     marca.querySelector('.marca-linha').textContent = LINHA_MARCA;
@@ -91,7 +93,7 @@
     const nav = document.createElement('nav');
     nav.className = 'cabecalho-nav';
     nav.id = 'cabecalho-nav';
-    nav.setAttribute('aria-label', 'Telas do geoportal');
+    nav.setAttribute('aria-label', `Telas dos ${NOME_SISTEMA}`);
     PRINCIPAIS.forEach(d => nav.appendChild(item(d, atual)));
 
     const menu = document.createElement('details');

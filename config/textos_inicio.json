@@ -3,7 +3,7 @@
   "etiqueta": "ClimaPampa · PET-Saúde: Clima · Eixo 3",
   "titulo": "Clima, território e saúde de Uruguaiana em um só lugar",
   "frase": "Dados abertos sobre Uruguaiana, para consulta rápida, com fonte e data em cada número.",
-  "paragrafo": "O geoportal é a plataforma digital do Eixo 3 do ClimaPampa, projeto da Unipampa com a Secretaria Municipal de Saúde de Uruguaiana no programa PET-Saúde: Clima, do Ministério da Saúde. Reúne mapas e painéis sobre clima, saúde, população, território, economia e riscos em Uruguaiana, na fronteira oeste do Rio Grande do Sul, às margens do rio Uruguai.",
+  "paragrafo": "Os Painéis ClimaPampa reúnem dados abertos sobre Uruguaiana, na fronteira oeste do Rio Grande do Sul, organizados por dimensão: clima, saúde, população, território, economia e riscos. É uma iniciativa do Eixo 3 do ClimaPampa, projeto da Unipampa com a Secretaria Municipal de Saúde de Uruguaiana no programa PET-Saúde: Clima, do Ministério da Saúde. Cada número traz fonte e data, e os dados podem ser baixados.",
   "aviso_escopo": "Os dados são para consulta: não são em tempo real e não substituem avisos e alertas da Defesa Civil.",
   "grupos": {
     "dimensoes": "Dimensões",

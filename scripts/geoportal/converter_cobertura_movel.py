@@ -98,7 +98,7 @@ def main() -> None:
             "Cobertura móvel por setor censitário (ANATEL) — escopo reduzido a ano_censo=2022 "
             f"({len(periodos)} períodos: {periodos[0]} a {periodos[-1]}), agregado 'Todas' as operadoras, "
             "todas as tecnologias combinadas (cobertura_todas_tecnologias_pct da fonte). Camada nova do "
-            "geoportal, grupo 'Cobertura móvel (ANATEL)', com seletor de período (re-estiliza sem refetch). "
+            "mapa, grupo 'Cobertura móvel (ANATEL)', com seletor de período (re-estiliza sem refetch). "
             "Objetivo: identificar onde não há cobertura hoje para planejar comunicação alternativa em "
             "eventos extremos, não análise histórica — por isso só o agregado, sem abrir por operadora/"
             "tecnologia, e com o período mais recente como padrão ao ativar a camada."

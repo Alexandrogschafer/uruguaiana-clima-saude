@@ -52,7 +52,7 @@ def converter_camada_bdia(tema: str, nome_arquivo: str, campo_classe: str) -> No
         descricao=(
             f"Tema {tema.capitalize()} do Banco de Dados de Informações Ambientais do IBGE "
             f"(BDiA), escala 1:250.000 — leitura regional/contextual, NÃO para decisão em "
-            f"nível de microárea. Campo de classe usado no geoportal: {campo_classe}. "
+            f"nível de microárea. Campo de classe usado no mapa: {campo_classe}. "
             f"ATENÇÃO: o atributo ar_poli_km de cada feição é a área do polígono completo na "
             f"fonte nacional (antes do recorte municipal) — não representa a área do fragmento "
             f"visível no mapa nem deve ser somado por classe (ver {tema}-classes.json para a "

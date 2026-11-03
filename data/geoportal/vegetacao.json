@@ -1,5 +1,5 @@
 {
-  "descricao": "Tema Vegetacao do Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000 — leitura regional/contextual, NÃO para decisão em nível de microárea. Campo de classe usado no geoportal: legenda.",
+  "descricao": "Tema Vegetacao do Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000 — leitura regional/contextual, NÃO para decisão em nível de microárea. Campo de classe usado no mapa: legenda.",
   "fonte": {
     "caminho_origem": "data/raw/vetor/vegetacao_ibge-bdia_atual_vetorial.gpkg"
   },

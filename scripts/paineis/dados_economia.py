@@ -180,7 +180,7 @@ def notas_kpis(d: dict):
                            "não variam por setor no produto do IBGE."),
         "eco_nota_economia": ("PIB municipal e composição setorial (IBGE/SIDRA), produção agropecuária (PAM/PPM) e emprego formal (RAIS/Novo CAGED) — "
                               "indicadores de contexto socioeconômico municipal, sem granularidade espacial abaixo do município na fonte (ao contrário "
-                              "das demais camadas deste painel, por isso não aparecem no geoportal)."),
+                              "das demais camadas deste painel, por isso não aparecem no mapa)."),
         "eco_meta_pib_pc": f"IBGE/SIDRA · {pc[0]['ano']}–{pc[-1]['ano']}",
         "eco_meta_vab": f"% do VAB total · {cp[0]['ano']}–{cp[-1]['ano']}",
         "eco_nota_pib": (f"{'/'.join(map(str, sem_pc))} não tem PIB per capita (sem fonte de população nesse ano) e {'/'.join(map(str, sem_comp))} não têm "
@@ -193,7 +193,7 @@ def notas_kpis(d: dict):
                          "partir de meados dos anos 2010, ainda pequena. Rebanho ovino em queda estrutural de longo prazo (de "
                          f"{mi(p0['ovino_cabecas'])} de cabeças em {p0['ano']} para {mi(p1['ovino_cabecas'])} em {p1['ano']}), mesmo padrão já visto em "
                          "outros municípios do Pampa gaúcho — bovino oscila, sem tendência clara. PAM/PPM não têm versão por setor censitário nem "
-                         "geolocalizada na fonte (decisão confirmada com o usuário) — por isso ficam só como indicador tabular, sem virar camada no geoportal."),
+                         "geolocalizada na fonte (decisão confirmada com o usuário) — por isso ficam só como indicador tabular, sem virar camada no mapa."),
         "eco_meta_caged_fluxo": f"mensal · {rot_c(c0['competencia'])} a {rot_c(c1['competencia'])}",
         "eco_meta_caged_saldo": f"acumulado desde {rot_c(c0['competencia'])}",
         "eco_nota_caged": ("Novo CAGED (via eSocial, a partir de 2020) — período anterior fica fora de escopo por quebra metodológica com o CAGED antigo "
@@ -208,7 +208,7 @@ def notas_kpis(d: dict):
                           "mecanizada é intensiva em capital, não em mão de obra."),
         "eco_resumo_rais": f"Ver RAIS {d['rais_ano']} completa por seção CNAE ({len(rais)} seções)",
         "eco_nota_vulnerabilidade": ("Desenvolvimento humano (IDHM, Atlas Brasil/PNUD) e cobertura de assistência social (CadÚnico e Bolsa Família, "
-                                     "MDS) — indicadores de contexto municipal único, sem granularidade espacial na fonte, por isso fora do geoportal."),
+                                     "MDS) — indicadores de contexto municipal único, sem granularidade espacial na fonte, por isso fora do mapa."),
         "eco_meta_idhm": f"Atlas Brasil · {i0['ano']}–{i1['ano']}",
         "eco_meta_idhm_brasil": f"{i0['ano']}–{i1['ano']}",
         "eco_nota_idhm": ("IDHM 2022 não existe em nível municipal na fonte (nem via Censo, não computado; nem via PNAD Contínua, testada e confirmada "

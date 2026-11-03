@@ -6,8 +6,8 @@
   "entradas": [
     {
       "arquivo": "data/catalogo_fontes.csv",
-      "sha256": "1c7bb071fe785cf8a90f27d6f0f4f976d87d5624f52b7cbf3d31f91ce02e42aa",
-      "bytes": 122888
+      "sha256": "f8b5ddf8b9b92fe5d69772018c073190a7a5d86bcdfeb3d0199b9cbf646c7f80",
+      "bytes": 122907
     },
     {
       "arquivo": "config/catalogo_ligacao.csv",
@@ -51,8 +51,8 @@
     },
     {
       "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json",
-      "sha256": "8823d46840af52824564d2e212df50ff39eb79cb75fc016ee62c0d531234d5bc",
-      "bytes": 8112
+      "sha256": "87aad5d7dfff492709eefb45cbf68da6402d02fb34eeb98d9d1ea472d1cbed44",
+      "bytes": 8097
     },
     {
       "arquivo": "data/paineis/clima_inmet-a809_serie_anual.json",
@@ -86,8 +86,8 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json",
-      "sha256": "b1294f4bb886679975f02f8fa0807554f88a70fc1b9489819e5cd08fa26df79d",
-      "bytes": 7447
+      "sha256": "d3400019e443ad8c1b11312c2634857e358489c94c69b27e085a2cb4024e6402",
+      "bytes": 7437
     },
     {
       "arquivo": "data/paineis/despesas_siconfi_serie_anual.json",
@@ -251,7 +251,7 @@
     },
     {
       "arquivo": "data/paineis/censo_ibge_2022_situacao-setor.json.json",
-      "sha256": "39267df24413d8a50ae5048542d24f2246b50a7ca973e29d2bff13780ae22fb6",
+      "sha256": "9f711982444433aad0c3b96e73fdbb53418ea119561615a7914fa862a762f743",
       "bytes": 929
     },
     {
@@ -286,7 +286,7 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json.json",
-      "sha256": "497c245196fbc136a783c486bf96ac67b619a6537aebc8f9f1ac170f9de4c36a",
+      "sha256": "f2ee2d7945e05a388e299775350a5ed55bfca4d54fd3c397efcf68fc18b8038a",
       "bytes": 1052
     },
     {
@@ -466,5 +466,5 @@
   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T19:45:29Z"
+  "data_processamento": "2026-11-03T22:43:20Z"
 }

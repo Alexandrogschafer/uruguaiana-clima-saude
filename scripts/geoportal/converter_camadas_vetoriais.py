@@ -60,7 +60,7 @@ def converter_saude_cnes() -> None:
         gdf,
         DIR_GEOPORTAL / "saude-cnes.geojson",
         descricao=(
-            "Estabelecimentos de saúde (CNES/DATASUS). Filtro de tipo no geoportal usa "
+            "Estabelecimentos de saúde (CNES/DATASUS). Filtro de tipo no mapa usa "
             "tipo_unidade_categoria (categorização normalizada, confirmada na etapa 0); "
             "tipo_unidade (bruto CNES) mantido para exibição em popup."
         ),

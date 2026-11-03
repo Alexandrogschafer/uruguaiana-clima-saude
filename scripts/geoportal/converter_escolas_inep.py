@@ -136,7 +136,7 @@ def main() -> None:
         caminho_saida,
         descricao=(
             "Escolas do INEP (Catálogo de Escolas + Censo Escolar 2024) geocodificadas — camada nova "
-            "do geoportal, grupo 'Educação', filtro por dependência administrativa (mesmo padrão de UI "
+            "do mapa, grupo 'Educação', filtro por dependência administrativa (mesmo padrão de UI "
             "do filtro de saúde, controlado por js/filtro-educacao.js). Só as 48 escolas com coordenada "
             "válida na fonte entram aqui — 44 escolas do Censo Escolar 2024 sem coordenada geocodificada "
             "ficam de fora (ver data/raw/vetor/escolas_inep-catalogo-censo_atual_vetorial.json)."

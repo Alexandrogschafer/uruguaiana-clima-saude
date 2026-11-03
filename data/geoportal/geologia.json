@@ -1,5 +1,5 @@
 {
-  "descricao": "Tema Geologia do Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000 — leitura regional/contextual, NÃO para decisão em nível de microárea. Campo de classe usado no geoportal: nm_unidade.",
+  "descricao": "Tema Geologia do Banco de Dados de Informações Ambientais do IBGE (BDiA), escala 1:250.000 — leitura regional/contextual, NÃO para decisão em nível de microárea. Campo de classe usado no mapa: nm_unidade.",
   "fonte": {
     "caminho_origem": "data/raw/vetor/geologia_ibge-bdia_atual_vetorial.gpkg"
   },

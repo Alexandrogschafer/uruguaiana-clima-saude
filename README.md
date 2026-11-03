@@ -5,7 +5,8 @@
 
 🗺️ **Mapa:** [alexandrogschafer.github.io/uruguaiana-clima-saude/mapa.html](https://alexandrogschafer.github.io/uruguaiana-clima-saude/mapa.html)
 
-Geoportal e pipeline de dados espaciais do projeto **ClimaPampa**
+**Painéis ClimaPampa** — painéis de dados de Uruguaiana — e pipeline de
+dados espaciais do projeto **ClimaPampa**
 (PET-Saúde: Clima — UNIPAMPA + Secretaria Municipal de Saúde de
 Uruguaiana), subsidiando o Eixo III (Comunicação e Inovação), objetivo
 específico 1: plataforma digital geoespacial para vigilância em saúde e
@@ -13,7 +14,7 @@ tomada de decisão territorial.
 
 O repositório reúne três blocos: os **scripts** que baixam, padronizam e
 cruzam dados espaciais (vetoriais e matriciais) sobre clima, território,
-vulnerabilidade socioambiental e saúde; o **geoportal** (`mapa.html` +
+vulnerabilidade socioambiental e saúde; o **mapa** (`mapa.html` +
 `css/` + `js/`), um mapa interativo que publica essas camadas para
 consulta por gestores, equipes de saúde e pesquisadores; e os **painéis**
 (`dashboards/`), telas com séries e tabelas lidas de `data/paineis/`. O
@@ -29,7 +30,7 @@ cota leva ao início. `dashboards/index.html` também leva ao início.
 
 ## Camadas disponíveis
 
-O painel lateral do geoportal organiza as camadas em 12 grupos
+O painel lateral do mapa organiza as camadas em 12 grupos
 colapsáveis (contados em `mapa.html`), na mesma ordem abaixo — todas já
 publicadas (versão preliminar, ainda em revisão visual). O cabeçalho do
 painel tem o link **Início**, para a página inicial.
@@ -88,7 +89,7 @@ painel tem o link **Início**, para a página inicial.
 
 ### Endereço do mapa com parâmetros
 
-O geoportal lê da URL os mesmos parâmetros dos painéis
+O mapa lê da URL os mesmos parâmetros dos painéis
 (`js/url-estado.js`); valor que não existe no mapa é ignorado, sai da URL
 e aparece num aviso que pode ser fechado:
 
@@ -126,7 +127,7 @@ escrito no HTML. Endereço de cada uma (no site publicado, depois de
 
 `dashboards/index.html` e `dashboards/sintese.html` levam ao início; os
 endereços antigos (`painel-*.html`) levam às telas novas. Os filtros também vão na URL (`periodo`, `unidade`, `cota`);
-os links "ver no mapa" abrem o geoportal com os parâmetros acima.
+os links "ver no mapa" abrem o mapa com os parâmetros acima.
 
 **Dados dos painéis (`data/paineis/`):** cada produto é um JSON pequeno no
 esquema `climapampa-painel/1` (fonte, período, selo, avisos, supressão e
@@ -265,7 +266,7 @@ bairro/setor na fonte) e aparecem nos painéis:
   publicada para antes do evento.
 - **Risco geológico (CPRM):** Carta de Suscetibilidade a Movimentos
   Gravitacionais de Massa e Inundações — área por classe na tela de
-  riscos; ainda não publicada como camada do geoportal.
+  riscos; ainda não publicada como camada do mapa.
 
 Todos os arquivos estão em `data/raw/` (ou `data/processed/`, no caso de
 produtos derivados), cada um com metadado `.json` irmão descrevendo fonte,
@@ -279,10 +280,10 @@ método e período coberto.
 
 **Para o inventário técnico completo** (toda fonte, com licença, resolução
 espacial/temporal, URL/API, script responsável e observações detalhadas
-de cada coleta) — inclusive as camadas já publicadas no geoportal — ver
+de cada coleta) — inclusive as camadas já publicadas no mapa — ver
 `data/catalogo_fontes.csv`, mantido vivo a cada nova fonte processada.
 
-## Estudos (produtos de trabalho, fora do geoportal)
+## Estudos (produtos de trabalho, fora dos Painéis ClimaPampa)
 
 Notas técnicas com tabelas, mapas e figuras, cada arquivo com `.json`
 irmão. Estão pendentes de conferência e nenhuma delas alimenta o portal.
@@ -341,7 +342,7 @@ uruguaiana-clima-saude/
 ├── README.md
 ├── requirements.txt
 ├── index.html                     # página inicial (índice por dimensão)
-├── mapa.html, css/, js/           # geoportal (js/paineis/: base comum dos painéis)
+├── mapa.html, css/, js/           # mapa (js/paineis/: base comum dos painéis)
 ├── config/
 │   ├── area_estudo.geojson        # limite oficial do município (referência única)
 │   └── paineis_ativos.csv         # autorização de cada ativo nos painéis
@@ -383,15 +384,15 @@ python scripts/download/vetor_ibge.py --codigo-ibge 4322400
 Isso gera `config/area_estudo.geojson` (EPSG:31981), que passa a ser a
 referência única de recorte para todos os demais scripts.
 
-## Geoportal (front-end estático)
+## Mapa (front-end estático)
 
-`mapa.html` + `css/` + `js/` compõem o geoportal ClimaPampa — mapa
+`mapa.html` + `css/` + `js/` compõem o mapa dos Painéis ClimaPampa — mapa
 Leaflet que consome as camadas geradas em `data/geoportal/` (exportadas
 pelos scripts de `scripts/geoportal/`).
 
 ### Testar localmente
 
-O geoportal usa `fetch()` para carregar as camadas GeoJSON, então precisa
+O mapa usa `fetch()` para carregar as camadas GeoJSON, então precisa
 ser servido por HTTP (não abrir `mapa.html` direto via `file://`):
 
 ```bash
@@ -417,7 +418,7 @@ python scripts/paineis/test_contraste.py   # contraste dos tokens de texto (clar
 ```
 
 - `scripts/geoportal/test_headless.js`: sobe um servidor HTTP local, abre o
-  geoportal em Chromium headless e confere o mapa, os grupos de camadas,
+  mapa em Chromium headless e confere o mapa, os grupos de camadas,
   os controles, os parâmetros da URL, o popup das unidades, os links para
   os painéis e a ausência de erros de JS e de console. O mapa precisa do
   Leaflet e dos tiles pela internet. O screenshot vai para uma pasta

@@ -128,7 +128,7 @@ def converter_bacias_hidrograficas(forcar: bool = False) -> None:
                 "o atributo area_m2_bho é a área da bacia completa a montante (escala nacional, "
                 "conforme calculada pela própria ANA/BHO), não a área do fragmento recortado "
                 "pelo município nem está em m² apesar do nome do campo — comparação com "
-                "geometry.area indica que já está em km²; não usado no geoportal por ambiguidade."
+                "geometry.area indica que já está em km²; não usado no mapa por ambiguidade."
             ),
             fonte={"caminho_origem": str(caminho.relative_to(RAIZ_PROJETO))},
             forcar=forcar,

@@ -24,6 +24,9 @@ const { chromium } = require("playwright");
 const ROOT = path.resolve(__dirname, "..", "..");
 const SCREENSHOT_DIR = process.env.SCREENSHOT_DIR || fs.mkdtempSync(path.join(os.tmpdir(), "geoportal-headless-"));
 const SCREENSHOT_PATH = path.join(SCREENSHOT_DIR, "geoportal-headless.png");
+// <title> do mapa montado a partir de config/identidade.json (nome_sistema, rodada A4)
+const NOME_SISTEMA = JSON.parse(fs.readFileSync(path.join(ROOT, "config", "identidade.json"), "utf8")).nome_sistema;
+const TITULO_MAPA = NOME_SISTEMA.titulos.mapa.replace("{nome_mapa}", NOME_SISTEMA.nome_mapa).replace("{nome}", NOME_SISTEMA.nome);
 
 const MIME = {
   ".html": "text/html",
@@ -76,7 +79,7 @@ async function main() {
   await page.waitForTimeout(2000);
 
   const checks = {
-    tituloOk: (await page.title()) === "ClimaPampa — Geoportal Uruguaiana/RS",
+    tituloOk: (await page.title()) === TITULO_MAPA,
     mapaLeafletPresente: await page.evaluate(() => {
       const el = document.getElementById("mapa");
       return !!(el && el.classList.contains("leaflet-container"));

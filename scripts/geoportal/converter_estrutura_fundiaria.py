@@ -57,7 +57,7 @@ def main() -> None:
         caminho_saida,
         descricao=(
             "CAR (Cadastro Ambiental Rural) — imóveis rurais cadastrados no SICAR. "
-            "Camada nova, grupo próprio no geoportal, toggle único. Estilizada por status_imovel "
+            "Camada nova, grupo próprio no mapa, toggle único. Estilizada por status_imovel "
             "(Ativo/Pendente/Cancelado). Escopo limitado: só polígono do imóvel + atributos básicos "
             "(Reserva Legal/APP declarada/Uso Consolidado não disponíveis nesta fonte, ver catalogo_fontes.csv)."
         ),

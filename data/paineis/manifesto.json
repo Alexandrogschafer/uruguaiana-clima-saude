@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-03T19:45:29Z",
+ "gerado_em": "2026-11-03T22:43:20Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_serie_anual",
@@ -156,12 +156,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
    "dados_ate": "2026-11-03",
-   "gerado_em": "2026-11-03T19:45:29Z",
+   "gerado_em": "2026-11-03T22:43:20Z",
    "telas": [
     "catalogo"
    ],
    "bytes": 51156,
-   "sha256": "fc0a08d220950317d448b5cedd11dcab7a74db6d0c358a1d2a38b2d87fd6a212",
+   "sha256": "390862aa887912bc1990bfb96d46f228ffff9b0506ca1028b95d1b6c91976603",
    "csv": "csv/catalogo_dados.csv"
   },
   {
@@ -174,12 +174,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2022",
-   "gerado_em": "2026-11-03T19:38:49Z",
+   "gerado_em": "2026-11-03T22:43:19Z",
    "telas": [
     "economia"
    ],
-   "bytes": 8112,
-   "sha256": "8823d46840af52824564d2e212df50ff39eb79cb75fc016ee62c0d531234d5bc",
+   "bytes": 8097,
+   "sha256": "87aad5d7dfff492709eefb45cbf68da6402d02fb34eeb98d9d1ea472d1cbed44",
    "csv": "csv/censo_ibge_2022_situacao-setor.csv"
   },
   {
@@ -303,12 +303,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2025",
-   "gerado_em": "2026-11-03T19:39:33Z",
+   "gerado_em": "2026-11-03T22:43:19Z",
    "telas": [
     "riscos"
    ],
-   "bytes": 7447,
-   "sha256": "b1294f4bb886679975f02f8fa0807554f88a70fc1b9489819e5cd08fa26df79d",
+   "bytes": 7437,
+   "sha256": "d3400019e443ad8c1b11312c2634857e358489c94c69b27e085a2cb4024e6402",
    "csv": "csv/desastres_s2id_serie_anual.csv"
   },
   {
@@ -445,12 +445,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2026-10-25",
-   "gerado_em": "2026-11-03T19:45:29Z",
+   "gerado_em": "2026-11-03T22:43:20Z",
    "telas": [
     "inicio"
    ],
    "bytes": 11447,
-   "sha256": "dbb8b772812f19ef32821f3e814f6efc11bb8ef552bb687e1a5269a0947f8686",
+   "sha256": "9372b936b159527a13efb6a805f18f6bd5858c8453e8a1c752a3c339874eae04",
    "csv": "csv/inicio_resumo.csv"
   },
   {

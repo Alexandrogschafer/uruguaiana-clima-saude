@@ -1,6 +1,6 @@
 # Série longa da população de Uruguaiana (RS), 1970–2022
 
-**Status:** produto de trabalho, pendente de conferência. Nada deste material está ligado ao geoportal.
+**Status:** produto de trabalho, pendente de conferência. Nada deste material está ligado aos Painéis ClimaPampa.
 **Município:** Uruguaiana (RS), código IBGE 4322400. **Fonte:** só a API de agregados do IBGE (SIDRA). Cada tabela e figura tem um `.json` irmão.
 
 Esta nota estende até 1970 a parte municipal (não espacial) da caracterização de 2000–2022, que continua valendo como está.

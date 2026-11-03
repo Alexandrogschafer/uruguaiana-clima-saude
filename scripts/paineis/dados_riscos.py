@@ -169,12 +169,12 @@ def notas_kpis(s_l, s_x, c_l, c_t, a_l, distrib):
                             f"Pública (ECP, situação mais grave) — os demais {total - s_x['n_ecp']} reconhecimentos são Situação de Emergência (SE); "
                             f"ambas as declarações de {ecp_ano} referem-se à pandemia de covid-19. Sem geometria própria por evento na fonte (é "
                             "reconhecimento administrativo por decreto/portaria, não mapeamento de área afetada) — por isso fica como indicador de "
-                            "contexto, não camada no geoportal."),
+                            "contexto, não camada no mapa."),
         "ris_resumo_risco": "Ver risco geológico em tabela (área e nº de polígonos)",
         "ris_nota_aneel": (f"Indicadores coletivos de continuidade (DEC — duração, FEC — frequência) da distribuidora {distrib}, agregados por média "
                            "ponderada pelo número de unidades consumidoras entre os \"conjuntos\" que atendem o município (a fonte reorganizou essa "
                            "divisão interna ao longo do tempo — ver nota abaixo) — sem geometria publicada pela ANEEL, por isso fica como indicador "
-                           "de contexto, não camada no geoportal."),
+                           "de contexto, não camada no mapa."),
         "ris_meta_dec": "acumulado anual · horas",
         "ris_meta_fec": "acumulado anual · nº de interrupções",
         "ris_nota_aneel_2": (f"{parc[0]['ano']} (parcial, só até {['', 'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro'][parc[0]['meses']]}) "

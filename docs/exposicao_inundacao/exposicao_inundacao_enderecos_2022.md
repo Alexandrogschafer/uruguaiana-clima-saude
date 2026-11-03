@@ -1,6 +1,6 @@
 # Exposição à inundação pelos endereços residenciais (Uruguaiana, RS, 2022)
 
-**Status:** produto de trabalho, pendente de conferência. Nada deste material está ligado ao geoportal.
+**Status:** produto de trabalho, pendente de conferência. Nada deste material está ligado aos Painéis ClimaPampa.
 **Município:** código IBGE 4322400. **CRS:** EPSG:31981.
 
 **Fontes:**

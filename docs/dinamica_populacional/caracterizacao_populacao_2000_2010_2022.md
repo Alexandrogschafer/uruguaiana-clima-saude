@@ -1,6 +1,6 @@
 # Dinâmica populacional de Uruguaiana (RS), 2000–2022
 
-**Status:** produto de trabalho, pendente de conferência dos mapas pelo responsável. Nada deste material está ligado ao geoportal.
+**Status:** produto de trabalho, pendente de conferência dos mapas pelo responsável. Nada deste material está ligado aos Painéis ClimaPampa.
 **Município:** Uruguaiana (RS), código IBGE 4322400. **CRS:** SIRGAS 2000 / UTM 21S (EPSG:31981).
 **Fontes:** só produtos padrão do IBGE (resultados do universo dos Censos 2000, 2010 e 2022, agregados por setor censitário, grade estatística, CNEFE e histórico de formação dos setores). Cada tabela e figura tem um `.json` irmão com fonte e transformação.
 
