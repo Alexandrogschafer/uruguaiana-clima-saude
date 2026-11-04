@@ -86,8 +86,8 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json",
-      "sha256": "d1a0151ee812bc762a10e656bfb405058740ab5986fd0a42b0c2377b1b1f3cf8",
-      "bytes": 6894
+      "sha256": "9f7e01c5214e0b523fa0309a3637aa2521acaab41a485681608e4faa102e3baa",
+      "bytes": 6773
     },
     {
       "arquivo": "data/paineis/despesas_siconfi_serie_anual.json",
@@ -286,7 +286,7 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json.json",
-      "sha256": "91ba07da3ac22ab00df53ce55d8ed6a4cee6a2c5ffba69c526aae9e7e036b69d",
+      "sha256": "66d998f8ff0253aba90eb2dd598b75722d4d3e68fdbf0ba63dddc9fe934374d6",
       "bytes": 1052
     },
     {
@@ -466,5 +466,5 @@
   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-04T00:00:28Z"
+  "data_processamento": "2026-11-04T00:49:12Z"
 }

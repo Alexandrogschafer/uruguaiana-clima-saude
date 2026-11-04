@@ -955,12 +955,15 @@ async function testesExtrasRiscos(browser, base, prod) {
       notaSusc: (document.querySelector('[data-nota="ris_nota_suscetibilidade"]') || {}).textContent || "",
       mapa: (() => { const m = document.getElementById("mapa-suscetibilidade"); return m ? { oculto: m.hidden && m.getBoundingClientRect().height === 0, filhos: m.children.length } : null; })(),
       bastidor: /n[uú]mero de pol[ií]gonos —|contaria a hist[oó]ria/.test(document.body.innerText),
+      // "Leitura recomendada" sem a frase da APP hídrica, que não está nesta tela (rodada A9)
+      leitura: (document.querySelector('[data-nota="ris_leitura"]') || {}).textContent || "",
     };
   });
   await ctx.close();
   const ordemOk = r.ordem.every((v) => v !== null) && r.ordem.every((v, i, a) => i === 0 || v > a[i - 1]);
   res.push({ nome: "riscos: desastres reconhecidos → suscetibilidade → setorização → energia", ok: ordemOk && erros.length === 0, detalhe: JSON.stringify(r.ordem) });
   res.push({ nome: "riscos: nenhum gráfico de barra de área por classe; sem a explicação de bastidor", ok: !r.barrasArea.length && !r.bastidor, detalhe: JSON.stringify(r.barrasArea) });
+  res.push({ nome: "riscos: \"Leitura recomendada\" sem APP hídrica", ok: /^Leitura recomendada:/.test(r.leitura) && !/APP/.test(r.leitura) && r.leitura === prod.s2id.meta.notas.ris_leitura.replace(/\*\*/g, ""), detalhe: r.leitura });
   const s = prod.cprm.meta.suscetibilidade, tot = prod.cprm.meta.totais;
   const pctOk = (linhas, total) => linhas.every((x) => Math.abs(x.pct_mapeado - (100 * x.area_km2) / total) < 0.051);
   const soma = s.inundacao.reduce((a, x) => a + x.pct_mapeado, 0);

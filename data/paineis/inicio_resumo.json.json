@@ -26,8 +26,8 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json",
-      "sha256": "d1a0151ee812bc762a10e656bfb405058740ab5986fd0a42b0c2377b1b1f3cf8",
-      "bytes": 6894
+      "sha256": "9f7e01c5214e0b523fa0309a3637aa2521acaab41a485681608e4faa102e3baa",
+      "bytes": 6773
     },
     {
       "arquivo": "data/paineis/energia_aneel_serie_anual.json",
@@ -86,7 +86,7 @@
     },
     {
       "arquivo": "data/paineis/catalogo_dados.json",
-      "sha256": "6c50d4445b12595df4dab65770d7cc3cc15267b2bfbebacef89710497a43e6d9",
+      "sha256": "ef4a0943841a13885cf09ac82cad6bed8c1a8f690c1a3967c57c7c1109cd56a7",
       "bytes": 51181
     }
   ],
@@ -115,5 +115,5 @@
   "autorizacao": "livre",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-04T00:00:28Z"
+  "data_processamento": "2026-11-04T00:49:12Z"
 }
