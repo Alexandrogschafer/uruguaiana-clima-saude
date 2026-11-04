@@ -362,7 +362,7 @@ const TELAS = {
         tabelaBater: p.bater.dados.map((r) => [r.area_bater, tx(r.origem), tx(r.observacao)]),
       };
     },
-    extras: async (browser, base, prod) => testesExtrasCheia(browser, base, prod),
+    extras: async (browser, base, prod) => [...await testesExtrasCheia(browser, base, prod), ...await testeAberturaCheia(browser, base, prod)],
   },
   inicio: {
     pagina: "index.html",
@@ -991,6 +991,17 @@ async function testeSuprimidoSetor(browser, base, prod) {
 }
 
 // ------------------------------------------------------------------ extras da cheia e saúde
+// parágrafo de abertura da cheia (rodada A9): texto de config/textos_inicio.json (cruzamento "cheia", campo "abertura"),
+// copiado pelo gerador para a nota cs_abertura; começa pela pergunta
+async function testeAberturaCheia(browser, base, prod) {
+  const { ctx, page, erros } = await abrir(browser, base + "dashboards/cheia-saude.html", {});
+  const txt = await page.evaluate(() => (document.querySelector('.masthead [data-nota="cs_abertura"]') || {}).textContent || "");
+  await ctx.close();
+  const esp = TEXTOS_INICIO().cruzamentos.find((c) => c.id === "cheia").abertura;
+  return [{ nome: "cheia: parágrafo de abertura igual ao de textos_inicio.json, começando pela pergunta", ok: txt === esp && txt === prod.cotas.meta.notas.cs_abertura &&
+    txt.startsWith("Até onde o rio chega e o que isso significa para as unidades de saúde? ") && erros.length === 0, detalhe: txt }];
+}
+
 async function testesExtrasCheia(browser, base, prod) {
   const res = [];
   const pag = base + "dashboards/cheia-saude.html";

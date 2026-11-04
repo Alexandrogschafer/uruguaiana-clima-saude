@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-04T00:49:12Z",
+ "gerado_em": "2026-11-04T00:50:02Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_serie_anual",
@@ -156,12 +156,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
    "dados_ate": "2026-11-03",
-   "gerado_em": "2026-11-04T00:49:12Z",
+   "gerado_em": "2026-11-04T00:50:02Z",
    "telas": [
     "catalogo"
    ],
    "bytes": 51181,
-   "sha256": "ef4a0943841a13885cf09ac82cad6bed8c1a8f690c1a3967c57c7c1109cd56a7",
+   "sha256": "4ed083a2826adbeb5b38658f46e53720d90eb607d712da4f73e49feb045f06bb",
    "csv": "csv/catalogo_dados.csv"
   },
   {
@@ -445,12 +445,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2026-10-25",
-   "gerado_em": "2026-11-04T00:49:12Z",
+   "gerado_em": "2026-11-04T00:50:02Z",
    "telas": [
     "inicio"
    ],
    "bytes": 11447,
-   "sha256": "c97edfe16a4a5f407375282b7b7e7b2ad0076ff3af288c2dbd2948e664c56770",
+   "sha256": "3b74e094e364f470ddd2c67c070fd012599354a50d5055e07454862e66eb7daf",
    "csv": "csv/inicio_resumo.csv"
   },
   {
@@ -464,13 +464,13 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2023",
-   "gerado_em": "2026-11-02T15:40:19Z",
+   "gerado_em": "2026-11-04T00:50:02Z",
    "telas": [
     "sintese",
     "cheia-saude"
    ],
-   "bytes": 4804,
-   "sha256": "8a2deda4b9223369a8009baf7f4add04e73aedf473aa427d993f4568b0542239",
+   "bytes": 5011,
+   "sha256": "16ac391224bd7a6fb2174609785617a9493258eb9ce7b4bf0a59bc9b83346040",
    "csv": "csv/inundacao_sgb_cotas.csv"
   },
   {
@@ -483,12 +483,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2026",
-   "gerado_em": "2026-11-02T14:11:27Z",
+   "gerado_em": "2026-11-04T00:50:02Z",
    "telas": [
     "cheia-saude"
    ],
    "bytes": 6292,
-   "sha256": "8d33fd93e21fa61f25ae3d8fb177ee5cc691054e50f1a4590473945ea6e55885",
+   "sha256": "489a823d88e1afe2f0381c6c2b060e79ec827438228cef7cb04bdc19ec48b845",
    "csv": "csv/inundacao_sgb_unidades-cotas.csv"
   },
   {

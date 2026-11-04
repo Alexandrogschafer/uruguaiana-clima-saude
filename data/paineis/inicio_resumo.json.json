@@ -36,8 +36,8 @@
     },
     {
       "arquivo": "data/paineis/inundacao_sgb_cotas.json",
-      "sha256": "8a2deda4b9223369a8009baf7f4add04e73aedf473aa427d993f4568b0542239",
-      "bytes": 4804
+      "sha256": "16ac391224bd7a6fb2174609785617a9493258eb9ce7b4bf0a59bc9b83346040",
+      "bytes": 5011
     },
     {
       "arquivo": "data/paineis/pib_ibge_serie_anual.json",
@@ -86,7 +86,7 @@
     },
     {
       "arquivo": "data/paineis/catalogo_dados.json",
-      "sha256": "ef4a0943841a13885cf09ac82cad6bed8c1a8f690c1a3967c57c7c1109cd56a7",
+      "sha256": "4ed083a2826adbeb5b38658f46e53720d90eb607d712da4f73e49feb045f06bb",
       "bytes": 51181
     }
   ],
@@ -115,5 +115,5 @@
   "autorizacao": "livre",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-04T00:49:12Z"
+  "data_processamento": "2026-11-04T00:50:02Z"
 }

@@ -41,7 +41,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T15:40:19Z",
+ "gerado_em": "2026-11-04T00:50:02Z",
  "script": "scripts/paineis/dados_inundacao.py",
  "colunas": [
   {
@@ -90,7 +90,8 @@
   "cs_nota_unidades": "Nenhuma das 21 ESF/UBS fica dentro das manchas do SGB em nenhuma das 4 cotas (833, 952, 1205, 1252 cm). A Equipe de Saúde Prisional fica fora da contagem. Estar fora da mancha não garante acesso pelas ruas: o cálculo de acesso está em conferência.",
   "cs_frase_unidades": "0 de 21 ESF/UBS dentro da mancha em todas as cotas",
   "cs_nota_tr": "Na cota 1.205 cm, a camada do SGB diz 9,0 anos e o documento do SGB, 9,2 anos. Nas frases, quando os dois diferem em menos de 0,5 ano, o tempo de retorno aparece arredondado (\"cerca de N anos\"); nos demais casos, vale o da camada.",
-  "cs_nota_area": "Área principal: a parte da mancha dentro do município. Mancha inteira (SGB): inclui o leito do rio e a margem fora do município."
+  "cs_nota_area": "Área principal: a parte da mancha dentro do município. Mancha inteira (SGB): inclui o leito do rio e a margem fora do município.",
+  "cs_abertura": "Até onde o rio chega e o que isso significa para as unidades de saúde? A régua do rio Uruguai, as manchas de inundação do SGB por cota e a posição das ESF/UBS em relação a elas."
  },
  "dif_tr_cerca_anos": 0.5,
  "comparacao": false,

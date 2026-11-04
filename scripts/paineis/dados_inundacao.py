@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import io
+import json
 import sys
 from pathlib import Path
 
@@ -46,6 +47,7 @@ from recorte_municipio import CRS_PADRAO, carregar_area_estudo  # noqa: E402
 
 RAIZ = comum.RAIZ
 SCRIPT = "scripts/paineis/dados_inundacao.py"
+TEXTOS_INICIO = RAIZ / "config" / "textos_inicio.json"
 E = {
     "manchas": RAIZ / "data/raw/vetor/cotas-inundacao_sgb_atual_vetorial.gpkg",
     "transcricao": RAIZ / "data/processed/conferencia_fontes_inundacao/manchas-por-cota_sgb_2023_transcricao.csv",
@@ -170,6 +172,8 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
             for l in linhas if l["cota_cm"] in dif_tr) + f" Nas frases, quando os dois diferem em menos de {dec1(DIF_TR_CERCA)} ano, o tempo de retorno aparece "
             "arredondado (\"cerca de N anos\"); nos demais casos, vale o da camada." if dif_tr else "Tempo de retorno da camada do SGB, igual ao do documento."),
         "cs_nota_area": "Área principal: a parte da mancha dentro do município. Mancha inteira (SGB): inclui o leito do rio e a margem fora do município.",
+        # parágrafo de abertura da tela: texto único em config/textos_inicio.json (cruzamento "cheia", campo "abertura")
+        "cs_abertura": next(c for c in json.loads(TEXTOS_INICIO.read_text(encoding="utf-8"))["cruzamentos"] if c["id"] == "cheia")["abertura"],
     }
     c = dict(codigo_ibge=codigo_ibge, script=SCRIPT, unidade_espacial="mancha de inundação (município)", selo="em_confirmacao")
     p1 = comum.montar_produto(
@@ -198,7 +202,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
         colunas=[{"nome": k, "tipo": "texto" if k in ("cnes", "nome", "classe") else "bool"} for k in lu[0]],
         dados=lu, extras={"fonte_rodape": FONTE_RODAPE, "telas": ["cheia-saude"], "comparacao": False}, **c)
     out = {}
-    ent = [E["manchas"], E["transcricao"], E["unidades"], E["limite"]]
+    ent = [E["manchas"], E["transcricao"], E["unidades"], E["limite"], TEXTOS_INICIO]
     for p, transf in ((p1, "união acumulada das manchas por cota em EPSG:31981; área; teste ponto-dentro das 21 ESF/UBS; mini-mapas em matplotlib"),
                       (p2, "teste ponto-dentro de cada unidade contra a mancha acumulada de cada cota")):
         if so and so != p["id"]:

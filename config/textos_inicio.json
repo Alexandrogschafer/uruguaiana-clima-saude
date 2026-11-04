@@ -20,7 +20,7 @@
     {"id": "riscos", "nome": "Riscos", "linha": "Desastres reconhecidos, suscetibilidade, setores de risco e continuidade de energia.", "tela": "dashboards/riscos.html"}
   ],
   "cruzamentos": [
-    {"id": "cheia", "nome": "Cheia e saúde", "linha": "Manchas de inundação do Serviço Geológico do Brasil por cota do rio e a posição das unidades de saúde em relação a elas.", "tela": "dashboards/cheia-saude.html"},
+    {"id": "cheia", "nome": "Cheia e saúde", "linha": "Manchas de inundação do Serviço Geológico do Brasil por cota do rio e a posição das unidades de saúde em relação a elas.", "tela": "dashboards/cheia-saude.html", "abertura": "Até onde o rio chega e o que isso significa para as unidades de saúde? A régua do rio Uruguai, as manchas de inundação do SGB por cota e a posição das ESF/UBS em relação a elas."},
     {"id": "mapa", "nome": "Mapa", "linha": "Todas as camadas no mapa interativo: saúde, demografia, inundação, uso do solo, hidrografia e terreno, meio físico e infraestrutura.", "tela": "mapa.html"}
   ],
   "dados": {
