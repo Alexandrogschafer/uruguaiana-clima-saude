@@ -297,16 +297,16 @@ const TELAS = {
     pagina: "dashboards/riscos.html",
     produtos: { s2id: "desastres_s2id_serie_anual", cprm: "risco-geologico_cprm_2021_classe", aneel: "energia_aneel_serie_anual",
                 setor: "setorizacao-risco_sgb_2014_setor", bater: "areas-de-risco_ibge_2018_bater", indisp: "infraestrutura_indisponivel_atual" },
-    recolhiveis: ["det-setorizacao", "det-indisponivel"], extras: async (browser, base, prod) => testeSuprimidoSetor(browser, base, prod),
+    recolhiveis: ["det-setorizacao", "det-indisponivel"],
+    extras: async (browser, base, prod) => [...await testeSuprimidoSetor(browser, base, prod), ...await testesExtrasRiscos(browser, base, prod)],
     legendas: (p) => ({ "s2id-anual": p.s2id.meta.categorias }),
     kpisCompletos: true,
     kpis: (p) => kpisTexto([...p.s2id.meta.kpis_s2id, ...p.aneel.meta.kpis_aneel]),
     graficos: (p) => {
-      const fc = p.cprm.meta.fonte_curta, fs = p.s2id.meta.fonte_curta, fa = p.aneel.meta.fonte_curta;
-      const cl = (cam) => p.cprm.dados.filter((r) => (cam ? r.camada === "Inundação" : r.camada !== "Inundação")).map((r) => [r.classe, [[fmtInt(r.area_km2) + " km²", `km² · ${fc}`]]]);
+      // suscetibilidade sem gráfico desde a rodada A7 (tabela e frase; testesExtrasRiscos)
+      const fs = p.s2id.meta.fonte_curta, fa = p.aneel.meta.fonte_curta;
       const fech = p.aneel.dados.filter((r) => !r.parcial);
       return {
-        "risco-inund": cl(true), "risco-mov": cl(false),
         "s2id-anual": p.s2id.dados.map((r) => {
           const linhas = p.s2id.meta.categorias.filter((c) => r[c] > 0).map((c) => [fmtInt(r[c]), `${c} · ${fs}`]);
           return [r.ano, linhas.length ? linhas : [["0", `reconhecimentos · ${fs}`]]];
@@ -321,6 +321,7 @@ const TELAS = {
       const tx = (v) => (v === null || v === undefined ? "—" : String(v));
       return {
         tabelaRisco: p.cprm.dados.map((r) => [r.camada, r.classe, fmt1(r.area_km2), fmtInt(r.n_poligonos)]),
+        tabelaSuscInund: p.cprm.meta.suscetibilidade.inundacao.map((r) => [r.classe, fmt1(r.area_km2), fmt1(r.pct_mapeado) + "%"]),
         tabelaSetores: p.setor.dados.map((r, i) => [r.setor, r.local, r.tipologia, r.grau_risco, r.grau_vulnerabilidade, n(p.setor, r, i, "edificacoes"), n(p.setor, r, i, "domicilios"), n(p.setor, r, i, "pessoas")]),
         tabelaBater: p.bater.dados.map((r) => [r.area_bater, tx(r.origem), tx(r.observacao)]),
         tabelaIndisp: p.indisp.dados.map((r) => [r.tema, r.fonte, r.motivo]),
@@ -898,6 +899,40 @@ async function testePeriodoRecolhivel(browser, base, pagina, esperado) {
 }
 
 // setorização: contagem suprimida no JSON aparece como "<5" (JSON simulado)
+// Riscos reorganizada (rodada A7): desastres reconhecidos antes da suscetibilidade, que vem antes de setorização e
+// energia; nenhum gráfico de barra de área por classe; % da inundação iguais ao JSON e somando 100; percentuais e frase
+// do movimento de massa iguais ao produto (e conferidos contra as áreas); espaço do mapa estático oculto
+async function testesExtrasRiscos(browser, base, prod) {
+  const res = [];
+  const { ctx, page, erros } = await abrir(browser, base + "dashboards/riscos.html", {});
+  const r = await page.evaluate(() => {
+    const y = (sel) => { const e = document.querySelector(sel); return e ? e.getBoundingClientRect().top + window.scrollY : null; };
+    return {
+      ordem: [y("#chart-s2id-anual"), y("#sec-suscetibilidade"), y("#tabelaSuscInund"), y("#tabelaSetores"), y("#chart-aneel-dec")],
+      barrasArea: ["chart-risco-inund", "chart-risco-mov"].filter((id) => document.getElementById(id)),
+      frase: (document.querySelector('[data-nota="ris_frase_mov"]') || {}).textContent || "",
+      notaSusc: (document.querySelector('[data-nota="ris_nota_suscetibilidade"]') || {}).textContent || "",
+      mapa: (() => { const m = document.getElementById("mapa-suscetibilidade"); return m ? { oculto: m.hidden && m.getBoundingClientRect().height === 0, filhos: m.children.length } : null; })(),
+      bastidor: /n[uú]mero de pol[ií]gonos —|contaria a hist[oó]ria/.test(document.body.innerText),
+    };
+  });
+  await ctx.close();
+  const ordemOk = r.ordem.every((v) => v !== null) && r.ordem.every((v, i, a) => i === 0 || v > a[i - 1]);
+  res.push({ nome: "riscos: desastres reconhecidos → suscetibilidade → setorização → energia", ok: ordemOk && erros.length === 0, detalhe: JSON.stringify(r.ordem) });
+  res.push({ nome: "riscos: nenhum gráfico de barra de área por classe; sem a explicação de bastidor", ok: !r.barrasArea.length && !r.bastidor, detalhe: JSON.stringify(r.barrasArea) });
+  const s = prod.cprm.meta.suscetibilidade, tot = prod.cprm.meta.totais;
+  const pctOk = (linhas, total) => linhas.every((x) => Math.abs(x.pct_mapeado - (100 * x.area_km2) / total) < 0.051);
+  const soma = s.inundacao.reduce((a, x) => a + x.pct_mapeado, 0);
+  res.push({ nome: "riscos: % do mapeado no produto conferem com as áreas (inundação soma 100%)",
+    ok: pctOk(s.inundacao, tot.inundacao_km2) && pctOk(s.movimento_de_massa, tot.movimento_km2) && Math.abs(soma - 100) < 0.11, detalhe: JSON.stringify(s) });
+  const baixa = s.movimento_de_massa.find((x) => x.classe === "Baixa"), media = s.movimento_de_massa.find((x) => x.classe === "Média");
+  const pctTxt = baixa.pct_mapeado.toLocaleString("pt-BR", { maximumFractionDigits: 2 });
+  const fraseOk = r.frase === prod.cprm.meta.notas.ris_frase_mov && r.frase.startsWith(`${pctTxt}% da área mapeada`) && r.frase.includes(`${fmt1(media.area_km2)} km²`);
+  res.push({ nome: `riscos: frase do movimento de massa igual ao produto ("${r.frase}")`, ok: fraseOk && r.notaSusc === prod.cprm.meta.notas.ris_nota_suscetibilidade, detalhe: JSON.stringify(r) });
+  res.push({ nome: "riscos: espaço do mapa estático reservado e oculto (sem caixa vazia)", ok: !!r.mapa && r.mapa.oculto && r.mapa.filhos === 0, detalhe: JSON.stringify(r.mapa) });
+  return res;
+}
+
 async function testeSuprimidoSetor(browser, base, prod) {
   const id = prod.setor.meta.id;
   const rotas = [[`**/data/paineis/${id}.json`, async (route) => {
