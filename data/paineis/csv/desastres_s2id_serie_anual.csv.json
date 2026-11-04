@@ -2,7 +2,7 @@
   "produto": "desastres_s2id_serie_anual.csv",
   "formato": "CSV (UTF-8, separador vírgula, ponto decimal, célula vazia = sem valor ou suprimido)",
   "fonte": "data/paineis/desastres_s2id_serie_anual.json",
-  "sha256_fonte": "8a9bcc36dd255575aa0c37aa952cf3483bf8a284dc725a22c876e139ebd40298",
+  "sha256_fonte": "d1a0151ee812bc762a10e656bfb405058740ab5986fd0a42b0c2377b1b1f3cf8",
   "transformacao_aplicada": "registros de \"dados\" do produto JSON publicado, uma linha por registro, colunas na ordem declarada; lógico como sim/não",
   "colunas": [
     "ano",
@@ -17,5 +17,5 @@
   "codigo_ibge": "4322400",
   "selo": "conferido",
   "autorizacao": "livre",
-  "data_processamento": "2026-11-03T23:23:26Z"
+  "data_processamento": "2026-11-04T00:00:28Z"
 }

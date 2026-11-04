@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-03T23:52:21Z",
+ "gerado_em": "2026-11-04T00:00:28Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_serie_anual",
@@ -156,12 +156,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
    "dados_ate": "2026-11-03",
-   "gerado_em": "2026-11-03T23:52:21Z",
+   "gerado_em": "2026-11-04T00:00:28Z",
    "telas": [
     "catalogo"
    ],
-   "bytes": 51105,
-   "sha256": "32cc1e9cf554608cda4f84cf366371a2d9a84d942ecd4ad418b7f2e601fc0dbe",
+   "bytes": 51181,
+   "sha256": "6c50d4445b12595df4dab65770d7cc3cc15267b2bfbebacef89710497a43e6d9",
    "csv": "csv/catalogo_dados.csv"
   },
   {
@@ -303,12 +303,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2025",
-   "gerado_em": "2026-11-03T23:23:26Z",
+   "gerado_em": "2026-11-04T00:00:28Z",
    "telas": [
     "riscos"
    ],
-   "bytes": 7281,
-   "sha256": "8a9bcc36dd255575aa0c37aa952cf3483bf8a284dc725a22c876e139ebd40298",
+   "bytes": 6894,
+   "sha256": "d1a0151ee812bc762a10e656bfb405058740ab5986fd0a42b0c2377b1b1f3cf8",
    "csv": "csv/desastres_s2id_serie_anual.csv"
   },
   {
@@ -445,12 +445,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2026-10-25",
-   "gerado_em": "2026-11-03T23:52:21Z",
+   "gerado_em": "2026-11-04T00:00:28Z",
    "telas": [
     "inicio"
    ],
    "bytes": 11447,
-   "sha256": "8fb18baca9c6402b8ad6aaa0e9e0c13c7ac61c6692a0e175f3c800ca1ad63105",
+   "sha256": "350d1c7b495e24f048891e814131faa4b8f83a2d5ea0bd69b0874e5d3b0f7f91",
    "csv": "csv/inicio_resumo.csv"
   },
   {
@@ -657,12 +657,12 @@
    "selo": "conferido",
    "autorizacao": "livre",
    "dados_ate": "2021",
-   "gerado_em": "2026-11-02T12:52:10Z",
+   "gerado_em": "2026-11-04T00:00:28Z",
    "telas": [
     "riscos"
    ],
-   "bytes": 2037,
-   "sha256": "c1ad0bf482e293c203b76f67853046f26d0d7d0619aca15d0fed00a3c7dd8ca7",
+   "bytes": 2829,
+   "sha256": "b025e7534df00e2288676c62bd29bd8e9b4ef9eaf578f4c9c1442a2937dba7e0",
    "csv": "csv/risco-geologico_cprm_2021_classe.csv"
   },
   {

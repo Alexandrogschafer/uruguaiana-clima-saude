@@ -210,3 +210,8 @@ details.sobre-dado dd { margin: 0; color: var(--ink-secondary); overflow-wrap: a
   .cabecalho-comum.menu-aberto .menu-explorar-lista { position: static; border: 0; box-shadow: none; padding: 0 0 0 10px; min-width: 0; background: none; }
 }
 .faixa-rio-link { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border-strong); white-space: nowrap; }
+
+/* suscetibilidade sem gráfico (tela de riscos): marcador da classe na tabela e frase do movimento de massa */
+.dot-classe { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 7px; vertical-align: 1px; }
+.frase-suscetibilidade { margin: 10px 0 2px; font-size: 15px; line-height: 1.5; color: var(--ink); }
+table.data-table.tabela-curta { min-width: 0; }

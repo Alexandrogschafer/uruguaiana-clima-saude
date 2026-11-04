@@ -86,8 +86,8 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json",
-      "sha256": "8a9bcc36dd255575aa0c37aa952cf3483bf8a284dc725a22c876e139ebd40298",
-      "bytes": 7281
+      "sha256": "d1a0151ee812bc762a10e656bfb405058740ab5986fd0a42b0c2377b1b1f3cf8",
+      "bytes": 6894
     },
     {
       "arquivo": "data/paineis/despesas_siconfi_serie_anual.json",
@@ -176,8 +176,8 @@
     },
     {
       "arquivo": "data/paineis/risco-geologico_cprm_2021_classe.json",
-      "sha256": "c1ad0bf482e293c203b76f67853046f26d0d7d0619aca15d0fed00a3c7dd8ca7",
-      "bytes": 2037
+      "sha256": "b025e7534df00e2288676c62bd29bd8e9b4ef9eaf578f4c9c1442a2937dba7e0",
+      "bytes": 2829
     },
     {
       "arquivo": "data/paineis/saude_sih_serie_anual.json",
@@ -286,7 +286,7 @@
     },
     {
       "arquivo": "data/paineis/desastres_s2id_serie_anual.json.json",
-      "sha256": "9492d466a0af635f2c5c0f1de236f7bd52e55bf8633184b7e3d92d0373ef7602",
+      "sha256": "91ba07da3ac22ab00df53ce55d8ed6a4cee6a2c5ffba69c526aae9e7e036b69d",
       "bytes": 1052
     },
     {
@@ -376,8 +376,8 @@
     },
     {
       "arquivo": "data/paineis/risco-geologico_cprm_2021_classe.json.json",
-      "sha256": "9d09cf44e9da34780e12b95fb9d2b635255e492f10ef66125f2ab0182335be23",
-      "bytes": 893
+      "sha256": "f9f32e9d8c51117d24028988596c769a6390e7c2356e89c9ae0047367dd6298e",
+      "bytes": 969
     },
     {
       "arquivo": "data/paineis/saude_sih_serie_anual.json.json",
@@ -466,5 +466,5 @@
   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-03T23:52:21Z"
+  "data_processamento": "2026-11-04T00:00:28Z"
 }

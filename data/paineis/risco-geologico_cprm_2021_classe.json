@@ -31,7 +31,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-02T12:52:10Z",
+ "gerado_em": "2026-11-04T00:00:28Z",
  "script": "scripts/paineis/dados_riscos.py",
  "colunas": [
   {
@@ -59,6 +59,43 @@
  "totais": {
   "inundacao_km2": 1204.31,
   "movimento_km2": 5699.21
+ },
+ "suscetibilidade": {
+  "inundacao_km2_mapeados": 1204.31,
+  "inundacao": [
+   {
+    "classe": "Baixa",
+    "area_km2": 51.23,
+    "pct_mapeado": 4.3
+   },
+   {
+    "classe": "Média",
+    "area_km2": 291.55,
+    "pct_mapeado": 24.2
+   },
+   {
+    "classe": "Alta",
+    "area_km2": 861.54,
+    "pct_mapeado": 71.5
+   }
+  ],
+  "movimento_km2_mapeados": 5699.21,
+  "movimento_de_massa": [
+   {
+    "classe": "Baixa",
+    "area_km2": 5698.71,
+    "pct_mapeado": 99.99
+   },
+   {
+    "classe": "Média",
+    "area_km2": 0.5,
+    "pct_mapeado": 0.01
+   }
+  ]
+ },
+ "notas": {
+  "ris_nota_suscetibilidade": "Classes em área mapeada; contagem de polígonos na tabela abaixo.",
+  "ris_frase_mov": "99,99% da área mapeada tem suscetibilidade baixa a movimento de massa; classe média: 0,5 km²."
  },
  "dados": [
   {

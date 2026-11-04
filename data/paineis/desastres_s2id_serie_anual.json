@@ -32,7 +32,7 @@
   "n_secundarios": 0
  },
  "suprimidos": [],
- "gerado_em": "2026-11-03T23:23:26Z",
+ "gerado_em": "2026-11-04T00:00:28Z",
  "script": "scripts/paineis/dados_riscos.py",
  "colunas": [
   {
@@ -73,8 +73,7 @@
   "Enxurrada"
  ],
  "notas": {
-  "ris_meta_masthead": "Risco geológico 2021 · Desastres (S2ID) 2014–2025",
-  "ris_nota_risco": "Suscetibilidade mapeada (CPRM/SGB, validada em campo em 2021) e histórico de desastres reconhecidos oficialmente pela União (S2ID/SEDEC-MIDR). Barras de suscetibilidade por **área**, não por número de polígonos — um único polígono grande pesa mais que muitos pequenos, e usar contagem aqui contaria a história errada (ver tabela para os dois números).",
+  "ris_meta_masthead": "Desastres (S2ID) 2014–2025 · Risco geológico 2021",
   "ris_meta_inund": "1204 km² mapeados",
   "ris_meta_mov": "5699 km² mapeados",
   "ris_nota_s2id": "Reconhecimentos federais de Situação de Emergência (SE) ou Estado de Calamidade Pública (ECP) — série 2014–2025 (nenhum decreto em 2013 na fonte para o município), levantada no Sistema Integrado de Informações sobre Desastres (S2ID).",

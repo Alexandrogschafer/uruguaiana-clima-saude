@@ -19,7 +19,7 @@
     </svg>
     <span class="eyebrow">ClimaPampa · PET-Saúde: Clima · Uruguaiana / RS · Riscos</span>
     <h1>Riscos, desastres e infraestrutura</h1>
-    <p>Risco geológico (CPRM/SGB), desastres reconhecidos (S2ID) e continuidade de energia (ANEEL) — o retrato estrutural do município, que muda devagar. Uso do solo, poços e APP hídrica estão no painel de <a href="territorio.html">Território</a>; economia e vulnerabilidade, no de <a href="economia.html">Economia</a>.</p>
+    <p>Desastres reconhecidos (S2ID), suscetibilidade a inundação e movimento de massa (CPRM/SGB), setores de risco e continuidade de energia (ANEEL) — o retrato estrutural do município, que muda devagar. Uso do solo, poços e APP hídrica estão no painel de <a href="territorio.html">Território</a>; economia e vulnerabilidade, no de <a href="economia.html">Economia</a>.</p>
     <div class="masthead-meta">
       <span><b>Município</b> Uruguaiana, RS · IBGE 4322400</span>
       <span data-nota="ris_meta_masthead"></span>
@@ -28,38 +28,33 @@
 
   <div class="chips-filtro" id="chips-filtro"></div>
 
-  <div class="section-head"><h2>Risco e Desastres</h2><div class="section-rule"></div></div>
-  <p class="section-note" data-nota="ris_nota_risco"></p>
-  <div class="chart-grid">
-    <div class="card">
-      <div class="card-head"><span class="card-title">Inundação — área por classe</span><span class="card-meta" data-nota="ris_meta_inund"></span></div>
-      <div class="status-legend">
-        <span class="item"><span class="dot" style="background:var(--status-good)"></span>Baixa</span>
-        <span class="item"><span class="dot" style="background:var(--status-warning)"></span>Média</span>
-        <span class="item"><span class="dot" style="background:var(--status-critical)"></span>Alta</span>
-      </div>
-      <div class="card-body"><div id="chart-risco-inund"></div><div class="chart-tooltip" id="tt-risco-inund"></div></div>
-    </div>
-    <div class="card">
-      <div class="card-head"><span class="card-title">Movimento de massa — área por classe</span><span class="card-meta" data-nota="ris_meta_mov"></span></div>
-      <div class="status-legend">
-        <span class="item"><span class="dot" style="background:var(--status-good)"></span>Baixa</span>
-        <span class="item"><span class="dot" style="background:var(--status-warning)"></span>Média</span>
-      </div>
-      <div class="card-body"><div id="chart-risco-mov"></div><div class="chart-tooltip" id="tt-risco-mov"></div></div>
-    </div>
-  </div>
-  <details class="table-wrap" style="margin-top:10px;">
-    <summary data-nota="ris_resumo_risco"></summary>
-    <div class="table-scroll"><table class="data-table" id="tabelaRisco"></table></div>
-  </details>
-  <p class="section-note" style="margin-top:24px;" data-nota="ris_nota_s2id"></p>
+  <div class="section-head"><h2>Desastres reconhecidos</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="ris_nota_s2id"></p>
   <div class="kpi-row" id="kpiRowS2id"></div>
   <div class="card">
     <div class="card-head"><span class="card-title">Reconhecimentos federais de desastre por ano e tipo</span><span class="card-meta" data-nota="ris_meta_s2id"></span></div>
     <div class="card-body"><div id="chart-s2id-anual"></div><div class="chart-tooltip" id="tt-s2id-anual"></div></div>
   </div>
   <p class="section-note" style="margin-top:6px;" data-nota="ris_nota_s2id_2"></p>
+
+  <div class="section-head" id="sec-suscetibilidade"><h2>Suscetibilidade a inundação e movimento de massa</h2><div class="section-rule"></div></div>
+  <p class="section-note" data-nota="ris_nota_suscetibilidade"></p>
+  <div class="chart-grid">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Inundação</span><span class="card-meta" data-nota="ris_meta_inund"></span></div>
+      <div class="table-scroll" style="margin-top:8px;"><table class="data-table tabela-curta" id="tabelaSuscInund"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Movimento de massa</span><span class="card-meta" data-nota="ris_meta_mov"></span></div>
+      <p class="frase-suscetibilidade" data-nota="ris_frase_mov"></p>
+    </div>
+  </div>
+  <!-- espaço reservado para o mapa estático de suscetibilidade (futuro): fica oculto, sem caixa vazia, até haver imagem -->
+  <figure class="mapa-estatico" id="mapa-suscetibilidade" data-reservado="mapa estático de suscetibilidade" hidden></figure>
+  <details class="table-wrap" style="margin-top:10px;">
+    <summary data-nota="ris_resumo_risco"></summary>
+    <div class="table-scroll"><table class="data-table" id="tabelaRisco"></table></div>
+  </details>
 
   <div class="section-head"><h2>Setorização e áreas de risco</h2><div class="section-rule"></div></div>
   <details class="recolhivel" id="det-setorizacao" open>
@@ -116,7 +111,7 @@ const P = window.Paineis;
 const setText = (id, t) => { const e = document.getElementById(id); if(e) e.textContent = t; };
 const IDS = {s2id: 'desastres_s2id_serie_anual', cprm: 'risco-geologico_cprm_2021_classe', aneel: 'energia_aneel_serie_anual',
              setor: 'setorizacao-risco_sgb_2014_setor', bater: 'areas-de-risco_ibge_2018_bater', indisp: 'infraestrutura_indisponivel_atual'};
-const BLOCOS = {s2id: ['chart-s2id-anual'], cprm: ['chart-risco-inund', 'chart-risco-mov', 'tabelaRisco'], aneel: ['chart-aneel-dec', 'chart-aneel-fec'],
+const BLOCOS = {s2id: ['chart-s2id-anual'], cprm: ['tabelaSuscInund', 'tabelaRisco'], aneel: ['chart-aneel-dec', 'chart-aneel-fec'],
                 setor: ['tabelaSetores'], bater: ['tabelaBater'], indisp: ['tabelaIndisp']};
 
 async function iniciar(){
@@ -130,7 +125,7 @@ async function iniciar(){
   P.iniciarFiltros({listas: {periodo: anos.length ? {inicio: Math.min(...anos), fim: Math.max(...anos)} : undefined}});
   P.montarCabecalho();
   P.preencherNotas();
-  // a linha do masthead traz rótulos em negrito: "Risco geológico 2021 · Desastres (S2ID) 2014–2025"
+  // a linha do masthead traz rótulos em negrito: "Desastres (S2ID) 2014–2025 · Risco geológico 2021"
   const mh = document.querySelector('[data-nota="ris_meta_masthead"]');
   if(mh) mh.innerHTML = mh.innerHTML.replace('Risco geológico', '<b>Risco geológico</b>').replace('Desastres (S2ID)', '<b>Desastres (S2ID)</b>');
   if(s2id) P.montarKpis('kpiRowS2id', s2id.meta.kpis_s2id);
@@ -147,16 +142,7 @@ async function iniciar(){
   // legenda do S2ID: a comum dos gráficos (graficos.js), com as categorias do produto
 
   function draw(){
-    const good = cssVar('--status-good'), warning = cssVar('--status-warning'), critical = cssVar('--status-critical');
     const blue = cssVar('--series-blue'), orange = cssVar('--series-orange');
-    if(cprm){
-      const f = cprm.meta.fonte_curta, cor = {Baixa: good, 'Média': warning, Alta: critical};
-      const inund = cprm.dados.filter(r => r.camada === 'Inundação'), mov = cprm.dados.filter(r => r.camada !== 'Inundação');
-      renderBarChart('chart-risco-inund', 'tt-risco-inund', {labels: inund.map(r => r.classe), data: inund.map(r => r.area_km2), colors: inund.map(r => cor[r.classe]),
-        seriesName: P.dica('km²', f), height: 190, padL: 64, yFormat: v => fmtInt(v)+' km²'});
-      renderBarChart('chart-risco-mov', 'tt-risco-mov', {labels: mov.map(r => r.classe), data: mov.map(r => r.area_km2), colors: mov.map(r => cor[r.classe]),
-        seriesName: P.dica('km²', f), height: 190, padL: 64, yFormat: v => fmtInt(v)+' km²', tickCount: 3});
-    }
     if(s2id){
       const d = noPeriodo(s2id.dados), cr = cores(), f = s2id.meta.fonte_curta;
       renderStackedBarChart('chart-s2id-anual', 'tt-s2id-anual', {
@@ -173,6 +159,19 @@ async function iniciar(){
   draw();
   window.addEventListener('resize', () => { clearTimeout(window.__rz); window.__rz = setTimeout(draw, 150); });
 
+  // suscetibilidade a inundação: classe, área e % da área mapeada, do produto (cálculo no gerador)
+  if(cprm){
+    const cor = {Baixa: '--status-good', 'Média': '--status-warning', Alta: '--status-critical'};
+    const t = document.getElementById('tabelaSuscInund');
+    t.innerHTML = '<thead><tr><th>Classe</th><th>Área (km²)</th><th>% do mapeado</th></tr></thead>';
+    const tb = document.createElement('tbody');
+    cprm.meta.suscetibilidade.inundacao.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td><span class="dot-classe" style="background:var(${cor[r.classe]})"></span>${r.classe}</td><td>${fmt1(r.area_km2)}</td><td>${fmt1(r.pct_mapeado)}%</td>`;
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+  }
   if(cprm){
     const t = document.getElementById('tabelaRisco');
     t.innerHTML = '<thead><tr><th>Camada</th><th>Classe</th><th>Área (km²)</th><th>Nº de polígonos</th></tr></thead>';

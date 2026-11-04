@@ -104,6 +104,36 @@ def cprm():
     return linhas, totais
 
 
+def pct_legivel(parte: float, total: float) -> tuple[float, int]:
+    """Percentual de `parte` em `total` com 1 casa; se 1 casa daria 0 ou 100 sem ser, usa 2 (ex.: 99,99%)."""
+    p = 100 * parte / total
+    for casas in (1, 2):
+        r = round(p, casas)
+        if not ((r >= 100 and parte < total) or (r <= 0 and parte > 0)):
+            return r, casas
+    return round(p, 2), 2
+
+
+def suscetibilidade(c_l, c_t) -> tuple[dict, dict]:
+    """Bloco de texto e números da suscetibilidade (sem gráfico): área e % do mapeado por classe de inundação e a
+    frase do movimento de massa. Percentual sobre a área mapeada de cada camada (total do metadado da CPRM)."""
+    por = lambda cam: [r for r in c_l if r["camada"] == cam]
+    inund, mov = por("Inundação"), por("Movimento de massa")
+    lin = lambda linhas, tot: [{"classe": r["classe"], "area_km2": r["area_km2"], "pct_mapeado": pct_legivel(r["area_km2"], tot)[0]} for r in linhas]
+    resumo = {"inundacao_km2_mapeados": c_t["inundacao_km2"], "inundacao": lin(inund, c_t["inundacao_km2"]),
+              "movimento_km2_mapeados": c_t["movimento_km2"], "movimento_de_massa": lin(mov, c_t["movimento_km2"])}
+    baixa = next(r for r in mov if r["classe"] == "Baixa")
+    pb, casas = pct_legivel(baixa["area_km2"], c_t["movimento_km2"])
+    outras = [r for r in mov if r["classe"] != "Baixa"]
+    frase = f"{br(pb, casas, 0)}% da área mapeada tem suscetibilidade baixa a movimento de massa"
+    frase += ("; " + "; ".join(f"classe {r['classe'].lower()}: {br(r['area_km2'], 1, 0)} km²" for r in outras) + ".") if outras else "."
+    notas = {
+        "ris_nota_suscetibilidade": "Classes em área mapeada; contagem de polígonos na tabela abaixo.",
+        "ris_frase_mov": frase,
+    }
+    return resumo, notas
+
+
 def aneel():
     e = pd.read_csv(E["aneel"])
     w = e.pivot_table(index=["ano", "mes", "conjunto"], columns="indicador", values="valor", aggfunc="first").reset_index().dropna(subset=["DEC", "FEC", "NumCon"])
@@ -152,10 +182,7 @@ def notas_kpis(s_l, s_x, c_l, c_t, a_l, distrib):
     var = 100 * (d1["dec_horas"] - d0["dec_horas"]) / d0["dec_horas"]
     ecp_ano = s_x["anos_ecp"][0]
     notas = {
-        "ris_meta_masthead": f"Risco geológico 2021 · Desastres (S2ID) {anos[0]}–{anos[-1]}",
-        "ris_nota_risco": ("Suscetibilidade mapeada (CPRM/SGB, validada em campo em 2021) e histórico de desastres reconhecidos oficialmente pela "
-                           "União (S2ID/SEDEC-MIDR). Barras de suscetibilidade por **área**, não por número de polígonos — um único polígono grande "
-                           "pesa mais que muitos pequenos, e usar contagem aqui contaria a história errada (ver tabela para os dois números)."),
+        "ris_meta_masthead": f"Desastres (S2ID) {anos[0]}–{anos[-1]} · Risco geológico 2021",
         "ris_meta_inund": f"{round(c_t['inundacao_km2'])} km² mapeados",  # sem separador de milhar, como no painel anterior
         "ris_meta_mov": f"{round(c_t['movimento_km2'])} km² mapeados",
         "ris_nota_s2id": (f"Reconhecimentos federais de Situação de Emergência (SE) ou Estado de Calamidade Pública (ECP) — série {anos[0]}–{anos[-1]} "
@@ -211,6 +238,7 @@ def ids(codigo_ibge: str = "4322400") -> dict[str, str]:
 def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = None) -> dict[str, bool]:
     s_l, s_x = s2id()
     c_l, c_t = cprm()
+    susc, notas_susc = suscetibilidade(c_l, c_t)
     a_l, distrib = aneel()
     st_l, ano_setor = setorizacao()
     bat_l = bater(codigo_ibge)
@@ -229,8 +257,8 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
         (n["cprm"], ["RD02"], dict(titulo="Suscetibilidade a inundação e movimento de massa: área e polígonos por classe", fonte_curta="CPRM/SGB",
                                     fonte="CPRM/SGB, carta de suscetibilidade (RIGEO), validação de campo em 2021", unidade_espacial="município", unidade_medida="km²; polígonos",
                                     periodo={"inicio": "2021", "fim": "2021"}, dados_ate="2021", avisos=[{"tipo": "metodo", "texto": "modelagem validada em campo; triagem territorial, não laudo"}],
-                                    colunas=col(c_l), dados=c_l, extras=ext("cprm", totais=c_t)),
-         [E["cprm"]], "área e número de polígonos por classe, do metadado de risco_geologico_cprm.py"),
+                                    colunas=col(c_l), dados=c_l, extras=ext("cprm", totais=c_t, suscetibilidade=susc, notas=notas_susc)),
+         [E["cprm"]], "área e número de polígonos por classe, do metadado de risco_geologico_cprm.py; % da área mapeada de cada camada por classe e frase do movimento de massa"),
         (n["aneel"], ["IF01"], dict(titulo="DEC e FEC anuais do município", fonte_curta="ANEEL", fonte=f"ANEEL, indicadores de continuidade da distribuidora {distrib}",
                                      unidade_espacial="município (conjuntos consumidores)", unidade_medida="horas; interrupções", periodo={"inicio": str(a_l[0]["ano"]), "fim": str(a_l[-1]["ano"])},
                                      dados_ate=str(a_l[-1]["ano"]), avisos=[{"tipo": "parcial", "texto": "ano com menos de 12 meses é parcial e fica fora dos gráficos"},
