@@ -550,21 +550,35 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
       textosNome: [document.title, document.body.innerText,
         ...[...document.querySelectorAll('meta[name="description"], meta[property^="og:"], meta[name^="twitter:"]')].map((m) => m.getAttribute("content")),
         ...[...document.querySelectorAll("[aria-label], [title]")].flatMap((e) => [e.getAttribute("aria-label"), e.getAttribute("title")])].filter(Boolean),
-      cabecalho: !!document.querySelector("#cabecalho-comum nav"),
+      cabecalho: !!document.querySelector("#cabecalho-comum #cabecalho-abas"),
       errosBloco: document.querySelectorAll(".erro-bloco").length,
       identidade: (() => {
-        const marca = document.querySelector("#cabecalho-comum a.cabecalho-marca"), nav = document.querySelector("#cabecalho-comum nav");
+        const marca = document.querySelector("#cabecalho-comum a.cabecalho-marca"), nav = document.getElementById("cabecalho-nav");
         const bm = marca && marca.getBoundingClientRect(), bn = nav && nav.getBoundingClientRect();
+        const abas = document.getElementById("cabecalho-abas"), h1 = document.querySelector(".masthead .linha-titulo h1"), dt = document.querySelector(".masthead .linha-titulo .atualizado-tela");
+        const vis = (e) => { const b = e.getBoundingClientRect(); return b.width > 0 && b.height > 0; };
         const masthead = document.querySelector(".masthead");
         return {
           fonteCorpo: getComputedStyle(document.body).fontFamily.split(",")[0].replace(/["']/g, "").trim(),
           fonteCarregada: [...document.fonts].some((f) => f.family.replace(/["']/g, "") === "Plus Jakarta Sans" && f.status === "loaded"),
           marcaHref: marca ? marca.getAttribute("href") : null, marcaTexto: marca ? marca.querySelector(".marca-texto").textContent : null,
           marcaImg: marca ? marca.querySelectorAll("img, svg").length : null,
-          umaLinha: !!(bm && bn && bn.top < bm.bottom && bm.top < bn.bottom),
-          linhaTela: (document.querySelector(".masthead .linha-tela .atualizado-tela") || {}).textContent || "",
+          // nível 1 (marca e itens) numa linha a 1280; nível 2 com as abas numa linha, sem rolagem
+          umaLinha: !!(bm && bn && vis(nav) && bn.top < bm.bottom && bm.top < bn.bottom),
+          abasVisiveis: abas ? [...abas.querySelectorAll("a.aba")].filter(vis).length : 0,
+          abasUmaLinha: abas ? new Set([...abas.querySelectorAll("a.aba")].filter(vis).map((a) => Math.round(a.getBoundingClientRect().top))).size === 1 && abas.scrollWidth <= abas.clientWidth : false,
+          abasAbaixo: !!(abas && bn && vis(abas) && abas.getBoundingClientRect().top >= bn.bottom - 1),
+          ariaAbas: abas ? abas.getAttribute("aria-label") : null,
+          ativos: [...document.querySelectorAll('#cabecalho-comum [aria-current="page"]')].map((a) => a.textContent),
+          n1: [...document.querySelectorAll("#cabecalho-nav a")].map((a) => a.textContent),
+          n2: abas ? [...abas.querySelectorAll("a.aba")].map((a) => a.textContent) : [],
+          sep: abas ? [...abas.children].map((e) => (e.classList.contains("abas-sep") ? "|" : e.textContent)) : [],
+          marcaVisivel: !!(marca && vis(marca)), botao: (() => { const b = document.querySelector(".menu-celular"); return b && vis(b) ? Math.round(b.getBoundingClientRect().height) : 0; })(),
+          // título e "Atualizado em" na mesma linha (1280) ou empilhados (390)
+          titulo: h1 ? h1.textContent : null, data: dt ? dt.textContent : "",
+          mesmaLinha: !!(h1 && dt && dt.getBoundingClientRect().top < h1.getBoundingClientRect().bottom && dt.getBoundingClientRect().left >= h1.getBoundingClientRect().right),
+          empilhados: !!(h1 && dt && dt.getBoundingClientRect().top >= h1.getBoundingClientRect().bottom - 1),
           eyebrow: (document.querySelector(".masthead .eyebrow") || {}).textContent || "",
-          menu: [...document.querySelectorAll("#cabecalho-nav a.nav-item, #cabecalho-nav summary")].map((a) => a.textContent),
           menuLinks: [...document.querySelectorAll("#cabecalho-comum a")].map((a) => a.getAttribute("href")),
           herdado: masthead ? (/Painel \d de \d|\bColeta\b|Ver também/.exec(masthead.innerText) || [""])[0] : "",
         };
@@ -576,19 +590,36 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
     if (id.fonteCorpo !== "Plus Jakarta Sans" || !id.fonteCarregada) falhas.push(`fonte do corpo ${id.fonteCorpo}, carregada: ${id.fonteCarregada}`);
     const marcaEsperada = def.pagina.startsWith("dashboards/") ? "../index.html" : "./index.html";
     if (id.marcaHref !== marcaEsperada || id.marcaTexto !== "ClimaPampa" || id.marcaImg !== 0) falhas.push(`marca: ${JSON.stringify(id)}`);
-    if (largura === 1280 && !id.umaLinha) falhas.push("cabeçalho não cabe numa linha a 1280 px");
-    if (JSON.stringify(id.menu) !== JSON.stringify(MENU)) falhas.push(`menu: ${JSON.stringify(id.menu)}`);
+    // cabeçalho em dois níveis (rodada A8): itens e ordem; nomes das abas = "nome" de textos_inicio.json = h1 das telas
+    const n2 = ABAS();
+    if (JSON.stringify(id.n1) !== JSON.stringify(NIVEL1)) falhas.push(`nível 1: ${JSON.stringify(id.n1)}`);
+    if (JSON.stringify(id.n2) !== JSON.stringify(n2)) falhas.push(`nível 2: ${JSON.stringify(id.n2)} ≠ ${JSON.stringify(n2)}`);
+    if (JSON.stringify(id.sep) !== JSON.stringify([...n2.slice(0, 6), "|", ...n2.slice(6)])) falhas.push(`separador das abas: ${JSON.stringify(id.sep)}`);
+    if (id.ariaAbas !== "Telas dos Painéis ClimaPampa") falhas.push(`aria-label das abas: ${id.ariaAbas}`);
+    const ativo = ATIVO(def.pagina);
+    if (JSON.stringify(id.ativos) !== JSON.stringify([ativo])) falhas.push(`item ativo: ${JSON.stringify(id.ativos)} ≠ ${JSON.stringify([ativo])}`);
+    if (def.pagina !== "index.html" && id.titulo !== ativo) falhas.push(`h1 "${id.titulo}" ≠ nome no menu "${ativo}"`);
+    if (largura === 1280) {
+      if (!id.umaLinha) falhas.push("nível 1 não cabe numa linha a 1280 px");
+      if (id.abasVisiveis !== 7 || !id.abasUmaLinha || !id.abasAbaixo) falhas.push(`abas a 1280: ${id.abasVisiveis} visíveis, uma linha: ${id.abasUmaLinha}, abaixo do nível 1: ${id.abasAbaixo}`);
+      if (id.botao) falhas.push("☰ visível a 1280 px");
+      if (!id.mesmaLinha) falhas.push(`título e "Atualizado em" fora da mesma linha a 1280 px`);
+    } else {
+      if (id.abasVisiveis !== 0 || id.n1.length && id.umaLinha) falhas.push(`celular: abas ou itens do nível 1 soltos (${id.abasVisiveis} abas visíveis)`);
+      if (!id.marcaVisivel || id.botao < 44) falhas.push(`celular: marca ${id.marcaVisivel}, ☰ com ${id.botao} px (mín. 44)`);
+      if (!id.empilhados) falhas.push(`título e "Atualizado em" não empilhados a 390 px`);
+    }
     if (!id.menuLinks.every((h) => !/sintese\.html|\/index\.html\?|^\.\.\/index\.html\?/.test(h))) falhas.push(`link do menu para endereço antigo: ${JSON.stringify(id.menuLinks)}`);
-    if (!data.test(id.linhaTela)) falhas.push(`"Atualizado em" fora da linha da tela: "${id.linhaTela}"`);
+    if (!data.test(id.data)) falhas.push(`"Atualizado em" fora da linha do título: "${id.data}"`);
     if (id.herdado) falhas.push(`texto herdado no masthead: "${id.herdado}"`);
     // nome do sistema (rodada A4)
     const tEsp = tituloEsperado(def.pagina);
     if (!tEsp || r.titulo !== tEsp) falhas.push(`<title> "${r.titulo}" ≠ "${tEsp}"`);
     const comGeo = r.textosNome.filter(temGeoportal);
     if (comGeo.length) falhas.push(`"geoportal" em texto visível ou descrição: ${JSON.stringify(comGeo.map((s) => s.slice(Math.max(0, s.search(/geoportal/i) - 40), s.search(/geoportal/i) + 40)))}`);
-    // grafia única do programa (Parte 0 da rodada A2) e eyebrow terminado no nome da tela
-    const eyebrowOk = def.eyebrow ? id.eyebrow === def.eyebrow() : /^ClimaPampa · PET-Saúde: Clima · Uruguaiana \/ RS · \S/.test(id.eyebrow);
-    if (!eyebrowOk) falhas.push(`eyebrow fora do padrão: "${id.eyebrow}"`);
+    // eyebrow (rodada A8): só a etiqueta do início (config/textos_inicio.json); nenhuma tela tem eyebrow
+    const eyebrowOk = def.eyebrow ? id.eyebrow === def.eyebrow() : id.eyebrow === "";
+    if (!eyebrowOk) falhas.push(`eyebrow: "${id.eyebrow}"`);
     const rod = r.rodape.split("\n").map((l) => l.trim()).filter(Boolean);
     if (rod[0] !== "Realização: ClimaPampa — PET-Saúde: Clima · Unipampa e Secretaria Municipal de Saúde de Uruguaiana" || !rod[1].startsWith("Fontes:") || !data.test(rod[rod.length - 1]) || /Outros painéis/.test(r.rodape))
       falhas.push(`rodapé: ${JSON.stringify(rod)}`);
@@ -644,15 +675,25 @@ async function rodarModo(browser, base, def, prod, largura, tema, saida) {
     }
   }
   await page.screenshot({ path: path.join(saida, `${def.pagina.split("/").pop().replace(".html", "")}_${largura}_${tema}.png`), fullPage: true });
+  if (largura === 1280 && tema === "claro") {
+    // nenhum link interno do cabeçalho quebrado (rodada A8)
+    const l = await linksRespondem(page, "#cabecalho-comum a");
+    if (l.ruins.length || l.n < 10) falhas.push(`links do cabeçalho: ${l.n} internos; quebrados: ${JSON.stringify(l.ruins)}`);
+  }
   if (largura === 390) {
-    // menu no celular (rodada A2): o ☰ abre a lista inteira (com "Mais temas"), dentro da tela e sem rolagem lateral
+    // menu no celular (rodada A8): o ☰ abre a lista completa (nível 1 e abas), dentro da tela, sem rolagem lateral, alvos ≥ 44 px
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.click(".menu-celular");
     await page.waitForTimeout(150);
-    const m = await page.evaluate(() => { const l = document.getElementById("cabecalho-nav").getBoundingClientRect();
-      const itens = [...document.querySelectorAll("#cabecalho-nav a.nav-item")].filter((a) => a.getBoundingClientRect().height > 0).map((a) => a.textContent);
-      return { esq: l.left, dir: l.right, larg: document.documentElement.clientWidth, rolagem: document.documentElement.scrollWidth > document.documentElement.clientWidth, itens }; });
-    if (m.esq < 0 || m.dir > m.larg || m.rolagem || m.itens.length !== MENU.length - 1) falhas.push(`menu do celular: ${JSON.stringify(m)}`);
+    const m = await page.evaluate(() => {
+      const listas = ["cabecalho-nav", "cabecalho-abas"].map((i) => document.getElementById(i).getBoundingClientRect());
+      const vis = [...document.querySelectorAll("#cabecalho-nav a, #cabecalho-abas a")].filter((a) => a.getBoundingClientRect().height > 0);
+      return { esq: Math.min(...listas.map((l) => l.left)), dir: Math.max(...listas.map((l) => l.right)), larg: document.documentElement.clientWidth,
+        rolagem: document.documentElement.scrollWidth > document.documentElement.clientWidth, itens: vis.map((a) => a.textContent),
+        menor: Math.min(...vis.map((a) => a.getBoundingClientRect().height)), expandido: document.querySelector(".menu-celular").getAttribute("aria-expanded") };
+    });
+    if (m.esq < 0 || m.dir > m.larg || m.rolagem || JSON.stringify(m.itens) !== JSON.stringify([...NIVEL1, ...ABAS()]) || m.menor < 44 || m.expandido !== "true")
+      falhas.push(`menu do celular: ${JSON.stringify(m)}`);
     await page.click(".menu-celular");
   }
   falhas.unshift(...erros.map((e) => `erro: ${e}`));
@@ -1223,7 +1264,16 @@ async function testeDadosDaTela(browser, base, def) {
 }
 
 // itens do menu, na ordem (rodada A2)
-const MENU = ["Início", "Mapa", "Cheia e saúde", "Clima", "Saúde", "Mais temas", "População", "Território", "Economia", "Riscos", "Dados", "ClimaPampa ↗"];
+// cabeçalho em dois níveis (rodada A8): nível 1 fixo; abas = "nome" das dimensões e dos cruzamentos de textos_inicio.json
+// (fora o mapa, que está no nível 1); item ativo de cada página
+const NIVEL1 = ["Início", "Mapa", "Dados", "ClimaPampa ↗"];
+const ABAS = () => { const tx = TEXTOS_INICIO(); return [...tx.dimensoes, ...tx.cruzamentos].filter((d) => d.id !== "mapa").map((d) => d.nome); };
+const ATIVO = (pagina) => {
+  if (pagina === "index.html") return "Início";
+  if (pagina === "dashboards/catalogo.html") return "Dados";
+  const tx = TEXTOS_INICIO();
+  return ([...tx.dimensoes, ...tx.cruzamentos].find((d) => d.tela === pagina) || {}).nome;
+};
 
 // endereços que redirecionam (rodada A2): síntese incorporada ao início; pasta dashboards/ leva ao início
 const REDIRECIONAMENTOS = [

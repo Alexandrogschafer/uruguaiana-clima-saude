@@ -38,6 +38,8 @@ PARES = [
     ("marca: Clima (texto grande)", "--marca-1", "--page", 3.0),
     ("marca: Pampa (texto grande)", "--marca-2", "--page", 3.0),
     ("elemento gráfico (destaque)", "--accent", "--surface-card", 3.0),
+    ("aba ativa: sublinhado sobre fundo suave (rodada A8)", "--accent", "--accent-soft", 3.0),
+    ("aba ativa: foco/sublinhado sobre a página (rodada A8)", "--accent", "--page", 3.0),
 ]
 
 

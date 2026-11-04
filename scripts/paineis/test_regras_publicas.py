@@ -70,7 +70,10 @@ Regras:
        "prompt" e "Claude" proibidos no texto visível das páginas (mesma leitura da regra w: <title>, texto fora de
        script/style/comentário, meta, aria-label/title), em strings de js/ (fora comentários e console.*), nos textos
        de config/textos_inicio.json e do nome_sistema de identidade.json e em todo JSON de data/paineis/ ("geoportal"
-       fora de caminho e URL é a regra w).
+       fora de caminho e URL é a regra w);
+    y) cabeçalho e nomes das telas (rodada A8): o h1 de cada tela é o "nome" de config/textos_inicio.json (o catálogo é
+       "Dados"); js/paineis/cabecalho.js traz cada um desses nomes como rótulo de aba ou do nível 1; nenhuma tela tem eyebrow
+       (a etiqueta fica só na página inicial).
 
 Uso:
     python scripts/paineis/test_regras_publicas.py
@@ -971,6 +974,26 @@ def regra_x() -> list[str]:
     return falhas
 
 
+# ------------------------------------------------------------------ cabeçalho e nomes das telas (rodada A8)
+def regra_y() -> list[str]:
+    falhas = []
+    tx = json.loads((RAIZ / "config" / "textos_inicio.json").read_text(encoding="utf-8"))
+    nomes = {d["tela"]: d["nome"] for d in tx["dimensoes"] + tx["cruzamentos"] if d["tela"].startswith("dashboards/")}
+    nomes["dashboards/catalogo.html"] = "Dados"
+    cab = (RAIZ / "js" / "paineis" / "cabecalho.js").read_text(encoding="utf-8")
+    for rel, nome in nomes.items():
+        html = (RAIZ / rel).read_text(encoding="utf-8")
+        h1 = re.findall(r"<h1[^>]*>(.*?)</h1>", html, flags=re.S)
+        if h1 != [nome]:
+            falhas.append(f"{rel}: h1 {h1} ≠ nome {nome!r}")
+        if f"rotulo: '{nome}', caminho: '{rel}'" not in cab:
+            falhas.append(f"js/paineis/cabecalho.js: sem o item {nome!r} → {rel}")
+    for arq in sorted((RAIZ / "dashboards").glob("*.html")):
+        if 'class="eyebrow"' in arq.read_text(encoding="utf-8"):
+            falhas.append(f"{arq.relative_to(RAIZ)}: eyebrow na tela")
+    return falhas
+
+
 def main() -> int:
     arqs = arquivos_alvo()
     prods = produtos()
@@ -999,6 +1022,7 @@ def main() -> int:
         "v início sem produto do rio e sem número na marcação": regra_v(),
         "w nome do sistema: \"geoportal\" só em caminhos, URLs e código; <title> no padrão": regra_w(),
         "x sem linguagem interna do projeto em texto visível nem em data/paineis/": regra_x(),
+        "y h1 das telas = nome no menu = textos_inicio.json; sem eyebrow nas telas": regra_y(),
     }
     print(f"arquivos varridos: {len(arqs)}; produtos: {len(prods)}")
     ok = True
