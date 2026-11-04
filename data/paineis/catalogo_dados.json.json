@@ -121,12 +121,12 @@
     },
     {
       "arquivo": "data/paineis/inundacao_sgb_cotas.json",
-      "sha256": "16ac391224bd7a6fb2174609785617a9493258eb9ce7b4bf0a59bc9b83346040",
+      "sha256": "0e15faec694b519e2283a74b30d0a1a785bef9c4bfcf839baded26874f87f4a9",
       "bytes": 5011
     },
     {
       "arquivo": "data/paineis/inundacao_sgb_unidades-cotas.json",
-      "sha256": "489a823d88e1afe2f0381c6c2b060e79ec827438228cef7cb04bdc19ec48b845",
+      "sha256": "b3fa83eb52231627146cbb786ebef95f7fbf747e78090f10486525992b02f1a4",
       "bytes": 6292
     },
     {
@@ -321,12 +321,12 @@
     },
     {
       "arquivo": "data/paineis/inundacao_sgb_cotas.json.json",
-      "sha256": "81690ae66f109645675b6f518bb56d761b96e79dcb07f7325de8d7df026d3313",
+      "sha256": "c1fd7fa5821a6d10d331223275bf137fe09ac8a18ec2e07ad1e5d1307c42a873",
       "bytes": 1691
     },
     {
       "arquivo": "data/paineis/inundacao_sgb_unidades-cotas.json.json",
-      "sha256": "553e1caaecdddf56b71325a04ff1081a116200139b1abd3f0204cbf07dacff09",
+      "sha256": "efe78ecce31ea11ef6e76d7b636da986d4e17dfca43024cc90097800df120cfd",
       "bytes": 1628
     },
     {
@@ -466,5 +466,5 @@
   "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-04T00:50:02Z"
+  "data_processamento": "2026-11-04T00:50:58Z"
 }

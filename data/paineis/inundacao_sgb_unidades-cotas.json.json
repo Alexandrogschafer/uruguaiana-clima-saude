@@ -26,8 +26,8 @@
     },
     {
       "arquivo": "config/textos_inicio.json",
-      "sha256": "4c00a01fdc43c3c54851286b52e4df35c50decef6ce5db48f1c70b82b7590be0",
-      "bytes": 3799
+      "sha256": "69db2295444f92c7e9e4339e5b2981c52dea4f7651afdb1bbad66c453ca37c68",
+      "bytes": 3786
     }
   ],
   "script": "scripts/paineis/dados_inundacao.py",
@@ -39,6 +39,6 @@
   "autorizacao": "livre",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-04T00:50:02Z",
+  "data_processamento": "2026-11-04T00:50:58Z",
   "supressao_nota": "não se aplica: sem contagem de pessoas; só número de unidades de saúde"
 }

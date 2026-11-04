@@ -386,7 +386,7 @@ const TELAS = {
     produtos: { catalogo: "catalogo_dados" },
     recolhiveis: [],
     kpis: () => [], graficos: () => ({}), tabelas: () => ({}),
-    extras: async (browser, base, prod) => testesExtrasCatalogo(browser, base, prod),
+    extras: async (browser, base, prod) => [...await testesExtrasCatalogo(browser, base, prod), ...await testeNomeDados(browser, base)],
   }
 };
 
@@ -993,6 +993,22 @@ async function testeSuprimidoSetor(browser, base, prod) {
 // ------------------------------------------------------------------ extras da cheia e saúde
 // parágrafo de abertura da cheia (rodada A9): texto de config/textos_inicio.json (cruzamento "cheia", campo "abertura"),
 // copiado pelo gerador para a nota cs_abertura; começa pela pergunta
+// o catálogo se chama "Dados" em todo texto visível (rodada A9): link do início, rodapé, menu e h1; nenhum "catálogo de dados"
+async function testeNomeDados(browser, base) {
+  const res = [];
+  for (const pag of ["index.html", "dashboards/clima.html", "dashboards/catalogo.html"]) {
+    const { ctx, page, erros } = await abrir(browser, base + pag, {});
+    await page.waitForSelector("#dados-tela summary", { timeout: 5000 }).catch(() => null);
+    const r = await page.evaluate(() => ({
+      links: [...document.querySelectorAll('a[href$="catalogo.html"]')].map((a) => a.textContent.replace(/\s*→$/, "")),
+      outro: /cat[aá]logo de dados/i.test(document.body.innerText),
+    }));
+    await ctx.close();
+    res.push({ nome: `${pag}: links para o catálogo chamados "Dados"; nenhum "catálogo de dados"`, ok: r.links.length > 0 && r.links.every((x) => x === "Dados") && !r.outro && erros.length === 0, detalhe: JSON.stringify(r) });
+  }
+  return res;
+}
+
 async function testeAberturaCheia(browser, base, prod) {
   const { ctx, page, erros } = await abrir(browser, base + "dashboards/cheia-saude.html", {});
   const txt = await page.evaluate(() => (document.querySelector('.masthead [data-nota="cs_abertura"]') || {}).textContent || "");

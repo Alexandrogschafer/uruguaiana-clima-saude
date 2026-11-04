@@ -36,7 +36,7 @@
     },
     {
       "arquivo": "data/paineis/inundacao_sgb_cotas.json",
-      "sha256": "16ac391224bd7a6fb2174609785617a9493258eb9ce7b4bf0a59bc9b83346040",
+      "sha256": "0e15faec694b519e2283a74b30d0a1a785bef9c4bfcf839baded26874f87f4a9",
       "bytes": 5011
     },
     {
@@ -86,8 +86,8 @@
     },
     {
       "arquivo": "data/paineis/catalogo_dados.json",
-      "sha256": "4ed083a2826adbeb5b38658f46e53720d90eb607d712da4f73e49feb045f06bb",
-      "bytes": 51181
+      "sha256": "cb74dc76298c3c7138d969a6f7aff90f18703d1dcf54668e84638c699e575e11",
+      "bytes": 51161
     }
   ],
   "script": "scripts/paineis/dados_inicio.py",
@@ -115,5 +115,5 @@
   "autorizacao": "livre",
   "selo": "em_confirmacao",
   "crs": "não se aplica (produto tabular)",
-  "data_processamento": "2026-11-04T00:50:02Z"
+  "data_processamento": "2026-11-04T00:50:58Z"
 }

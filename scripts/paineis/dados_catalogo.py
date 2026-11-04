@@ -173,7 +173,7 @@ def gerar(codigo_ibge: str = "4322400", forcar: bool = False, so: str | None = N
     selo = min((prods[pid]["prod"]["selo"] for pid in usados), key=lambda s: comum.FORCA_SELO[s])
     acessos = sorted(d["data_acesso"] for d in dados if d["data_acesso"] and re.match(r"^\d{4}-\d{2}-\d{2}$", d["data_acesso"]))
     p = comum.montar_produto(
-        id=ID, codigo_ibge=codigo_ibge, ativos=ativos, titulo="Catálogo de dados: fontes dos produtos e das camadas publicados",
+        id=ID, codigo_ibge=codigo_ibge, ativos=ativos, titulo="Fontes dos produtos e das camadas publicados",
         fonte_curta="catálogo", fonte="data/catalogo_fontes.csv (linhas ligadas a produto ou camada publicados)",
         unidade_espacial="não se aplica", unidade_medida="não se aplica",
         periodo={"inicio": acessos[0], "fim": acessos[-1]}, dados_ate=acessos[-1], selo=selo,

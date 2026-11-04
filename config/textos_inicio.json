@@ -25,7 +25,7 @@
   ],
   "dados": {
     "linha": "Todos os conjuntos de dados, com fonte, licença, período e selo, para baixar em CSV e JSON.",
-    "catalogo": {"nome": "Catálogo de dados", "href": "dashboards/catalogo.html"},
+    "catalogo": {"nome": "Dados", "href": "dashboards/catalogo.html"},
     "como_ler": {"nome": "Como ler os selos e avisos", "href": "dashboards/catalogo.html#como-ler"}
   },
   "projeto": {

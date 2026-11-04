@@ -1,7 +1,7 @@
 {
  "esquema": "climapampa-manifesto/1",
  "codigo_ibge": "4322400",
- "gerado_em": "2026-11-04T00:50:02Z",
+ "gerado_em": "2026-11-04T00:50:58Z",
  "produtos": [
   {
    "id": "agropecuaria_ibge_serie_anual",
@@ -111,7 +111,7 @@
   },
   {
    "id": "catalogo_dados",
-   "titulo": "Catálogo de dados: fontes dos produtos e das camadas publicados",
+   "titulo": "Fontes dos produtos e das camadas publicados",
    "ativos": [
     "CA01",
     "CA04",
@@ -156,12 +156,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "exceção por premissa: SA02 (P6: só 2017 e 2023, com aviso \"em confirmação\"; 2026 não publicado; sem soma nem ranking)",
    "dados_ate": "2026-11-03",
-   "gerado_em": "2026-11-04T00:50:02Z",
+   "gerado_em": "2026-11-04T00:50:58Z",
    "telas": [
     "catalogo"
    ],
-   "bytes": 51181,
-   "sha256": "4ed083a2826adbeb5b38658f46e53720d90eb607d712da4f73e49feb045f06bb",
+   "bytes": 51161,
+   "sha256": "cb74dc76298c3c7138d969a6f7aff90f18703d1dcf54668e84638c699e575e11",
    "csv": "csv/catalogo_dados.csv"
   },
   {
@@ -445,12 +445,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2026-10-25",
-   "gerado_em": "2026-11-04T00:50:02Z",
+   "gerado_em": "2026-11-04T00:50:58Z",
    "telas": [
     "inicio"
    ],
    "bytes": 11447,
-   "sha256": "3b74e094e364f470ddd2c67c070fd012599354a50d5055e07454862e66eb7daf",
+   "sha256": "44e734c632e61c66343dcfa3bdd6f8d971dad9defe84def04fe3d70984a83cec",
    "csv": "csv/inicio_resumo.csv"
   },
   {
@@ -464,13 +464,13 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2023",
-   "gerado_em": "2026-11-04T00:50:02Z",
+   "gerado_em": "2026-11-04T00:50:58Z",
    "telas": [
     "sintese",
     "cheia-saude"
    ],
    "bytes": 5011,
-   "sha256": "16ac391224bd7a6fb2174609785617a9493258eb9ce7b4bf0a59bc9b83346040",
+   "sha256": "0e15faec694b519e2283a74b30d0a1a785bef9c4bfcf839baded26874f87f4a9",
    "csv": "csv/inundacao_sgb_cotas.csv"
   },
   {
@@ -483,12 +483,12 @@
    "selo": "em_confirmacao",
    "autorizacao": "livre",
    "dados_ate": "2026",
-   "gerado_em": "2026-11-04T00:50:02Z",
+   "gerado_em": "2026-11-04T00:50:58Z",
    "telas": [
     "cheia-saude"
    ],
    "bytes": 6292,
-   "sha256": "489a823d88e1afe2f0381c6c2b060e79ec827438228cef7cb04bdc19ec48b845",
+   "sha256": "b3fa83eb52231627146cbb786ebef95f7fbf747e78090f10486525992b02f1a4",
    "csv": "csv/inundacao_sgb_unidades-cotas.csv"
   },
   {

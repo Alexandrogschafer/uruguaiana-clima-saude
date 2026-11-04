@@ -75,10 +75,10 @@
     const b = document.createElement('b');
     b.textContent = 'Fontes:';
     p.appendChild(b);
-    p.appendChild(document.createTextNode(' ' + vistas.map(t => t.replace(/\.$/, '')).join('. ') + '. Licença, período e método de cada fonte no '));
+    p.appendChild(document.createTextNode(' ' + vistas.map(t => t.replace(/\.$/, '')).join('. ') + '. Licença, período e método de cada fonte em '));
     const cat = document.createElement('a');
     cat.href = `${raiz()}/dashboards/catalogo.html`;
-    cat.textContent = 'catálogo de dados';
+    cat.textContent = 'Dados';  // mesmo nome do menu e do h1 do catálogo
     p.appendChild(cat);
     p.appendChild(document.createTextNode('.'));
     host.appendChild(p);
