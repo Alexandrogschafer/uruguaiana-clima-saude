@@ -14,10 +14,12 @@
 .status-legend .dash { width: 14px; height: 0; border-top: 2px solid; display: inline-block; }
 .status-legend .dash.dotted { border-top-style: dashed; }
 
-/* ---------- cabeçalho comum ---------- */
-.cabecalho-comum { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-bottom: 14px; font-size: 13px; }
+/* ---------- cabeçalho comum em dois níveis (rodada A8) ---------- */
+.cabecalho-comum { margin-bottom: 18px; font-size: 13px; }
+/* nível 1: marca à esquerda; Início · Mapa · Dados · ClimaPampa ↗ à direita */
+.cabecalho-n1 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
 /* marca em texto: "Clima" (--marca-1) + "Pampa" (--marca-2), 800, 20 px (texto grande: contraste mínimo 3:1) */
-a.cabecalho-marca { text-decoration: none; display: inline-flex; flex-direction: column; gap: 3px; margin-right: auto; line-height: 1; }
+a.cabecalho-marca { text-decoration: none; display: inline-flex; flex-direction: column; gap: 3px; margin-right: auto; line-height: 1; border-radius: 4px; }
 .marca-texto { font-family: "Plus Jakarta Sans", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
 .marca-clima { color: var(--marca-1); }
 .marca-pampa { color: var(--marca-2); }
@@ -26,22 +28,21 @@ a.cabecalho-marca { text-decoration: none; display: inline-flex; flex-direction:
 .nav-item { color: var(--ink-secondary); text-decoration: none; padding: 5px 9px; border-radius: 5px; border: 1px solid transparent; white-space: nowrap; }
 a.nav-item:hover { color: var(--ink); border-color: var(--border-strong); }
 .nav-item[aria-current="page"] { color: var(--ink); background: var(--accent-soft); font-weight: 600; }
-.nav-desativado { color: var(--ink-muted); cursor: default; }
-.nav-desativado small { font-size: 10.5px; margin-left: 2px; }
-.nav-mapa { color: var(--accent); border-color: var(--border-strong); }
-.cabecalho-avisos { flex-basis: 100%; }
-/* linha da tela: eyebrow à esquerda, "Atualizado em" à direita (acima do título) */
-.linha-tela { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-bottom: 10px; position: relative; }
-.linha-tela .eyebrow { margin-bottom: 0; }
-.atualizado-tela { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11px; color: var(--ink-muted); white-space: nowrap; }
+.nav-site { color: var(--accent); }
+/* nível 2: faixa de abas sob o nível 1; aba ativa com fundo suave e sublinhado da cor de destaque */
+.cabecalho-abas { display: flex; align-items: stretch; gap: 2px; margin-top: 12px; border-bottom: 1px solid var(--border); }
+.aba { color: var(--ink-secondary); text-decoration: none; padding: 8px 12px 9px; border-radius: 5px 5px 0 0; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; font-weight: 500; }
+a.aba:hover { color: var(--ink); background: var(--accent-soft); }
+.aba[aria-current="page"] { color: var(--ink); background: var(--accent-soft); border-bottom-color: var(--accent); font-weight: 700; }
+.abas-sep { width: 1px; background: var(--border-strong); margin: 8px 8px; flex: none; }
+/* foco visível no teclado (marca, itens e abas) */
+.cabecalho-comum a:focus-visible, .cabecalho-comum button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cabecalho-avisos { margin-top: 10px; }
+/* linha do título da tela: h1 à esquerda, "Atualizado em" à direita, discreto; no celular a data vai abaixo */
+.linha-titulo { display: flex; align-items: baseline; justify-content: space-between; gap: 4px 24px; position: relative; }
+.linha-titulo h1 { margin-bottom: 8px; }
+.atualizado-tela { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11px; color: var(--ink-muted); white-space: nowrap; flex: none; }
 
-.menu-explorar { position: relative; }
-.menu-explorar summary { list-style: none; cursor: pointer; color: var(--ink-secondary); padding: 5px 9px; border-radius: 5px; border: 1px solid transparent; }
-.menu-explorar summary::-webkit-details-marker { display: none; }
-.menu-explorar summary::after { content: " ▾"; color: var(--accent); }
-.menu-explorar[open] summary, .menu-explorar summary:hover { border-color: var(--border-strong); color: var(--ink); }
-.menu-explorar-lista { position: absolute; right: 0; top: calc(100% + 4px); z-index: 20; min-width: 230px; background: var(--surface-card); border: 1px solid var(--border-strong); border-radius: 6px; box-shadow: var(--shadow); padding: 6px; display: flex; flex-direction: column; }
-.menu-explorar-lista .nav-item { padding: 7px 10px; }
 
 /* ---------- selo de conferência ---------- */
 .selo { font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace; font-size: 11px; white-space: nowrap; }
@@ -97,10 +98,6 @@ details.recolhivel[open] > summary::before, details.detalhes-unidades[open] > su
 
 @media (max-width: 720px) {
   .cabecalho-comum { font-size: 12.5px; }
-  /* no celular a lista abre na largura da linha do menu (ancorada na nav), sem passar da borda da tela */
-  .cabecalho-nav { position: relative; }
-  .menu-explorar { position: static; }
-  .menu-explorar-lista { left: 0; right: 0; min-width: 0; }
   /* um cartão por linha da tabela; o rótulo da coluna vem de data-rotulo */
   table.tabela-cartoes thead { display: none; }
   table.tabela-cartoes, table.tabela-cartoes tbody { display: block; }
@@ -196,18 +193,20 @@ details.sobre-dado dd { margin: 0; color: var(--ink-secondary); overflow-wrap: a
 .catalogo-downloads { margin-top: 4px; display: block; }
 @media (max-width: 720px) { .tabela-catalogo .col-fonte, .tabela-catalogo .col-resolucao { width: auto; } }
 
-/* ---------- menu (rodada A2): "Mais temas" e ☰ no celular ---------- */
-.menu-explorar summary.nav-atual { color: var(--ink); background: var(--accent-soft); font-weight: 600; }
-.nav-site { color: var(--accent); }
-.menu-celular { display: none; font: inherit; font-size: 13px; padding: 5px 11px; border-radius: 5px; border: 1px solid var(--border-strong); background: var(--surface-card); color: var(--ink); cursor: pointer; }
+/* ---------- celular: nível 1 vira marca + ☰; o ☰ abre a lista completa (nível 1 e abas); alvos de 44 px ---------- */
+.menu-celular { display: none; font: inherit; font-size: 13px; min-height: 44px; padding: 0 14px; border-radius: 6px; border: 1px solid var(--border-strong); background: var(--surface-card); color: var(--ink); cursor: pointer; }
 @media (max-width: 720px) {
   .menu-celular { display: inline-flex; gap: 6px; align-items: center; }
-  .cabecalho-comum .cabecalho-nav { display: none; }
-  .cabecalho-comum.menu-aberto .cabecalho-nav { display: flex; flex-direction: column; align-items: stretch; flex-basis: 100%; gap: 2px; padding: 6px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-card); }
-  .cabecalho-comum.menu-aberto .nav-item { padding: 8px 10px; }
-  .cabecalho-comum.menu-aberto .menu-explorar summary { pointer-events: none; color: var(--ink-muted); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 10px 2px; border: 0; background: none; }
-  .cabecalho-comum.menu-aberto .menu-explorar summary::after { content: ""; }
-  .cabecalho-comum.menu-aberto .menu-explorar-lista { position: static; border: 0; box-shadow: none; padding: 0 0 0 10px; min-width: 0; background: none; }
+  .cabecalho-comum .cabecalho-nav, .cabecalho-comum .cabecalho-abas { display: none; }
+  .cabecalho-comum.menu-aberto .cabecalho-nav, .cabecalho-comum.menu-aberto .cabecalho-abas { display: flex; flex-direction: column; align-items: stretch; flex-basis: 100%; gap: 2px; padding: 6px; border: 1px solid var(--border-strong); background: var(--surface-card); margin: 0; }
+  .cabecalho-comum.menu-aberto .cabecalho-nav { border-radius: 6px 6px 0 0; border-bottom: 0; margin-top: 8px; }
+  .cabecalho-comum.menu-aberto .cabecalho-abas { border-radius: 0 0 6px 6px; border-top: 1px solid var(--border); }
+  .cabecalho-comum.menu-aberto .nav-item, .cabecalho-comum.menu-aberto .aba { display: flex; align-items: center; min-height: 44px; padding: 0 12px; border: 0; border-radius: 5px; margin: 0; }
+  .cabecalho-comum.menu-aberto .aba[aria-current="page"] { box-shadow: inset 3px 0 0 var(--accent); }
+  .cabecalho-comum.menu-aberto .abas-sep { width: auto; height: 1px; margin: 4px 8px; }
+  .linha-titulo { flex-direction: column; align-items: flex-start; }
+  .linha-titulo h1 { margin-bottom: 4px; }
+  .linha-titulo .atualizado-tela { margin-bottom: 8px; }
 }
 .faixa-rio-link { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border-strong); white-space: nowrap; }
 

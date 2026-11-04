@@ -1,33 +1,39 @@
-/* Cabeçalho comum: navegação entre as telas e avisos de filtro.
-   Menu (rodada A2): Início · Mapa · Cheia e saúde · Clima · Saúde · Mais temas ▾ (População, Território,
-   Economia, Riscos) · Dados · ClimaPampa ↗ (site do projeto, nova aba). No celular (até 720 px) o botão ☰
-   abre a lista inteira, com os "Mais temas" abertos. Os caminhos são da raiz do site (data-raiz), para
-   valer no início (index.html) e nas telas (dashboards/). A marca em texto ("Clima" em --marca-1, "Pampa"
-   em --marca-2; nenhum logo até haver autorização, ver config/identidade.json) leva à página inicial.
-   "Atualizado em" (data do manifesto) fica na linha da tela, acima do título. A tela atual vem de
-   <html data-tela="...">. */
+/* Cabeçalho comum em dois níveis (rodada A8) e avisos de filtro.
+   Nível 1: marca em texto ("Clima" em --marca-1, "Pampa" em --marca-2, linha "Painéis · Uruguaiana/RS"; nenhum
+   logo até haver autorização, ver config/identidade.json) à esquerda, levando à página inicial; à direita
+   Início · Mapa · Dados · ClimaPampa ↗ (site do projeto, nova aba).
+   Nível 2: faixa de abas com as seis dimensões e, depois de um separador, Cheia e saúde.
+   A tela atual (de <html data-tela="...">) fica com aria-current="page": no nível 1 para início, mapa e dados;
+   no nível 2 para as dimensões e a cheia. No celular (até 720 px) o nível 1 é marca + ☰, e o ☰ abre a lista
+   completa (nível 1 e abas, nessa ordem). Os caminhos são da raiz do site (data-raiz), para valer no início
+   (index.html) e nas telas (dashboards/).
+   Os nomes das abas são os "nome" de config/textos_inicio.json (iguais aos h1 das telas); cabecalho.js não lê o
+   arquivo (seria uma requisição a mais por tela) e test_regras_publicas.py confere a cópia.
+   "Atualizado em" (data do manifesto) divide a linha com o h1 da tela: título à esquerda, data à direita; no
+   celular, a data vai abaixo do título. */
 (function(){
   const P = window.Paineis = window.Paineis || {};
 
-  // caminho a partir da raiz do site; `mapa` = o link leva os filtros da tela ao mapa
-  const PRINCIPAIS = [
+  // nível 1; `mapa` = o link leva os filtros da tela ao mapa
+  const NIVEL1 = [
     {tela: 'inicio', rotulo: 'Início', caminho: 'index.html'},
     {tela: 'mapa', rotulo: 'Mapa', caminho: 'mapa.html', mapa: true},
-    {tela: 'cheia-saude', rotulo: 'Cheia e saúde', caminho: 'dashboards/cheia-saude.html'},
+    {tela: 'catalogo', rotulo: 'Dados', caminho: 'dashboards/catalogo.html'},
+  ];
+  // site do projeto: lido de config/textos_inicio.json seria uma requisição a mais em toda tela; fica aqui
+  const SITE_PROJETO = {rotulo: 'ClimaPampa ↗', href: 'https://pet-saude-climapampa.github.io/'};
+  // nível 2: as seis dimensões e, depois do separador, o cruzamento (nomes = "nome" de config/textos_inicio.json)
+  const DIMENSOES = [
     {tela: 'clima', rotulo: 'Clima', caminho: 'dashboards/clima.html'},
     {tela: 'saude', rotulo: 'Saúde', caminho: 'dashboards/saude.html'},
-  ];
-  const MAIS_TEMAS = [
     {tela: 'populacao', rotulo: 'População', caminho: 'dashboards/populacao.html'},
     {tela: 'territorio', rotulo: 'Território', caminho: 'dashboards/territorio.html'},
     {tela: 'economia', rotulo: 'Economia', caminho: 'dashboards/economia.html'},
     {tela: 'riscos', rotulo: 'Riscos', caminho: 'dashboards/riscos.html'},
   ];
-  const FINAIS = [
-    {tela: 'catalogo', rotulo: 'Dados', caminho: 'dashboards/catalogo.html'},
+  const CRUZAMENTOS = [
+    {tela: 'cheia-saude', rotulo: 'Cheia e saúde', caminho: 'dashboards/cheia-saude.html'},
   ];
-  // site do projeto: lido de config/textos_inicio.json seria uma requisição a mais em toda tela; fica aqui
-  const SITE_PROJETO = {rotulo: 'ClimaPampa ↗', href: 'https://pet-saude-climapampa.github.io/'};
 
   // nome do sistema e linha pequena da marca: cópia de config/identidade.json (nome_sistema.nome e
   // marca_texto.linha_pequena; test_regras_publicas.py confere). O município entra na linha pequena.
@@ -43,20 +49,13 @@
     });
   };
 
-  function item(def, atual){
-    if(!def.href && !def.caminho){
-      const s = document.createElement('span');
-      s.className = 'nav-item nav-desativado';
-      s.setAttribute('aria-disabled', 'true');
-      s.innerHTML = `${def.rotulo} <small>em breve</small>`;
-      return s;
-    }
+  function item(def, atual, classe){
     const a = document.createElement('a');
-    a.className = 'nav-item';
+    a.className = classe || 'nav-item';
     const raiz = P.raiz ? P.raiz() : '..';
     a.href = def.href || (def.mapa && P.urlCom ? P.urlCom(`${raiz}/${def.caminho}`, ['bairro', 'unidade', 'cota', 'camada']) : `${raiz}/${def.caminho}`);
     a.textContent = def.rotulo;
-    if(def.tela === atual) a.setAttribute('aria-current', 'page');
+    if(def.tela && def.tela === atual) a.setAttribute('aria-current', 'page');
     return a;
   }
 
@@ -67,7 +66,9 @@
     host.innerHTML = '';
     host.className = 'cabecalho-comum';
 
-    // marca em texto: leva à página inicial (index.html)
+    // ---- nível 1: marca, ☰ (só no celular) e Início · Mapa · Dados · ClimaPampa ↗
+    const n1 = document.createElement('div');
+    n1.className = 'cabecalho-n1';
     const marca = document.createElement('a');
     marca.href = `${P.raiz ? P.raiz() : '..'}/index.html`;
     marca.className = 'cabecalho-marca';
@@ -75,63 +76,62 @@
     marca.innerHTML = '<span class="marca-texto" aria-hidden="true"><span class="marca-clima">Clima</span><span class="marca-pampa">Pampa</span></span>' +
       '<span class="marca-linha" aria-hidden="true"></span>';
     marca.querySelector('.marca-linha').textContent = LINHA_MARCA;
-    host.appendChild(marca);
+    n1.appendChild(marca);
 
-    // "Atualizado em" na linha da tela (ao lado do eyebrow, acima do título); sem masthead, fica no cabeçalho
-    const atualizado = document.createElement('span');
-    atualizado.className = 'atualizado-tela';
-    const eyebrow = document.querySelector('.masthead .eyebrow');
-    if(eyebrow){
-      const linha = document.createElement('div');
-      linha.className = 'linha-tela';
-      eyebrow.parentNode.insertBefore(linha, eyebrow);
-      linha.appendChild(eyebrow);
-      linha.appendChild(atualizado);
-    }
-    P.dataAtualizacao().then(d => { if(d) atualizado.textContent = `Atualizado em ${d}`; });
+    // o botão vem antes das listas: no celular a ordem do Tab é marca → ☰ → itens
+    const botao = document.createElement('button');
+    botao.type = 'button';
+    botao.className = 'menu-celular';
+    botao.setAttribute('aria-controls', 'cabecalho-nav cabecalho-abas');
+    botao.setAttribute('aria-expanded', 'false');
+    botao.innerHTML = '<span aria-hidden="true">☰</span> Menu';
+    n1.appendChild(botao);
 
     const nav = document.createElement('nav');
     nav.className = 'cabecalho-nav';
     nav.id = 'cabecalho-nav';
-    nav.setAttribute('aria-label', `Telas dos ${NOME_SISTEMA}`);
-    PRINCIPAIS.forEach(d => nav.appendChild(item(d, atual)));
-
-    const menu = document.createElement('details');
-    menu.className = 'menu-explorar';
-    const sum = document.createElement('summary');
-    sum.textContent = 'Mais temas';
-    if(MAIS_TEMAS.some(d => d.tela === atual)) sum.classList.add('nav-atual');
-    menu.appendChild(sum);
-    const lista = document.createElement('div');
-    lista.className = 'menu-explorar-lista';
-    MAIS_TEMAS.forEach(d => lista.appendChild(item(d, atual)));
-    menu.appendChild(lista);
-    nav.appendChild(menu);
-    FINAIS.forEach(d => nav.appendChild(item(d, atual)));
+    nav.setAttribute('aria-label', 'Navegação principal');
+    NIVEL1.forEach(d => nav.appendChild(item(d, atual)));
     const site = item(SITE_PROJETO, atual);
     site.classList.add('nav-site');
     site.target = '_blank';
     site.rel = 'noopener';
     nav.appendChild(site);
+    n1.appendChild(nav);
+    host.appendChild(n1);
 
-    // celular: ☰ abre e fecha a lista inteira (com "Mais temas" aberto)
-    const botao = document.createElement('button');
-    botao.type = 'button';
-    botao.className = 'menu-celular';
-    botao.setAttribute('aria-controls', 'cabecalho-nav');
-    botao.setAttribute('aria-expanded', 'false');
-    botao.innerHTML = '<span aria-hidden="true">☰</span> Menu';
+    // ---- nível 2: faixa de abas
+    const abas = document.createElement('nav');
+    abas.className = 'cabecalho-abas';
+    abas.id = 'cabecalho-abas';
+    abas.setAttribute('aria-label', `Telas dos ${NOME_SISTEMA}`);
+    DIMENSOES.forEach(d => abas.appendChild(item(d, atual, 'aba')));
+    const sep = document.createElement('span');
+    sep.className = 'abas-sep';
+    sep.setAttribute('aria-hidden', 'true');
+    abas.appendChild(sep);
+    CRUZAMENTOS.forEach(d => abas.appendChild(item(d, atual, 'aba')));
+    host.appendChild(abas);
+
     botao.addEventListener('click', () => {
       const aberto = host.classList.toggle('menu-aberto');
       botao.setAttribute('aria-expanded', String(aberto));
-      menu.open = aberto;
     });
-    host.appendChild(botao);
-    host.appendChild(nav);
-    if(!eyebrow) host.appendChild(atualizado);
 
-    // fecha o "Mais temas" ao tocar fora dele (com o ☰ aberto, ele fica aberto dentro da lista)
-    document.addEventListener('pointerdown', e => { if(!menu.contains(e.target) && !host.classList.contains('menu-aberto')) menu.open = false; });
+    // ---- "Atualizado em" na linha do título da tela (h1 à esquerda, data à direita)
+    const atualizado = document.createElement('span');
+    atualizado.className = 'atualizado-tela';
+    const h1 = document.querySelector('.masthead h1');
+    if(h1){
+      const linha = document.createElement('div');
+      linha.className = 'linha-titulo';
+      h1.parentNode.insertBefore(linha, h1);
+      linha.appendChild(h1);
+      linha.appendChild(atualizado);
+    } else {
+      host.appendChild(atualizado);
+    }
+    P.dataAtualizacao().then(d => { if(d) atualizado.textContent = `Atualizado em ${d}`; });
 
     const avisos = (P.filtros && P.filtros.avisos) || [];
     if(avisos.length){

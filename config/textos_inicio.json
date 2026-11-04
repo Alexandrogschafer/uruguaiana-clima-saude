@@ -12,15 +12,15 @@
     "projeto": "O projeto"
   },
   "dimensoes": [
-    {"id": "clima", "nome": "Clima e ambiente", "linha": "Chuva, temperatura e dias de calor, focos de queimada e o nível do rio Uruguai.", "tela": "dashboards/clima.html"},
+    {"id": "clima", "nome": "Clima", "linha": "Chuva, temperatura e dias de calor, focos de queimada e o nível do rio Uruguai.", "tela": "dashboards/clima.html"},
     {"id": "saude", "nome": "Saúde", "linha": "Óbitos, internações respiratórias, arboviroses e as unidades de saúde da família e básicas.", "tela": "dashboards/saude.html"},
     {"id": "populacao", "nome": "População", "linha": "População dos censos e das estimativas, envelhecimento e pirâmides etárias.", "tela": "dashboards/populacao.html"},
-    {"id": "territorio", "nome": "Território e meio físico", "linha": "Uso e cobertura do solo, áreas urbanizadas, poços de água subterrânea e APP dos rios.", "tela": "dashboards/territorio.html"},
-    {"id": "economia", "nome": "Economia e vulnerabilidade", "linha": "Renda e saneamento do Censo, PIB, emprego, agropecuária, assistência social e despesas municipais.", "tela": "dashboards/economia.html"},
-    {"id": "riscos", "nome": "Riscos, desastres e infraestrutura", "linha": "Desastres reconhecidos, suscetibilidade, setores de risco e continuidade de energia.", "tela": "dashboards/riscos.html"}
+    {"id": "territorio", "nome": "Território", "linha": "Uso e cobertura do solo, áreas urbanizadas, poços de água subterrânea e APP dos rios.", "tela": "dashboards/territorio.html"},
+    {"id": "economia", "nome": "Economia", "linha": "Renda e saneamento do Censo, PIB, emprego, agropecuária, assistência social e despesas municipais.", "tela": "dashboards/economia.html"},
+    {"id": "riscos", "nome": "Riscos", "linha": "Desastres reconhecidos, suscetibilidade, setores de risco e continuidade de energia.", "tela": "dashboards/riscos.html"}
   ],
   "cruzamentos": [
-    {"id": "cheia", "nome": "Cheia e acesso à saúde", "linha": "Manchas de inundação do Serviço Geológico do Brasil por cota do rio e a posição das unidades de saúde em relação a elas.", "tela": "dashboards/cheia-saude.html"},
+    {"id": "cheia", "nome": "Cheia e saúde", "linha": "Manchas de inundação do Serviço Geológico do Brasil por cota do rio e a posição das unidades de saúde em relação a elas.", "tela": "dashboards/cheia-saude.html"},
     {"id": "mapa", "nome": "Mapa", "linha": "Todas as camadas no mapa interativo: saúde, demografia, inundação, uso do solo, hidrografia e terreno, meio físico e infraestrutura.", "tela": "mapa.html"}
   ],
   "dados": {
